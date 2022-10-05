@@ -30,7 +30,7 @@ export const DatabaseConfig = [
     entities: ['dist/**/*.entity{.ts,.js}'],
     migrations: ['database/seedings/**/*{.ts,.js}'],
     cli: {
-      migrationsDir: 'database/seeds',
+      migrationsDir: 'database/seedings',
     },
   },
 ];

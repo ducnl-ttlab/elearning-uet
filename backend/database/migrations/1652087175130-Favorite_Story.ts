@@ -47,6 +47,14 @@ export class FavoriteStory1652087175130 implements MigrationInterface {
         onDelete: 'CASCADE',
       }),
     );
+
+    await queryRunner.query(
+      `CREATE UNIQUE INDEX favorite_story_index ON ${TableName.favoriteStory} (storyId, deviceId) `,
+    );
+
+    await queryRunner.query(
+      `CREATE INDEX device_index ON ${TableName.favoriteStory} (deviceId) `,
+    );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {

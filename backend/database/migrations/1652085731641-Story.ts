@@ -22,8 +22,7 @@ export class Story1652085731641 implements MigrationInterface {
           },
           {
             name: 'content',
-            type: 'varchar',
-            length: '1000',
+            type: 'text',
             isNullable: false,
           },
           {

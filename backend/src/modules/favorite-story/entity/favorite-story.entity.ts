@@ -8,11 +8,14 @@ export class FavoriteStory {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ length: 255, nullable: false })
-  name: string;
+  @Column({ nullable: false })
+  storyId: number;
+
+  @Column({ type: 'boolean', nullable: false, default: false })
+  isLike: boolean;
 
   @Column({ length: 255, nullable: false })
-  image: string;
+  deviceId: string;
 
   @ManyToOne(() => Story, (story) => story.favoriteStoryList)
   story?: Story;

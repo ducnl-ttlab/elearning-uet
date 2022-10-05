@@ -12,17 +12,14 @@ export class Story {
   @Column({ length: 255, nullable: false })
   name: string;
 
-  @Column({ length: 1000, nullable: false })
+  @Column({ type: 'text', nullable: false })
   content: string;
-
-  @Column()
-  userId: number;
 
   @Column({ type: 'boolean', nullable: false, default: false })
   isHot: boolean;
 
   @OneToMany(() => StoryCategory, (storyCategory) => storyCategory.category)
-  StoryCategoryList?: StoryCategory[];
+  storyCategoryList?: StoryCategory[];
 
   @OneToMany(() => FavoriteStory, (favoriteStory) => favoriteStory.story)
   favoriteStoryList?: FavoriteStory[];

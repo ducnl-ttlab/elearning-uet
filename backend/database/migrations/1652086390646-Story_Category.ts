@@ -44,11 +44,14 @@ export class StoryCategory1652086390646 implements MigrationInterface {
     await queryRunner.createForeignKey(
       TableName.storyCategory,
       new TableForeignKey({
-        columnNames: ['StoryId'],
+        columnNames: ['storyId'],
         referencedColumnNames: ['id'],
         referencedTableName: TableName.story,
         onDelete: 'CASCADE',
       }),
+    );
+    await queryRunner.query(
+      `CREATE UNIQUE INDEX category_story_index ON ${TableName.storyCategory}(storyId, categoryId) `,
     );
   }
 

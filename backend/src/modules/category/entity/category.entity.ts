@@ -15,5 +15,5 @@ export class Category {
   image: string;
 
   @OneToMany(() => StoryCategory, (storyCategory) => storyCategory.category)
-  StoryCategoryList?: StoryCategory[];
+  storyCategoryList?: StoryCategory[];
 }

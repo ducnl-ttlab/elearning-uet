@@ -6,33 +6,33 @@ export class Category1652088704999 implements MigrationInterface {
     const items = [
       {
         id: 1,
-        image: 'life',
+        image: 'life.png',
         name: 'Bài học cuộc sống',
       },
       {
         id: 2,
-        image: 'peace',
+        image: 'peace.png',
         name: 'Hòa Bình',
       },
       {
         id: 3,
         name: 'Thiên nhiên',
-        image: 'leaves',
+        image: 'leaves.png',
       },
       {
         id: 4,
         name: 'Thành tựu',
-        image: 'gold',
+        image: 'gold.png',
       },
       {
         id: 5,
         name: 'Tình cảm',
-        image: 'love',
+        image: 'love.png',
       },
       {
         id: 6,
         name: 'Ý chí',
-        image: 'diamond',
+        image: 'diamond.png',
       },
     ];
 
