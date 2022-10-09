@@ -7,6 +7,8 @@ import { DatabaseModule } from './common/database.module';
 import { FavoriteStoryModule } from './modules/favorite-story/favorite-story.module';
 import { StoryCategoryModule } from './modules/story-category/story-category.module';
 import { Connection } from 'typeorm';
+import { UserModule } from './modules/user/user.module';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -15,6 +17,8 @@ import { Connection } from 'typeorm';
     StoryModule,
     FavoriteStoryModule,
     StoryCategoryModule,
+    UserModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

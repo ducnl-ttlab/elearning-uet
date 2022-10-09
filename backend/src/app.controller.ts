@@ -6,7 +6,11 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get(':name')
-  getHello(@Param('name') name, @Res() res): void {
+  getImage(@Param('name') name, @Res() res): void {
     res.sendFile(name, { root: 'public' });
+  }
+  @Get('')
+  getHelloWold(@Res() res): void {
+    res.send('hello world');
   }
 }
