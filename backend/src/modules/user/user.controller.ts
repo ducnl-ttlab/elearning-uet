@@ -18,8 +18,7 @@ export class UserController {
   constructor(private readonly usersService: UserService) {}
 
   @Get()
-  @UsePipes(new JoiValidationPipe(querySchema))
-  async getAll(@Query() query: QueryListDTO, @Headers('host') host: Headers) {
-    return 'hello';
+  async getAll() {
+    return this.usersService.findOne('a');
   }
 }

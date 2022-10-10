@@ -1,6 +1,7 @@
 import { Controller, Get, UseGuards, Req, Post, Request } from '@nestjs/common';
 import { AuthService } from './service/auth.service';
 import { AuthGuard } from '@nestjs/passport';
+import { SuccessResponse } from 'src/common/helpers/api.response';
 
 @Controller('auth')
 export class AuthController {
@@ -17,8 +18,9 @@ export class AuthController {
 
   @Get('google/callback')
   @UseGuards(AuthGuard('google'))
-  googleAuthRedirect(@Req() req) {
-    return this.authService.googleLogin(req);
+  async googleAuthRedirect(@Req() req) {
+    let user = await this.authService.googleLogin(req);
+    return new SuccessResponse(user, 'success');
   }
 
   @Post('login')

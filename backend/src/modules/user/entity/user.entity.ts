@@ -23,6 +23,9 @@ export class User {
   phone: string;
 
   @Column()
+  avatar: string;
+
+  @Column()
   role: number;
 
   @Column()

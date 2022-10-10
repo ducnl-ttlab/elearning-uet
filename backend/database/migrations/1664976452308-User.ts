@@ -44,9 +44,16 @@ export class User1664976452308 implements MigrationInterface {
             isNullable: true,
           },
           {
+            name: 'avatar',
+            type: 'varchar',
+            length: '255',
+            isNullable: true,
+          },
+          {
             name: 'role',
             type: 'int',
             isNullable: false,
+            default: 0, // 0
           },
           {
             name: 'resetToken',

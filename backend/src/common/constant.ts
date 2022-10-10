@@ -23,3 +23,11 @@ export const MAX_PARAM = 1000;
 export const jwtConstants = {
   secret: 'secretKey',
 };
+
+export interface IGoogleUser {
+  id: string;
+  username: string;
+  email: string;
+  avatar: string;
+  accessToken: string;
+}
