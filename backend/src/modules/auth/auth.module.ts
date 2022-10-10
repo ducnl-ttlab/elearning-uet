@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { AuthController } from './auth.controller';
 import { AuthService } from './service/auth.service';
 import { GoogleStrategy } from './stategy/google.strategy';
-import { UsersModule } from '../user/user.module';
+import { UserModule } from '../user/user.module';
 import { PassportModule } from '@nestjs/passport';
 import { LocalStrategy } from './stategy/local.strategy';
 import { JwtModule } from '@nestjs/jwt';
@@ -11,7 +11,7 @@ import { JwtStrategy } from './stategy/jwt.strategy';
 
 @Module({
   imports: [
-    UsersModule,
+    UserModule,
     PassportModule,
     JwtModule.register({
       secret: jwtConstants.secret,
