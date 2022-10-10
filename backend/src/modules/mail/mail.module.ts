@@ -1,14 +1,21 @@
 import { Global, Module } from '@nestjs/common';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
+import { join } from 'path';
+import { MailService } from './mail.service';
+import { MailController } from './mail.controller';
 
 @Global()
 @Module({
   imports: [
     MailerModule.forRoot({
       transport: {
+        service: 'gmail',
         host: process.env.EMAIL_HOST,
-        port: 465,
+        port: 587,
+        tls: {
+          ciphers: 'SSLv3',
+        },
         secure: false, // true for 465, false for other ports
         auth: {
           user: process.env.EMAIL_ID, // generated ethereal user
@@ -16,18 +23,18 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
         },
       },
       defaults: {
-        from: '"nest-modules" <user@outlook.com>', // outgoing email ID
+        from: '"No Reply" <noreply@example.com>', // outgoing email ID
       },
       template: {
-        dir: process.cwd() + '/template/',
-        adapter: new HandlebarsAdapter(), // or new PugAdapter()
+        dir: join(__dirname, './templates'),
+        adapter: new HandlebarsAdapter(), // or new PugAdapter() or new EjsAdapter()
         options: {
           strict: true,
         },
       },
     }),
   ],
-  providers: [],
-  exports: [],
+  providers: [MailService],
+  controllers: [MailController],
 })
 export class MailModule {}
