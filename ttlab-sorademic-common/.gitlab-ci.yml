@@ -1,0 +1,15 @@
+image: node:14.18.1
+
+stages:
+  - build
+
+build:
+  stage: build
+  when: manual
+  script:
+    - npm install
+    - CI=false npm run prepare
+    - npm publish
+    - echo "-- build completed succesfully"
+  only:
+    - develop
