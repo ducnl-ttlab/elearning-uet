@@ -4,7 +4,6 @@ import { Repository } from 'typeorm';
 import { User } from '../entity/user.entity';
 
 // This should be a real class/interface representing a user entity
-
 @Injectable()
 export class UserService {
   constructor(

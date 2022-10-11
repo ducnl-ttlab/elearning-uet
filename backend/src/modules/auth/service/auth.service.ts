@@ -3,11 +3,13 @@ import { UserService } from 'src/modules/user/service/user.service';
 import { JwtService } from '@nestjs/jwt';
 import { IGoogleUser } from '../../../common/constant';
 import { filterUser } from 'src/common/ultils';
+import { SignUp } from '../dto/sign-up.dto';
+import { User } from 'src/modules/user/entity/user.entity';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private usersService: UserService,
+    private userService: UserService,
     private jwtService: JwtService,
   ) {}
 
@@ -18,11 +20,11 @@ export class AuthService {
 
     let { id, email, avatar, username, accessToken } = req.user as IGoogleUser;
 
-    let userDb = await this.usersService.findOne(email);
+    let userDb = await this.userService.findOne(email);
 
     if (!userDb) {
       let newUser = { id, email, avatar, username, password: accessToken };
-      userDb = await this.usersService.saveUser(newUser);
+      userDb = await this.userService.saveUser(newUser);
     }
 
     return {
@@ -39,10 +41,29 @@ export class AuthService {
     // return null;
   }
 
+  async validateEmail(email: string): Promise<User> {
+    const user = await this.userService.findOne(email);
+    return user;
+  }
+
   async login(user: any) {
     const payload = { username: user.username, sub: user.userId };
     return {
       access_token: this.jwtService.sign(payload),
     };
+  }
+
+  async register(signUp: SignUp): Promise<User> {
+    const user = await this.userService.saveUser(signUp);
+    delete user.password;
+    return user;
+  }
+
+  signToken(user: User): string {
+    const payload = {
+      sub: user.email,
+    };
+
+    return this.jwtService.sign(payload);
   }
 }

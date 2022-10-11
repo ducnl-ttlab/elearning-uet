@@ -13,12 +13,18 @@ import { MailModule } from 'src/modules/mail/mail.module';
 @Module({
   imports: [
     UserModule,
-    PassportModule,
+    MailModule,
+    PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
       secret: jwtConstants.secret,
-      signOptions: { expiresIn: '60s' },
+      signOptions: {
+        expiresIn: '1d',
+        algorithm: 'HS384',
+      },
+      verifyOptions: {
+        algorithms: ['HS384'],
+      },
     }),
-    MailModule,
   ],
   controllers: [AuthController],
   providers: [AuthService, GoogleStrategy, LocalStrategy, JwtStrategy],

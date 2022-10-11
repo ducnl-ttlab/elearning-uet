@@ -1,8 +1,27 @@
-import { Controller, Get, UseGuards, Req, Post, Request } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  UseGuards,
+  Req,
+  Post,
+  Request,
+  HttpCode,
+  UseInterceptors,
+  HttpStatus,
+  Body,
+  Res,
+} from '@nestjs/common';
 import { AuthService } from './service/auth.service';
 import { AuthGuard } from '@nestjs/passport';
-import { SuccessResponse } from 'src/common/helpers/api.response';
+import {
+  ErrorResponse,
+  SuccessResponse,
+} from 'src/common/helpers/api.response';
 import { MailService } from 'src/modules/mail/mail.service';
+import { SignUp, VerifyEmail } from './dto/sign-up.dto';
+import { User } from '../user/entity/user.entity';
+import { Response } from 'express';
+
 @Controller('auth')
 export class AuthController {
   constructor(
@@ -32,13 +51,34 @@ export class AuthController {
     return this.authService.login(req.user);
   }
 
-  @Post('signup')
-  async signup(@Request() req) {
+  @Post('verify-email')
+  async verifyEmail(@Body() verifyEmail: VerifyEmail, @Res() res: Response) {
+    const { email, url } = verifyEmail;
+    let user = await this.authService.validateEmail(email);
+
+    if (user) {
+      return res
+        .status(HttpStatus.CONFLICT)
+        .json(
+          new ErrorResponse(
+            HttpStatus.CONFLICT,
+            'This email is alrealdy exist',
+          ),
+        );
+    }
+
     await this.mailService.sendUserConfirmation(
-      '19020153@vnu.edu.vn',
-      'duc',
-      'duc',
+      email,
+      url,
+      email.split('@')[0],
     );
-    return 'ok';
+
+    return res.status(HttpStatus.OK).json(new SuccessResponse(user, 'success'));
+  }
+
+  @Post('register')
+  @HttpCode(HttpStatus.CREATED)
+  register(@Body() signUp: SignUp): Promise<User> {
+    return this.authService.register(signUp);
   }
 }
