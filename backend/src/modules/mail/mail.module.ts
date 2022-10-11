@@ -5,7 +5,6 @@ import { join } from 'path';
 import { MailService } from './mail.service';
 import { MailController } from './mail.controller';
 
-console.log(process.cwd() + '/dist' + '/templates');
 @Global()
 @Module({
   imports: [
