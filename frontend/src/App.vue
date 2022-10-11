@@ -7,14 +7,11 @@
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
 import { ElConfigProvider } from 'element-plus';
-import {
-    DEFAULT_LANGUAGE,
-    SupportLanguage,
-} from '@ttlab-packages/ttlab-sorademic-common/common/constants';
-import tokenService from '@ttlab-packages/ttlab-sorademic-common/frontend/tokenService';
+
 import vi from '@/plugins/element-ui/locale/vi';
 import en from '@/plugins/element-ui/locale/en';
-
+import { DEFAULT_LANGUAGE, SupportLanguage } from './common/constants';
+import tokenService from './common/tokenService';
 @Options({
     components: {
         ElConfigProvider,

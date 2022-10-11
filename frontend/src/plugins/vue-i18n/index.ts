@@ -1,4 +1,4 @@
-import { DEFAULT_LANGUAGE } from '@ttlab-packages/ttlab-sorademic-common/common/constants';
+import { DEFAULT_LANGUAGE } from '../../common/constants';
 import { createI18n } from 'vue-i18n';
 import messages from './messages';
 

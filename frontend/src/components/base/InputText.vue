@@ -1,43 +1,44 @@
 <template>
-    <div class="d-flex" :class="{ 'flex-column': !isHorizontal }">
-        <label
-            v-if="label"
-            class="fw-bold text-start mb-2 d-flex align-items-center"
-            :class="{ 'w-100': !isHorizontal, 'label mt-1': isHorizontal }"
-        >
-            {{ label }}
-            <span v-if="isRequired" class="mark-required">*</span></label
-        >
-        <div
-            class="position-relative"
-            :class="{ 'w-100': !isHorizontal, input: isHorizontal }"
-        >
-            <el-input
-                v-model="inputData"
-                :placeholder="placeholder"
-                type="text"
-                :readonly="isReadonly"
-                :disabled="isDisabled"
-                :error="true"
-                :size="size"
-                :maxlength="maxLength"
-                @blur="onBlur"
-                @keyup="onKeyup"
-            />
-            <div v-if="!isHorizontal" class="validation-error text-start mb-3">
-                {{ error }}&nbsp;
+    <div>
+        <div class="d-flex" :class="{ 'flex-column': !isHorizontal }">
+            <label
+                v-if="label"
+                class="fw-bold text-start mb-2 d-flex align-items-center"
+                :class="{ 'w-100': !isHorizontal, 'label mt-1': isHorizontal }"
+            >
+                {{ label }}
+                <span v-if="isRequired" class="mark-required">*</span></label
+            >
+            <div
+                class="position-relative"
+                :class="{ 'w-100': !isHorizontal, input: isHorizontal }"
+            >
+                <el-input
+                    v-model="inputData"
+                    :placeholder="placeholder"
+                    type="text"
+                    :readonly="isReadonly"
+                    :disabled="isDisabled"
+                    :error="true"
+                    :size="size"
+                    :maxlength="maxLength"
+                    @blur="onBlur"
+                    @keyup="onKeyup"
+                />
+                <div v-if="!isHorizontal" class="validation-error text-start mb-3">
+                    {{ error }}&nbsp;
+                </div>
             </div>
         </div>
-    </div>
-    <div class="d-flex mb-3" v-if="isHorizontal">
-        <div class="w-25"></div>
-        <div class="w-75 validation-error text-start">{{ error }}&nbsp;</div>
+        <div class="d-flex mb-3" v-if="isHorizontal">
+            <div class="w-25"></div>
+            <div class="w-75 validation-error text-start">{{ error }}&nbsp;</div>
+        </div>
     </div>
 </template>
 
 <script lang="ts">
-import { ValidationForm } from '@ttlab-packages/ttlab-sorademic-common/common/constants';
-import { KeyCode } from '@ttlab-packages/ttlab-sorademic-common/frontend/constants';
+import { ValidationForm, KeyCode } from '../../common/constants';
 import { Model, Prop, Vue } from 'vue-property-decorator';
 export default class InputText extends Vue {
     @Prop({ default: '' }) readonly label!: string;
