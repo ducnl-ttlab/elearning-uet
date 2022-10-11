@@ -21,15 +21,14 @@ export class MailService {
     return 'sent';
   }
 
-  async sendUserConfirmation() {
-    const url = `example.com/auth/confirm?token=`;
+  async sendUserConfirmation(email: string, url: string, name: string) {
     await this.mailerService.sendMail({
-      to: '19020153@vnu.edu.vn',
+      to: email,
       from: process.env.EMAIL_ID,
       subject: 'Welcome to Nice App! Confirm your Email',
       template: './confirmation',
       context: {
-        name: 'user.name',
+        name: name,
         url,
       },
     });

@@ -7,14 +7,11 @@ export class MailController {
 
   @Get()
   async senMail() {
-    await this.mailService
-      .sendUserConfirmation()
-      .then((data) => {
-        console.log({ data });
-      })
-      .catch((err) => {
-        console.log({ err });
-      });
+    await this.mailService.sendUserConfirmation(
+      '19020153@gmail.com',
+      '',
+      'duc',
+    );
     return 'sent';
   }
 }

@@ -2,10 +2,13 @@ import { Controller, Get, UseGuards, Req, Post, Request } from '@nestjs/common';
 import { AuthService } from './service/auth.service';
 import { AuthGuard } from '@nestjs/passport';
 import { SuccessResponse } from 'src/common/helpers/api.response';
-
+import { MailService } from 'src/modules/mail/mail.service';
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly mailService: MailService,
+  ) {}
 
   @Get()
   hello() {
@@ -31,6 +34,11 @@ export class AuthController {
 
   @Post('signup')
   async signup(@Request() req) {
-    return this.authService.login(req.user);
+    await this.mailService.sendUserConfirmation(
+      '19020153@vnu.edu.vn',
+      'duc',
+      'duc',
+    );
+    return 'ok';
   }
 }
