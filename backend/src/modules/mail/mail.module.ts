@@ -5,6 +5,7 @@ import { join } from 'path';
 import { MailService } from './mail.service';
 import { MailController } from './mail.controller';
 
+console.log(process.cwd() + '/dist' + '/templates');
 @Global()
 @Module({
   imports: [
@@ -26,7 +27,7 @@ import { MailController } from './mail.controller';
         from: '"No Reply" <noreply@example.com>', // outgoing email ID
       },
       template: {
-        dir: join(__dirname, './templates'),
+        dir: join(__dirname, '/templates'),
         adapter: new HandlebarsAdapter(), // or new PugAdapter() or new EjsAdapter()
         options: {
           strict: true,

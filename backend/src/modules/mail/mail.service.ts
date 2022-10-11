@@ -27,7 +27,7 @@ export class MailService {
       to: '19020153@vnu.edu.vn',
       from: process.env.EMAIL_ID,
       subject: 'Welcome to Nice App! Confirm your Email',
-      template: '/confirmation',
+      template: './confirmation',
       context: {
         name: 'user.name',
         url,
