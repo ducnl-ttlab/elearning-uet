@@ -1,4 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from '../entity/user.entity';
@@ -15,20 +19,52 @@ export class UserService {
     return this.userRepository.save(user);
   }
 
+  async updateUser(id: string, properties: Partial<User>) {
+    try {
+      let result = await this.userRepository.save({
+        ...properties,
+        id: id,
+      });
+      return result;
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  async findOneById(id: string) {
+    try {
+      return this.userRepository.findOne({
+        where: {
+          id,
+        },
+      });
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
   async findOneByEmail(email: string) {
-    return this.userRepository.findOne({
-      where: {
-        email,
-      },
-    });
+    try {
+      return this.userRepository.findOne({
+        where: {
+          email,
+        },
+      });
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
   }
 
   async findGoogleUser(email: string, password: string): Promise<User> {
-    return this.userRepository.findOne({
-      where: {
-        email,
-        password,
-      },
-    });
+    try {
+      return this.userRepository.findOne({
+        where: {
+          email,
+          password,
+        },
+      });
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
   }
 }

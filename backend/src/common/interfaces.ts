@@ -11,8 +11,11 @@ export enum Role {
 export interface IUserJwt {
   role: Role;
   id: string;
+  email: string;
   username: string;
 }
+
+export type IVerifyUserJwt = Pick<User, 'id' | 'email'>;
 
 export type FilteredUser = Omit<
   User,

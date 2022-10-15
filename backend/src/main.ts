@@ -5,15 +5,22 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
 import { ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     cors: true,
   });
+
+  const configService = app.get(ConfigService);
+  const ALLOWED_CORS_ORIGIN = configService.get('FRONTEND_URL');
+
   app.enableCors({
-    origin: 'http://localhost:8080',
+    origin: ALLOWED_CORS_ORIGIN,
     credentials: true,
+    methods: 'GET,HEAD,OPTIONS,POST,PUT,PATCH,DELETE',
   });
+
   const config = new DocumentBuilder()
     .setTitle('Elearning')
     .setDescription('The cats API description')

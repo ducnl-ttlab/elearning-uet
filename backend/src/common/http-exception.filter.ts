@@ -12,7 +12,7 @@ import { BaseExceptionFilter } from '@nestjs/core';
 import { ValidationErrorItem } from 'joi';
 import { IError } from './interfaces';
 
-const translateErrorValidator = async (errors: ValidationErrorItem[]) => {
+const translateErrorValidator = async (errors: ValidationErrorItem[] = []) => {
   const errorMessages = await Promise.all(
     errors?.map((error: ValidationErrorItem) => {
       const { context, message } = error;
@@ -22,6 +22,7 @@ const translateErrorValidator = async (errors: ValidationErrorItem[]) => {
         errorCode: HttpStatus.BAD_REQUEST,
         message: newMessage,
       };
+
       return errorResponse;
     }),
   );
@@ -33,6 +34,7 @@ const handleBadRequestException = async (
   request: Request,
 ): Promise<IError> => {
   const response = exception.getResponse() as any;
+
   const errorResponse = await translateErrorValidator(response.errors);
 
   return {

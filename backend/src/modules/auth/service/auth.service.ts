@@ -1,11 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { UserService } from 'src/modules/user/service/user.service';
 import { JwtService } from '@nestjs/jwt';
 import { IGoogleUser } from '../../../common/constant';
 import { filterUser } from 'src/common/ultils';
 import { SignUp } from '../dto/sign-up.dto';
 import { User } from 'src/modules/user/entity/user.entity';
-import { IUserJwt } from 'src/common/interfaces';
+import { IUserJwt, IVerifyUserJwt, Role } from 'src/common/interfaces';
 
 @Injectable()
 export class AuthService {
@@ -30,7 +30,7 @@ export class AuthService {
         username,
         password: accessToken,
         verified: true,
-        role: 0,
+        role: Role.student,
       };
       userDb = await this.userService.saveUser(newUser);
     }
@@ -38,6 +38,33 @@ export class AuthService {
     return {
       user: filterUser(userDb),
     };
+  }
+
+  async verifyEmail(token: string): Promise<any> {
+    // Validate token. Will throw error if it's not valid.
+    let userFromTokenPayload: IVerifyUserJwt;
+    try {
+      userFromTokenPayload = await this.decodeToken(token);
+    } catch (error) {
+      throw new BadRequestException('Invalid token');
+    }
+    let user = await this.userService.findOneById(userFromTokenPayload.id);
+
+    if (!user) {
+      throw new BadRequestException('User is not registered');
+    } else if (user.verified) {
+      throw new BadRequestException('User is verified');
+    }
+
+    // Update email verification status.
+    let verifyUser = await this.userService.updateUser(
+      userFromTokenPayload.id,
+      {
+        verified: true,
+      },
+    );
+
+    return { user: filterUser(verifyUser) };
   }
 
   async validateUser(username: string, pass: string): Promise<any> {
@@ -49,16 +76,27 @@ export class AuthService {
     // return null;
   }
 
-  async validateEmail(email: string): Promise<User> {
+  async existEmail(email: string): Promise<User> {
     const user = await this.userService.findOneByEmail(email);
     return user;
   }
 
-  async signUser(user: Partial<User>) {
+  async signUserJwt(user: Partial<User>) {
     const payload: IUserJwt = {
-      username: user.username,
+      email: user.email,
       id: user.id,
       role: user.role,
+      username: user.username,
+    };
+    return {
+      accessToken: this.jwtService.sign(payload),
+    };
+  }
+
+  async signVerifyUserJwt(user: IVerifyUserJwt) {
+    const payload: IVerifyUserJwt = {
+      email: user.email,
+      id: user.id,
     };
     return {
       accessToken: this.jwtService.sign(payload),
@@ -73,13 +111,5 @@ export class AuthService {
     const user = await this.userService.saveUser(signUp);
     delete user.password;
     return user;
-  }
-
-  signToken(user: User): string {
-    const payload = {
-      sub: user.email,
-    };
-
-    return this.jwtService.sign(payload);
   }
 }

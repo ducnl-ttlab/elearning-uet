@@ -29,7 +29,7 @@ export class User1664976452308 implements MigrationInterface {
             name: 'password',
             type: 'varchar',
             length: '255',
-            isNullable: false,
+            isNullable: true,
           },
           {
             name: 'verified',

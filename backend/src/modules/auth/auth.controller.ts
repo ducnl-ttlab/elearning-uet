@@ -4,11 +4,11 @@ import {
   UseGuards,
   Req,
   Post,
-  HttpCode,
-  UseInterceptors,
   HttpStatus,
   Body,
   Res,
+  Param,
+  UsePipes,
 } from '@nestjs/common';
 import { AuthService } from './service/auth.service';
 import { AuthGuard } from '@nestjs/passport';
@@ -17,25 +17,21 @@ import {
   SuccessResponse,
 } from 'src/common/helpers/api.response';
 import { MailService } from 'src/modules/mail/mail.service';
-import { SignUp, VerifyEmail } from './dto/sign-up.dto';
-import { User } from '../user/entity/user.entity';
+import { VerifyEmail } from './dto/sign-up.dto';
 import { Response, Request } from 'express';
 import { GoogleOAuthGuard } from './guard/google-auth.guard';
-import { FilteredUser, IUserReq, UserResponse } from 'src/common/interfaces';
-import { JWTAuthGuard } from './guard/jwt-auth.guard';
+import { UserResponse } from 'src/common/interfaces';
+import { UserService } from '../user/service/user.service';
+import { v4 as uuidv4 } from 'uuid';
+import { TokenValidation } from './joi.request.pipe';
 
 @Controller('auth')
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
     private readonly mailService: MailService,
+    private readonly userService: UserService,
   ) {}
-
-  @Get()
-  hello() {
-    return 'auth';
-  }
-
   @Get('google')
   @UseGuards(AuthGuard('google'))
   async googleAuth(@Req() req) {}
@@ -44,14 +40,14 @@ export class AuthController {
   @UseGuards(GoogleOAuthGuard)
   async googleAuthRedirect(@Req() req: Request, @Res() res: Response) {
     let { user } = (await this.authService.googleLogin(req)) as UserResponse;
-    let { accessToken } = await this.authService.signUser(user);
+    let { accessToken } = await this.authService.signUserJwt(user);
     res.redirect(`${process.env.FRONTEND_URL}auth/google/${accessToken}`);
   }
 
-  @Post('verify-email')
-  async verifyEmail(@Body() verifyEmail: VerifyEmail, @Res() res: Response) {
+  @Post('signup')
+  async signUpEmail(@Body() verifyEmail: VerifyEmail, @Res() res: Response) {
     const { email, url } = verifyEmail;
-    let user = await this.authService.validateEmail(email);
+    let user = await this.authService.existEmail(email);
 
     if (user) {
       return res
@@ -64,24 +60,31 @@ export class AuthController {
         );
     }
 
-    await this.mailService.sendUserConfirmation(
+    let id = uuidv4();
+    let { accessToken } = await this.authService.signVerifyUserJwt({
       email,
-      url,
-      email.split('@')[0],
-    );
+      id,
+    });
 
-    return res.status(HttpStatus.OK).json(new SuccessResponse(user, 'success'));
+    await Promise.all([
+      this.mailService.sendUserEmailConfirmation(
+        { email, username: email.split('@')[0] },
+        url + accessToken,
+      ),
+      this.userService.saveUser({
+        id,
+        email,
+        verified: false,
+      }),
+    ]);
+
+    return res.status(HttpStatus.OK).json(new SuccessResponse(email));
   }
 
-  @Post('register')
-  @HttpCode(HttpStatus.CREATED)
-  register(@Body() signUp: SignUp): Promise<User> {
-    return this.authService.register(signUp);
-  }
-
-  @Get('abc')
-  @UseGuards(JWTAuthGuard)
-  a(@Req() req: IUserReq) {
-    return 'ok';
+  @Get('verify-email/:token')
+  @UsePipes(TokenValidation)
+  async verifyEmail(@Param('token') token: string, @Res() res: Response) {
+    let user = await this.authService.verifyEmail(token);
+    return res.status(HttpStatus.OK).json(new SuccessResponse(user));
   }
 }

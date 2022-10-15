@@ -6,48 +6,31 @@ import { User } from '../user/entity/user.entity';
 export class MailService {
   constructor(private readonly mailerService: MailerService) {}
 
-  public async sendPlainText() {
-    await this.mailerService.sendMail({
-      to: '19020153@vnu.edu.vn',
-      from: process.env.EMAIL_ID,
-      subject: 'NestJS MailerApp',
-      text: 'That is a plain text',
-      html: '<b>That is HTML</b>',
-      template: 'mail-body',
-      context: {
-        code: 'cf1a3f828287',
-        username: 'john doe',
-      },
-    });
-    return 'sent';
-  }
-
-  async sendUserConfirmation(email: string, url: string, name: string) {
+  async sendResetPasswordLink(email: string, url: string) {
     await this.mailerService.sendMail({
       to: email,
-      from: process.env.EMAIL_ID,
-      subject: 'Welcome to Nice App! Confirm your Email',
-      template: './confirmation',
+      subject: 'Reset password',
+      template: './reset_password',
       context: {
-        name: name,
+        name: email,
         url,
+        app_name: process.env.APP_NAME,
       },
     });
   }
 
   async sendUserEmailConfirmation(
     user: Pick<User, 'email' | 'username'>,
-    app_name: string,
     url: string,
   ) {
     await this.mailerService.sendMail({
       to: user.email,
-      subject: 'Welcome to Nice App! Confirm your Email',
+      subject: `Welcome to ${process.env.APP_NAME} App! Confirm your Email`,
       template: './confirmation',
       context: {
         name: user.email,
         url,
-        app_name,
+        app_name: process.env.APP_NAME,
       },
     });
   }

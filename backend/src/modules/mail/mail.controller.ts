@@ -13,7 +13,6 @@ export class MailController {
         email: '19020153@vnu.edu.vn',
         username: 'ducnong',
       },
-      'Elearning',
       'http://localhost:8080',
     );
     return 'sent';
