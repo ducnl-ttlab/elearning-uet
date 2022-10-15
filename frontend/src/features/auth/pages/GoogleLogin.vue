@@ -22,6 +22,7 @@ export default class LoginPage extends Vue {
     created() {
         this.defaultOptions = { animationData };
         this.loadingGif = { animationData: loadingGif };
+        console.log(this.$route.params.token);
     }
 
     fetchApi() {

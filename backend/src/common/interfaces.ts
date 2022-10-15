@@ -1,5 +1,6 @@
 import { HttpCode, HttpStatus } from '@nestjs/common';
 import { User } from 'src/modules/user/entity/user.entity';
+import { Request } from 'express';
 
 export enum Role {
   student,
@@ -26,4 +27,8 @@ export interface IError {
   code: HttpStatus;
   message: string;
   errors: any[];
+}
+
+export interface IUserReq extends Request {
+  user: IUserJwt;
 }

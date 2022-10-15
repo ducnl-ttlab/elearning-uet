@@ -21,7 +21,7 @@ import { SignUp, VerifyEmail } from './dto/sign-up.dto';
 import { User } from '../user/entity/user.entity';
 import { Response, Request } from 'express';
 import { GoogleOAuthGuard } from './guard/google-auth.guard';
-import { FilteredUser, UserResponse } from 'src/common/interfaces';
+import { FilteredUser, IUserReq, UserResponse } from 'src/common/interfaces';
 import { JWTAuthGuard } from './guard/jwt-auth.guard';
 
 @Controller('auth')
@@ -44,13 +44,8 @@ export class AuthController {
   @UseGuards(GoogleOAuthGuard)
   async googleAuthRedirect(@Req() req: Request, @Res() res: Response) {
     let { user } = (await this.authService.googleLogin(req)) as UserResponse;
-    console.log(user);
-    // res.redirect(`http://localhost:8080/login,${user}`);
     let { accessToken } = await this.authService.signUser(user);
-    let reponse = Object.assign({}, { user }, { accessToken });
-    return res
-      .status(HttpStatus.OK)
-      .json(new SuccessResponse(reponse, 'success'));
+    res.redirect(`${process.env.FRONTEND_URL}auth/google/${accessToken}`);
   }
 
   @Post('verify-email')
@@ -86,7 +81,7 @@ export class AuthController {
 
   @Get('abc')
   @UseGuards(JWTAuthGuard)
-  a(@Req() req: Request) {
+  a(@Req() req: IUserReq) {
     return 'ok';
   }
 }
