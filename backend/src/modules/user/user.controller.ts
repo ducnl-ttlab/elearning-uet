@@ -19,6 +19,6 @@ export class UserController {
 
   @Get()
   async getAll() {
-    return this.usersService.findOne('a');
+    return this.usersService.findOneByEmail('a');
   }
 }

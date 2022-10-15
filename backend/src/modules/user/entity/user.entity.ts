@@ -1,6 +1,12 @@
 import { TableName } from '../../../../database/constant';
 
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity({ name: TableName.user })
 export class User {
@@ -16,13 +22,16 @@ export class User {
   @Column()
   password: string;
 
-  @Column()
+  @Column({ default: false })
+  verified: boolean;
+
+  @Column({ nullable: true })
   address: string;
 
-  @Column()
+  @Column({ nullable: true })
   phone: string;
 
-  @Column()
+  @Column({ nullable: true })
   avatar: string;
 
   @Column()
@@ -33,4 +42,10 @@ export class User {
 
   @Column()
   expiredTokenTime: number;
+
+  @CreateDateColumn()
+  created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
 }

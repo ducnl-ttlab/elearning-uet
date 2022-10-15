@@ -5,10 +5,12 @@ import {
   BadRequestException,
   HttpStatus,
   InternalServerErrorException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { BaseExceptionFilter } from '@nestjs/core';
 import { ValidationErrorItem } from 'joi';
+import { IError } from './interfaces';
 
 const translateErrorValidator = async (errors: ValidationErrorItem[]) => {
   const errorMessages = await Promise.all(
@@ -29,7 +31,7 @@ const translateErrorValidator = async (errors: ValidationErrorItem[]) => {
 const handleBadRequestException = async (
   exception: BadRequestException,
   request: Request,
-) => {
+): Promise<IError> => {
   const response = exception.getResponse() as any;
   const errorResponse = await translateErrorValidator(response.errors);
 
@@ -43,13 +45,26 @@ const handleBadRequestException = async (
 const handleInternalErrorException = async (
   exception: InternalServerErrorException,
   request: Request,
-) => {
+): Promise<IError> => {
   const response = exception.getResponse() as any;
   const logId = `${Date.now().toString()}`;
   const message = `SYSTEM_ERROR ${logId}: ${exception.message}`;
   return {
     code: HttpStatus.INTERNAL_SERVER_ERROR,
     message: message,
+    errors: [response],
+  };
+};
+
+const handleUnauthorizedException = async (
+  exception: InternalServerErrorException,
+  request: Request,
+): Promise<IError> => {
+  const response = exception.getResponse() as any;
+  const status = exception.getStatus();
+  return {
+    code: HttpStatus.UNAUTHORIZED,
+    message: response?.message || '',
     errors: [response],
   };
 };
@@ -68,7 +83,7 @@ export class HttpExceptionFilter extends BaseExceptionFilter {
 
     const status = exception.getStatus();
 
-    let res = {
+    let res: IError = {
       code: exception.getStatus(),
       message: `errors.${status}`,
       errors: apiResponse?.errors || [],
@@ -79,6 +94,11 @@ export class HttpExceptionFilter extends BaseExceptionFilter {
       return response.status(status).json(res);
     } else if (exception instanceof BadRequestException) {
       res = await handleBadRequestException(exception, request);
+      return response.status(status).json(res);
+    } else if (exception instanceof UnauthorizedException) {
+      res = await handleUnauthorizedException(exception, request);
+      return response.status(status).json(res);
+    } else {
       return response.status(status).json(res);
     }
   }

@@ -32,6 +32,12 @@ export class User1664976452308 implements MigrationInterface {
             isNullable: false,
           },
           {
+            name: 'verified',
+            type: 'tinyint',
+            isNullable: false,
+            default: false,
+          },
+          {
             name: 'address',
             type: 'varchar',
             length: '255',
@@ -59,12 +65,22 @@ export class User1664976452308 implements MigrationInterface {
             name: 'resetToken',
             type: 'varchar',
             length: '255',
-            default: true,
+            isNullable: true,
           },
           {
             name: 'expiredTokenTime',
             type: 'mediumint',
-            default: true,
+            isNullable: true,
+          },
+          {
+            name: 'created_at',
+            type: 'timestamp',
+            default: 'now()',
+          },
+          {
+            name: 'updated_at',
+            type: 'timestamp',
+            default: 'now()',
           },
         ],
       }),

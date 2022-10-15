@@ -4,7 +4,6 @@ import {
   UseGuards,
   Req,
   Post,
-  Request,
   HttpCode,
   UseInterceptors,
   HttpStatus,
@@ -20,7 +19,10 @@ import {
 import { MailService } from 'src/modules/mail/mail.service';
 import { SignUp, VerifyEmail } from './dto/sign-up.dto';
 import { User } from '../user/entity/user.entity';
-import { Response } from 'express';
+import { Response, Request } from 'express';
+import { GoogleOAuthGuard } from './guard/google-auth.guard';
+import { FilteredUser, UserResponse } from 'src/common/interfaces';
+import { JWTAuthGuard } from './guard/jwt-auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -39,16 +41,16 @@ export class AuthController {
   async googleAuth(@Req() req) {}
 
   @Get('google/callback')
-  @UseGuards(AuthGuard('google'))
-  async googleAuthRedirect(@Req() req) {
-    let user = await this.authService.googleLogin(req);
-    return new SuccessResponse(user, 'success');
-  }
-
-  @Post('login')
-  @UseGuards(AuthGuard('local'))
-  async login(@Request() req) {
-    return this.authService.login(req.user);
+  @UseGuards(GoogleOAuthGuard)
+  async googleAuthRedirect(@Req() req: Request, @Res() res: Response) {
+    let { user } = (await this.authService.googleLogin(req)) as UserResponse;
+    console.log(user);
+    // res.redirect(`http://localhost:8080/login,${user}`);
+    let { accessToken } = await this.authService.signUser(user);
+    let reponse = Object.assign({}, { user }, { accessToken });
+    return res
+      .status(HttpStatus.OK)
+      .json(new SuccessResponse(reponse, 'success'));
   }
 
   @Post('verify-email')
@@ -80,5 +82,11 @@ export class AuthController {
   @HttpCode(HttpStatus.CREATED)
   register(@Body() signUp: SignUp): Promise<User> {
     return this.authService.register(signUp);
+  }
+
+  @Get('abc')
+  @UseGuards(JWTAuthGuard)
+  a(@Req() req: Request) {
+    return 'ok';
   }
 }

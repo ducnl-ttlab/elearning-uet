@@ -15,10 +15,19 @@ export class UserService {
     return this.userRepository.save(user);
   }
 
-  async findOne(email: string) {
+  async findOneByEmail(email: string) {
     return this.userRepository.findOne({
       where: {
         email,
+      },
+    });
+  }
+
+  async findGoogleUser(email: string, password: string): Promise<User> {
+    return this.userRepository.findOne({
+      where: {
+        email,
+        password,
       },
     });
   }

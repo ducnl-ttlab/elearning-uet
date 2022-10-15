@@ -5,6 +5,7 @@ import { IGoogleUser } from '../../../common/constant';
 import { filterUser } from 'src/common/ultils';
 import { SignUp } from '../dto/sign-up.dto';
 import { User } from 'src/modules/user/entity/user.entity';
+import { IUserJwt } from 'src/common/interfaces';
 
 @Injectable()
 export class AuthService {
@@ -20,10 +21,17 @@ export class AuthService {
 
     let { id, email, avatar, username, accessToken } = req.user as IGoogleUser;
 
-    let userDb = await this.userService.findOne(email);
-
+    let userDb = await this.userService.findGoogleUser(email, accessToken);
     if (!userDb) {
-      let newUser = { id, email, avatar, username, password: accessToken };
+      let newUser = {
+        id,
+        email,
+        avatar,
+        username,
+        password: accessToken,
+        verified: true,
+        role: 0,
+      };
       userDb = await this.userService.saveUser(newUser);
     }
 
@@ -42,15 +50,23 @@ export class AuthService {
   }
 
   async validateEmail(email: string): Promise<User> {
-    const user = await this.userService.findOne(email);
+    const user = await this.userService.findOneByEmail(email);
     return user;
   }
 
-  async login(user: any) {
-    const payload = { username: user.username, sub: user.userId };
-    return {
-      access_token: this.jwtService.sign(payload),
+  async signUser(user: Partial<User>) {
+    const payload: IUserJwt = {
+      username: user.username,
+      id: user.id,
+      role: user.role,
     };
+    return {
+      accessToken: this.jwtService.sign(payload),
+    };
+  }
+
+  async decodeToken(token: string) {
+    return this.jwtService.verify(token);
   }
 
   async register(signUp: SignUp): Promise<User> {
