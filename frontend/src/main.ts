@@ -8,7 +8,6 @@ import forEach from 'lodash/forEach';
 import { getGlobalComponents } from './common/loadGlobalComponents';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './assets/styles/global.scss';
-
 const app = createApp(App)
     .use(store)
     .use(router)

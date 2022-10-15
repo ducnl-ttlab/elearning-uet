@@ -1,5 +1,6 @@
 export enum PageName {
     LOGIN_PAGE = 'LoginPage',
+    GOOGLE_PAGE = 'GooglePage',
 }
 export enum SupportLanguage {
     EN = 'en',
@@ -23,7 +24,7 @@ export enum UserTokenType {
     REFRESH_TOKEN = 'refresh_token',
     ACTIVE_USER = 'active_user',
     FORGOT_PASSWORD = 'forgot_password',
-    REQUEST_OTP= 'request_otp',
+    REQUEST_OTP = 'request_otp',
 }
 
 export const TIMEZONE_HEADER = 'x-timezone';
@@ -51,7 +52,8 @@ export const Regex = {
     MOBILE_NUMBER: /^[0-9]{10}$/,
     OTP: /^[0-9]{6}$/, // TODO: correct it later
     //Must contains a number and an alphabet, more than 6 characters long, can also contain special characters
-    PASSWORD: /(?!^[0-9]*$)(?!^[a-zA-Z!@#$%^&*()_+=<>?]*$)^([a-zA-Z!@#$%^&*()_+=<>?0-9]{6,})$/, 
+    PASSWORD:
+        /(?!^[0-9]*$)(?!^[a-zA-Z!@#$%^&*()_+=<>?]*$)^([a-zA-Z!@#$%^&*()_+=<>?0-9]{6,})$/,
 };
 
 export enum DateFormat {
@@ -122,7 +124,7 @@ export enum UserStatus {
 export enum Gender {
     MALE = 'male',
     FEMALE = 'female',
-    OTHER = 'other', 
+    OTHER = 'other',
 }
 
 export const AllowIntegerCodes = [
