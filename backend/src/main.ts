@@ -7,7 +7,13 @@ import { ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
+    cors: true,
+  });
+  app.enableCors({
+    origin: 'http://localhost:8080',
+    credentials: true,
+  });
   const config = new DocumentBuilder()
     .setTitle('Elearning')
     .setDescription('The cats API description')

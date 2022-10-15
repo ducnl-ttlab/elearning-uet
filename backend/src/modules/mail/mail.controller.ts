@@ -1,4 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
+import { User } from '../user/entity/user.entity';
 import { MailService } from './mail.service';
 
 @Controller('mail')
@@ -7,10 +8,13 @@ export class MailController {
 
   @Get()
   async senMail() {
-    await this.mailService.sendUserConfirmation(
-      '19020153@gmail.com',
-      '',
-      'duc',
+    await this.mailService.sendUserEmailConfirmation(
+      {
+        email: '19020153@vnu.edu.vn',
+        username: 'ducnong',
+      },
+      'Elearning',
+      'http://localhost:8080',
     );
     return 'sent';
   }
