@@ -32,6 +32,11 @@ export class AuthController {
     private readonly mailService: MailService,
     private readonly userService: UserService,
   ) {}
+
+  @Get()
+  a() {
+    return 'adf';
+  }
   @Get('google')
   @UseGuards(AuthGuard('google'))
   async googleAuth(@Req() req) {}
@@ -75,6 +80,7 @@ export class AuthController {
         id,
         email,
         verified: false,
+        password: accessToken,
       }),
     ]);
 

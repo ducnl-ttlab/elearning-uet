@@ -1,12 +1,7 @@
 import { HttpCode, HttpStatus } from '@nestjs/common';
 import { User } from 'src/modules/user/entity/user.entity';
 import { Request } from 'express';
-
-export enum Role {
-  student,
-  instructor,
-  admin,
-}
+import { Role } from 'database/constant';
 
 export interface IUserJwt {
   role: Role;

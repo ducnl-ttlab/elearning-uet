@@ -5,3 +5,14 @@ export enum TableName {
   favoriteStory = 'favorite_stories',
   user = 'users',
 }
+
+export enum Role {
+  student = 'student',
+  instructor = 'instructor',
+  admin = 'admin',
+}
+
+export enum Provider {
+  google = 'google',
+  local = 'local',
+}

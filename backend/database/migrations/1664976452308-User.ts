@@ -1,5 +1,5 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
-import { TableName } from '../constant';
+import { Provider, Role, TableName } from '../constant';
 
 export class User1664976452308 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -57,9 +57,17 @@ export class User1664976452308 implements MigrationInterface {
           },
           {
             name: 'role',
-            type: 'int',
-            isNullable: false,
-            default: 0, // 0
+            type: 'enum',
+            enum: [Role.student, Role.instructor, Role.admin],
+            enumName: 'roleEnum',
+            default: `'${Role.student}'`,
+          },
+          {
+            name: 'provider',
+            type: 'enum',
+            enum: [Provider.local, Provider.google],
+            enumName: 'roleEnum',
+            default: `'${Provider.local}'`,
           },
           {
             name: 'resetToken',
@@ -84,6 +92,10 @@ export class User1664976452308 implements MigrationInterface {
           },
         ],
       }),
+    );
+
+    await queryRunner.query(
+      `CREATE UNIQUE INDEX email_index ON ${TableName.user} (email) `,
     );
   }
 

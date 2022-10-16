@@ -4,6 +4,7 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Provider } from 'database/constant';
 import { Repository } from 'typeorm';
 import { User } from '../entity/user.entity';
 
@@ -61,6 +62,7 @@ export class UserService {
         where: {
           email,
           password,
+          provider: Provider.google,
         },
       });
     } catch (error) {

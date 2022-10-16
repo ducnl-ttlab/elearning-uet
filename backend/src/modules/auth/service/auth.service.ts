@@ -5,7 +5,8 @@ import { IGoogleUser } from '../../../common/constant';
 import { filterUser } from 'src/common/ultils';
 import { SignUp } from '../dto/sign-up.dto';
 import { User } from 'src/modules/user/entity/user.entity';
-import { IUserJwt, IVerifyUserJwt, Role } from 'src/common/interfaces';
+import { IUserJwt, IVerifyUserJwt } from 'src/common/interfaces';
+import { Provider, Role } from 'database/constant';
 
 @Injectable()
 export class AuthService {
@@ -31,6 +32,7 @@ export class AuthService {
         password: accessToken,
         verified: true,
         role: Role.student,
+        provider: Provider.google,
       };
       userDb = await this.userService.saveUser(newUser);
     }

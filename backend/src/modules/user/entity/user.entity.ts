@@ -1,4 +1,4 @@
-import { TableName } from '../../../../database/constant';
+import { Provider, Role, TableName } from '../../../../database/constant';
 
 import {
   Entity,
@@ -34,8 +34,19 @@ export class User {
   @Column({ nullable: true })
   avatar: string;
 
-  @Column()
-  role: number;
+  @Column({
+    type: 'enum',
+    enum: Role,
+    default: Role.student,
+  })
+  role: Role;
+
+  @Column({
+    type: 'enum',
+    enum: Provider,
+    default: Provider.local,
+  })
+  provider: Provider;
 
   @Column()
   resetToken: string;
