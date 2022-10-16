@@ -69,6 +69,20 @@ export class AuthService {
     return { user: filterUser(verifyUser) };
   }
 
+  async changePasswordById(id: string, password: string): Promise<any> {
+    // Validate token. Will throw error if it's not valid.
+    let user = await this.userService.findOneById(id);
+
+    if (!user) {
+      throw new BadRequestException('User is not registered');
+    }
+    let newUser = await this.userService.updateUser(id, {
+      password,
+    });
+
+    return { user: filterUser(newUser) };
+  }
+
   async validateUser(username: string, pass: string): Promise<any> {
     // const user = await this.usersService.findOne(username);
     // if (user && user.password === pass) {

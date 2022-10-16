@@ -27,6 +27,6 @@ export interface IError {
   errors: any[];
 }
 
-export interface IUserReq extends Request {
-  user: IUserJwt;
+export interface IUserReq<T> extends Request {
+  user: T;
 }

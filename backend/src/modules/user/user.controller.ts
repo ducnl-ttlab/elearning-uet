@@ -23,7 +23,7 @@ export class UserController {
 
   @Get('profile')
   @UseGuards(JWTAuthGuard)
-  async getProfile(@Req() req: IUserReq) {
+  async getProfile(@Req() req: IUserReq<IUserJwt>) {
     return req.user;
   }
 }

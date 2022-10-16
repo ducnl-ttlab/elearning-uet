@@ -17,13 +17,14 @@ import {
   SuccessResponse,
 } from 'src/common/helpers/api.response';
 import { MailService } from 'src/modules/mail/mail.service';
-import { VerifyEmail } from './dto/sign-up.dto';
+import { PasswordBody, VerifyEmail } from './dto/sign-up.dto';
 import { Response, Request } from 'express';
 import { GoogleOAuthGuard } from './guard/google-auth.guard';
-import { UserResponse } from 'src/common/interfaces';
+import { UserResponse, IUserReq, IVerifyUserJwt } from 'src/common/interfaces';
 import { UserService } from '../user/service/user.service';
 import { v4 as uuidv4 } from 'uuid';
 import { TokenValidation } from './joi.request.pipe';
+import { JWTAuthGuard } from './guard/jwt-auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -33,10 +34,6 @@ export class AuthController {
     private readonly userService: UserService,
   ) {}
 
-  @Get()
-  a() {
-    return 'adf';
-  }
   @Get('google')
   @UseGuards(AuthGuard('google'))
   async googleAuth(@Req() req) {}
@@ -91,6 +88,19 @@ export class AuthController {
   @UsePipes(TokenValidation)
   async verifyEmail(@Param('token') token: string, @Res() res: Response) {
     let user = await this.authService.verifyEmail(token);
+    return res.status(HttpStatus.OK).json(new SuccessResponse(user));
+  }
+
+  @Post('change-password')
+  @UsePipes(TokenValidation)
+  @UseGuards(JWTAuthGuard)
+  async changePassword(
+    @Req() req: IUserReq<IVerifyUserJwt>,
+    @Body() body: PasswordBody,
+    @Res() res: Response,
+  ) {
+    let { id } = req.user;
+    let user = await this.authService.changePasswordById(id, body.password);
     return res.status(HttpStatus.OK).json(new SuccessResponse(user));
   }
 }
