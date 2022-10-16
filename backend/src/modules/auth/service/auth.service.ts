@@ -99,7 +99,7 @@ export class AuthService {
 
     // Accounts that are registered via oAuth should not be accessible via local signin.
     if (user.provider !== Provider.local) {
-      throw new UnauthorizedException('Email or password incorrect.');
+      throw new UnauthorizedException('this email logged in with gooogle');
     }
 
     const isPasswordCorrect: boolean = await bcrypt.compare(

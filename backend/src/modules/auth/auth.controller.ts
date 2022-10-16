@@ -112,7 +112,7 @@ export class AuthController {
     const { email, password } = body;
     let user = await this.authService.validateLocalUser(email, password);
 
-    const token = await this.authService.signUserJwt({
+    const { accessToken } = await this.authService.signUserJwt({
       email,
       id: user.id,
       username: user.username,
@@ -121,6 +121,6 @@ export class AuthController {
 
     return res
       .status(HttpStatus.OK)
-      .json(new SuccessResponse({ user: filterUser(user), token }));
+      .json(new SuccessResponse({ user: filterUser(user), accessToken }));
   }
 }
