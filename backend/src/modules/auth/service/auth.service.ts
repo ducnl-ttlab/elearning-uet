@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { UserService } from 'src/modules/user/service/user.service';
 import { JwtService } from '@nestjs/jwt';
 import { IGoogleUser } from '../../../common/constant';
@@ -7,6 +11,7 @@ import { SignUp } from '../dto/sign-up.dto';
 import { User } from 'src/modules/user/entity/user.entity';
 import { IUserJwt, IVerifyUserJwt } from 'src/common/interfaces';
 import { Provider, Role } from 'database/constant';
+import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class AuthService {
@@ -76,20 +81,37 @@ export class AuthService {
     if (!user) {
       throw new BadRequestException('User is not registered');
     }
+
+    const hashedPassword = await bcrypt.hash(password, 8);
     let newUser = await this.userService.updateUser(id, {
-      password,
+      password: hashedPassword,
     });
 
     return { user: filterUser(newUser) };
   }
 
-  async validateUser(username: string, pass: string): Promise<any> {
-    // const user = await this.usersService.findOne(username);
-    // if (user && user.password === pass) {
-    //   const { password, ...result } = user;
-    //   return result;
-    // }
-    // return null;
+  async validateLocalUser(email: string, pass: string): Promise<User> {
+    const user = await this.userService.findOneByEmail(email);
+
+    if (!user) {
+      throw new UnauthorizedException('Email or password incorrect.');
+    }
+
+    // Accounts that are registered via oAuth should not be accessible via local signin.
+    if (user.provider !== Provider.local) {
+      throw new UnauthorizedException('Email or password incorrect.');
+    }
+
+    const isPasswordCorrect: boolean = await bcrypt.compare(
+      pass,
+      user.password,
+    );
+
+    if (!isPasswordCorrect) {
+      throw new UnauthorizedException('Email or password incorrect.');
+    }
+
+    return user;
   }
 
   async existEmail(email: string): Promise<User> {
@@ -97,7 +119,7 @@ export class AuthService {
     return user;
   }
 
-  async signUserJwt(user: Partial<User>) {
+  async signUserJwt(user: IUserJwt) {
     const payload: IUserJwt = {
       email: user.email,
       id: user.id,
