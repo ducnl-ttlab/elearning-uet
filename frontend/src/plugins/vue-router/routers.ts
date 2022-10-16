@@ -1,3 +1,3 @@
-import authRouters from '@/features/auth/routers';
+import authRouters from '@/features/auth/router/routers';
 
 export const routers = [...authRouters];

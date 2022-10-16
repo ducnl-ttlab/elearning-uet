@@ -8,8 +8,8 @@
 import { Options, Vue } from 'vue-class-component';
 import { ElConfigProvider } from 'element-plus';
 
-import vi from '@/plugins/element-ui/locale/vi';
-import en from '@/plugins/element-ui/locale/en';
+import vi from './plugins/element-ui/locale/vi';
+import en from './plugins/element-ui/locale/en';
 
 import { DEFAULT_LANGUAGE, SupportLanguage } from './common/constants';
 import tokenService from './common/tokenService';

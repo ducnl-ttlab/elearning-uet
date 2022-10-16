@@ -4,6 +4,7 @@
 
         <button @click="fetchApi">abc</button>
     </div>
+    <div></div>
 </template>
 
 <script lang="ts">
