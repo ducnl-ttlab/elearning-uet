@@ -6,11 +6,15 @@ import {
   HttpStatus,
   InternalServerErrorException,
   UnauthorizedException,
+  ConflictException,
+  ExceptionFilter,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { BaseExceptionFilter } from '@nestjs/core';
 import { ValidationErrorItem } from 'joi';
 import { IError } from './interfaces';
+
+const DEFAULT_CONFLICT_EXCEPTION_MESSAGE = 'conflict';
 
 const translateErrorValidator = async (errors: ValidationErrorItem[] = []) => {
   const errorMessages = await Promise.all(
@@ -87,8 +91,8 @@ export class HttpExceptionFilter extends BaseExceptionFilter {
 
     let res: IError = {
       code: exception.getStatus(),
-      message: `errors.${status}`,
-      errors: apiResponse?.errors || [],
+      message: `${apiResponse?.message || 'Error'}`,
+      errors: apiResponse?.errors || [apiResponse],
     };
 
     if (exception instanceof InternalServerErrorException) {
