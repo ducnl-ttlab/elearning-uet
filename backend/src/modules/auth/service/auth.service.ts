@@ -1,6 +1,8 @@
 import {
   BadRequestException,
+  ConflictException,
   Injectable,
+  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { UserService } from 'src/modules/user/service/user.service';
@@ -90,16 +92,20 @@ export class AuthService {
     return { user: filterUser(newUser) };
   }
 
-  async validateLocalUser(email: string, pass: string): Promise<User> {
+  async existEmail(email: string): Promise<User> {
     const user = await this.userService.findOneByEmail(email);
-
     if (!user) {
-      throw new UnauthorizedException('Email or password incorrect.');
+      throw new NotFoundException('Not found email');
     }
+    return user;
+  }
+
+  async validateLocalUser(email: string, pass: string): Promise<User> {
+    const user = await this.existEmail(email);
 
     // Accounts that are registered via oAuth should not be accessible via local signin.
     if (user.provider !== Provider.local) {
-      throw new UnauthorizedException('this email logged in with gooogle');
+      throw new ConflictException('this email logged in with gooogle');
     }
 
     const isPasswordCorrect: boolean = await bcrypt.compare(
@@ -111,11 +117,6 @@ export class AuthService {
       throw new UnauthorizedException('Email or password incorrect.');
     }
 
-    return user;
-  }
-
-  async existEmail(email: string): Promise<User> {
-    const user = await this.userService.findOneByEmail(email);
     return user;
   }
 
