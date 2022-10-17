@@ -9,7 +9,6 @@ import {
   Res,
   Param,
   UsePipes,
-  InternalServerErrorException,
 } from '@nestjs/common';
 import { AuthService } from './service/auth.service';
 import { AuthGuard } from '@nestjs/passport';
@@ -28,6 +27,7 @@ import { LoginBodyValidation, TokenValidation } from './joi.request.pipe';
 import { JWTAuthGuard } from './guard/jwt-auth.guard';
 import { LoginBody } from './dto/login-dto';
 import { filterUser } from 'src/common/ultils';
+import { ForgotPasswordDto } from './dto/forgot-password.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -52,7 +52,7 @@ export class AuthController {
   @Post('signup')
   async signUpEmail(@Body() verifyEmail: VerifyEmail, @Res() res: Response) {
     const { email, url } = verifyEmail;
-    let user = await this.authService.existEmail(email);
+    let user = await this.userService.findOneByEmail(email);
 
     if (user) {
       return res
@@ -122,5 +122,12 @@ export class AuthController {
     return res
       .status(HttpStatus.OK)
       .json(new SuccessResponse({ user: filterUser(user), accessToken }));
+  }
+
+  @Post('forgot-password')
+  async forgotPassword(@Body() body: ForgotPasswordDto, @Res() res: Response) {
+    const { email } = body;
+    let user = await this.authService.existEmail(email);
+    return res.status(HttpStatus.OK).json(new SuccessResponse({ user }));
   }
 }
