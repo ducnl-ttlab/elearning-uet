@@ -8,12 +8,16 @@ import {
 import { UserService } from 'src/modules/user/service/user.service';
 import { JwtService } from '@nestjs/jwt';
 import { IGoogleUser } from '../../../common/constant';
-import { filterUser } from 'src/common/ultils';
-import { SignUp } from '../dto/sign-up.dto';
+import {
+  filterUser,
+  generateDigits,
+  hasResetTokenExpired,
+} from 'src/common/ultils';
 import { User } from 'src/modules/user/entity/user.entity';
 import { IUserJwt, IVerifyUserJwt } from 'src/common/interfaces';
 import { Provider, Role } from 'database/constant';
 import * as bcrypt from 'bcryptjs';
+import { VerifyCodeUser } from '../dto/forgot-password.dto';
 
 @Injectable()
 export class AuthService {
@@ -120,6 +124,58 @@ export class AuthService {
     return user;
   }
 
+  async verifyCode(code: string, user: VerifyCodeUser) {
+    let { id, email, resetToken, expiredTokenTime } = user;
+
+    if (!resetToken || !expiredTokenTime) {
+      throw new BadRequestException("you haven't forgotten your password");
+    }
+    //check time
+    let hasTokenExpired = hasResetTokenExpired(expiredTokenTime);
+    if (hasTokenExpired) {
+      throw new BadRequestException('your code has expired');
+    }
+
+    // compare code
+    const isCodeCorrect: boolean = await bcrypt.compare(code, resetToken);
+
+    if (!isCodeCorrect) {
+      throw new BadRequestException('Invalid code');
+    }
+
+    let token = this.signVerifyUserJwt({ email, id });
+
+    await Promise.all([this.resetTokenById(id), token]);
+
+    return token;
+  }
+
+  async resetTokenById(id: string) {
+    this.userService.updateUser(id, {
+      resetToken: null,
+      expiredTokenTime: null,
+    });
+  }
+
+  async generateAuthToken() {
+    let code = generateDigits(6);
+    let token = (await bcrypt.hash(`${code}`, 8)) as string;
+
+    return {
+      code,
+      token,
+      time: new Date(),
+    };
+  }
+
+  async saveResetToken(id: string, resetToken: string, expiredTokenTime: Date) {
+    let newUser = await this.userService.updateUser(id, {
+      resetToken,
+      expiredTokenTime,
+    });
+    return newUser;
+  }
+
   async signUserJwt(user: IUserJwt) {
     const payload: IUserJwt = {
       email: user.email,
@@ -144,11 +200,5 @@ export class AuthService {
 
   async decodeToken(token: string) {
     return this.jwtService.verify(token);
-  }
-
-  async register(signUp: SignUp): Promise<User> {
-    const user = await this.userService.saveUser(signUp);
-    delete user.password;
-    return user;
   }
 }

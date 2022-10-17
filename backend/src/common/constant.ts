@@ -2,6 +2,8 @@ export enum ORDER_DIRECTION {
   ASC = 'ASC',
   DESC = 'DESC',
 }
+export const EXPIRED_TOKEN_SECONDS = 20 * 60;
+
 export type TYPE_ORM_ORDER_DIRECTION = 'ASC' | 'DESC';
 
 export const DEFAULT_FIRST_PAGE = 1;

@@ -9,6 +9,8 @@ import {
   Res,
   Param,
   UsePipes,
+  ConflictException,
+  Query,
 } from '@nestjs/common';
 import { AuthService } from './service/auth.service';
 import { AuthGuard } from '@nestjs/passport';
@@ -23,11 +25,16 @@ import { GoogleOAuthGuard } from './guard/google-auth.guard';
 import { UserResponse, IUserReq, IVerifyUserJwt } from 'src/common/interfaces';
 import { UserService } from '../user/service/user.service';
 import { v4 as uuidv4 } from 'uuid';
-import { LoginBodyValidation, TokenValidation } from './joi.request.pipe';
+import {
+  LoginBodyValidation,
+  TokenValidation,
+  VerifyCodeValidation,
+} from './joi.request.pipe';
 import { JWTAuthGuard } from './guard/jwt-auth.guard';
 import { LoginBody } from './dto/login-dto';
 import { filterUser } from 'src/common/ultils';
-import { ForgotPasswordDto } from './dto/forgot-password.dto';
+import { ForgotPasswordDto, VerifyCodeDto } from './dto/forgot-password.dto';
+import { Provider } from 'database/constant';
 
 @Controller('auth')
 export class AuthController {
@@ -126,8 +133,34 @@ export class AuthController {
 
   @Post('forgot-password')
   async forgotPassword(@Body() body: ForgotPasswordDto, @Res() res: Response) {
-    const { email } = body;
+    const { email, url } = body;
     let user = await this.authService.existEmail(email);
-    return res.status(HttpStatus.OK).json(new SuccessResponse({ user }));
+
+    if (user.provider !== Provider.local) {
+      throw new ConflictException('this email logged in with gooogle');
+    }
+
+    //generate token
+    let { code, token, time } = await this.authService.generateAuthToken();
+
+    // send email
+    // save token to db
+    await Promise.all([
+      this.mailService.sendResetPasswordLink(
+        email,
+        url + `?email=${email}&code=${code}`,
+      ),
+      this.authService.saveResetToken(user.id, token, time),
+    ]);
+    return res.status(HttpStatus.OK).json(new SuccessResponse());
+  }
+
+  @Post('verify-code')
+  @UsePipes(VerifyCodeValidation)
+  async verifyCode(@Query() query: VerifyCodeDto, @Res() res: Response) {
+    const { email, code } = query;
+    let user = await this.authService.existEmail(email);
+    let { accessToken } = await this.authService.verifyCode(code, user);
+    return res.status(HttpStatus.OK).json(new SuccessResponse({ accessToken }));
   }
 }
