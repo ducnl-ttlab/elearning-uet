@@ -77,7 +77,7 @@ export class User1664976452308 implements MigrationInterface {
           },
           {
             name: 'expiredTokenTime',
-            type: 'mediumint',
+            type: 'timestamp',
             isNullable: true,
           },
           {
