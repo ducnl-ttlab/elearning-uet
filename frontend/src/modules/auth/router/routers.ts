@@ -1,7 +1,8 @@
 import { PageName } from '@/common/constants';
 import { RouteRecordRaw } from 'vue-router';
-import AuthLayout from '@/layouts/AuthLayout.vue';
+import AuthLayout from '@/modules/auth/components/layouts/components/AuthLayout.vue';
 import LoginPage from '../pages/LoginPage.vue';
+import RegisterPage from '../pages/RegisterPage.vue';
 import GoogleLogin from '../pages/GoogleLogin.vue';
 
 const authRouters: Array<RouteRecordRaw> = [
@@ -10,9 +11,22 @@ const authRouters: Array<RouteRecordRaw> = [
         component: AuthLayout,
         children: [
             {
-                path: '/login/:token',
+                path: '/login',
                 name: PageName.LOGIN_PAGE,
                 component: LoginPage,
+                meta: {
+                    onlyWhenLoggedOut: true,
+                    isPublic: true,
+                },
+            },
+            {
+                path: '/register',
+                name: PageName.REGISTER_PAGE,
+                component: RegisterPage,
+                meta: {
+                    onlyWhenLoggedOut: true,
+                    isPublic: true,
+                },
             },
             {
                 path: '/auth/google/:token',

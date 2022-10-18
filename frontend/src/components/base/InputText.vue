@@ -38,7 +38,7 @@
 </template>
 
 <script lang="ts">
-import { ValidationForm, KeyCode } from '../../common/constants';
+import { ValidationForm, KeyCode } from '@/common/constants';
 import { Model, Prop, Vue } from 'vue-property-decorator';
 export default class InputText extends Vue {
     @Prop({ default: '' }) readonly label!: string;

@@ -1,6 +1,9 @@
 export enum PageName {
     LOGIN_PAGE = 'LoginPage',
+    REGISTER_PAGE = 'RegisterPage',
     GOOGLE_PAGE = 'GooglePage',
+    LANDING_PAGE = 'LandingPage',
+    NOT_FOUND_PAGE = 'NotFoundPage',
 }
 export enum SupportLanguage {
     EN = 'en',

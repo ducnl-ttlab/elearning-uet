@@ -1,19 +1,14 @@
 <template>
-    <div class="center">
-        <lottie :options="defaultOptions" :height="400" :width="400" />
-        <lottie :options="loadingGif" :height="200" :width="400" />
-    </div>
+    <div class="center"></div>
 </template>
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
-import lottieView from '../../../components/base/lottieView.vue';
+
 import * as animationData from './assets/astronaut-in-tea-break.json';
 import * as loadingGif from './assets/loading-process.json';
 @Options({
-    components: {
-        lottie: lottieView,
-    },
+    components: {},
 })
 export default class LoginPage extends Vue {
     defaultOptions: Record<string, unknown> = {};
