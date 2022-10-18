@@ -1,10 +1,30 @@
 <template>
     <div>
-        LoginPage
-
-        <button @click="fetchApi">abc</button>
+        <div
+            class="login-form d-flex flex-column justify-content-center align-items-center"
+        >
+            <div class="title">{{ $t('guest.auth.login.title') }}</div>
+            <div class="form">
+                <!-- Enter email or phone number -->
+                <InputCredentialForm v-if="!authProvider" />
+                <!-- Login by phone number -->
+                <!-- Enter otp -->
+                <InputOtpForm v-else-if="authProvider === AuthProvider.MOBILE" />
+                <!-- Login by email -->
+                <!-- Enter password  -->
+                <EmailLoginForm v-else-if="authProvider === AuthProvider.EMAIL" />
+            </div>
+            <SocialButtonBox />
+            <div class="bottom-wrapper">
+                <span
+                    >{{ $t('guest.auth.login.notHaveAccount') }}
+                    <router-link to="/register">{{
+                        $t('guest.auth.login.register')
+                    }}</router-link>
+                </span>
+            </div>
+        </div>
     </div>
-    <div></div>
 </template>
 
 <script lang="ts">
