@@ -20,10 +20,7 @@ import tokenService from './common/tokenService';
 })
 export default class App extends Vue {
     get locale(): Record<string, unknown> {
-        const i18nLocale = tokenService.getLanguage() || DEFAULT_LANGUAGE;
-        if (i18nLocale === SupportLanguage.VI) {
-            return vi;
-        }
+        const i18nLocale = tokenService.getLanguage() || SupportLanguage.VI;
         return en;
     }
 }
