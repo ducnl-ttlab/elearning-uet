@@ -75,4 +75,33 @@ export default class InputText extends Vue {
     -webkit-appearance: none;
     margin: 0;
 }
+
+.is-focus {
+    label {
+        color: $color-blue;
+    }
+    :deep(.el-input__wrapper) {
+        background-color: $color-violet-03;
+    }
+}
+
+.validation-error {
+    font-size: 12px;
+    color: $color-red-01;
+    margin: 5px 0;
+}
+
+.position-relative {
+    margin-bottom: 24px;
+}
+
+.is-error {
+    :deep(.el-input .el-input__wrapper) {
+        box-shadow: 0 0 0 1px $color-red-01;
+        background-color: $color-green-03;
+    }
+    label {
+        color: $color-red-01;
+    }
+}
 </style>

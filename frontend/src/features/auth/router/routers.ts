@@ -1,8 +1,8 @@
 import { PageName } from '@/common/constants';
 import { RouteRecordRaw } from 'vue-router';
-import AuthLayout from '../../layouts/AuthLayout.vue';
-import LoginPage from './pages/LoginPage.vue';
-import GoogleLogin from './pages/GoogleLogin.vue';
+import AuthLayout from '@/layouts/AuthLayout.vue';
+import LoginPage from '../pages/LoginPage.vue';
+import GoogleLogin from '../pages/GoogleLogin.vue';
 
 const authRouters: Array<RouteRecordRaw> = [
     {
