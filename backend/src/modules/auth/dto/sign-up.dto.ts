@@ -3,9 +3,8 @@ import {
   IsNotEmpty,
   IsEmail,
   MinLength,
-  Validate,
+  IsString,
 } from 'class-validator';
-import { IsUserAlreadyExist } from 'src/modules/user/service/is-user-already-exist.validator';
 
 export class SignUp {
   @IsDefined()
@@ -30,4 +29,11 @@ export class VerifyEmail {
   @IsDefined()
   @IsEmail()
   readonly email: string;
+}
+
+export class PasswordBody {
+  @IsDefined()
+  @IsNotEmpty()
+  @IsString()
+  readonly password: string;
 }

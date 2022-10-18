@@ -9,6 +9,8 @@ import {
   Res,
   Param,
   UsePipes,
+  ConflictException,
+  Query,
 } from '@nestjs/common';
 import { AuthService } from './service/auth.service';
 import { AuthGuard } from '@nestjs/passport';
@@ -17,13 +19,22 @@ import {
   SuccessResponse,
 } from 'src/common/helpers/api.response';
 import { MailService } from 'src/modules/mail/mail.service';
-import { VerifyEmail } from './dto/sign-up.dto';
+import { PasswordBody, VerifyEmail } from './dto/sign-up.dto';
 import { Response, Request } from 'express';
 import { GoogleOAuthGuard } from './guard/google-auth.guard';
-import { UserResponse } from 'src/common/interfaces';
+import { UserResponse, IUserReq, IVerifyUserJwt } from 'src/common/interfaces';
 import { UserService } from '../user/service/user.service';
 import { v4 as uuidv4 } from 'uuid';
-import { TokenValidation } from './joi.request.pipe';
+import {
+  LoginBodyValidation,
+  TokenValidation,
+  VerifyCodeValidation,
+} from './joi.request.pipe';
+import { JWTAuthGuard } from './guard/jwt-auth.guard';
+import { LoginBody } from './dto/login-dto';
+import { filterUser } from 'src/common/ultils';
+import { ForgotPasswordDto, VerifyCodeDto } from './dto/forgot-password.dto';
+import { Provider } from 'database/constant';
 
 @Controller('auth')
 export class AuthController {
@@ -33,10 +44,6 @@ export class AuthController {
     private readonly userService: UserService,
   ) {}
 
-  @Get()
-  a() {
-    return 'adf';
-  }
   @Get('google')
   @UseGuards(AuthGuard('google'))
   async googleAuth(@Req() req) {}
@@ -52,7 +59,7 @@ export class AuthController {
   @Post('signup')
   async signUpEmail(@Body() verifyEmail: VerifyEmail, @Res() res: Response) {
     const { email, url } = verifyEmail;
-    let user = await this.authService.existEmail(email);
+    let user = await this.userService.findOneByEmail(email);
 
     if (user) {
       return res
@@ -70,7 +77,6 @@ export class AuthController {
       email,
       id,
     });
-
     await Promise.all([
       this.mailService.sendUserEmailConfirmation(
         { email, username: email.split('@')[0] },
@@ -92,5 +98,69 @@ export class AuthController {
   async verifyEmail(@Param('token') token: string, @Res() res: Response) {
     let user = await this.authService.verifyEmail(token);
     return res.status(HttpStatus.OK).json(new SuccessResponse(user));
+  }
+
+  @Post('change-password')
+  @UsePipes(TokenValidation)
+  @UseGuards(JWTAuthGuard)
+  async changePassword(
+    @Req() req: IUserReq<IVerifyUserJwt>,
+    @Body() body: PasswordBody,
+    @Res() res: Response,
+  ) {
+    let { id } = req.user;
+    let user = await this.authService.changePasswordById(id, body.password);
+    return res.status(HttpStatus.OK).json(new SuccessResponse(user));
+  }
+
+  @Post('login')
+  @UsePipes(LoginBodyValidation)
+  async login(@Body() body: LoginBody, @Res() res: Response) {
+    const { email, password } = body;
+    let user = await this.authService.validateLocalUser(email, password);
+
+    const { accessToken } = await this.authService.signUserJwt({
+      email,
+      id: user.id,
+      username: user.username,
+      role: user.role,
+    });
+
+    return res
+      .status(HttpStatus.OK)
+      .json(new SuccessResponse({ user: filterUser(user), accessToken }));
+  }
+
+  @Post('forgot-password')
+  async forgotPassword(@Body() body: ForgotPasswordDto, @Res() res: Response) {
+    const { email, url } = body;
+    let user = await this.authService.existEmail(email);
+
+    if (user.provider !== Provider.local) {
+      throw new ConflictException('this email logged in with gooogle');
+    }
+
+    //generate token
+    let { code, token, time } = await this.authService.generateAuthToken();
+
+    // send email
+    // save token to db
+    await Promise.all([
+      this.mailService.sendResetPasswordLink(
+        email,
+        url + `?email=${email}&code=${code}`,
+      ),
+      this.authService.saveResetToken(user.id, token, time),
+    ]);
+    return res.status(HttpStatus.OK).json(new SuccessResponse());
+  }
+
+  @Post('verify-code')
+  @UsePipes(VerifyCodeValidation)
+  async verifyCode(@Query() query: VerifyCodeDto, @Res() res: Response) {
+    const { email, code } = query;
+    let user = await this.authService.existEmail(email);
+    let { accessToken } = await this.authService.verifyCode(code, user);
+    return res.status(HttpStatus.OK).json(new SuccessResponse({ accessToken }));
   }
 }
