@@ -23,7 +23,7 @@ import { MailController } from './mail.controller';
         },
       },
       defaults: {
-        from: '"No Reply" <noreply@example.com>', // outgoing email ID
+        from: '"Elearning_UET" <noreply@example.com>', // outgoing email ID
       },
       template: {
         dir: join(__dirname, '/templates'),

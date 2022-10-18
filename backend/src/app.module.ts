@@ -10,7 +10,7 @@ import { UserModule } from './modules/user/user.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { MailModule } from './modules/mail/mail.module';
 import { CategoryModule } from './modules/category/category.module';
-
+import { SearchModule } from './modules/search/search.module';
 @Module({
   imports: [
     DatabaseModule,
@@ -21,6 +21,7 @@ import { CategoryModule } from './modules/category/category.module';
     UserModule,
     AuthModule,
     MailModule,
+    SearchModule,
   ],
   controllers: [AppController],
   providers: [AppService],
