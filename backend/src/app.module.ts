@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { CacheModule, Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { StoryModule } from './modules/story/story.module';
@@ -11,6 +11,8 @@ import { AuthModule } from './modules/auth/auth.module';
 import { MailModule } from './modules/mail/mail.module';
 import { CategoryModule } from './modules/category/category.module';
 import { SearchModule } from './modules/search/search.module';
+import { RedisCacheModule } from './modules/cache/redis-cache.module';
+
 @Module({
   imports: [
     DatabaseModule,
@@ -22,6 +24,7 @@ import { SearchModule } from './modules/search/search.module';
     AuthModule,
     MailModule,
     SearchModule,
+    RedisCacheModule,
   ],
   controllers: [AppController],
   providers: [AppService],

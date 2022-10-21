@@ -5,12 +5,14 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Story } from './entity/story.entity';
 import { FavoriteStoryModule } from '../favorite-story/favorite-story.module';
 import { SearchModule } from '../search/search.module';
+import { RedisCacheModule } from '../cache/redis-cache.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Story]),
     FavoriteStoryModule,
     SearchModule,
+    RedisCacheModule,
   ],
   providers: [StoryService],
   controllers: [StoryController],
