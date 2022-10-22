@@ -6,13 +6,10 @@ import {
   UseInterceptors,
   UploadedFile,
   Post,
-  BadRequestException,
-  ParseIntPipe,
   StreamableFile,
 } from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { AppService } from './app.service';
-import { extname, join } from 'path';
+
+import { join } from 'path';
 import { Response } from 'express';
 
 import LocalFilesInterceptor, {
