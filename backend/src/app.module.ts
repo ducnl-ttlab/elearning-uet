@@ -12,9 +12,12 @@ import { MailModule } from './modules/mail/mail.module';
 import { CategoryModule } from './modules/category/category.module';
 import { SearchModule } from './modules/search/search.module';
 import { RedisCacheModule } from './modules/cache/redis-cache.module';
+import { MulterModule } from '@nestjs/platform-express';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule,
     DatabaseModule,
     CategoryModule,
     StoryModule,
@@ -25,6 +28,7 @@ import { RedisCacheModule } from './modules/cache/redis-cache.module';
     MailModule,
     SearchModule,
     RedisCacheModule,
+    MulterModule.register({ dest: './uploads' }),
   ],
   controllers: [AppController],
   providers: [AppService],
