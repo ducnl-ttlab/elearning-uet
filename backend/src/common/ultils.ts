@@ -21,3 +21,7 @@ export const generateDigits = (numberRandom: number = 6) => {
   let MaxBaseNumber = Math.pow(10, numberRandom - 1);
   return Math.floor(baseNumber + Math.random() * 9 * MaxBaseNumber);
 };
+
+export const removeExtention = (fileName: string) => {
+  return fileName.split('.').slice(0, -1).join('.');
+};
