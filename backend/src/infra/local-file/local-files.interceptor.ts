@@ -11,7 +11,7 @@ import { MulterOptions } from '@nestjs/platform-express/multer/interfaces/multer
 import { diskStorage } from 'multer';
 import { extname } from 'path';
 
-type keyMediaPath = 'course' | 'avatar';
+type keyImagePath = 'course' | 'avatar';
 
 interface LocalFilesInterceptorOptions {
   fieldName?: string;
@@ -27,11 +27,24 @@ export function imageFilter(request, file, callback) {
   callback(null, true);
 }
 
-export const mediaParams = (path: keyMediaPath) => {
+export const imageParams = (path: keyImagePath) => {
   return {
     path: `/${path}`,
     fileFilter: imageFilter,
   };
+};
+
+export const videoParams = {
+  path: `/video`,
+  fileFilter: (request, file, callback) => {
+    if (!file.mimetype.includes('video')) {
+      return callback(new BadRequestException('Provide a valid image'), false);
+    }
+    callback(null, true);
+  },
+  limits: {
+    fileSize: Math.pow(1024, 2) * 4, // 4MB
+  },
 };
 
 function LocalFilesInterceptor(
