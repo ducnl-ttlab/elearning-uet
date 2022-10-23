@@ -52,6 +52,14 @@ export class AppController {
 
     return new StreamableFile(stream);
   }
+
+  @Get('/chunk/:name/:file')
+  getChunkFiles(@Param('file') file: string, @Param('name') name: string) {
+    let filePath = join(process.cwd(), `/temp/chunks/${name}/${file}`);
+    const stream = createReadStream(filePath);
+
+    return new StreamableFile(stream);
+  }
   @Get('video')
   getVideo(
     @Param('id') id: string,
