@@ -21,6 +21,7 @@ export const MAX_PAGE = 10000;
 
 export const MIN_PARAM = 1;
 export const MAX_PARAM = 1000;
+export const DEFAULT_EXPIRE_CACHE = 3600
 
 export const jwtConstants = {
   secret: 'secretKey',

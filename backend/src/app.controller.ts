@@ -21,21 +21,6 @@ import { createReadStream } from 'fs';
 
 @Controller()
 export class AppController {
-  @Get('image/category/:name')
-  Category(
-    @Param('name') name: string,
-    @Res({ passthrough: true }) response: Response,
-  ) {
-    const stream = createReadStream(join(process.cwd(), `/public/${name}.png`));
-
-    response.set({
-      'Content-Disposition': `inline; filename="${name}"`,
-      'Content-Type': 'image/jpeg',
-    });
-
-    return new StreamableFile(stream);
-  }
-
   @Get('files/:id')
   getFiles(
     @Param('id') id: string,

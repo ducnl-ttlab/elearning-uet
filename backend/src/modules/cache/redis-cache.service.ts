@@ -1,5 +1,6 @@
 import { CACHE_MANAGER, Inject, Injectable } from '@nestjs/common';
 import { Cache } from 'cache-manager';
+import { DEFAULT_EXPIRE_CACHE } from 'src/common/constant';
 
 @Injectable()
 export class RedisCacheService {
@@ -13,7 +14,7 @@ export class RedisCacheService {
   }
 
   async set(key: string, value: string) {
-    return this.cacheManager.set(key, value, { ttl: 0 });
+    return this.cacheManager.set(key, value, { ttl: DEFAULT_EXPIRE_CACHE });
   }
 
   async get(key: string): Promise<string> {
@@ -26,5 +27,22 @@ export class RedisCacheService {
 
   async deleteByKey(key: string): Promise<unknown> {
     return this.cacheManager.del(key);
+  }
+
+  async setOrgetCache(key: string, cb: () => void, expired?: number) {
+    return new Promise<any>(async (resolve, reject) => {
+      let data = await this.get(key);
+      if (data) {
+        resolve(JSON.parse(data));
+      } else {
+        let freshData = await cb();
+        await this.cacheManager.set(
+          key,
+          JSON.stringify(freshData),
+          expired || DEFAULT_EXPIRE_CACHE,
+        );
+        resolve(freshData);
+      }
+    });
   }
 }
