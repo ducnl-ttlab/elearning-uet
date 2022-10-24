@@ -35,7 +35,9 @@ import { LoginBody } from './dto/login-dto';
 import { filterUser } from 'src/common/ultils';
 import { ForgotPasswordDto, VerifyCodeDto } from './dto/forgot-password.dto';
 import { Provider } from 'database/constant';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Authorization')
 @Controller('auth')
 export class AuthController {
   constructor(

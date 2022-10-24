@@ -29,7 +29,7 @@ export class RedisCacheService {
     return this.cacheManager.del(key);
   }
 
-  async setOrgetCache(key: string, cb: () => void, expired?: number) {
+  async setOrgetCache(key: string, cb: () => Promise<any>, expired?: number) {
     return new Promise<any>(async (resolve, reject) => {
       let data = await this.get(key);
       if (data) {
