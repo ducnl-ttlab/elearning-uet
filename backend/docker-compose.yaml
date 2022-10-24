@@ -1,15 +1,15 @@
 services:
   mysql:
     image: mysql:5.7
-    container_name: ${DB_HOST}
+    container_name: mysql
     volumes:
       - ./database/data:/var/lib/mysql
     ports:
-      - ${DB_PORT}:3306
+      - 3306:3306
     environment:
-      MYSQL_TCP_PORT: ${DB_PORT}
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
-      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_TCP_PORT: 3306
+      MYSQL_ROOT_PASSWORD: ttlab
+      MYSQL_DATABASE: elearning2020
 
   api:
     build:
@@ -18,4 +18,4 @@ services:
     depends_on:
       - mysql
     ports:
-      - ${APP_PORT}:${APP_PORT}
+      - 5000:5000
