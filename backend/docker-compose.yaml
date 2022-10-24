@@ -11,11 +11,18 @@ services:
       MYSQL_ROOT_PASSWORD: ttlab
       MYSQL_DATABASE: elearning2020
 
+  redis:
+    container_name: redis
+    image: redis:7-alpine
+    ports:
+      - 6379:6379
+
   api:
     build:
       context: .
       dockerfile: Dockerfile
     depends_on:
       - mysql
+      - redis
     ports:
       - 5000:5000
