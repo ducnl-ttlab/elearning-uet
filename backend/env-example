@@ -1,38 +1,27 @@
-# APP CONFIG
-
 FRONTEND_URL=http://localhost:8080/
 API_URL=http://localhost:5000/
 APP_NAME=Elearning
 UPLOADED_FILES_DESTINATION=uploads
+APP_PORT=5000
 
-# DATABASE CONFIG
-
-DB_HOST=bizkkjsokx5irbvlztqy-mysql.services.clever-cloud.com
+DB_HOST=mysql
 DB_PORT=3306
-DB_USERNAME=uunxrmn0vcu2oe8p
-DB_PASSWORD=eh2CtquMu69qm0QDZaMg
-DB_NAME=bizkkjsokx5irbvlztqy
-
-# EMAIL CONFIG
+DB_USERNAME=root
+DB_PASSWORD=ttlab
+DB_NAME=elearning2020
 
 EMAIL_ID=ducnl@tokyotechlab.com
 EMAIL_PASS=hgrbwxysawfhumns
 EMAIL_HOST=imap.gmail.com
 EMAIL_PORT=465
 
-# GOOGLE CONFIG
-
 CLIENT_ID=396680489140-r2mkaphbug6d876cvd0l70996iimsphd.apps.googleusercontent.com
 CLIENT_SECRET=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
 CALLBACK_URL=http://localhost:5000/auth/google/callback
 
-# ELASTICSEARCH CONFIG
-
 ELASTICSEARCH_NODE=https://shi.es.us-central1.gcp.cloud.es.io
 ELASTICSEARCH_USERNAME=elastic
 ELASTICSEARCH_PASSWORD=1Qoby8FeZ7e4aFDDCVMpzAzr
-
-# REDIS CONFIG
 
 REDIS_HOST=redis-12379.c292.ap-southeast-1-1.ec2.cloud.redislabs.com
 REDIS_PORT=12379
