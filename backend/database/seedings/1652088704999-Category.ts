@@ -5,38 +5,49 @@ export class Category1652088704999 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     const items = [
       {
-        id: 1,
-        image: 'life.png',
-        name: 'Bài học cuộc sống',
+        image: 'software',
+        name: 'IT và phần mềm',
       },
       {
-        id: 2,
-        image: 'peace.png',
-        name: 'Hòa Bình',
+        image: 'business',
+        name: 'Kinh doanh',
       },
       {
-        id: 3,
-        name: 'Thiên nhiên',
-        image: 'leaves.png',
+        name: 'design',
+        image: 'sáng tạo',
       },
       {
-        id: 4,
-        name: 'Thành tựu',
-        image: 'gold.png',
+        image: 'personal-development',
+        name: 'Phát triển bản thân',
       },
       {
-        id: 5,
-        name: 'Tình cảm',
-        image: 'love.png',
+        image: 'marketing',
+        name: 'Kinh doanh',
       },
       {
-        id: 6,
-        name: 'Ý chí',
-        image: 'diamond.png',
+        image: 'development',
+        name: 'Lập trình',
+      },
+      {
+        image: 'music',
+        name: 'Nghệ thuật',
+      },
+      {
+        image: 'photography',
+        name: 'Nhiếp ảnh',
       },
     ];
 
-    await queryRunner.manager.getRepository(TableName.category).insert(items);
+    let itemDatas = items.map((item, index) => {
+      return {
+        ...item,
+        id: index + 1,
+      };
+    });
+
+    await queryRunner.manager
+      .getRepository(TableName.category)
+      .insert(itemDatas);
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
