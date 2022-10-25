@@ -4,6 +4,7 @@ export enum TableName {
   storyCategory = 'story_categories',
   favoriteStory = 'favorite_stories',
   user = 'users',
+  course = 'courses',
 }
 
 export enum Role {

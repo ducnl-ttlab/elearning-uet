@@ -4,6 +4,7 @@
 /.env
 /uploads
 /temp
+/dev.env
 
 # Logs
 logs
