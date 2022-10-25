@@ -37,7 +37,7 @@ import { ForgotPasswordDto, VerifyCodeDto } from './dto/forgot-password.dto';
 import { Provider } from 'database/constant';
 import { ApiTags } from '@nestjs/swagger';
 
-@ApiTags('Authorization')
+@ApiTags('Authentication')
 @Controller('auth')
 export class AuthController {
   constructor(
