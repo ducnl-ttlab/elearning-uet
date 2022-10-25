@@ -1,11 +1,12 @@
-import { CacheModule, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { Connection } from 'typeorm';
 import { StoryModule } from './modules/story/story.module';
 import { DatabaseModule } from './common/database.module';
 import { FavoriteStoryModule } from './modules/favorite-story/favorite-story.module';
 import { StoryCategoryModule } from './modules/story-category/story-category.module';
-import { Connection } from 'typeorm';
+import { CourseModule } from './modules/course/course.module';
 import { UserModule } from './modules/user/user.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { MailModule } from './modules/mail/mail.module';
@@ -28,6 +29,7 @@ import { ConfigModule } from '@nestjs/config';
     MailModule,
     SearchModule,
     RedisCacheModule,
+    CourseModule,
     MulterModule.register({ dest: './uploads' }),
   ],
   controllers: [AppController],
