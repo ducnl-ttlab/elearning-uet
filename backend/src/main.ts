@@ -26,6 +26,7 @@ async function bootstrap() {
     .setTitle('Elearning')
     .setDescription('The cats API description')
     .setVersion('1.0')
+    .addBearerAuth()
     .build();
 
   app.useStaticAssets(join(__dirname, '../', '/public'));
