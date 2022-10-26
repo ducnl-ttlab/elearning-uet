@@ -25,7 +25,7 @@ const roleSchema = Joi.object().keys({
     .required()
     .valid(
       ...remove(Object.keys(Role), (c) => {
-        return c !== Role.guess;
+        return c !== Role.guess && c !== Role.admin;
       }),
     ),
 });

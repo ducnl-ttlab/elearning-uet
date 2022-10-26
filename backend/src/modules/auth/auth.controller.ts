@@ -11,6 +11,7 @@ import {
   UsePipes,
   ConflictException,
   Query,
+  Put,
 } from '@nestjs/common';
 import { AuthService } from './service/auth.service';
 import { AuthGuard } from '@nestjs/passport';
@@ -22,11 +23,17 @@ import { MailService } from 'src/modules/mail/mail.service';
 import { PasswordBody, VerifyEmail } from './dto/sign-up.dto';
 import { Response, Request } from 'express';
 import { GoogleOAuthGuard } from './guard/google-auth.guard';
-import { UserResponse, IUserReq, IVerifyUserJwt } from 'src/common/interfaces';
+import {
+  UserResponse,
+  IUserReq,
+  IVerifyUserJwt,
+  IUserJwt,
+} from 'src/common/interfaces';
 import { UserService } from '../user/service/user.service';
 import { v4 as uuidv4 } from 'uuid';
 import {
   LoginBodyValidation,
+  SelectRoleValidation,
   TokenValidation,
   VerifyCodeValidation,
 } from './joi.request.pipe';
@@ -34,8 +41,16 @@ import { JWTAuthGuard } from './guard/jwt-auth.guard';
 import { LoginBody } from './dto/login-dto';
 import { filterUser } from 'src/common/ultils';
 import { ForgotPasswordDto, VerifyCodeDto } from './dto/forgot-password.dto';
-import { Provider } from 'database/constant';
-import { ApiTags } from '@nestjs/swagger';
+import { Provider, Role } from 'database/constant';
+import {
+  ApiBody,
+  ApiExtraModels,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
+import { User } from 'src/common/decorator/user.decorator';
+import { Auth, Roles } from 'src/common/decorator/auth.decorator';
+import { RoleDto } from './dto/role.dto';
 
 @ApiTags('Authentication')
 @Controller('auth')
@@ -164,5 +179,25 @@ export class AuthController {
     let user = await this.authService.existEmail(email);
     let { accessToken } = await this.authService.verifyCode(code, user);
     return res.status(HttpStatus.OK).json(new SuccessResponse({ accessToken }));
+  }
+
+  @Put('select-role')
+  @UsePipes(SelectRoleValidation)
+  @Auth(Role.guess)
+  @ApiOperation({ summary: 'Save Reason Code' })
+  @ApiBody({
+    description: 'Reason Code',
+    required: true,
+    type: RoleDto,
+  })
+  async selectRole(
+    @User() user: IUserJwt,
+    @Res() res: Response,
+    @Body('role') role: Role,
+  ) {
+    await this.userService.updateUser(user.id, {
+      role,
+    });
+    return res.status(HttpStatus.OK).json(new SuccessResponse());
   }
 }
