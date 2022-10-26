@@ -42,7 +42,6 @@ export class AuthService {
         username,
         password: accessToken,
         verified: true,
-        role: Role.student,
         provider: Provider.google,
       };
       userDb = await this.userService.saveUser(newUser);
