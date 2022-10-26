@@ -11,6 +11,7 @@ export enum Role {
   student = 'student',
   instructor = 'instructor',
   admin = 'admin',
+  guess = 'guess',
 }
 
 export enum Provider {

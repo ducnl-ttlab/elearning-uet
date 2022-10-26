@@ -31,6 +31,8 @@ export interface IUserReq<T> extends Request {
   user: T;
 }
 
+export type IUserJwtReq = IUserReq<IUserJwt>;
+
 export interface SearchServiceInterface<T> {
   insertIndex(bulkData: T): Promise<T>;
 

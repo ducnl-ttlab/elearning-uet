@@ -58,9 +58,9 @@ export class User1664976452308 implements MigrationInterface {
           {
             name: 'role',
             type: 'enum',
-            enum: [Role.student, Role.instructor, Role.admin],
+            enum: Object.values(Role),
             enumName: 'roleEnum',
-            default: `'${Role.student}'`,
+            default: `'${Role.guess}'`,
           },
           {
             name: 'provider',
