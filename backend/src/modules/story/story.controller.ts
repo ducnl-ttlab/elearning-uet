@@ -14,9 +14,4 @@ export class StoryController {
   a() {
     return this.searchService.CreateDoctorIndex();
   }
-
-  @Get('a')
-  b() {
-    return this.cacheManager.get('hello');
-  }
 }

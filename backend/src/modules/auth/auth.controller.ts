@@ -42,12 +42,7 @@ import { LoginBody } from './dto/login-dto';
 import { filterUser } from 'src/common/ultils';
 import { ForgotPasswordDto, VerifyCodeDto } from './dto/forgot-password.dto';
 import { Provider, Role } from 'database/constant';
-import {
-  ApiBody,
-  ApiExtraModels,
-  ApiOperation,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { User } from 'src/common/decorator/user.decorator';
 import { Auth, Roles } from 'src/common/decorator/auth.decorator';
 import { RoleDto } from './dto/role.dto';
