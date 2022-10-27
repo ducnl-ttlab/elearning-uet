@@ -4,3 +4,7 @@ export interface CourseCreateDto {
   description: string;
   isPublished: boolean;
 }
+
+export interface CategoryDto {
+  categoryId: number;
+}
