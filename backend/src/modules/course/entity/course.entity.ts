@@ -40,7 +40,7 @@ export class Course {
   price: number;
 
   @ApiProperty({ example: 'http://locadlhost/course.png' })
-  @Column({ length: 255, nullable: false })
+  @Column({ length: 255, nullable: true })
   image: string;
 
   @ApiProperty({ type: 'date' })

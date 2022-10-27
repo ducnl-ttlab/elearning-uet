@@ -52,7 +52,7 @@ export class Courses1666736253433 implements MigrationInterface {
             name: 'image',
             type: 'varchar',
             length: '255',
-            isNullable: false,
+            isNullable: true,
           },
           {
             name: 'created_at',
