@@ -4,18 +4,13 @@ services:
     container_name: mysql
     volumes:
       - ./database/data:/var/lib/mysql
+      - ./mycustom.cnf:/etc/mysql/conf.d/custom.cnf
     ports:
       - 3306:3306
     environment:
       MYSQL_TCP_PORT: 3306
       MYSQL_ROOT_PASSWORD: ttlab
       MYSQL_DATABASE: elearning2020
-    command:
-      [
-        'mysqld',
-        '--character-set-server=utf8mb4',
-        '--collation-server=utf8mb4_unicode_ci',
-      ]
 
   redis:
     container_name: redis
