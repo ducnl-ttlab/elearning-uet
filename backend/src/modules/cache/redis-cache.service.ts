@@ -6,7 +6,7 @@ import { DEFAULT_EXPIRE_CACHE } from 'src/common/constant';
 export class RedisCacheService {
   constructor(@Inject(CACHE_MANAGER) private cacheManager: Cache) {
     setTimeout(() => {
-      console.log(
+      console.info(
         'redis',
         (this.cacheManager.store as any)?.getClient()?.address,
       );

@@ -56,12 +56,11 @@ export class UserService {
     }
   }
 
-  async findGoogleUser(email: string, password: string): Promise<User> {
+  async findGoogleUser(email: string): Promise<User> {
     try {
       return this.userRepository.findOne({
         where: {
           email,
-          password,
           provider: Provider.google,
         },
       });

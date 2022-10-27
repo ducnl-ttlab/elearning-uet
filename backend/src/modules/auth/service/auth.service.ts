@@ -31,16 +31,16 @@ export class AuthService {
       return 'No user from google';
     }
 
-    let { id, email, avatar, username, accessToken } = req.user as IGoogleUser;
+    let { id, email, avatar, username } = req.user as IGoogleUser;
 
-    let userDb = await this.userService.findGoogleUser(email, accessToken);
+    let userDb = await this.userService.findGoogleUser(email);
     if (!userDb) {
       let newUser = {
         id,
         email,
         avatar,
         username,
-        password: accessToken,
+        role: Role.guess,
         verified: true,
         provider: Provider.google,
       };

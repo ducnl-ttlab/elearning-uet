@@ -45,7 +45,7 @@ export const generateChunkFiles = async () => {
         let cmd = `ffmpeg -i ${fileName} -profile:v baseline -level 3.0 -s 640x360 -start_number 0 -hls_time 10 -hls_list_size 0 -f hls ${filePath}/video.m3u8`;
         const { err, stdout, stderr } = await exec(cmd);
         if (err) {
-          console.log(err);
+          console.error(err);
         }
         console.info('> created chunks files', name);
       }

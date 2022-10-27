@@ -8,10 +8,10 @@ export class SearchService implements SearchServiceInterface<any> {
     this.elasticsearchService
       .ping({}, { requestTimeout: 3000 })
       .then(() => {
-        console.log('elastic search connected!');
+        console.info('elastic search connected!');
       })
       .catch((error) => {
-        console.log(error);
+        console.error(error);
       });
   }
 

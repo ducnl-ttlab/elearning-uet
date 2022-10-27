@@ -40,7 +40,7 @@ export class MailService {
           },
         })
         .catch((error) => {
-          console.log({ error });
+          console.error({ error });
         });
     } catch (error) {
       throw new InternalServerErrorException(error);
