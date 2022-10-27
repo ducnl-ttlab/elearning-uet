@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   HttpStatus,
+  NotFoundException,
   Param,
   Post,
   Req,
@@ -18,17 +19,16 @@ import { User } from 'src/common/decorator/user.decorator';
 import { Auth } from 'src/common/decorator/auth.decorator';
 import { courseValidation } from './joi.request.pipe';
 import { SuccessResponse } from 'src/common/helpers/api.response';
-import { CourseCreateDto } from './dto/course.dto';
+import { CategoryDto, CourseCreateDto } from './dto/course.dto';
+import { CategoryService } from '../category/service/category.service';
 
 @ApiTags('Course')
 @Controller('course')
 export class CourseController {
-  constructor(private readonly courseService: CourseService) {}
-
-  @Get('')
-  async hello(@Req() req: Request) {
-    return 'req.user';
-  }
+  constructor(
+    private readonly courseService: CourseService,
+    private readonly categoryService: CategoryService,
+  ) {}
 
   @Post(':categoryId')
   @Auth('instructor')
@@ -40,12 +40,22 @@ export class CourseController {
   )
   async createCourse(
     @User() user: IUserJwt,
-    @Param() Param: number,
-    @Req() req: Request,
+    @Param() param: CategoryDto,
     @Res() res: Response,
     @Body() data: CourseCreateDto,
   ) {
-    //
-    return res.status(HttpStatus.CREATED).json(new SuccessResponse(data));
+    const isExistCategory = await this.categoryService.findOneById(
+      param.categoryId,
+    );
+    if (!isExistCategory) {
+      throw new NotFoundException('Not found category');
+    }
+    let newCourse = {
+      instructorId: user.id,
+      categoryId: isExistCategory.id,
+      ...data,
+    };
+    let course = await this.courseService.saveCourse(newCourse);
+    return res.status(HttpStatus.CREATED).json(new SuccessResponse(course));
   }
 }
