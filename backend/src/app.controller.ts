@@ -38,6 +38,24 @@ export class AppController {
     return new StreamableFile(stream);
   }
 
+  @Get('image/uploads/:type/:name')
+  getImage(
+    @Param('name') name: string,
+    @Param('type') type: string,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    const stream = createReadStream(
+      join(process.cwd(), `uploads/${type}/${name}`),
+    );
+
+    response.set({
+      'Content-Disposition': `inline; filename="${name}"`,
+      'Content-Type': 'image/jpeg',
+    });
+
+    return new StreamableFile(stream);
+  }
+
   @Get('/chunk/:name/:file')
   getChunkFiles(@Param('file') file: string, @Param('name') name: string) {
     let filePath = join(process.cwd(), `/temp/chunks/${name}/${file}`);
