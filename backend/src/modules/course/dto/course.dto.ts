@@ -8,3 +8,7 @@ export interface CourseCreateDto {
 export interface CategoryDto {
   categoryId: number;
 }
+
+export interface CourseDto {
+  id: number;
+}
