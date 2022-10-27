@@ -13,8 +13,8 @@ import { MailModule } from './modules/mail/mail.module';
 import { CategoryModule } from './modules/category/category.module';
 import { SearchModule } from './modules/search/search.module';
 import { RedisCacheModule } from './modules/cache/redis-cache.module';
-import { MulterModule } from '@nestjs/platform-express';
 import { ConfigModule } from '@nestjs/config';
+import { LocalFileModule } from './infra/local-file/local-file.module';
 
 @Module({
   imports: [
@@ -30,7 +30,7 @@ import { ConfigModule } from '@nestjs/config';
     SearchModule,
     RedisCacheModule,
     CourseModule,
-    MulterModule.register({ dest: './uploads' }),
+    LocalFileModule,
   ],
   controllers: [AppController],
   providers: [AppService],
