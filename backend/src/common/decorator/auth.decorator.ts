@@ -4,9 +4,11 @@ import { Role } from 'database/constant';
 import { JWTAuthGuard } from 'src/modules/auth/guard/jwt-auth.guard';
 import { RoleGuards } from '../guard/role.guard';
 
-export const Roles = (...roles: Role[]) => SetMetadata('roles', roles);
+type ERole = keyof typeof Role;
 
-export function Auth(...roles: Role[]) {
+export const Roles = (...roles: ERole[]) => SetMetadata('roles', roles);
+
+export function Auth(...roles: ERole[]) {
   return applyDecorators(
     Roles(...roles),
     UseGuards(JWTAuthGuard, RoleGuards),
