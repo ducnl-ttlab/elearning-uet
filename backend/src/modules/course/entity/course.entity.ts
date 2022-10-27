@@ -37,7 +37,7 @@ export class Course {
 
   @ApiProperty({ example: '0.1$' })
   @Column({ type: 'float', nullable: false, default: 0 })
-  price: boolean;
+  price: number;
 
   @ApiProperty({ example: 'http://locadlhost/course.png' })
   @Column({ length: 255, nullable: false })
