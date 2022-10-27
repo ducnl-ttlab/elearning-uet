@@ -73,7 +73,6 @@ export class CourseController {
   @Get(':id')
   async getCourse(
     @Param() param: CourseDto,
-    @Param('id') id,
     @Res() res: Response,
     @Req() req: Request,
     @Headers('host') host: Headers,

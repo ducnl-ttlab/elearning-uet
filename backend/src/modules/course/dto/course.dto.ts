@@ -1,14 +1,29 @@
-export interface CourseCreateDto {
+import { ApiProperty } from '@nestjs/swagger';
+
+export class CourseCreateDto {
+  @ApiProperty({
+    description: 'The price of course',
+    minimum: 0,
+    default: 0,
+  })
   price: number;
+
+  @ApiProperty()
   name: string;
+
+  @ApiProperty()
   description: string;
+
+  @ApiProperty()
   isPublished: boolean;
 }
 
-export interface CategoryDto {
+export class CategoryDto {
+  @ApiProperty()
   categoryId: number;
 }
 
-export interface CourseDto {
+export class CourseDto {
+  @ApiProperty()
   id: number;
 }
