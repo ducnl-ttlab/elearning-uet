@@ -1,6 +1,6 @@
-export interface CourseDto {
-  id: number;
-  categoryId: number;
-  userId: string;
-  isLike: boolean;
+export interface CourseCreateDto {
+  price: number;
+  name: string;
+  description: string;
+  isPublished: boolean;
 }
