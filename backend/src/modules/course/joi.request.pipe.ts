@@ -16,17 +16,36 @@ const categoryParamSchema = Joi.object().keys({
     .message('categoryId should be a number'),
 });
 
+const createCourseSchema = Joi.object().keys({
+  name: Joi.string()
+    .required()
+    .min(1)
+    .message('name should have at least one character'),
+  description: Joi.string()
+    .required()
+    .min(1)
+    .message('name should have at least one character'),
+  isPublished: Joi.boolean().optional(),
+  price: Joi.number().min(1).optional(),
+});
+
 const courseValidationSchemas = {
   tokenSchema,
   categoryParamSchema,
+  createCourseSchema,
 };
 
 type courseValidationKey = keyof typeof courseValidationSchemas;
 
+interface ICourseValidation {
+  key: courseValidationKey;
+  type: Paramtype;
+}
+
 class ValidationPipe implements PipeTransform {
   private schema: Joi.ObjectSchema<any>;
-  private paramType: string;
-  constructor(schema: Joi.ObjectSchema<any>, paramType: string) {
+  private paramType: Paramtype;
+  constructor(schema: Joi.ObjectSchema<any>, paramType: Paramtype) {
     this.schema = schema;
     this.paramType = paramType;
   }
@@ -41,6 +60,8 @@ class ValidationPipe implements PipeTransform {
   }
 }
 
-export function courseValidation(key: courseValidationKey, type: Paramtype) {
-  return new ValidationPipe(courseValidationSchemas[key], type);
+export function courseValidation(...validations: ICourseValidation[]) {
+  return validations.map(
+    (v) => new ValidationPipe(courseValidationSchemas[v.key], v.type),
+  );
 }
