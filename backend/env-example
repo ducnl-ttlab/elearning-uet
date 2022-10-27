@@ -1,5 +1,5 @@
 FRONTEND_URL=http://localhost:8080/
-API_URL=http://localhost:5000/
+API_URL=http://139.59.123.89:5000/
 APP_NAME=Elearning
 UPLOADED_FILES_DESTINATION=uploads
 APP_PORT=5000
@@ -22,7 +22,6 @@ CALLBACK_URL=http://localhost:5000/auth/google/callback
 ELASTICSEARCH_NODE=https://shi.es.us-central1.gcp.cloud.es.io
 ELASTICSEARCH_USERNAME=elastic
 ELASTICSEARCH_PASSWORD=1Qoby8FeZ7e4aFDDCVMpzAzr
-
 
 REDIS_HOST=redis
 REDIS_PORT=6379
