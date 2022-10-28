@@ -2,6 +2,8 @@ export enum ORDER_DIRECTION {
   ASC = 'ASC',
   DESC = 'DESC',
 }
+export const EXPIRED_TOKEN_SECONDS = 20 * 60;
+
 export type TYPE_ORM_ORDER_DIRECTION = 'ASC' | 'DESC';
 
 export const DEFAULT_FIRST_PAGE = 1;
@@ -19,6 +21,7 @@ export const MAX_PAGE = 10000;
 
 export const MIN_PARAM = 1;
 export const MAX_PARAM = 1000;
+export const DEFAULT_EXPIRE_CACHE = 3600
 
 export const jwtConstants = {
   secret: 'secretKey',

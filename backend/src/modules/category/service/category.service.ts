@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Category } from '../entity/category.entity';
@@ -16,6 +16,13 @@ export class CategoryService {
     private readonly categoryRepository: Repository<Category>,
   ) {}
 
+  async findOneById(id: number) {
+    try {
+      return this.categoryRepository.findOne(id);
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
   async findAll(query): Promise<CategoryListResponse> {
     const page = query.page || DEFAULT_PAGE;
     const limit = query.limit || DEFAULT_LIMIT;

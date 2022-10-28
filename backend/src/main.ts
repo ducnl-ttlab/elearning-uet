@@ -6,6 +6,7 @@ import { join } from 'path';
 import { ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { ConfigService } from '@nestjs/config';
+import { generateChunkFiles } from './infra/local-file/videotohlschunks';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
@@ -25,14 +26,15 @@ async function bootstrap() {
     .setTitle('Elearning')
     .setDescription('The cats API description')
     .setVersion('1.0')
+    .addBearerAuth()
     .build();
 
   app.useStaticAssets(join(__dirname, '../', '/public'));
   app.useGlobalFilters(new HttpExceptionFilter());
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
-
+  SwaggerModule.setup('docs', app, document);
+  await generateChunkFiles();
   await app.listen(5000);
 }
 bootstrap();

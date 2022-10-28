@@ -4,12 +4,14 @@ export enum TableName {
   storyCategory = 'story_categories',
   favoriteStory = 'favorite_stories',
   user = 'users',
+  course = 'courses',
 }
 
 export enum Role {
   student = 'student',
   instructor = 'instructor',
   admin = 'admin',
+  guess = 'guess',
 }
 
 export enum Provider {

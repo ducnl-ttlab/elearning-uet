@@ -37,7 +37,7 @@ export class User {
   @Column({
     type: 'enum',
     enum: Role,
-    default: Role.student,
+    default: Role.guess,
   })
   role: Role;
 
@@ -51,12 +51,21 @@ export class User {
   @Column()
   resetToken: string;
 
-  @Column()
-  expiredTokenTime: number;
+  @Column({
+    type: 'timestamp',
+    precision: 3,
+  })
+  expiredTokenTime: Date | null;
 
-  @CreateDateColumn()
+  @CreateDateColumn({
+    type: 'timestamp',
+    precision: 3,
+  })
   created_at: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({
+    type: 'timestamp',
+    precision: 3,
+  })
   updated_at: Date;
 }

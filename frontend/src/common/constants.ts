@@ -1,13 +1,17 @@
+import i18n from '@/plugins/vue-i18n';
+
 export enum PageName {
     LOGIN_PAGE = 'LoginPage',
+    REGISTER_PAGE = 'RegisterPage',
     GOOGLE_PAGE = 'GooglePage',
+    LANDING_PAGE = 'LandingPage',
+    NOT_FOUND_PAGE = 'NotFoundPage',
 }
+
 export enum SupportLanguage {
     EN = 'en',
     VI = 'vi',
 }
-
-export const DEFAULT_LANGUAGE = SupportLanguage.VI;
 
 export enum OrderDirection {
     ASCENDING = 'ascending',
@@ -26,7 +30,7 @@ export enum UserTokenType {
     FORGOT_PASSWORD = 'forgot_password',
     REQUEST_OTP = 'request_otp',
 }
-
+export const DEFAULT_LANGUAGE = SupportLanguage.VI;
 export const TIMEZONE_HEADER = 'x-timezone';
 export const TIMEZONE_NAME_HEADER = 'x-timezone-name';
 
@@ -201,3 +205,68 @@ export const AllowDecimalCodes = [
 export enum KeyCode {
     ENTER = 'Enter',
 }
+
+export enum PageName {
+    // for guest
+    GUEST_LANDING_PAGE = 'GuestLandingPage',
+    GUEST_LOGIN_PAGE = 'GuestLoginPage',
+    GUEST_REGISTER_PAGE = 'GuestRegisterPage',
+    GUEST_ACTIVE_EMAIL_PAGE = 'GuestActiveEmailPage',
+    GUEST_INIT_PROFILE_PAGE = 'GuestInitProfilePage',
+    GUEST_FORGOT_PASSWORD_PAGE = 'GuestForgotPasswordPage',
+    GUEST_FACEBOOK_LOGIN_PAGE = 'GuestFacebookLoginPage',
+    GUEST_GOOGLE_LOGIN_PAGE = 'GuestGoogleLoginPage',
+    GUEST_ZALO_LOGIN_PAGE = 'GuestZaloLoginPage',
+    GUEST_RESET_PASSWORD_PAGE = 'GuestResetPasswordPage',
+    GUEST_NOT_FOUND_PAGE = 'GuestNotFoundPage',
+    GUEST_PROFILE_PAGE = 'GuestProfilePage',
+    GUEST_FACEBOOK_LINK_PAGE = 'GuestFacebookLinkPage',
+    GUEST_ZALO_LINK_PAGE = 'GuestZaloLinkPage',
+    // for teacher
+    TEACHER_HOME_PAGE = 'TeacherOnlineHomePage',
+    TEACHER_CALENDAR_PAGE = 'TeacherCalendarPage',
+    TEACHER_CLASSROOM_PAGE = 'TeacherClassroomPage',
+    TEACHER_COURSE_PAGE = 'TeacherCoursePage',
+    TEACHER_TRAINING_MATERIAL_PAGE = 'TeacherTrainingMaterialPage',
+    TEACHER_QUESTION_PAGE = 'TeacherQuestionPage',
+    TEACHER_GROUP_PAGE = 'TeacherGroupPage',
+    TEACHER_ONLINE_ROOM_PAGE = 'TeacherOnlineRoomPage',
+    // for student
+    STUDENT_ONLINE_ROOM_PAGE = 'StudentOnlineRoomPage',
+    STUDENT_HOME_PAGE = 'StudentHomePage',
+}
+
+export enum DeviceType {
+    MOBILE = 'mobile',
+    DESKTOP = 'desktop',
+}
+
+export enum ScreenWidthBreakpoint {
+    // xs: 399px,
+    // sm: 575px,
+    // md: 767px,
+    // lg: 991px,
+    // xl: 1199px,
+    // xxl: 1399px,
+    XS_BREAKPOINT = 399,
+    SM_BREAKPOINT = 575,
+    MD_BREAKPOINT = 767,
+    LG_BREAKPOINT = 991,
+    XL_BREAKPOINT = 1199,
+    XXL_BREAKPOINT = 1399,
+}
+
+export const GenderOptions = [
+    {
+        name: i18n.global.t('common.gender.male'),
+        id: Gender.MALE,
+    },
+    {
+        name: i18n.global.t('common.gender.female'),
+        id: Gender.FEMALE,
+    },
+    {
+        name: i18n.global.t('common.gender.other'),
+        id: Gender.OTHER,
+    },
+];
