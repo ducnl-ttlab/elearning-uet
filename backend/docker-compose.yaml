@@ -18,6 +18,33 @@ services:
     ports:
       - 6379:6379
 
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.9.0
+    container_name: elasticsearch
+    environment:
+      - node.name=elasticsearch
+      - http.port=9200
+      - http.host=0.0.0.0
+      - transport.host=127.0.0.1
+      - cluster.name=es-docker-cluster
+      - discovery.seed_hosts=elasticsearch
+      - cluster.initial_master_nodes=elasticsearch
+      - bootstrap.memory_lock=true
+      - ELASTIC_PASSWORD=ttlab
+      - 'ES_JAVA_OPTS=-Xms512m -Xmx512m'
+      - xpack.security.enabled=true
+      - ELASTIC_USERNAME=elastic
+      - http.cors.enabled=true
+      - http.cors.allow-origin=*
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - ./database/es_data:/var/lib/elasticsearch
+    ports:
+      - 9200:9200
+
   api:
     build:
       context: .
@@ -25,5 +52,6 @@ services:
     depends_on:
       - mysql
       - redis
+      - elasticsearch
     ports:
       - 5000:5000
