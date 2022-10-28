@@ -15,7 +15,7 @@ const app = createApp(App)
 
     .use(plugins.ElementUI, {
         i18n: (key: string) => {
-            return plugins.i18n.global.t(key, plugins.i18n.global.locale);
+            return plugins.i18n.global.t(key);
         },
     });
 // load all components under the folder @/components as glolal components

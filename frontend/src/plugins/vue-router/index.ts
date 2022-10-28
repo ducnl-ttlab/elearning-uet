@@ -3,8 +3,8 @@ import { routers } from './routers';
 
 const routes: Array<RouteRecordRaw> = [
     {
-        path: '/',
-        redirect: '/login',
+        path: '/:catchAll(.*)*',
+        redirect: '/404',
     },
     ...routers,
 ];

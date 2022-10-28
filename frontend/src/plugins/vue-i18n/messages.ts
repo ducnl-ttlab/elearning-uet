@@ -1,14 +1,21 @@
-import { common as commonVi } from '../../common/locale/vi/common.vi';
-import { app as appVi } from '../../common/locale/vi/app.vi';
+import { commonLocale } from '@/modules/common/locale';
+import { authLocale } from '@/modules/auth/locale';
+import { homepageLocale } from '@/modules/homepage/locale';
 import { yupFields } from './yup-fields.vi';
 import { yupVi } from '../yup/locale/vi';
 
 const messages = {
     vi: {
-        app: appVi,
-        common: commonVi,
+        common: commonLocale.vi,
+        auth: authLocale.vi,
+        homepage: homepageLocale.vi,
         yup: yupVi,
         yupFields: yupFields,
+    },
+    en: {
+        common: commonLocale.en,
+        auth: authLocale.en,
+        homepage: homepageLocale.en,
     },
 };
 
