@@ -1,17 +1,11 @@
-import authVi from './vi/auth.vi';
-import loginVi from './vi/login.vi';
-import registerVi from './vi/register.vi';
-import forgotPasswordVi from './vi/forgotPassword.vi';
-import setPasswordVi from './vi/setPassword.vi';
+import { auth as authEn } from './en/auth.en';
+import { auth as authVi } from './vi/auth.vi';
 
-const auth = {
+export const authLocale = {
+    en: {
+        ...authEn,
+    },
     vi: {
-        auth: authVi,
-        login: loginVi,
-        register: registerVi,
-        forgotPassword: forgotPasswordVi,
-        setPassword: setPasswordVi,
+        ...authVi,
     },
 };
-
-export default auth;

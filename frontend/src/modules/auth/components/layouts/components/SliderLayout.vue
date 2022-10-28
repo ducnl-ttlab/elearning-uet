@@ -36,18 +36,18 @@ export default class SliderLayout extends Vue {
     get slideContents() {
         return [
             {
-                title: this.$t('app.layout.auth.banner.title1'),
-                description: this.$t('app.layout.auth.banner.description1'),
+                title: this.$t('auth.banner.title1'),
+                description: this.$t('auth.banner.description1'),
                 image: require('@/assets/auth/images/banner-img-1.png'),
             },
             {
-                title: this.$t('app.layout.auth.banner.title2'),
-                description: this.$t('app.layout.auth.banner.description2'),
+                title: this.$t('auth.banner.title2'),
+                description: this.$t('auth.banner.description2'),
                 image: require('@/assets/auth/images/banner-img-2.png'),
             },
             {
-                title: this.$t('app.layout.auth.banner.title3'),
-                description: this.$t('app.layout.auth.banner.description3'),
+                title: this.$t('auth.banner.title3'),
+                description: this.$t('auth.banner.description3'),
                 image: require('@/assets/auth/images/banner-img-3.png'),
             },
         ];

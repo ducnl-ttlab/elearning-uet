@@ -12,15 +12,6 @@ export const auth = {
         requiredField: 'Trường này là bắt buộc',
     },
 
-    banner: {
-        title1: 'Dạy & học trực tuyến <br/>chưa bao giờ dễ dàng đến thế',
-        description1: 'Chào mừng bạn đến với lớp học múa quạt của anh Bảnh.',
-        title2: 'Cần cù thì bù siêng năng',
-        description2: 'Không làm mà muốn có ăn',
-        title3: 'Thì chỉ có ăn đồng bằng <br/> ăn cát',
-        description3: 'Lớp học do thầy Bùi Xuân Huấn giảng dạy',
-    },
-
     forgotPassword: {
         title: 'Chào mừng bạn đến với Sorademic',
         welcomeDescription:

@@ -4,7 +4,7 @@
     >
         <slot />
         <el-button type="primary" class="back-button" @click="onClickBackButton">
-            {{ $t('guest.common.back') }}
+            {{ $t('common.navigate.back') }}
         </el-button>
     </div>
 </template>
