@@ -55,3 +55,11 @@ services:
       - elasticsearch
     ports:
       - 5000:5000
+
+  nginx:
+    depends_on:
+      - api
+    restart: always
+    build: ./nginx
+    ports:
+      - '80:80'
