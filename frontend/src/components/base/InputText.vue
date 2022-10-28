@@ -38,7 +38,7 @@
 </template>
 
 <script lang="ts">
-import { ValidationForm, KeyCode } from '../../common/constants';
+import { ValidationForm, KeyCode } from '@/common/constants';
 import { Model, Prop, Vue } from 'vue-property-decorator';
 export default class InputText extends Vue {
     @Prop({ default: '' }) readonly label!: string;
@@ -74,5 +74,34 @@ export default class InputText extends Vue {
 :deep(.el-input__inner::-webkit-inner-spin-button) {
     -webkit-appearance: none;
     margin: 0;
+}
+
+.is-focus {
+    label {
+        color: $color-blue;
+    }
+    :deep(.el-input__wrapper) {
+        background-color: $color-violet-03;
+    }
+}
+
+.validation-error {
+    font-size: 12px;
+    color: $color-red-01;
+    margin: 5px 0;
+}
+
+.position-relative {
+    margin-bottom: 24px;
+}
+
+.is-error {
+    :deep(.el-input .el-input__wrapper) {
+        box-shadow: 0 0 0 1px $color-red-01;
+        background-color: $color-green-03;
+    }
+    label {
+        color: $color-red-01;
+    }
 }
 </style>

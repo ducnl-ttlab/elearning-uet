@@ -22,7 +22,7 @@
 </template>
 
 <script lang="ts">
-import { AllowIntegerCodes, AllowDecimalCodes } from '../../common/constants';
+import { AllowIntegerCodes, AllowDecimalCodes } from '@/common/constants';
 import { Model, Prop, Vue } from 'vue-property-decorator';
 export default class InputNumber extends Vue {
     @Prop({ default: '' }) readonly label!: string;

@@ -1,7 +1,8 @@
-import { DEFAULT_LANGUAGE, SupportLanguage } from '../common/constants';
+import { DEFAULT_LANGUAGE, SupportLanguage } from '@/common/constants';
 import { storage } from './localStorage';
 
 export interface IUser {
+    id?: number;
     firstName?: string;
     lastName?: string;
     password?: string;
@@ -33,9 +34,7 @@ class LocalStorageTokenService {
     }
     // ACCESS_TOKEN_EXPIRED_AT
     getAccessTokenExpiredAt(): number {
-        return +storage.getLocalStorage(
-            AUTH_SERVICE_KEY.ACCESS_TOKEN_EXPIRED_AT,
-        );
+        return +storage.getLocalStorage(AUTH_SERVICE_KEY.ACCESS_TOKEN_EXPIRED_AT);
     }
     setAccessTokenExpiredAt(expiredIn: number): void {
         const expiredAt = new Date().getTime() + expiredIn * 1000 - BUFFER_TIME;
@@ -66,9 +65,7 @@ class LocalStorageTokenService {
         );
     }
     getRefreshTokenExpiredAt(): number {
-        return +storage.getLocalStorage(
-            AUTH_SERVICE_KEY.REFRESH_TOKEN_EXPIRED_AT,
-        );
+        return +storage.getLocalStorage(AUTH_SERVICE_KEY.REFRESH_TOKEN_EXPIRED_AT);
     }
     resetRefreshTokenExpiredAt(): void {
         storage.setLocalStorage(AUTH_SERVICE_KEY.REFRESH_TOKEN_EXPIRED_AT, '');
@@ -76,10 +73,7 @@ class LocalStorageTokenService {
 
     // LOGIN USER
     setLoginUser(user: IUser): void {
-        storage.setLocalStorage(
-            AUTH_SERVICE_KEY.LOGIN_USER,
-            JSON.stringify(user || ''),
-        );
+        storage.setLocalStorage(AUTH_SERVICE_KEY.LOGIN_USER, JSON.stringify(user || ''));
     }
     getLoginUser(): IUser | null {
         return storage.getLocalStorage(AUTH_SERVICE_KEY.LOGIN_USER)
