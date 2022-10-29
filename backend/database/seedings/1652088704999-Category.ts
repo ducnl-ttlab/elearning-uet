@@ -13,8 +13,8 @@ export class Category1652088704999 implements MigrationInterface {
         name: 'Kinh doanh',
       },
       {
-        name: 'design',
-        image: 'sáng tạo',
+        image: 'design',
+        name: 'sáng tạo',
       },
       {
         image: 'personal-development',
