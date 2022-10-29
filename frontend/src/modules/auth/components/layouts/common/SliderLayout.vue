@@ -61,10 +61,12 @@ export default class SliderLayout extends Vue {
 }
 
 .splide-item {
-    border-radius: 50%;
     width: 478px;
     img {
+        object-fit: cover;
         width: 324px;
+        height: 324px;
+        border-radius: 50%;
     }
 }
 

@@ -1,6 +1,13 @@
 <template>
-    <div class="d-flex flex-column justify-content-center align-items-center">
-        <div class="form"></div>
+    <div
+        class="d-flex flex-column justify-content-center align-items-center register-container"
+    >
+        <img src="@/assets/auth/images/auth-logo.png" alt="" />
+
+        <div class="form">
+            <!-- Enter email or phone number -->
+            <InputCredentialForm />
+        </div>
 
         <SocialButtonBox />
         <div class="bottom-wrapper">
@@ -14,9 +21,11 @@
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
+import InputCredentialForm from '@/modules/auth/components/register/InputCredentialForm.vue';
+import SocialButtonBox from '@/modules/auth/components/layouts/common/SocialButtonBox.vue';
 
 @Options({
-    components: {},
+    components: { SocialButtonBox, InputCredentialForm },
 })
 export default class RegisterPage extends Vue {
     created() {
@@ -36,16 +45,20 @@ export default class RegisterPage extends Vue {
 }
 </script>
 <style lang="scss" scoped>
+.register-container {
+    margin: 24px auto;
+}
+
 .form {
     max-width: 454px;
     width: 90vw;
-    margin: 56px auto 24px;
+    margin: 10px auto;
 }
 .bottom-wrapper {
     color: $color-gray-03;
     font-size: 14px;
     line-height: 21px;
-    margin-bottom: 40px;
+    margin: 20px 0;
     a {
         color: $color-violet-new-1;
         text-decoration: none;
