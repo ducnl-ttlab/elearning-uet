@@ -1,6 +1,6 @@
 import { PageName } from '@/common/constants';
 import { RouteRecordRaw } from 'vue-router';
-import AuthLayout from '@/modules/auth/components/layouts/components/AuthLayout.vue';
+import AuthLayout from '@/modules/auth/components/layouts/common/AuthLayout.vue';
 import LoginPage from '../pages/LoginPage.vue';
 import RegisterPage from '../pages/RegisterPage.vue';
 import GoogleLogin from '../pages/GoogleLogin.vue';
