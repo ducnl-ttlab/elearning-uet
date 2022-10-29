@@ -1,4 +1,4 @@
-import { Role, TableName } from 'database/constant';
+import { TableName, Role } from '../constant';
 import { MigrationInterface, QueryRunner } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
 
@@ -38,13 +38,15 @@ export class User1667010084382 implements MigrationInterface {
         role: Role.instructor,
       },
     ];
-    let itemDatas = items.map(async (item) => {
-      const hashedPassword = await bcrypt.hash(item.password, 8);
-      return {
-        ...item,
-        password: hashedPassword,
-      };
-    });
+    let itemDatas = await Promise.all(
+      items.map(async (item) => {
+        const hashedPassword = await bcrypt.hash(item.password, 8);
+        return {
+          ...item,
+          password: hashedPassword,
+        };
+      }),
+    );
 
     await queryRunner.manager.getRepository(TableName.user).insert(itemDatas);
   }

@@ -1,4 +1,4 @@
-import { TableName } from 'database/constant';
+import { TableName } from '../constant';
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class Course1667010171189 implements MigrationInterface {
@@ -6,13 +6,14 @@ export class Course1667010171189 implements MigrationInterface {
     const items = [
       {
         instructorId: '123456abc',
-        name: 'ducluong',
-        email: 'ducnl@tokyotechlab.com',
-        password: '12345678',
+        categoryId: 1,
+        name: 'khoa hoc lap trinh co ban',
+        description: 'khoa hoc lap trinh co ban',
+        price: 12321.1,
         isPublished: true,
       },
     ];
-    let itemDatas = items.map(async (item) => {
+    let itemDatas = items.map((item) => {
       return {
         ...item,
       };
