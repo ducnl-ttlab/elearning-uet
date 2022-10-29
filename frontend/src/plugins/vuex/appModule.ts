@@ -1,64 +1,62 @@
-import { Action, getModule, Module, Mutation, VuexModule } from 'vuex-module-decorators';
-import store from '@/plugins/vuex';
-import {
-    DEFAULT_LANGUAGE,
-    DeviceType,
-    ScreenWidthBreakpoint,
-    SupportLanguage,
-} from '@/common/constants';
-import { IUser } from '@/common/tokenService';
+import { Module, VuexModule, Action, Mutation, getModule } from 'vuex-module-decorators';
+import store from '@/plugins/vuex/index';
 
-@Module({
-    name: 'app',
-    stateFactory: true,
-    dynamic: true,
-    namespaced: true,
-    store,
-})
-class AppModule extends VuexModule {
-    loginUser: IUser = {} as IUser;
-    screenWidth = window.innerWidth;
-    currentLanguage = DEFAULT_LANGUAGE;
+@Module({ dynamic: true, namespaced: true, store, name: 'authRegister' })
+class RegisterModule extends VuexModule {
+    registerEmail = '';
+    authProvider = '';
+    isShowConfirmationBox = false;
+    registerPhoneNumber = '';
+    activeEmailToken = '';
 
-    get deviceType() {
-        return this.screenWidth <= ScreenWidthBreakpoint.MD_BREAKPOINT
-            ? DeviceType.MOBILE
-            : DeviceType.DESKTOP;
-    }
-
-    get isUserLogin(): boolean {
-        return !!this.loginUser?.id;
+    @Action
+    setRegisterEmail(email: string) {
+        this.SET_REGISTER_EMAIL(email);
     }
 
     @Action
-    setLoginUser(user: IUser) {
-        this.SET_LOGIN_USER(user);
+    setRegisterPhoneNumber(phoneNumber: string) {
+        this.SET_REGISTER_PHONE_NUMBER(phoneNumber);
     }
 
     @Action
-    setScreenWidth(screenWidth: number) {
-        this.SET_SCREEN_WIDTH(screenWidth);
+    setAuthProvider(value: string) {
+        this.SET_AUTH_PROVIDER(value);
     }
 
     @Action
-    setCurrentLanguage(language: SupportLanguage) {
-        this.SET_CURRENT_LANGUAGE(language);
+    setIsShowConfirmationBox(value: boolean) {
+        this.SET_IS_SHOW_CONFIRMATION_BOX(value);
+    }
+
+    @Action
+    setActiveEmailToken(token: string) {
+        this.SET_ACTIVE_EMAIL_TOKEN(token);
     }
 
     @Mutation
-    SET_SCREEN_WIDTH(screenWidth: number) {
-        this.screenWidth = screenWidth;
+    SET_REGISTER_EMAIL(value: string) {
+        this.registerEmail = value;
     }
 
     @Mutation
-    SET_LOGIN_USER(user: IUser) {
-        this.loginUser = user;
+    SET_AUTH_PROVIDER(value: string) {
+        this.authProvider = value;
     }
 
     @Mutation
-    SET_CURRENT_LANGUAGE(language: SupportLanguage) {
-        this.currentLanguage = language;
+    SET_IS_SHOW_CONFIRMATION_BOX(value: boolean) {
+        this.isShowConfirmationBox = value;
+    }
+
+    @Mutation
+    SET_REGISTER_PHONE_NUMBER(phoneNumber: string) {
+        this.registerPhoneNumber = phoneNumber;
+    }
+
+    @Mutation
+    SET_ACTIVE_EMAIL_TOKEN(token: string) {
+        this.activeEmailToken = token;
     }
 }
-
-export const appModule = getModule(AppModule);
+export const registerModule = getModule(RegisterModule);
