@@ -15,9 +15,11 @@ import { SearchModule } from './modules/search/search.module';
 import { RedisCacheModule } from './modules/cache/redis-cache.module';
 import { ConfigModule } from '@nestjs/config';
 import { LocalFileModule } from './infra/local-file/local-file.module';
+import { StripeModule } from './modules/stripe/stripe.module';
 
 @Module({
   imports: [
+    StripeModule.forRoot(process.env.STRIPE_API_KEY),
     ConfigModule,
     DatabaseModule,
     CategoryModule,
