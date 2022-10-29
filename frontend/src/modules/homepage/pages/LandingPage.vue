@@ -1,5 +1,5 @@
 <template>
-    <div>L1231</div>
+    <div>This is Landing Page</div>
 </template>
 
 <script lang="ts">

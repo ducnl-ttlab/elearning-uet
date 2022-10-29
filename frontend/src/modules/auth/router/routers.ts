@@ -14,25 +14,17 @@ const authRouters: Array<RouteRecordRaw> = [
                 path: '/login',
                 name: PageName.LOGIN_PAGE,
                 component: LoginPage,
-                meta: {
-                    onlyWhenLoggedOut: true,
-                    isPublic: true,
-                },
             },
             {
                 path: '/register',
                 name: PageName.REGISTER_PAGE,
                 component: RegisterPage,
-                meta: {
-                    onlyWhenLoggedOut: true,
-                    isPublic: true,
-                },
             },
-            {
-                path: '/auth/google/:token',
-                name: PageName.LOGIN_PAGE,
-                component: GoogleLogin,
-            },
+            // {
+            //     path: '/auth/google/:token',
+            //     name: PageName.LOGIN_PAGE,
+            //     component: GoogleLogin,
+            // },
         ],
     },
 ];
