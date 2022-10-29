@@ -10,7 +10,7 @@ export class User1667010084382 implements MigrationInterface {
         username: 'ducluong',
         email: 'ducnl@tokyotechlab.com',
         password: '12345678',
-        verify: true,
+        verified: true,
         role: Role.instructor,
       },
       {
@@ -18,7 +18,7 @@ export class User1667010084382 implements MigrationInterface {
         username: 'binhmup',
         email: 'binhltl@tokyotechlab.com',
         password: '12345678',
-        verify: true,
+        verified: true,
         role: Role.admin,
       },
       {
@@ -26,7 +26,7 @@ export class User1667010084382 implements MigrationInterface {
         username: 'hieumup',
         email: 'hieudt@tokyotechlab.com',
         password: '12345678',
-        verify: true,
+        verified: true,
         role: Role.student,
       },
       {
@@ -34,7 +34,7 @@ export class User1667010084382 implements MigrationInterface {
         username: 'hieuxoan',
         email: '19020291@vnu.edu.vn',
         password: '12345678',
-        verify: true,
+        verified: true,
         role: Role.instructor,
       },
     ];
