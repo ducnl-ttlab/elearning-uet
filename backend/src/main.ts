@@ -14,10 +14,16 @@ async function bootstrap() {
   });
 
   const configService = app.get(ConfigService);
-  const ALLOWED_CORS_ORIGIN = configService.get('FRONTEND_URL');
+  const whitelist = configService.get('FRONTEND_URL').split(',');
 
   app.enableCors({
-    origin: ALLOWED_CORS_ORIGIN,
+    origin: function (origin, callback) {
+      if (!origin || whitelist.indexOf(origin) !== -1) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
     credentials: true,
     methods: 'GET,HEAD,OPTIONS,POST,PUT,PATCH,DELETE',
   });
