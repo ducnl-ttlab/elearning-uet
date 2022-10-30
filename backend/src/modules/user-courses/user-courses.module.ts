@@ -7,13 +7,9 @@ import { CategoryModule } from '../category/category.module';
 import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([UserCourse]),
-    ConfigModule,
-    CategoryModule,
-  ],
-  providers: [UserCourseService],
+  imports: [TypeOrmModule.forFeature([UserCourse]), CategoryModule],
   controllers: [UserCourseController],
-  exports: [UserCourseController],
+  providers: [UserCourseService],
+  exports: [UserCourseService],
 })
-export class CourseModule {}
+export class UserCourseModule {}

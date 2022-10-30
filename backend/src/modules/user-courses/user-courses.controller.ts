@@ -12,6 +12,7 @@ import {
   UseInterceptors,
   UsePipes,
   Headers,
+  Inject,
 } from '@nestjs/common';
 import { ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { Request, Response } from 'express';
@@ -26,12 +27,19 @@ import { CategoryService } from '../category/service/category.service';
 import LocalFilesInterceptor, {
   imageParams,
 } from 'src/infra/local-file/local-files.interceptor';
-
+import { STRIPE_CLIENT } from 'src/common/constant';
+import Stripe from 'stripe';
 @ApiTags('UserCourse')
 @Controller('user-course')
 export class UserCourseController {
   constructor(
     private readonly courseService: UserCourseService,
     private readonly categoryService: CategoryService,
+    @Inject(STRIPE_CLIENT) private stripe: Stripe,
   ) {}
+
+  @Get()
+  async testStripe() {
+    return await this.stripe.customers.list();
+  }
 }

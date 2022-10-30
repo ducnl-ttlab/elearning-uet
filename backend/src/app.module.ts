@@ -16,10 +16,12 @@ import { RedisCacheModule } from './modules/cache/redis-cache.module';
 import { ConfigModule } from '@nestjs/config';
 import { LocalFileModule } from './infra/local-file/local-file.module';
 import { StripeModule } from './modules/stripe/stripe.module';
+import { UserCourseModule } from './modules/user-courses/user-courses.module';
 
 @Module({
   imports: [
     StripeModule.forRoot(process.env.STRIPE_API_KEY),
+    UserCourseModule,
     ConfigModule,
     DatabaseModule,
     CategoryModule,
