@@ -1,3 +1,4 @@
+import { AuthModule } from './../auth/auth.module';
 import { Module } from '@nestjs/common';
 import { UserCourseController } from './user-courses.controller';
 import { UserCourseService } from './service/user-course.service';
@@ -13,6 +14,7 @@ import { UserModule } from '../user/user.module';
     CategoryModule,
     CourseModule,
     UserModule,
+    AuthModule
   ],
   controllers: [UserCourseController],
   providers: [UserCourseService],

@@ -10,12 +10,17 @@ export class CheckoutDto {
   items: ItemCheckout[];
 }
 
+export class CheckoutCourseDto {
+  @ApiProperty()
+  courseId: number;
+}
+
 export class CategoryDto {
   @ApiProperty()
   categoryId: number;
 }
 
 export class CourseDto {
-  @ApiProperty() 
+  @ApiProperty()
   id: number;
 }
