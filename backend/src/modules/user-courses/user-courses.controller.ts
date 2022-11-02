@@ -95,7 +95,7 @@ export class UserCourseController {
             product_data: {
               name,
               images,
-              description: `Giảng viên: ${username} ${phone? `, phone:${phone}`: ''}`,
+              description: `Giảng viên: ${username} ${phone? `, phone: ${phone}`: ''}`,
               metadata: {
                 instructor: instructor.username,
               }
