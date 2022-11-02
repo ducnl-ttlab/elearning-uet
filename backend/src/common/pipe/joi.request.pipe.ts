@@ -48,3 +48,8 @@ export class ValidationPipe implements PipeTransform {
     return value;
   }
 }
+
+export interface IValidationKeyType<T> {
+  key: T;
+  type: Paramtype;
+}

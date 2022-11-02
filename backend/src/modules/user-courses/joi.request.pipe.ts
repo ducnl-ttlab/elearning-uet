@@ -1,14 +1,13 @@
-import {
-  ArgumentMetadata,
-  BadRequestException,
-  Paramtype,
-  PipeTransform,
-} from '@nestjs/common';
 import * as Joi from 'joi';
-import { ValidationPipe } from 'src/common/pipe/joi.request.pipe';
+import {
+  IValidationKeyType,
+  ValidationPipe,
+} from 'src/common/pipe/joi.request.pipe';
 
-const tokenSchema = Joi.object().keys({
-  param: Joi.string().min(10),
+const courseIdParamSchema = Joi.object().keys({
+  courseId: Joi.string()
+    .pattern(/^[0-9]+$/)
+    .message('courseId should be a number'),
 });
 
 const categoryParamSchema = Joi.object().keys({
@@ -31,19 +30,16 @@ const createCourseSchema = Joi.object().keys({
 });
 
 const courseValidationSchemas = {
-  tokenSchema,
+  courseIdParamSchema,
   categoryParamSchema,
   createCourseSchema,
 };
 
-type courseValidationKey = keyof typeof courseValidationSchemas;
+type CourseValidationKeyType = keyof typeof courseValidationSchemas;
 
-interface ICourseValidation {
-  key: courseValidationKey;
-  type: Paramtype;
-}
-
-export function courseValidation(...validations: ICourseValidation[]) {
+export function userCourseValidation(
+  ...validations: IValidationKeyType<CourseValidationKeyType>[]
+) {
   return validations.map(
     (v) => new ValidationPipe(courseValidationSchemas[v.key], v.type),
   );

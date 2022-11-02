@@ -20,7 +20,7 @@ import { UserCourseService } from './service/user-course.service';
 import { IUserJwt } from 'src/common/interfaces';
 import { User } from 'src/common/decorator/user.decorator';
 import { Auth } from 'src/common/decorator/auth.decorator';
-import { courseValidation } from './joi.request.pipe';
+import { userCourseValidation } from './joi.request.pipe';
 import { SuccessResponse } from 'src/common/helpers/api.response';
 import {
   CategoryDto,
@@ -69,7 +69,13 @@ export class UserCourseController {
   }
 
   @Post('create-course-checkout/:courseId')
-  @Auth("student")
+  @UsePipes(
+    ...userCourseValidation({
+      key: "courseIdParamSchema",
+      type: 'param',
+    }),
+  )
+  @Auth('student')
   async createCheckout(
     @User() user: IUserJwt,
     @Param() param: CheckoutCourseDto,
@@ -80,7 +86,7 @@ export class UserCourseController {
       course.instructorId,
     );
     let { name, price, image } = course;
-    const {phone, username} = instructor
+    const { phone, username } = instructor;
 
     let images = (image && [image]) || [];
     let { code, token, time } = await this.authService.generateAuthToken();
@@ -95,10 +101,12 @@ export class UserCourseController {
             product_data: {
               name,
               images,
-              description: `Giảng viên: ${username} ${phone? `, phone: ${phone}`: ''}`,
+              description: `Giảng viên: ${username} ${
+                phone ? `, phone: ${phone}` : ''
+              }`,
               metadata: {
                 instructor: instructor.username,
-              }
+              },
             },
             unit_amount: parseInt(`${price}`),
           },
@@ -110,7 +118,7 @@ export class UserCourseController {
     });
 
     // save token to db
-    await this.authService.saveResetToken(user.id, token, time)
+    await this.authService.saveResetToken(user.id, token, time);
     return res.status(HttpStatus.OK).json({ url: session.url });
   }
 }
