@@ -149,7 +149,7 @@ export class AuthController {
     let user = await this.authService.existEmail(email);
 
     if (user.provider !== Provider.local) {
-      throw new ConflictException('this email logged in with gooogle');
+      throw new ConflictException('this email not logged in with local');
     }
 
     //generate token
