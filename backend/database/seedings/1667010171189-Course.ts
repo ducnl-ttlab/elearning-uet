@@ -11,6 +11,7 @@ export class Course1667010171189 implements MigrationInterface {
         description: 'khoa hoc lap trinh co ban',
         price: 12321.1,
         isPublished: true,
+        image: 'https://lptech.asia/uploads/files/2020/05/25/lap-trinh-web-php-mysql.png'
       },
     ];
     let itemDatas = items.map((item) => {
