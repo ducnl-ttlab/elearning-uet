@@ -32,7 +32,7 @@ export class UserCourses1666985998127 implements MigrationInterface {
             name: 'status',
             type: 'enum',
             enum: Object.values(UserCourseStatus),
-            enumName: 'roleEnum',
+            enumName: 'statusEnum',
             default: `'${UserCourseStatus.pending}'`,
           },
           {

@@ -6,6 +6,7 @@ export enum TableName {
   user = 'users',
   course = 'courses',
   userCourse = 'user_courses',
+  notification = 'notifications',
 }
 
 export enum Role {
@@ -25,4 +26,13 @@ export enum UserCourseStatus {
   accepted = 'accepted',
   reject = 'reject',
   expired = 'expired',
+}
+
+export enum NotificationType {
+  studentInvitation = 'student_invitation',
+  topicCreation = 'topic_createion',
+  homework = 'homework',
+  comment = 'comment',
+  rating = 'rating',
+  quiz = 'quiz',
 }
