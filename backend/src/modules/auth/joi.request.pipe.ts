@@ -12,7 +12,7 @@ const tokenSchema = Joi.object().keys({
 
 const loginBodySchema = Joi.object().keys({
   email: Joi.string().required().min(1).email(),
-  password: Joi.string().required().min(10),
+  password: Joi.string().required().min(8),
 });
 
 const verifyCodeSchema = Joi.object().keys({
