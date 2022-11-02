@@ -17,6 +17,7 @@ import { ConfigModule } from '@nestjs/config';
 import { LocalFileModule } from './infra/local-file/local-file.module';
 import { StripeModule } from './modules/stripe/stripe.module';
 import { UserCourseModule } from './modules/user-courses/user-courses.module';
+import { NotificationModule } from './modules/notification/notification.module';
 
 @Module({
   imports: [
@@ -26,15 +27,16 @@ import { UserCourseModule } from './modules/user-courses/user-courses.module';
     DatabaseModule,
     CategoryModule,
     StoryModule,
-    FavoriteStoryModule,
-    StoryCategoryModule,
     UserModule,
     AuthModule,
     MailModule,
     SearchModule,
-    RedisCacheModule,
     CourseModule,
     LocalFileModule,
+    RedisCacheModule,
+    NotificationModule,
+    FavoriteStoryModule,
+    StoryCategoryModule,
   ],
   controllers: [AppController],
   providers: [AppService],
