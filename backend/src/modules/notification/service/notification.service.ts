@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { NotificationCourse } from '../entity/user-course.entity';
+import { NotificationCourse } from '../entity/notification.entity';
 
 @Injectable()
 export class NotificationService {
