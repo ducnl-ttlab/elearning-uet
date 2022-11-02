@@ -11,12 +11,12 @@ import { NotificationCourse } from '../entity/notification.entity';
 export class NotificationService {
   constructor(
     @InjectRepository(NotificationCourse)
-    private readonly usercourse: Repository<NotificationCourse>,
+    private readonly notification: Repository<NotificationCourse>,
   ) {}
 
-  async saveUserCourse(userCourse: Partial<NotificationCourse>): Promise<NotificationCourse> {
+  async saveNotification(notification: Partial<NotificationCourse>): Promise<NotificationCourse> {
     try {
-      return this.usercourse.save(userCourse);
+      return this.notification.save(notification);
     } catch (error) {
       throw new InternalServerErrorException(error);
     }
@@ -24,17 +24,17 @@ export class NotificationService {
 
   async findOneById(id: number): Promise<NotificationCourse> {
     try {
-      return this.usercourse.findOne(id);
+      return this.notification.findOne(id);
     } catch (error) {
       throw new InternalServerErrorException(error);
     }
   }
 
-  async existUserCourse(id: number): Promise<NotificationCourse> {
-    let existCourse = await this.findOneById(id);
-    if (!existCourse) {
-      throw new NotFoundException('Not found course');
+  async existNotification(id: number): Promise<NotificationCourse> {
+    let existNotification = await this.findOneById(id);
+    if (!existNotification) {
+      throw new NotFoundException('Not found notification');
     }
-    return existCourse;
+    return existNotification;
   }
 }

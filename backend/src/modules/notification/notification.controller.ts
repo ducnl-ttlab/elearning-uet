@@ -30,8 +30,8 @@ import LocalFilesInterceptor, {
 import { STRIPE_CLIENT } from 'src/common/constant';
 import Stripe from 'stripe';
 
-@ApiTags('UserCourse')
-@Controller('user-course')
+@ApiTags('Notification')
+@Controller('notification')
 export class NotificationController {
   constructor(
     private readonly courseService: NotificationService,
@@ -39,10 +39,8 @@ export class NotificationController {
     @Inject(STRIPE_CLIENT) private stripe: Stripe,
   ) {}
 
-  @Post('create-checkout')
-  async createCheckout(@Body() body: CheckoutDto, @Res() res: Response) {
-  
-
+  @Get('')
+  async getNotification(@Body() body: CheckoutDto, @Res() res: Response) {
     return res.status(HttpStatus.OK).json({ url: "session.url" });
   }
 }

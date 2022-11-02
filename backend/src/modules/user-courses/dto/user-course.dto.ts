@@ -16,6 +16,6 @@ export class CategoryDto {
 }
 
 export class CourseDto {
-  @ApiProperty()
+  @ApiProperty() 
   id: number;
 }
