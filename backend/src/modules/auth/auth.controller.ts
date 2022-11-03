@@ -172,7 +172,7 @@ export class AuthController {
   async verifyCode(@Query() query: VerifyCodeDto, @Res() res: Response) {
     const { email, code } = query;
     let user = await this.authService.existEmail(email);
-    let { accessToken } = await this.authService.verifyCode(code, user);
+    let { accessToken } = await this.authService.generateTokenByCode(code, user);
     return res.status(HttpStatus.OK).json(new SuccessResponse({ accessToken }));
   }
 

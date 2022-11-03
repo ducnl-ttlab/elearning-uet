@@ -18,7 +18,6 @@ import { IUserJwt, IVerifyUserJwt } from 'src/common/interfaces';
 import { Provider, Role } from 'database/constant';
 import * as bcrypt from 'bcryptjs';
 import { VerifyCodeUser } from '../dto/forgot-password.dto';
-
 @Injectable()
 export class AuthService {
   constructor(
@@ -123,14 +122,18 @@ export class AuthService {
     return user;
   }
 
-  async verifyCode(code: string, user: VerifyCodeUser) {
+  async verifyCode(
+    code: string,
+    user: VerifyCodeUser,
+    expiredTime?: number,
+  ) {
     let { id, email, resetToken, expiredTokenTime } = user;
 
     if (!resetToken || !expiredTokenTime) {
-      throw new BadRequestException("you haven't forgotten your password");
+      throw new BadRequestException("you haven't any token");
     }
     //check time
-    let hasTokenExpired = hasResetTokenExpired(expiredTokenTime);
+    let hasTokenExpired = hasResetTokenExpired(expiredTokenTime, expiredTime);
     if (hasTokenExpired) {
       throw new BadRequestException('your code has expired');
     }
@@ -142,10 +145,13 @@ export class AuthService {
       throw new BadRequestException('Invalid code');
     }
 
+    return { email, id, isCodeCorrect };
+  }
+
+  async generateTokenByCode(code: string, user: VerifyCodeUser) {
+    let { email, id } = await this.verifyCode(code, user);
     let token = this.signVerifyUserJwt({ email, id });
-
     await Promise.all([this.resetTokenById(id), token]);
-
     return token;
   }
 
