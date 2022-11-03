@@ -41,6 +41,6 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, document);
   await generateChunkFiles();
-  await app.listen(5000);
+  await app.listen(configService.get('APP_PORT'));
 }
 bootstrap();
