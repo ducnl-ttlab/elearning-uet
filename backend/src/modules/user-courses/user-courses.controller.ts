@@ -1,3 +1,4 @@
+import { UserCourseStatus } from 'database/constant';
 import {
   Body,
   Controller,
@@ -13,13 +14,14 @@ import {
   UsePipes,
   Headers,
   Inject,
+UseGuards,
 } from '@nestjs/common';
 import { ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { Request, Response } from 'express';
 import { UserCourseService } from './service/user-course.service';
 import { IUserJwt } from 'src/common/interfaces';
 import { User } from 'src/common/decorator/user.decorator';
-import { Auth } from 'src/common/decorator/auth.decorator';
+import { Auth, JoinCourseAuth } from 'src/common/decorator/auth.decorator';
 import { userCourseValidation } from './joi.request.pipe';
 import { SuccessResponse } from 'src/common/helpers/api.response';
 import {
@@ -36,6 +38,9 @@ import { STRIPE_CLIENT } from 'src/common/constant';
 import Stripe from 'stripe';
 import { CourseService } from '../course/service/course.service';
 import { AuthService } from '../auth/service/auth.service';
+import { UserCourse } from './entity/user-course.entity';
+import moment from 'moment';
+import { JoinCourseGuard } from 'src/common/guard/student-course.guard';
 
 @ApiTags('UserCourse')
 @Controller('user-course')
@@ -76,12 +81,13 @@ export class UserCourseController {
       type: 'param',
     }),
   )
-  @Auth('student')
+  @JoinCourseAuth()
   async createCheckout(
     @User() user: IUserJwt,
     @Param() param: CheckoutCourseDto,
     @Res() res: Response,
   ) {
+
     let course = await this.courseService.existCourse(param.courseId);
     let instructor = await this.courseService.getCourseInstrutor(
       course.instructorId,
@@ -103,7 +109,7 @@ export class UserCourseController {
               name,
               images,
               description: `Giảng viên: ${username} ${
-                phone ? `, phone: ${phone}` : ''
+                phone ? `, Số điện thoại: ${phone}` : ''
               }`,
               metadata: {
                 instructor: instructor.username,
@@ -130,19 +136,32 @@ export class UserCourseController {
       type: 'param',
     }),
   )
-  @Auth('student')
+  @JoinCourseAuth()
   async verifyJoinCourse(
     @User() user: IUserJwt,
     @Param() param: JoinCourseDto,
     @Res() res: Response,
   ) {
-    // let course = await this.courseService.existCourse(param.courseId);
-
-    let hasUser = await this.authService.existEmail(user.email)
-
+    let { courseId, code } = param;
+    let { id } = user;
     // check token
+    let existUser = await this.authService.existEmail(user.email);
+    await this.authService.verifyCode(code, existUser, 100 * 60);
 
-    // save token to db
-    return res.status(HttpStatus.OK).json({ url: hasUser });
+    // check course
+    await this.courseService.existCourse(param.courseId);
+
+    let newUserCourse: Partial<UserCourse> = {
+      courseId,
+      userId: id,
+      status: UserCourseStatus.accepted,
+      startCourseTime: new Date(),
+    };
+
+    let userCourse = this.userCourseService.saveUserCourse(newUserCourse);
+
+    Promise.all([userCourse, this.authService.resetTokenById(id)]);
+
+    return res.status(HttpStatus.OK).json(new SuccessResponse());
   }
 }

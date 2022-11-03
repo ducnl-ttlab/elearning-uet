@@ -30,6 +30,19 @@ export class UserCourseService {
     }
   }
 
+  async findOneByUsercourse(userId: string,courseId: number): Promise<UserCourse> {
+    try {
+      return this.usercourse.findOne({
+        where: {
+          userId,
+          courseId
+        }
+      });
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
   async existUserCourse(id: number): Promise<UserCourse> {
     let existCourse = await this.findOneById(id);
     if (!existCourse) {

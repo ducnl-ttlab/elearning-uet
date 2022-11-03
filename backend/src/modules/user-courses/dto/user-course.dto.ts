@@ -17,6 +17,9 @@ export class CheckoutCourseDto {
 export class JoinCourseDto {
   @ApiProperty()
   courseId: number;
+
+  @ApiProperty()
+  code: string;
 }
 
 export class CategoryDto {
