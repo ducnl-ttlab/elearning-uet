@@ -14,6 +14,10 @@ export class CheckoutCourseDto {
   @ApiProperty()
   courseId: number;
 }
+export class JoinCourseDto {
+  @ApiProperty()
+  courseId: number;
+}
 
 export class CategoryDto {
   @ApiProperty()

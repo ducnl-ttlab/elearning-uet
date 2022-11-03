@@ -10,8 +10,17 @@ const courseIdParamSchema = Joi.object().keys({
     .message('courseId should be a number'),
 });
 
+const verifyCourseParamSchema = Joi.object().keys({
+  courseId: Joi.string()
+    .pattern(/^[0-9]+$/)
+    .message('courseId should be a number'),
+});
+
 const categoryParamSchema = Joi.object().keys({
-  categoryId: Joi.string()
+  courseId: Joi.string()
+    .pattern(/^[0-9]+$/)
+    .message('categoryId should be a number'),
+  code: Joi.string()
     .pattern(/^[0-9]+$/)
     .message('categoryId should be a number'),
 });
@@ -33,6 +42,7 @@ const courseValidationSchemas = {
   courseIdParamSchema,
   categoryParamSchema,
   createCourseSchema,
+  verifyCourseParamSchema,
 };
 
 type CourseValidationKeyType = keyof typeof courseValidationSchemas;

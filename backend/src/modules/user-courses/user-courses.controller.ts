@@ -26,6 +26,7 @@ import {
   CategoryDto,
   CheckoutDto,
   CheckoutCourseDto,
+  JoinCourseDto,
 } from './dto/user-course.dto';
 import { CategoryService } from '../category/service/category.service';
 import LocalFilesInterceptor, {
@@ -71,7 +72,7 @@ export class UserCourseController {
   @Post('create-course-checkout/:courseId')
   @UsePipes(
     ...userCourseValidation({
-      key: "courseIdParamSchema",
+      key: 'courseIdParamSchema',
       type: 'param',
     }),
   )
@@ -120,5 +121,28 @@ export class UserCourseController {
     // save token to db
     await this.authService.saveResetToken(user.id, token, time);
     return res.status(HttpStatus.OK).json({ url: session.url });
+  }
+
+  @Post('join-course/:courseId/:code')
+  @UsePipes(
+    ...userCourseValidation({
+      key: 'categoryParamSchema',
+      type: 'param',
+    }),
+  )
+  @Auth('student')
+  async verifyJoinCourse(
+    @User() user: IUserJwt,
+    @Param() param: JoinCourseDto,
+    @Res() res: Response,
+  ) {
+    // let course = await this.courseService.existCourse(param.courseId);
+
+    let hasUser = await this.authService.existEmail(user.email)
+
+    // check token
+
+    // save token to db
+    return res.status(HttpStatus.OK).json({ url: hasUser });
   }
 }
