@@ -3,18 +3,21 @@ import { AppModule } from './app.module';
 import { HttpExceptionFilter } from './common/http-exception.filter';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
-import { ValidationPipe } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { ConfigService } from '@nestjs/config';
 import { generateChunkFiles } from './infra/local-file/videotohlschunks';
+import { SocketIOAdapter } from './socket-io-adapter';
 
 async function bootstrap() {
+  const logger = new Logger('Main (main.ts)');
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     cors: true,
   });
 
   const configService = app.get(ConfigService);
   const whitelist = configService.get('FRONTEND_URL').split(',');
+  const port = parseInt(configService.get('APP_PORT'));
 
   app.enableCors({
     origin: function (origin, callback) {
@@ -41,6 +44,10 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, document);
   await generateChunkFiles();
-  await app.listen(configService.get('APP_PORT'));
+
+  app.useWebSocketAdapter(new SocketIOAdapter(app, configService));
+  
+  await app.listen(port);
+  logger.log(`Server running on port ${port}`);
 }
 bootstrap();
