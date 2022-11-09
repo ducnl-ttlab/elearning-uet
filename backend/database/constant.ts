@@ -5,6 +5,8 @@ export enum TableName {
   favoriteStory = 'favorite_stories',
   user = 'users',
   course = 'courses',
+  userCourse = 'user_courses',
+  notification = 'notifications',
 }
 
 export enum Role {
@@ -17,4 +19,20 @@ export enum Role {
 export enum Provider {
   google = 'google',
   local = 'local',
+}
+
+export enum UserCourseStatus {
+  pending = 'pending',
+  accepted = 'accepted',
+  reject = 'reject',
+  expired = 'expired',
+}
+
+export enum NotificationType {
+  studentInvitation = 'student_invitation',
+  topicCreation = 'topic_createion',
+  homework = 'homework',
+  comment = 'comment',
+  rating = 'rating',
+  quiz = 'quiz',
 }

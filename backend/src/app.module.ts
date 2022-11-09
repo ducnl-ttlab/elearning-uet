@@ -15,22 +15,28 @@ import { SearchModule } from './modules/search/search.module';
 import { RedisCacheModule } from './modules/cache/redis-cache.module';
 import { ConfigModule } from '@nestjs/config';
 import { LocalFileModule } from './infra/local-file/local-file.module';
+import { StripeModule } from './modules/stripe/stripe.module';
+import { UserCourseModule } from './modules/user-courses/user-courses.module';
+import { NotificationModule } from './modules/notification/notification.module';
 
 @Module({
   imports: [
+    StripeModule.forRoot(process.env.STRIPE_API_KEY),
+    // UserCourseModule,
     ConfigModule,
     DatabaseModule,
     CategoryModule,
-    StoryModule,
-    FavoriteStoryModule,
-    StoryCategoryModule,
-    UserModule,
-    AuthModule,
-    MailModule,
-    SearchModule,
-    RedisCacheModule,
-    CourseModule,
+    // StoryModule,
+    // UserModule,
+    // AuthModule,
+    // MailModule,
+    // SearchModule,
+    // CourseModule,
     LocalFileModule,
+    // RedisCacheModule,
+    // NotificationModule,
+    // FavoriteStoryModule,
+    // StoryCategoryModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -76,6 +76,10 @@ export default class InputText extends Vue {
     margin: 0;
 }
 
+:deep(.el-input__inner) {
+    height: 48px !important;
+}
+
 .is-focus {
     label {
         color: $color-blue;
@@ -89,10 +93,6 @@ export default class InputText extends Vue {
     font-size: 12px;
     color: $color-red-01;
     margin: 5px 0;
-}
-
-.position-relative {
-    margin-bottom: 24px;
 }
 
 .is-error {

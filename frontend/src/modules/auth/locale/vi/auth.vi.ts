@@ -1,4 +1,8 @@
 export const auth = {
+    general: {
+        welcomeTitle: 'Chào mừng bạn đến với Lớp học anh Huấn',
+    },
+
     auth: {
         or: 'Hoặc',
         continue: 'Tiếp tục',
@@ -22,7 +26,6 @@ export const auth = {
     },
 
     forgotPassword: {
-        title: 'Chào mừng bạn đến với Sorademic',
         welcomeDescription:
             'It is a long established fact that a reader will be distracted by the readable content of a.',
         forgotPassword: 'Quên mật khẩu',
@@ -85,7 +88,6 @@ export const auth = {
     },
 
     register: {
-        welcome: 'Chào mừng bạn đến với Sorademic',
         welcomeDescription:
             'It is a long established fact that a reader will be distracted by the readable content of a.',
         register: 'Đăng ký',

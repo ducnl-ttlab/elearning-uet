@@ -10,10 +10,10 @@ export const filterUser = (user: User): FilteredUser => {
   return user;
 };
 
-export const hasResetTokenExpired = (resetTokenTime: Date) => {
+export const hasResetTokenExpired = (resetTokenTime: Date, expiredTime?: number) => {
   let seconds = moment().unix() - moment(resetTokenTime).unix();
-
-  return EXPIRED_TOKEN_SECONDS < seconds;
+  let timeExpiration = expiredTime || EXPIRED_TOKEN_SECONDS
+  return timeExpiration < seconds;
 };
 
 export const generateDigits = (numberRandom: number = 6) => {
