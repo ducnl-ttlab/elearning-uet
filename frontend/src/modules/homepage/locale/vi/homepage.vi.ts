@@ -12,4 +12,9 @@ export const homepage = {
     navigate: {
         back: 'Quay lại',
     },
+    category: {
+        title: 'Danh mục khóa học',
+        courseTotal: 'Tổng số khóa học: ',
+        studentTotal: 'Tổng số học viên: ',
+    },
 };
