@@ -5,6 +5,7 @@ export enum PageName {
     REGISTER_PAGE = 'RegisterPage',
     GOOGLE_PAGE = 'GooglePage',
     LANDING_PAGE = 'LandingPage',
+    CATEGORY_PAGE = 'CategoryPage',
     NOT_FOUND_PAGE = 'NotFoundPage',
 }
 
