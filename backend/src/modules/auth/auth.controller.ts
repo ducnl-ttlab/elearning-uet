@@ -178,7 +178,7 @@ export class AuthController {
 
   @Put('select-role')
   @UsePipes(SelectRoleValidation)
-  @Auth(Role.guess)
+  @Auth(Role.guest)
   @ApiOperation({ summary: 'Save Reason Code' })
   @ApiBody({
     description: 'Reason Code',

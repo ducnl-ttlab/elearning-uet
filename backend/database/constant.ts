@@ -7,13 +7,15 @@ export enum TableName {
   course = 'courses',
   userCourse = 'user_courses',
   notification = 'notifications',
+  topics="topics"
 }
 
 export enum Role {
   student = 'student',
   instructor = 'instructor',
   admin = 'admin',
-  guess = 'guess',
+  guest = 'guest',
+  pending = 'pending'
 }
 
 export enum Provider {

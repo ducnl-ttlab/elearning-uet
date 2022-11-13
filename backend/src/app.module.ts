@@ -20,6 +20,7 @@ import { UserCourseModule } from './modules/user-courses/user-courses.module';
 import { NotificationModule } from './modules/notification/notification.module';
 import { PollModule } from './modules/poll/polls.module';
 import { JWTModule } from './modules/jwt/jwt.module';
+import { TopicModule } from './modules/topics/topic.module';
 
 @Module({
   imports: [
@@ -40,7 +41,8 @@ import { JWTModule } from './modules/jwt/jwt.module';
     FavoriteStoryModule,
     StoryCategoryModule,
     JWTModule,
-    PollModule
+    PollModule,
+    TopicModule
   ],
   controllers: [AppController],
   providers: [AppService],
