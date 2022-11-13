@@ -1,8 +1,11 @@
-import * as Joi from 'joi';
 import {
-  IValidationKeyType,
-  ValidationPipe,
-} from 'src/common/pipe/joi.request.pipe';
+  ArgumentMetadata,
+  BadRequestException,
+  Paramtype,
+  PipeTransform,
+} from '@nestjs/common';
+import * as Joi from 'joi';
+import { ValidationPipe } from 'src/common/pipe/joi.request.pipe';
 
 const tokenSchema = Joi.object().keys({
   param: Joi.string().min(10),
@@ -35,9 +38,12 @@ const courseValidationSchemas = {
 
 type courseValidationKey = keyof typeof courseValidationSchemas;
 
-export function courseValidation(
-  ...validations: IValidationKeyType<courseValidationKey>[]
-) {
+interface ICourseValidation {
+  key: courseValidationKey;
+  type: Paramtype;
+}
+
+export function courseValidation(...validations: ICourseValidation[]) {
   return validations.map(
     (v) => new ValidationPipe(courseValidationSchemas[v.key], v.type),
   );

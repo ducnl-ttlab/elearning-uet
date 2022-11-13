@@ -2,6 +2,7 @@ import { HttpCode, HttpStatus } from '@nestjs/common';
 import { User } from 'src/modules/user/entity/user.entity';
 import { Request } from 'express';
 import { Role } from 'database/constant';
+import { Socket } from 'socket.io';
 
 export interface IUserJwt {
   role: Role;
@@ -22,6 +23,7 @@ export interface UserResponse {
 }
 
 export interface IError {
+  success: boolean
   code: HttpStatus;
   message: string;
   errors: any[];
@@ -44,3 +46,71 @@ export interface SearchServiceInterface<T> {
 
   deleteDocument(indexData: T): Promise<T>;
 }
+
+
+
+// service types
+export type CreatePollFields = {
+  topic: string;
+  votesPerVoter: number;
+  name: string;
+};
+
+export type JoinPollFields = {
+  pollID: string;
+  name: string;
+};
+
+export type RejoinPollFields = {
+  pollID: string;
+  userID: string;
+  name: string;
+};
+
+export type AddParticipantFields = {
+  pollID: string;
+  userID: string;
+  name: string;
+};
+
+export type AddNominationFields = {
+  pollID: string;
+  userID: string;
+  text: string;
+};
+
+export type SubmitRankingsFields = {
+  pollID: string;
+  userID: string;
+  rankings: string[];
+};
+
+// repository types
+export type CreatePollData = {
+  pollID: string;
+  topic: string;
+  votesPerVoter: number;
+  userID: string;
+};
+
+export type AddParticipantData = {
+  pollID: string;
+  userID: string;
+  name: string;
+};
+
+
+export type AddParticipantRankingsData = {
+  pollID: string;
+  userID: string;
+  rankings: string[];
+};
+
+type AuthPayload = {
+  userID: string;
+  email: string;
+  username: string;
+  role: Role
+};
+export type SocketWithAuth = Socket & AuthPayload;
+export type RequestWithAuth = Request & AuthPayload;

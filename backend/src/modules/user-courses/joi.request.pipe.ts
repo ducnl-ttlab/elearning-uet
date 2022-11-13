@@ -4,12 +4,23 @@ import {
   ValidationPipe,
 } from 'src/common/pipe/joi.request.pipe';
 
-const tokenSchema = Joi.object().keys({
-  param: Joi.string().min(10),
+const courseIdParamSchema = Joi.object().keys({
+  courseId: Joi.string()
+    .pattern(/^[0-9]+$/)
+    .message('courseId should be a number'),
+});
+
+const verifyCourseParamSchema = Joi.object().keys({
+  courseId: Joi.string()
+    .pattern(/^[0-9]+$/)
+    .message('courseId should be a number'),
 });
 
 const categoryParamSchema = Joi.object().keys({
-  categoryId: Joi.string()
+  courseId: Joi.string()
+    .pattern(/^[0-9]+$/)
+    .message('categoryId should be a number'),
+  code: Joi.string()
     .pattern(/^[0-9]+$/)
     .message('categoryId should be a number'),
 });
@@ -28,15 +39,16 @@ const createCourseSchema = Joi.object().keys({
 });
 
 const courseValidationSchemas = {
-  tokenSchema,
+  courseIdParamSchema,
   categoryParamSchema,
   createCourseSchema,
+  verifyCourseParamSchema,
 };
 
-type courseValidationKey = keyof typeof courseValidationSchemas;
+type CourseValidationKeyType = keyof typeof courseValidationSchemas;
 
-export function courseValidation(
-  ...validations: IValidationKeyType<courseValidationKey>[]
+export function userCourseValidation(
+  ...validations: IValidationKeyType<CourseValidationKeyType>[]
 ) {
   return validations.map(
     (v) => new ValidationPipe(courseValidationSchemas[v.key], v.type),

@@ -6,8 +6,6 @@ import {
   HttpStatus,
   InternalServerErrorException,
   UnauthorizedException,
-  ConflictException,
-  ExceptionFilter,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { BaseExceptionFilter } from '@nestjs/core';
@@ -42,6 +40,7 @@ const handleBadRequestException = async (
   const errorResponse = await translateErrorValidator(response.errors);
 
   return {
+    success: false,
     code: HttpStatus.BAD_REQUEST,
     message: exception.message,
     errors: errorResponse,
@@ -56,6 +55,7 @@ const handleInternalErrorException = async (
   const logId = `${Date.now().toString()}`;
   const message = `SYSTEM_ERROR ${logId}: ${exception.message}`;
   return {
+    success: false,
     code: HttpStatus.INTERNAL_SERVER_ERROR,
     message: message,
     errors: [response],
@@ -69,6 +69,7 @@ const handleUnauthorizedException = async (
   const response = exception.getResponse() as any;
   const status = exception.getStatus();
   return {
+    success: false,
     code: HttpStatus.UNAUTHORIZED,
     message: response?.message || '',
     errors: [response],
@@ -90,6 +91,7 @@ export class HttpExceptionFilter extends BaseExceptionFilter {
     const status = exception.getStatus();
 
     let res: IError = {
+      success: false,
       code: exception.getStatus(),
       message: `${apiResponse?.message || 'Error'}`,
       errors: apiResponse?.errors || [apiResponse],
