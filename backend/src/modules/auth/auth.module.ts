@@ -5,10 +5,11 @@ import { GoogleStrategy } from './stategy/google.strategy';
 import { UserModule } from '../user/user.module';
 import { PassportModule } from '@nestjs/passport';
 import { LocalStrategy } from './stategy/local.strategy';
-import { JwtModule } from '@nestjs/jwt';
-import { jwtConstants } from 'src/common/constant';
 import { JwtStrategy } from './stategy/jwt.strategy';
 import { MailModule } from 'src/modules/mail/mail.module';
+import { JWTModule } from '../jwt/jwt.module';
+import { JwtModule } from '@nestjs/jwt';
+import { jwtConstants } from 'src/common/constant';
 
 @Module({
   imports: [

@@ -2,15 +2,8 @@ import { INestApplicationContext, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { IoAdapter } from '@nestjs/platform-socket.io';
-import { Server, ServerOptions,Socket } from 'socket.io';
-
-type AuthPayload = {
-    userID: string;
-    pollID: string;
-    name: string;
-  };
-type SocketWithAuth = Socket & AuthPayload;
-
+import { Server, ServerOptions } from 'socket.io';
+import { SocketWithAuth } from './common/interfaces';
 
 export class SocketIOAdapter extends IoAdapter {
   private readonly logger = new Logger(SocketIOAdapter.name);
@@ -19,14 +12,15 @@ export class SocketIOAdapter extends IoAdapter {
     private configService: ConfigService,
   ) {
     super(app);
-    console.log("ok")
   }
 
   createIOServer(port: number, options?: ServerOptions) {
     const clientPort = parseInt(this.configService.get('CLIENT_PORT'));
+    const clients = this.configService.get('FRONTEND_URL')
 
     const cors = {
       origin: [
+        clients,
         `http://localhost:${clientPort}`,
         new RegExp(`/^http:\/\/192\.168\.1\.([1-9]|[1-9]\d):${clientPort}$/`),
       ],
@@ -57,15 +51,14 @@ const createTokenMiddleware =
     const token =
       socket.handshake.auth.token || socket.handshake.headers['token'];
 
-    logger.debug(`Validating auth token before connection: ${token}`);
-
     try {
       const payload = jwtService.verify(token);
-      socket.userID = payload.sub;
-      socket.pollID = payload.pollID;
-      socket.name = payload.name;
+      socket.userID = payload.id;
+      socket.email = payload.email;
+      socket.role = payload.role;
+      socket.username = payload.username;
       next();
-    } catch {
+    } catch (error) {
       next(new Error('FORBIDDEN'));
     }
   };

@@ -18,25 +18,29 @@ import { LocalFileModule } from './infra/local-file/local-file.module';
 import { StripeModule } from './modules/stripe/stripe.module';
 import { UserCourseModule } from './modules/user-courses/user-courses.module';
 import { NotificationModule } from './modules/notification/notification.module';
+import { PollModule } from './modules/poll/polls.module';
+import { JWTModule } from './modules/jwt/jwt.module';
 
 @Module({
   imports: [
     StripeModule.forRoot(process.env.STRIPE_API_KEY),
-    // UserCourseModule,
+    UserCourseModule,
     ConfigModule,
     DatabaseModule,
     CategoryModule,
-    // StoryModule,
-    // UserModule,
-    // AuthModule,
-    // MailModule,
-    // SearchModule,
-    // CourseModule,
+    StoryModule,
+    UserModule,
+    AuthModule,
+    MailModule,
+    SearchModule,
+    CourseModule,
     LocalFileModule,
-    // RedisCacheModule,
-    // NotificationModule,
-    // FavoriteStoryModule,
-    // StoryCategoryModule,
+    RedisCacheModule,
+    NotificationModule,
+    FavoriteStoryModule,
+    StoryCategoryModule,
+    JWTModule,
+    PollModule
   ],
   controllers: [AppController],
   providers: [AppService],
