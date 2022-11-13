@@ -88,4 +88,14 @@ export class CourseController {
 
     return res.status(HttpStatus.CREATED).json(new SuccessResponse(courseRes));
   }
+
+
+  @Get('')
+  async getCourseList(
+    @Res() res: Response,
+  ) {
+    const courseList = await this.courseService.findCourseList();
+    
+    return res.status(HttpStatus.CREATED).json(new SuccessResponse(courseList));
+  }
 }

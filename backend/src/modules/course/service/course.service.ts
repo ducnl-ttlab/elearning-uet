@@ -33,6 +33,14 @@ export class CourseService {
     }
   }
 
+  async findCourseList(): Promise<[Course[], number]> {
+    try {
+      return this.course.findAndCount();
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
   async getCourseInstrutor(id: string): Promise<User> {
     return this.user.findOneById(id)
   }
