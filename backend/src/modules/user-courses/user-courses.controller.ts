@@ -14,7 +14,7 @@ import {
   UsePipes,
   Headers,
   Inject,
-UseGuards,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { Request, Response } from 'express';
@@ -87,7 +87,6 @@ export class UserCourseController {
     @Param() param: CheckoutCourseDto,
     @Res() res: Response,
   ) {
-
     let course = await this.courseService.existCourse(param.courseId);
     let instructor = await this.courseService.getCourseInstrutor(
       course.instructorId,
@@ -160,7 +159,7 @@ export class UserCourseController {
 
     let userCourse = this.userCourseService.saveUserCourse(newUserCourse);
 
-    Promise.all([userCourse, this.authService.resetTokenById(id)]);
+    await Promise.all([userCourse, this.authService.resetTokenById(id)]);
 
     return res.status(HttpStatus.OK).json(new SuccessResponse());
   }

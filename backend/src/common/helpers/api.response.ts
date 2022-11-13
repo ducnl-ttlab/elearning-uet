@@ -23,6 +23,7 @@ export interface IErrorResponse {
 export class SuccessResponse {
   constructor(data = {}, message = DEFAULT_SUCCESS_MESSAGE) {
     return {
+      success: true,
       code: HttpStatus.OK,
       message,
       data,
@@ -37,6 +38,7 @@ export class ErrorResponse {
     errors: IErrorResponse[] = [],
   ) {
     return {
+      success: false,
       code,
       message,
       errors,

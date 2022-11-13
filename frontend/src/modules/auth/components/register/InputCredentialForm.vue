@@ -6,7 +6,7 @@
             class="input"
             :label="$t('auth.register.credential.label')"
             :placeholder="$t('auth.register.credential.placeholder')"
-            v-model:value="credential"
+            v-model="credential"
             :error="credentialError"
             @on-enter="onSubmitCredential"
         />

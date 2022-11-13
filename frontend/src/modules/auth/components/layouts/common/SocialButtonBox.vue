@@ -18,7 +18,7 @@
                     : $t('auth.register.facebookRegister')
             }}</el-button
         >
-        <el-button @click="requestSocialLoginUrl(AuthProvider.GOOGLE)"
+        <el-button @click.prevent="registerWithGoogle"
             ><img
                 class="button-image"
                 src="@/assets/auth/images/google-logo.svg"
@@ -33,9 +33,10 @@
 </template>
 <script lang="ts">
 import { showErrorNotificationFunction } from '@/common/helpers';
-import { AuthProvider } from '@/modules/auth/constants/constants';
+import { AuthProvider } from '@/modules/auth/constants/auth.constants';
 import { Options, Vue } from 'vue-class-component';
 import { Prop } from 'vue-property-decorator';
+import { registerWithGoogle } from '@/modules/auth/services/register';
 
 @Options({
     components: {},
@@ -43,8 +44,10 @@ import { Prop } from 'vue-property-decorator';
 export default class SocialButtonBox extends Vue {
     @Prop({ default: true }) readonly isLogin!: boolean;
     AuthProvider = AuthProvider;
-    async requestSocialLoginUrl(provider: AuthProvider) {
-        console.log(123);
+    async registerWithGoogle() {
+        const email = '19020286@vnu.edu.vn';
+        let response = await registerWithGoogle(email);
+        console.log(response);
     }
 }
 </script>
