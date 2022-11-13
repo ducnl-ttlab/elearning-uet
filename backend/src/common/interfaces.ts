@@ -23,6 +23,7 @@ export interface UserResponse {
 }
 
 export interface IError {
+  success: boolean
   code: HttpStatus;
   message: string;
   errors: any[];
