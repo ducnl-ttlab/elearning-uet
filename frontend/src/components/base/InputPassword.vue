@@ -14,6 +14,7 @@
         >
             <el-input
                 v-model="inputData"
+                autocomplete="off"
                 :placeholder="placeholder"
                 :type="isShowPassword ? 'text' : 'password'"
                 :readonly="isReadonly"

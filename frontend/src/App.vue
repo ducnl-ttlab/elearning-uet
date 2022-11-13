@@ -1,5 +1,6 @@
 <template>
     <ElConfigProvider :locale="locale">
+        <LoadingIndicator />
         <router-view />
     </ElConfigProvider>
 </template>
@@ -7,6 +8,7 @@
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
 import { ElConfigProvider } from 'element-plus';
+import LoadingIndicator from '@/components/common/LoadingIndicator.vue';
 
 import vi from './plugins/element-ui/locale/vi';
 import en from './plugins/element-ui/locale/en';
@@ -16,6 +18,7 @@ import tokenService from './common/tokenService';
 @Options({
     components: {
         ElConfigProvider,
+        LoadingIndicator,
     },
 })
 export default class App extends Vue {

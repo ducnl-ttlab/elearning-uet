@@ -96,6 +96,7 @@ export const auth = {
             description:
                 'Hãy kiểm tra thư xác nhận đăng ký tài khoản tại địa chỉ mail %{email}',
         },
+
         defaultError: {
             registerEmail: 'Đăng ký không thành công, vui lòng thử lại',
             activeEmail: 'Kích hoạt tài khoản không thành công, vui lòng thử lại',
@@ -109,9 +110,11 @@ export const auth = {
         invalidFormat: 'Vui lòng nhập 6 kí tự chứa cả chữ cái và số',
         confirmPassword: 'Xác nhận mật khẩu',
         placeholder: 'Nhập mật khẩu',
-        success: {
-            title: 'Xác thực email thành công',
-            description: 'Vui lòng điền thông tin tài khoản',
+        success: 'Đặt mật khẩu thành công, vui lòng đăng nhập',
+        errors: {
+            mismatchError: 'Mật khẩu khởi tạo và xác nhận chưa khớp, xin vui lòng thử lại.',
+            defaultError: 'Đặt mật khẩu không thành công, xin vui lòng thử lại.',
+            regexError: 'Vui lòng đặt mật khẩu có chứa cả chữ số, chữ in hoa và kí tự đặc biệt.'
         },
     },
 };

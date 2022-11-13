@@ -17,11 +17,11 @@ export const auth = {
     },
 
     banner: {
-        title1: 'Dạy & học trực tuyến <br/>chưa bao giờ dễ dàng đến thế',
+        title1: 'Dạy & học trực tuyến chưa bao giờ dễ dàng đến thế',
         description1: 'Chào mừng bạn đến với lớp học múa quạt của anh Bảnh.',
         title2: 'Cần cù thì bù siêng năng',
         description2: 'Không làm mà muốn có ăn',
-        title3: 'Thì chỉ có ăn đồng bằng <br/> ăn cát',
+        title3: 'Thì chỉ có ăn đồng bằng ăn cát',
         description3: 'Lớp học do thầy Bùi Xuân Huấn giảng dạy',
     },
 
@@ -120,9 +120,11 @@ export const auth = {
         invalidFormat: 'Vui lòng nhập 6 kí tự chứa cả chữ cái và số',
         confirmPassword: 'Xác nhận mật khẩu',
         placeholder: 'Nhập mật khẩu',
-        success: {
-            title: 'Xác thực email thành công',
-            description: 'Vui lòng điền thông tin tài khoản',
+        success: 'Đặt mật khẩu thành công, vui lòng đăng nhập',
+        errors: {
+            mismatchError: 'Mật khẩu khởi tạo và xác nhận chưa khớp, xin vui lòng thử lại.',
+            defaultError: 'Đặt mật khẩu không thành công, xin vui lòng thử lại.',
+            regexError: 'Vui lòng đặt mật khẩu có chứa cả chữ số, chữ in hoa và kí tự đặc biệt.'
         },
     },
 };

@@ -14,6 +14,7 @@
                 :class="{ 'w-100': !isHorizontal, input: isHorizontal }"
             >
                 <el-input
+                    autocomplete="off"
                     v-model="inputData"
                     :placeholder="placeholder"
                     type="text"
@@ -43,7 +44,7 @@ import { Model, Prop, Vue } from 'vue-property-decorator';
 export default class InputText extends Vue {
     @Prop({ default: '' }) readonly label!: string;
     @Prop({ default: '' }) readonly name!: string;
-    @Prop({ default: 'medium' }) readonly size!: string;
+    @Prop({ default: 'large' }) readonly size!: string;
     @Prop({ default: '' }) readonly placeholder!: string;
     @Prop({ default: '' }) readonly error!: string;
     @Prop({ default: false }) readonly isRequired!: string;

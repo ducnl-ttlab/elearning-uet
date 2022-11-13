@@ -1,14 +1,14 @@
 <template>
-    <div class="input-form-container d-flex flex-column">
+    <div class="register-form-container d-flex flex-column">
         <div class="title">{{ $t('auth.general.welcomeTitle') }}</div>
         <div class="sub-title">{{ $t('auth.register.welcomeDescription') }}</div>
         <BaseInputText
             class="input"
             :label="$t('auth.register.credential.label')"
             :placeholder="$t('auth.register.credential.placeholder')"
-            v-model="credential"
             :error="credentialError"
             @on-enter="onSubmitCredential"
+            v-model:value="credential"
         />
         <el-button
             :disabled="!credential ? '' : disabled"
@@ -21,7 +21,13 @@
     </div>
 </template>
 <script lang="ts">
+import {
+    showErrorNotificationFunction,
+    showSuccessNotificationFunction,
+} from '@/common/helpers';
 import { Options, Vue } from 'vue-class-component';
+import { signupWithGoogle } from '../../services/register';
+import { commonModule } from '@/common/store/common.store';
 
 @Options({
     components: {},
@@ -31,14 +37,27 @@ export default class InputCredentialForm extends Vue {
     credentialError = '';
 
     async onSubmitCredential() {
-        console.log('submitted');
-        this.credentialError = this.$t('guest.auth.register.credential.invalidFormat');
+        commonModule.setLoadingIndicator(true);
+        const response = await signupWithGoogle(this.credential);
+        console.log(response.data);
+        if (response?.data?.message === 'success') {
+            showSuccessNotificationFunction(
+                this.$t('auth.register.success.description', {
+                    email: this.credential,
+                }),
+            );
+        } else {
+            showErrorNotificationFunction(
+                response?.data?.message || this.$t('auth.login.defaultError'),
+            );
+        }
+        commonModule.setLoadingIndicator(false);
     }
 }
 </script>
 
 <style lang="scss" scoped>
-.input-form-container {
+.register-form-container {
     gap: 10px;
 }
 
