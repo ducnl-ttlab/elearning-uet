@@ -47,6 +47,22 @@ export class Course {
   @CreateDateColumn({
     type: 'timestamp',
     precision: 3,
+    nullable: true
+  })
+  startCourseTime: Date;
+
+  @ApiProperty({ type: 'date' })
+  @CreateDateColumn({
+    type: 'timestamp',
+    precision: 3,
+    nullable: true
+  })
+  endCourseTime: Date;
+
+  @ApiProperty({ type: 'date' })
+  @CreateDateColumn({
+    type: 'timestamp',
+    precision: 3,
   })
   created_at: Date;
 

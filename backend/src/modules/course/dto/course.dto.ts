@@ -16,6 +16,12 @@ export class CourseCreateDto {
 
   @ApiProperty()
   isPublished: boolean;
+
+  @ApiProperty()
+  startCourseTime: string;
+
+  @ApiProperty()
+  endCourseTime: string;
 }
 
 export class CategoryDto {

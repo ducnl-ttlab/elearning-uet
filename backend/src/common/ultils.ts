@@ -10,9 +10,12 @@ export const filterUser = (user: User): FilteredUser => {
   return user;
 };
 
-export const hasResetTokenExpired = (resetTokenTime: Date, expiredTime?: number) => {
+export const hasResetTokenExpired = (
+  resetTokenTime: Date,
+  expiredTime?: number,
+) => {
   let seconds = moment().unix() - moment(resetTokenTime).unix();
-  let timeExpiration = expiredTime || EXPIRED_TOKEN_SECONDS
+  let timeExpiration = expiredTime || EXPIRED_TOKEN_SECONDS;
   return timeExpiration < seconds;
 };
 
@@ -24,4 +27,21 @@ export const generateDigits = (numberRandom: number = 6) => {
 
 export const removeExtention = (fileName: string) => {
   return fileName.split('.').slice(0, -1).join('.');
+};
+
+export const stringToMysqlTimeStamp = (yyyymmdd: string) => {
+  return moment(yyyymmdd).format('YYYY-MM-DD HH:mm:ss') as unknown as Date;
+};
+
+export const coursePeriod = (startTime: string, endTime: string) => {
+  return {
+    startCourseTime: stringToMysqlTimeStamp(startTime),
+    endCourseTime: stringToMysqlTimeStamp(endTime),
+  };
+};
+export const mysqlToTime = (startTime: Date, endTime: Date) => {
+  return {
+    startCourseTime: moment(startTime).utc().format('YYYY-MM-DD') as unknown as Date,
+    endCourseTime: moment(endTime).utc().format('YYYY-MM-DD') as unknown as Date,
+  };
 };

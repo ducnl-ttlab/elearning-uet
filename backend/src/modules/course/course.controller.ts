@@ -26,6 +26,8 @@ import { CategoryService } from '../category/service/category.service';
 import LocalFilesInterceptor, {
   imageParams,
 } from 'src/infra/local-file/local-files.interceptor';
+import { Course } from './entity/course.entity';
+import { coursePeriod, mysqlToTime } from 'src/common/ultils';
 
 @ApiTags('Course')
 @Controller('course')
@@ -59,12 +61,14 @@ export class CourseController {
     if (!isExistCategory) {
       throw new NotFoundException('Not found category');
     }
-    let newCourse = {
+
+    let newCourse: Partial<Course> = {
       ...data,
       instructorId: user.id,
       categoryId: isExistCategory.id,
       isPublished: (data.isPublished as any) === 'true' ?? data?.isPublished,
-      image: file.path,
+      image: file?.path,
+      ...coursePeriod(data.startCourseTime, data.endCourseTime),
     };
     let course = await this.courseService.saveCourse(newCourse);
     return res.status(HttpStatus.CREATED).json(new SuccessResponse({ course }));
@@ -89,13 +93,25 @@ export class CourseController {
     return res.status(HttpStatus.CREATED).json(new SuccessResponse(courseRes));
   }
 
-
   @Get('')
-  async getCourseList(
-    @Res() res: Response,
-  ) {
+  async getCourseList(@Res() res: Response) {
     const courseList = await this.courseService.findCourseList();
-    
-    return res.status(HttpStatus.CREATED).json(new SuccessResponse(courseList));
+
+    let courses = courseList[0];
+
+    let coursesResponse = courses.map((course) => {
+      let date = course?.startCourseTime
+        ? mysqlToTime(course.startCourseTime, course.endCourseTime)
+        : {};
+
+      return {
+        ...course,
+        ...date,
+      };
+    });
+
+    return res
+      .status(HttpStatus.CREATED)
+      .json(new SuccessResponse(coursesResponse));
   }
 }

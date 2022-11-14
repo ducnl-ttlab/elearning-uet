@@ -25,6 +25,8 @@ const createCourseSchema = Joi.object().keys({
     .message('name should have at least one character'),
   isPublished: Joi.boolean().optional(),
   price: Joi.number().min(1).optional(),
+  startCourseTime: Joi.string().min(1).message('startCourseTime should have at least one character').optional(),
+  endCourseTime: Joi.string().min(1).message('endCourseTime should have at least one character').optional(),
 });
 
 const courseValidationSchemas = {
