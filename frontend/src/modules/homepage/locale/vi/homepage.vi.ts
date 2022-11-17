@@ -14,7 +14,7 @@ export const homepage = {
     },
     category: {
         title: 'Danh mục khóa học',
-        courseTotal: 'Tổng số khóa học: ',
-        studentTotal: 'Tổng số học viên: ',
+        courseTotal: 'Số khóa học: ',
+        studentTotal: 'Số học viên: ',
     },
 };

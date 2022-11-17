@@ -6,6 +6,7 @@ export enum PageName {
     GOOGLE_PAGE = 'GooglePage',
     LANDING_PAGE = 'LandingPage',
     CATEGORY_PAGE = 'CategoryPage',
+    COURSE_PAGE = 'CoursePage',
     NOT_FOUND_PAGE = 'NotFoundPage',
 }
 

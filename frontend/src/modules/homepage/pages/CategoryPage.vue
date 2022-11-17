@@ -1,7 +1,6 @@
 <template>
     <div class="main-body">
         <h1>{{ $t('homepage.category.title') }}</h1>
-
         <div class="course-box" :style="{ borderRadius: baseRadius }">
             <el-space direction="vertical" alignment="start" :size="30" style="margin-top: 2%; margin-left: 10%">
                 <!-- START OF SINGLE CARD -->
@@ -12,7 +11,7 @@
                         <img :src="course.image" class="product-img" :alt="course.name" />
                         <div style="padding: 14px">
                             <div class="card-title">{{ course.name }}</div>
-                            <div>
+                            <div class="card-total">
                                 <div class="card-courseTotal">
                                     <span>{{ $t('homepage.category.courseTotal') }}{{ course.courseTotal }}</span>
                                 </div>
@@ -20,10 +19,8 @@
                                     <span>{{ $t('homepage.category.studentTotal') }}{{ course.studentTotal }}</span>
                                 </div>
                             </div>
-
-                            <!-- rating from users -->
-                            <el-rate v-model="course.avgRating" disable show-score text-color="#ff9900"></el-rate>
-
+                            <el-rate class="card-avgRating" v-model="course.avgRating" disable show-score score-template="{value} points"
+                                text-color="$color-yellow-01"></el-rate>
                         </div>
                     </el-card>
                 </el-space>
@@ -35,11 +32,15 @@
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
 
+
 @Options({
     components: {},
 })
 export default class CategoryPage extends Vue {
     goToCourse(id: number) {
+        console.log(id);
+        this.$router.push({ name: 'course', params: { id } });
+        
         throw new Error('Method not implemented.');
     }
 
@@ -47,7 +48,7 @@ export default class CategoryPage extends Vue {
       {
         "id": 1,
         "name": "IT và phần mềm",
-        "image": "http://139.59.123.89:5000/category/image/software",
+        "image": "http://localhost:5000/category/image/software",
         "avgRating": 5,
         "courseTotal": 0,
         "studentTotal": 0
@@ -55,7 +56,7 @@ export default class CategoryPage extends Vue {
       {
         "id": 2,
         "name": "Kinh doanh",
-        "image": "http://139.59.123.89:5000/category/image/business",
+        "image": "http://localhost:5000/category/image/business",
         "avgRating": 5,
         "courseTotal": 1,
         "studentTotal": 2
@@ -63,7 +64,7 @@ export default class CategoryPage extends Vue {
       {
         "id": 3,
         "name": "sáng tạo",
-        "image": "http://139.59.123.89:5000/category/image/design",
+        "image": "http://localhost:5000/category/image/design",
         "avgRating": 5,
         "courseTotal": 2,
         "studentTotal": 4
@@ -71,7 +72,7 @@ export default class CategoryPage extends Vue {
       {
         "id": 4,
         "name": "Phát triển bản thân",
-        "image": "http://139.59.123.89:5000/category/image/personal-development",
+        "image": "http://localhost:5000/category/image/personal-development",
         "avgRating": 5,
         "courseTotal": 3,
         "studentTotal": 6
@@ -79,7 +80,7 @@ export default class CategoryPage extends Vue {
       {
         "id": 5,
         "name": "Kinh doanh",
-        "image": "http://139.59.123.89:5000/category/image/marketing",
+        "image": "http://localhost:5000/category/image/marketing",
         "avgRating": 5,
         "courseTotal": 4,
         "studentTotal": 8
@@ -87,7 +88,7 @@ export default class CategoryPage extends Vue {
       {
         "id": 6,
         "name": "Lập trình",
-        "image": "http://139.59.123.89:5000/category/image/development",
+        "image": "http://localhost:5000/category/image/development",
         "avgRating": 5,
         "courseTotal": 5,
         "studentTotal": 10
@@ -95,7 +96,7 @@ export default class CategoryPage extends Vue {
       {
         "id": 7,
         "name": "Nghệ thuật",
-        "image": "http://139.59.123.89:5000/category/image/music",
+        "image": "http://localhost:5000/category/image/music",
         "avgRating": 5,
         "courseTotal": 6,
         "studentTotal": 12
@@ -103,32 +104,57 @@ export default class CategoryPage extends Vue {
       {
         "id": 8,
         "name": "Nhiếp ảnh",
-        "image": "http://139.59.123.89:5000/category/image/photography",
+        "image": "http://localhost:5000/category/image/photography",
         "avgRating": 5,
         "courseTotal": 7,
         "studentTotal": 14
       }
     ];
 
-
-
     baseRadius = "var(--el-border-radius-base)";
 }
 </script>
 
 <style lang="scss" scoped>
-.underscore {
-    padding-bottom: 0.5em;
-    border-bottom: 1px rgba(0, 0, 0, 0.2) solid;
-}
+
 
 .main-body {
     height: 80vh;
+    font-display: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+body h1 {
+    font-size: 2.5em;
+    font-weight: 600;
+    text-align: center;
+    margin-top: 2%;
+}
+
+.card-total {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.card-total span {
+    font-size: 13px;
+}
+
+.courseCard {
+    border-radius: 10px;
+    cursor: pointer;
 }
 
 .card-title {
     font-size: 20px;
     font-weight: 700;
+}
+
+.el-rate {
+    align-items: normal;
+    font-size: 12px;
+    cursor: default;
+
 }
 
 @media screen and (max-width: 770px) {

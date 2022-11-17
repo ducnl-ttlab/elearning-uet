@@ -12,7 +12,6 @@ const app = createApp(App)
     .use(store)
     .use(router)
     .use(plugins.i18n)
-
     .use(plugins.ElementUI, {
         i18n: (key: string) => {
             return plugins.i18n.global.t(key);
