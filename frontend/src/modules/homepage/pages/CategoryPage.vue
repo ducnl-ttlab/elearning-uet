@@ -1,7 +1,7 @@
 <template>
     <div class="main-body">
         <h1>{{ $t('homepage.category.title') }}</h1>
-        <div class="course-box" :style="{ borderRadius: baseRadius }">
+        <div class="course-box" :style="{ borderRadius: 12 }">
             <el-space direction="vertical" alignment="start" :size="30" style="margin-top: 2%; margin-left: 10%">
                 <!-- START OF SINGLE CARD -->
                 <el-space v-if="courses.length" wrap size="large">
@@ -30,21 +30,19 @@
 </template>
 
 <script lang="ts">
+import { log } from 'console';
 import { Options, Vue } from 'vue-class-component';
-
+import { getCategoryPage } from '../services/category';
+import { ref, onMounted, computed } from "vue";
+import { useStore } from "vuex";
 
 @Options({
     components: {},
 })
-export default class CategoryPage extends Vue {
-    goToCourse(id: number) {
-        console.log(id);
-        this.$router.push({ name: 'course', params: { id } });
-        
-        throw new Error('Method not implemented.');
-    }
 
-    courses = [
+export default class CategoryPage extends Vue {
+
+     courses = [
       {
         "id": 1,
         "name": "IT và phần mềm",
@@ -52,67 +50,50 @@ export default class CategoryPage extends Vue {
         "avgRating": 5,
         "courseTotal": 0,
         "studentTotal": 0
-      },
-      {
-        "id": 2,
-        "name": "Kinh doanh",
-        "image": "http://localhost:5000/category/image/business",
-        "avgRating": 5,
-        "courseTotal": 1,
-        "studentTotal": 2
-      },
-      {
-        "id": 3,
-        "name": "sáng tạo",
-        "image": "http://localhost:5000/category/image/design",
-        "avgRating": 5,
-        "courseTotal": 2,
-        "studentTotal": 4
-      },
-      {
-        "id": 4,
-        "name": "Phát triển bản thân",
-        "image": "http://localhost:5000/category/image/personal-development",
-        "avgRating": 5,
-        "courseTotal": 3,
-        "studentTotal": 6
-      },
-      {
-        "id": 5,
-        "name": "Kinh doanh",
-        "image": "http://localhost:5000/category/image/marketing",
-        "avgRating": 5,
-        "courseTotal": 4,
-        "studentTotal": 8
-      },
-      {
-        "id": 6,
-        "name": "Lập trình",
-        "image": "http://localhost:5000/category/image/development",
-        "avgRating": 5,
-        "courseTotal": 5,
-        "studentTotal": 10
-      },
-      {
-        "id": 7,
-        "name": "Nghệ thuật",
-        "image": "http://localhost:5000/category/image/music",
-        "avgRating": 5,
-        "courseTotal": 6,
-        "studentTotal": 12
-      },
-      {
-        "id": 8,
-        "name": "Nhiếp ảnh",
-        "image": "http://localhost:5000/category/image/photography",
-        "avgRating": 5,
-        "courseTotal": 7,
-        "studentTotal": 14
-      }
-    ];
+      }]
 
-    baseRadius = "var(--el-border-radius-base)";
+    async mounted() {   
+        this.courses = (await getCategoryPage()).data.data.items;
+
+        console.log(typeof this.courses);
+    }
+
+    goToCourse(id: number) {
+        // this.$router.push({ name: 'course', params: { id } });
+        console.log(id);
+        throw new Error('Method not implemented.');
+    }
 }
+
+// export default class CategoryPage extends Vue {
+
+//     private store = useStore();
+
+//     public courses = this.store.state.courses;
+
+    
+//     async mounted() {
+//         const { data } = this.store.getters.getCourses;
+//         this.courses.value = data;
+//         console.log(data);
+//     }
+
+//     async  onMounted() {
+//         this.store.dispatch('fetchcourses');
+//     }
+
+//     // private courses = computed(() => store.getters.getCourses);
+
+//     async goToCourse(id: number) {
+//         this.$router.push({ name: 'course', params: { id } });
+//     }
+
+
+
+
+// // baseRadius = computed(() => this.store.getters.getBaseRadius);
+   
+// }
 </script>
 
 <style lang="scss" scoped>
