@@ -12,6 +12,6 @@ export class StoryController {
 
   @Get()
   a() {
-    return this.searchService.CreateDoctorIndex();
+    return this.searchService.createCourseIndex();
   }
 }

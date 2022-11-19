@@ -1,14 +1,22 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { ElasticsearchService } from '@nestjs/elasticsearch';
 import { SearchServiceInterface } from 'src/common/interfaces';
-
+interface PostSearchResult<T> {
+  hits: {
+    total: number;
+    hits: Array<{
+      _source: T;
+    }>;
+  };
+}
 @Injectable()
 export class SearchService implements SearchServiceInterface<any> {
   constructor(private readonly elasticsearchService: ElasticsearchService) {
     this.elasticsearchService
       .ping({}, { requestTimeout: 3000 })
-      .then(() => {
+      .then(async () => {
         console.info('elastic search connected!');
+        await this.createCourseIndex();
       })
       .catch((error) => {
         console.error(error);
@@ -28,29 +36,24 @@ export class SearchService implements SearchServiceInterface<any> {
   deleteDocument(indexData: any): Promise<any> {
     throw new Error('Method not implemented.');
   }
-  async CreateDoctorIndex() {
+  async createCourseIndex() {
     const indexExistence = await this.elasticsearchService.indices.exists({
-      index: 'doctors',
+      index: 'course',
     });
 
-    if (indexExistence) {
-      throw new BadRequestException();
-    } else {
+    if (!indexExistence) {
       await this.elasticsearchService.indices.create({
-        index: 'post',
+        index: 'course',
         body: {
           mappings: {
             properties: {
-              email: {
-                type: 'text',
-                fields: {
-                  keyword: {
-                    type: 'keyword',
-                    ignore_above: 256,
-                  },
-                },
+              categoryId: {
+                type: 'integer',
               },
-              tags: {
+              instructorId: {
+                type: 'integer',
+              },
+              name: {
                 properties: {
                   tag: {
                     type: 'text',
@@ -63,7 +66,7 @@ export class SearchService implements SearchServiceInterface<any> {
                   },
                 },
               },
-              text: {
+              description: {
                 type: 'text',
                 fields: {
                   keyword: {
@@ -72,7 +75,7 @@ export class SearchService implements SearchServiceInterface<any> {
                   },
                 },
               },
-              title: {
+              image: {
                 type: 'text',
                 fields: {
                   keyword: {
@@ -80,6 +83,18 @@ export class SearchService implements SearchServiceInterface<any> {
                     ignore_above: 256,
                   },
                 },
+              },
+              isPublished: {
+                type: 'boolean',
+              },
+              price: {
+                type: 'float',
+              },
+              startCourseTime: {
+                type: 'date',
+              },
+              endCourseTime: {
+                type: 'date',
               },
             },
           },
@@ -106,6 +121,14 @@ export class SearchService implements SearchServiceInterface<any> {
 
       return indexExistence;
     }
+  }
+  async indexPost<T>(post: T, index: string) {
+    return this.elasticsearchService.index<T>({
+      index: index,
+      body: {
+        ...post
+      }
+    })
   }
   public async insertIndex(bulkData: any): Promise<any> {
     return await this.elasticsearchService

@@ -1,3 +1,4 @@
+import { SearchService } from './../search/search.service';
 import {
   Body,
   Controller,
@@ -28,6 +29,7 @@ import LocalFilesInterceptor, {
 } from 'src/infra/local-file/local-files.interceptor';
 import { Course } from './entity/course.entity';
 import { coursePeriod, mysqlToTime } from 'src/common/ultils';
+import { TableName } from 'database/constant';
 
 @ApiTags('Course')
 @Controller('course')
@@ -35,6 +37,8 @@ export class CourseController {
   constructor(
     private readonly courseService: CourseService,
     private readonly categoryService: CategoryService,
+    private readonly searchService: SearchService,
+
   ) {}
 
   @Post(':categoryId')
@@ -71,6 +75,8 @@ export class CourseController {
       ...coursePeriod(data.startCourseTime, data.endCourseTime),
     };
     let course = await this.courseService.saveCourse(newCourse);
+    await this.searchService.indexPost<Partial<Course>>(course, TableName.course)
+
     return res.status(HttpStatus.CREATED).json(new SuccessResponse({ course }));
   }
 
