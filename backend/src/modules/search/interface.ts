@@ -1,11 +1,11 @@
-interface PostSearchBody {
+export interface PostSearchBody {
   id: number;
   title: string;
   content: string;
   authorId: number;
 }
 
-interface PostSearchResult {
+export interface PostSearchResult {
   hits: {
     total: number;
     hits: Array<{

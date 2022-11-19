@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/modules/user/entity/user.entity';
-import { Repository } from 'typeorm';
+import { DeleteResult, Repository } from 'typeorm';
 import { Course } from '../entity/course.entity';
 
 @Injectable()
@@ -51,5 +51,13 @@ export class CourseService {
       throw new NotFoundException('Not found course');
     }
     return existCourse;
+  }
+
+  async deleteCourse(id: number): Promise<DeleteResult> { 
+    try {
+      return this.course.delete(id);
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
   }
 }

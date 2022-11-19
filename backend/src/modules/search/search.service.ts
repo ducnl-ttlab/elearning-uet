@@ -1,14 +1,11 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { ElasticsearchService } from '@nestjs/elasticsearch';
 import { SearchServiceInterface } from 'src/common/interfaces';
-interface PostSearchResult<T> {
-  hits: {
-    total: number;
-    hits: Array<{
-      _source: T;
-    }>;
-  };
-}
+
 @Injectable()
 export class SearchService implements SearchServiceInterface<any> {
   constructor(private readonly elasticsearchService: ElasticsearchService) {
@@ -126,9 +123,9 @@ export class SearchService implements SearchServiceInterface<any> {
     return this.elasticsearchService.index<T>({
       index: index,
       body: {
-        ...post
-      }
-    })
+        ...post,
+      },
+    });
   }
   public async insertIndex(bulkData: any): Promise<any> {
     return await this.elasticsearchService
@@ -137,5 +134,46 @@ export class SearchService implements SearchServiceInterface<any> {
       .catch((err) => {
         console.log(err);
       });
+  }
+
+  async search<T>(text: string, index: string, fields: string[]) {
+    const { hits = { hits: [], total: { value: 0 } } } =
+      await this.elasticsearchService.search<T>({
+        index: index,
+        body: {
+          query: {
+            multi_match: {
+              query: text,
+              fields,
+            },
+          },
+        },
+      });
+
+    let items = hits.hits.map((item) => {
+        return {
+          ...item['_source'],
+        };
+      }),
+      totalItems = (hits.total as any).value;
+
+    return { items, totalItems };
+  }
+
+  async removeDataById(id: number, index: string) {
+    try {
+      this.elasticsearchService.deleteByQuery({
+        index: index,
+        body: {
+          query: {
+            match: {
+              id,
+            },
+          },
+        },
+      });
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
   }
 }
