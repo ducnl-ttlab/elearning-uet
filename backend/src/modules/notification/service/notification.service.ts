@@ -31,8 +31,12 @@ export class NotificationService {
     let query = `UPDATE ${TableName.notification}
     SET isRead = 1
     WHERE userId = ?`;
-    const resultItems = await entityManager.query(query, [userId]);
-    return resultItems;
+    try {
+      const resultItems = await entityManager.query(query, [userId]);
+      return resultItems;
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
   }
 
   async findOneById(id: number): Promise<NotificationCourse> {
