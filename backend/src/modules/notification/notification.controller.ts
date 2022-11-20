@@ -1,25 +1,15 @@
 import {
-  Body,
   Controller,
   Get,
   HttpStatus,
-  NotFoundException,
-  Param,
   Post,
-  Req,
   Res,
-  UploadedFile,
-  UseInterceptors,
-  UsePipes,
-  Headers,
-  Inject,
   UseGuards,
   Query,
-  Put,
   Patch,
 } from '@nestjs/common';
-import { ApiConsumes, ApiTags } from '@nestjs/swagger';
-import { Request, Response } from 'express';
+import { ApiTags } from '@nestjs/swagger';
+import { Response } from 'express';
 import { NotificationService } from './service/notification.service';
 import { IUserJwt } from 'src/common/interfaces';
 import { User } from 'src/common/decorator/user.decorator';
