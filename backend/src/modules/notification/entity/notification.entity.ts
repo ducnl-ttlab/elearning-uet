@@ -28,11 +28,15 @@ export class NotificationCourse {
 
   @ApiProperty({ example: 1 })
   @Column({ nullable: true })
-  sourceId: number;
+  sourceId: string;
 
   @ApiProperty({ example: 1 })
   @Column({ nullable: true })
   parentId: number;
+
+  @ApiProperty({ example: 1 })
+  @Column({ nullable: true, type: 'tinyint', default: false })
+  isRead: boolean;
 
   @ApiProperty({ example: '123abc' })
   @Column({ length: 255, nullable: false })

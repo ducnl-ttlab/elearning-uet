@@ -34,9 +34,7 @@ import Stripe from 'stripe';
 @Controller('notification')
 export class NotificationController {
   constructor(
-    private readonly courseService: NotificationService,
     private readonly categoryService: CategoryService,
-    @Inject(STRIPE_CLIENT) private stripe: Stripe,
   ) {}
 
   @Get('')

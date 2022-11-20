@@ -21,13 +21,20 @@ export class Notifications1667388280824 implements MigrationInterface {
           },
           {
             name: 'sourceId',
-            type: 'int',
+            type: 'varchar',
+            length: '255',
             isNullable: true,
           },
           {
             name: 'parentId',
             type: 'int',
             isNullable: true,
+          },
+          {
+            name: 'isRead',
+            type: 'tinyint',
+            isNullable: false,
+            default: false,
           },
           {
             name: 'type',

@@ -1,4 +1,5 @@
-import { UserCourseStatus } from 'database/constant';
+import { NotificationService } from './../notification/service/notification.service';
+import { NotificationType, UserCourseStatus } from 'database/constant';
 import {
   Body,
   Controller,
@@ -47,7 +48,7 @@ import { JoinCourseGuard } from 'src/common/guard/student-course.guard';
 export class UserCourseController {
   constructor(
     private readonly userCourseService: UserCourseService,
-    private readonly categoryService: CategoryService,
+    private readonly notification: NotificationService,
     private readonly courseService: CourseService,
     private readonly authService: AuthService,
     @Inject(STRIPE_CLIENT) private stripe: Stripe,
@@ -148,7 +149,7 @@ export class UserCourseController {
     await this.authService.verifyCode(code, existUser, 100 * 60);
 
     // check course
-    await this.courseService.existCourse(param.courseId);
+    let course = await this.courseService.existCourse(param.courseId);
 
     let newUserCourse: Partial<UserCourse> = {
       courseId,
@@ -159,7 +160,22 @@ export class UserCourseController {
 
     let userCourse = this.userCourseService.saveUserCourse(newUserCourse);
 
-    await Promise.all([userCourse, this.authService.resetTokenById(id)]);
+    //send notification to instructor
+    let newNotification = {
+      userId: course.instructorId,
+      type: NotificationType.studentJoinCourse,
+      sourceId: id,
+      parentId: courseId,
+      isRead: false,
+      title: 'Học sinh tham gia khóa học',
+      description: `học sinh ${user.username} đã tham gia khóa học ${course.name} của bạn`,
+    };
+
+    await Promise.all([
+      userCourse,
+      this.authService.resetTokenById(id),
+      this.notification.saveNotification(newNotification),
+    ]);
 
     return res.status(HttpStatus.OK).json(new SuccessResponse());
   }

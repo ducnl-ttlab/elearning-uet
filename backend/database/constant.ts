@@ -39,4 +39,5 @@ export enum NotificationType {
   comment = 'comment',
   rating = 'rating',
   quiz = 'quiz',
+  studentJoinCourse = 'student_join_course',
 }
