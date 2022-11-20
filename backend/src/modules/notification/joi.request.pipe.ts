@@ -17,34 +17,32 @@ const categoryParamSchema = Joi.object().keys({
     .message('categoryId should be a number'),
 });
 
-const createCourseSchema = Joi.object().keys({
-  name: Joi.string()
-    .required()
-    .min(1)
-    .message('name should have at least one character'),
-  description: Joi.string()
-    .required()
-    .min(1)
-    .message('name should have at least one character'),
-  isPublished: Joi.boolean().optional(),
-  price: Joi.number().min(1).optional(),
+const notificationQueryListSchema = Joi.object().keys({
+  page: Joi.string()
+    .pattern(/^[0-9]+$/)
+    .message('page should be a number')
+    .optional(),
+  pageSize: Joi.string()
+    .pattern(/^[0-9]+$/)
+    .message('pageSize should be a number')
+    .optional(),
 });
 
-const courseValidationSchemas = {
+const validationSchemas = {
   tokenSchema,
   categoryParamSchema,
-  createCourseSchema,
+  notificationQueryListSchema,
 };
 
-type courseValidationKey = keyof typeof courseValidationSchemas;
+type validationKey = keyof typeof validationSchemas;
 
-interface ICourseValidation {
-  key: courseValidationKey;
+interface IValidation {
+  key: validationKey;
   type: Paramtype;
 }
 
-export function courseValidation(...validations: ICourseValidation[]) {
+export function notificationValidation(...validations: IValidation[]) {
   return validations.map(
-    (v) => new ValidationPipe(courseValidationSchemas[v.key], v.type),
+    (v) => new ValidationPipe(validationSchemas[v.key], v.type),
   );
 }

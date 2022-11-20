@@ -158,8 +158,6 @@ export class UserCourseController {
       startCourseTime: new Date(),
     };
 
-    let userCourse = this.userCourseService.saveUserCourse(newUserCourse);
-
     //send notification to instructor
     let newNotification = {
       userId: course.instructorId,
@@ -172,7 +170,7 @@ export class UserCourseController {
     };
 
     await Promise.all([
-      userCourse,
+      this.userCourseService.saveUserCourse(newUserCourse),
       this.authService.resetTokenById(id),
       this.notification.saveNotification(newNotification),
     ]);

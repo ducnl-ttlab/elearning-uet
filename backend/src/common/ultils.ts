@@ -54,12 +54,23 @@ export const mysqlTimeStamp = (time: Date) => {
   return moment(time).utc().format('YYYY-MM-DD hh-mm-ss') as unknown as Date;
 };
 
-export function getPaginatedItems(items: any, page?: number, pageSize?: number) {
+export const defaultResponseTime = (created_at: Date, updated_at: Date) => {
+  return {
+    created_at: mysqlTimeStamp(created_at),
+    updated_at: mysqlTimeStamp(updated_at),
+  };
+};
+
+export function getPaginatedItems(
+  items: any,
+  page?: number,
+  pageSize?: number,
+) {
   let pg = page || 1,
     pgSize = pageSize || 100,
     offset = (pg - 1) * pgSize,
     pagedItems = _.drop(items, offset).slice(0, pgSize),
-    showPageSize = items.length < pgSize ? items.length : pgSize
+    showPageSize = items.length < pgSize ? items.length : pgSize;
 
   return {
     items: pagedItems,
@@ -68,5 +79,3 @@ export function getPaginatedItems(items: any, page?: number, pageSize?: number) 
     total_pages: Math.ceil(items.length / pgSize),
   };
 }
-
-
