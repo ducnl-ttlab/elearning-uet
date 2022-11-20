@@ -30,7 +30,7 @@ export const removeExtention = (fileName: string) => {
 };
 
 export const stringToMysqlTimeStamp = (yyyymmdd: string) => {
-  return moment(yyyymmdd).add(1, 'day').format() as unknown as Date;
+  return moment(yyyymmdd).add(1, 'day').utc().format() as unknown as Date;
 };
 
 export const coursePeriod = (startTime: string, endTime: string) => {
