@@ -1,11 +1,16 @@
 import { TableName } from 'database/constant';
-import { MigrationInterface, QueryRunner, Table, TableForeignKey } from 'typeorm';
+import {
+  MigrationInterface,
+  QueryRunner,
+  Table,
+  TableForeignKey,
+} from 'typeorm';
 
-export class Topics1668350562747 implements MigrationInterface {
+export class Comments1668911829507 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: TableName.topics,
+        name: TableName.comments,
         columns: [
           {
             name: 'id',
@@ -15,48 +20,48 @@ export class Topics1668350562747 implements MigrationInterface {
             generationStrategy: 'increment',
           },
           {
-            name: 'courseId',
+            name: 'usercourseId',
             type: 'int',
           },
           {
-            name: 'name',
+            name: 'comment',
             type: 'varchar',
             length: '255',
             isNullable: false,
           },
           {
-            name: 'description',
-            type: 'varchar',
-            length: '255',
-            isNullable: true,
+            name: 'time',
+            type: 'timestamp',
+            default: 'now()',
           },
           {
-            name: 'content',
-            type: 'text',
+            name: 'isBad',
+            type: 'tinyint',
             isNullable: false,
+            default: false,
           },
           {
-            name: 'video',
-            type: 'varchar',
-            length: '255',
+            name: 'isBlock',
+            type: 'tinyint',
             isNullable: false,
+            default: false,
           },
         ],
       }),
     );
 
     await queryRunner.createForeignKey(
-        TableName.topics,
-        new TableForeignKey({
-          columnNames: ['courseId'],
-          referencedColumnNames: ['id'],
-          referencedTableName: TableName.course,
-          onDelete: 'CASCADE',
-        }),
-      );
+      TableName.comments,
+      new TableForeignKey({
+        columnNames: ['usercourseId'],
+        referencedColumnNames: ['id'],
+        referencedTableName: TableName.userCourse,
+        onDelete: 'CASCADE',
+      }),
+    );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable(TableName.topics);
+    await queryRunner.dropTable(TableName.comments);
   }
 }

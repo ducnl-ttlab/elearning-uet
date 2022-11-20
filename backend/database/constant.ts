@@ -7,7 +7,8 @@ export enum TableName {
   course = 'courses',
   userCourse = 'user_courses',
   notification = 'notifications',
-  topics="topics"
+  topics="topics",
+  comments="comments"
 }
 
 export enum Role {
@@ -28,6 +29,7 @@ export enum UserCourseStatus {
   accepted = 'accepted',
   reject = 'reject',
   expired = 'expired',
+  commentBlocking = 'comment_blocking'
 }
 
 export enum NotificationType {

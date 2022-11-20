@@ -31,7 +31,7 @@ export class Course {
   @Column({ type: 'text', nullable: false })
   description: string;
 
-  @ApiProperty({ example: 'Html course description' })
+  @ApiProperty({ example: false })
   @Column({ type: 'boolean', nullable: false, default: false })
   isPublished: boolean;
 

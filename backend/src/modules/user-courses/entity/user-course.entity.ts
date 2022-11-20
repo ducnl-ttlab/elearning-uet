@@ -42,6 +42,17 @@ export class UserCourse {
     type: 'timestamp',
     precision: 3,
   })
+  startBlockTime: Date;
+
+  @ApiProperty({ example: 1 })
+  @Column({ nullable: false })
+  blockDuration: number;
+
+  @ApiProperty({ type: 'date' })
+  @CreateDateColumn({
+    type: 'timestamp',
+    precision: 3,
+  })
   created_at: Date;
 
   @ApiProperty({ type: 'date' })
