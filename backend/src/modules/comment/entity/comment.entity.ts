@@ -13,6 +13,10 @@ export class Comment {
   @Column({ nullable: false })
   usercourseId: number;
 
+  @ApiProperty({ example: 1 })
+  @Column({ nullable: true })
+  topicId: number;
+
   @ApiProperty({ example: '123abc' })
   @Column({ length: 255, nullable: false })
   comment: string;

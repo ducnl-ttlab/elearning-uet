@@ -21,6 +21,7 @@ import { NotificationModule } from './modules/notification/notification.module';
 import { PollModule } from './modules/poll/polls.module';
 import { JWTModule } from './modules/jwt/jwt.module';
 import { TopicModule } from './modules/topics/topic.module';
+import { CommentModule } from './modules/comment/comment.module';
 
 @Module({
   imports: [
@@ -42,7 +43,8 @@ import { TopicModule } from './modules/topics/topic.module';
     StoryCategoryModule,
     JWTModule,
     PollModule,
-    TopicModule
+    TopicModule,
+    CommentModule
   ],
   controllers: [AppController],
   providers: [AppService],

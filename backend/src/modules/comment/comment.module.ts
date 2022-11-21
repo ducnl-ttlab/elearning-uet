@@ -7,6 +7,7 @@ import { Comment } from './entity/comment.entity';
 import { CategoryModule } from '../category/category.module';
 import { CourseModule } from '../course/course.module';
 import { UserModule } from '../user/user.module';
+import { UserCourseModule } from '../user-courses/user-courses.module';
 
 @Module({
   imports: [
@@ -14,10 +15,11 @@ import { UserModule } from '../user/user.module';
     CategoryModule,
     CourseModule,
     UserModule,
-    AuthModule
+    AuthModule,
+    UserCourseModule
   ],
   controllers: [CommentController],
   providers: [CommentService],
   exports: [CommentService],
 })
-export class TopicModule {}
+export class CommentModule {}

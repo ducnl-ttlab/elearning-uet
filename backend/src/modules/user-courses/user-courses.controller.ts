@@ -41,7 +41,6 @@ import { CourseService } from '../course/service/course.service';
 import { AuthService } from '../auth/service/auth.service';
 import { UserCourse } from './entity/user-course.entity';
 import moment from 'moment';
-import { JoinCourseGuard } from 'src/common/guard/student-course.guard';
 
 @ApiTags('UserCourse')
 @Controller('user-course')

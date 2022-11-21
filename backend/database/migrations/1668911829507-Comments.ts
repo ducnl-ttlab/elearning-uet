@@ -24,6 +24,11 @@ export class Comments1668911829507 implements MigrationInterface {
             type: 'int',
           },
           {
+            name: 'topicId',
+            type: 'int',
+            isNullable: true,
+          },
+          {
             name: 'comment',
             type: 'varchar',
             length: '255',
@@ -56,6 +61,16 @@ export class Comments1668911829507 implements MigrationInterface {
         columnNames: ['usercourseId'],
         referencedColumnNames: ['id'],
         referencedTableName: TableName.userCourse,
+        onDelete: 'CASCADE',
+      }),
+    );
+
+    await queryRunner.createForeignKey(
+      TableName.comments,
+      new TableForeignKey({
+        columnNames: ['topicId'],
+        referencedColumnNames: ['id'],
+        referencedTableName: TableName.topics,
         onDelete: 'CASCADE',
       }),
     );

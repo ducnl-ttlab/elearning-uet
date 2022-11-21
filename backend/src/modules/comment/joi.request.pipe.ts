@@ -38,19 +38,19 @@ const createCourseSchema = Joi.object().keys({
   price: Joi.number().min(1).optional(),
 });
 
-const commentValidationSchemas = {
+const validationSchemas = {
   courseIdParamSchema,
   categoryParamSchema,
   createCourseSchema,
   verifyCourseParamSchema,
 };
 
-type CommentValidationKeyType = keyof typeof commentValidationSchemas;
+type validationKeyType = keyof typeof validationSchemas;
 
-export function commentValidation(
-  ...validations: IValidationKeyType<CommentValidationKeyType>[]
+export function validation(
+  ...validations: IValidationKeyType<validationKeyType>[]
 ) {
   return validations.map(
-    (v) => new ValidationPipe(commentValidationSchemas[v.key], v.type),
+    (v) => new ValidationPipe(validationSchemas[v.key], v.type),
   );
 }

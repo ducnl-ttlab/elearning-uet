@@ -1,3 +1,4 @@
+import { CommentService } from './service/comment.service';
 import { UserCourseStatus } from 'database/constant';
 import {
   Body,
@@ -20,8 +21,8 @@ import { ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { Request, Response } from 'express';
 import { IUserJwt } from 'src/common/interfaces';
 import { User } from 'src/common/decorator/user.decorator';
-import { Auth, JoinCourseAuth } from 'src/common/decorator/auth.decorator';
-import { commentValidation } from './joi.request.pipe';
+import { Auth, CourseAuth } from 'src/common/decorator/auth.decorator';
+import { validation } from './joi.request.pipe';
 import { SuccessResponse } from 'src/common/helpers/api.response';
 import {
   CategoryDto,
@@ -39,13 +40,18 @@ import { CourseService } from '../course/service/course.service';
 import { AuthService } from '../auth/service/auth.service';
 import { Comment } from './entity/comment.entity';
 import moment from 'moment';
-import { JoinCourseGuard } from 'src/common/guard/student-course.guard';
 
-@ApiTags('Topic')
-@Controller('topic')
+@ApiTags('Comment')
+@Controller('comment')
 export class CommentController {
   constructor(
-
+    private readonly commentService: CommentService
   ) {}
 
+  @Post(':courseId')
+  @CourseAuth()
+  async comment(@Res() res: Response) {
+
+    return res.status(HttpStatus.OK).json(new SuccessResponse())
+  }
 }
