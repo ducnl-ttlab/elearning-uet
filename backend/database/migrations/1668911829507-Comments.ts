@@ -21,7 +21,9 @@ export class Comments1668911829507 implements MigrationInterface {
           },
           {
             name: 'userId',
-            type: 'string',
+            type: 'varchar',
+            length: '255',
+            isNullable: false,
           },
           {
             name: 'sourceId',
