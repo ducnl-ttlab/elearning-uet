@@ -108,7 +108,12 @@ export class CourseController {
     @Res() res: Response,
     @Query() query: CourseSearchQueryDto,
   ) {
-    const { page = 1, pageSize = 8, keyword, fields = 'description,name' } = query;
+    const {
+      page = 1,
+      pageSize = 8,
+      keyword,
+      fields = 'description,name',
+    } = query;
     const courseSearching = await this.searchService.search(
       keyword,
       TableName.course,
@@ -145,7 +150,9 @@ export class CourseController {
       return {
         ...course,
         ...date,
-        image: `${req.protocol}://${host}/course/image/${image}`,
+        image: image.startsWith('http')
+          ? image
+          : `${req.protocol}://${host}/course/image/${image}`,
         created_at: mysqlTimeStamp(created_at),
         updated_at: mysqlTimeStamp(updated_at),
       };

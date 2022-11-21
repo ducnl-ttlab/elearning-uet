@@ -1,3 +1,4 @@
+import { UserCourse } from './../user-courses/entity/user-course.entity';
 import { CommentService } from './service/comment.service';
 import { UserCourseStatus } from 'database/constant';
 import {
@@ -20,7 +21,11 @@ import {
 import { ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { Request, Response } from 'express';
 import { IUserJwt } from 'src/common/interfaces';
-import { User } from 'src/common/decorator/custom.decorator';
+import {
+  Instructor,
+  Student,
+  User,
+} from 'src/common/decorator/custom.decorator';
 import { Auth, CourseAuth } from 'src/common/decorator/auth.decorator';
 import { validation } from './joi.request.pipe';
 import { SuccessResponse } from 'src/common/helpers/api.response';
@@ -40,17 +45,23 @@ import { CourseService } from '../course/service/course.service';
 import { AuthService } from '../auth/service/auth.service';
 import { Comment } from './entity/comment.entity';
 import moment from 'moment';
+import { Course } from '../course/entity/course.entity';
 
 @ApiTags('Comment')
 @Controller('comment')
 export class CommentController {
-  constructor(
-    private readonly commentService: CommentService
-  ) {}
+  constructor(private readonly commentService: CommentService) {}
 
   @Post(':courseId')
   @CourseAuth()
-  async comment(@Res() res: Response, @Req() req) {
-    return res.status(HttpStatus.OK).json(new SuccessResponse(req.instructor, req.student))
+  async comment(
+    @Res() res: Response,
+    @Instructor() instructor: Course,
+    @Student() student: UserCourse,
+    @User() user: IUserJwt,
+  ) {
+    return res
+      .status(HttpStatus.OK)
+      .json(new SuccessResponse({ instructor, student, user, a: 'a' }));
   }
 }

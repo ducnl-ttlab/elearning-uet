@@ -29,7 +29,7 @@ export function JoinCourseAuth() {
 
 export function CourseAuth() {
   return applyDecorators(
-    Roles('student'),
+    Roles('student', 'instructor'),
     UseGuards(JWTAuthGuard, RoleGuards, CourseGuard),
     ApiBearerAuth(),
     ApiUnauthorizedResponse({ description: 'Unauthorized' }),

@@ -1,4 +1,8 @@
-import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
+import {
+  CanActivate,
+  ExecutionContext,
+  Injectable,
+} from '@nestjs/common';
 import { Role, UserCourseStatus } from 'database/constant';
 import { CourseService } from 'src/modules/course/service/course.service';
 import { UserCourseService } from 'src/modules/user-courses/service/user-course.service';
@@ -28,12 +32,11 @@ export class CourseGuard implements CanActivate {
     private readonly course: CourseService,
   ) {}
   async canActivate(context: ExecutionContext): Promise<boolean> {
-
     const request = context.switchToHttp().getRequest();
     const {
       user,
       params: { courseId },
-    }  = request
+    } = request;
 
     if (user.role === Role.student) {
       let studentInCourse = await this.userCourse.findOneByUsercourse(
@@ -46,13 +49,14 @@ export class CourseGuard implements CanActivate {
       ];
       let isStudentInCourse = studentAccepted.includes(studentInCourse.status);
 
-      request.userCourse = studentInCourse
-      
+      request.userCourse = studentInCourse;
+
       return isStudentInCourse;
     } else if (user.role === Role.instructor) {
-      let courseInstructor = await this.course.findOneById(courseId); 
+      let courseInstructor = await this.course.findOneById(courseId);
       let isInstructorCourse = courseInstructor.instructorId === user.id;
-      request.instructorCourse = courseInstructor
+
+      request.instructorCourse = courseInstructor;
       return isInstructorCourse;
     }
     return true;
