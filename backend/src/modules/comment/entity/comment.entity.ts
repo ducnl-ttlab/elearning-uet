@@ -1,4 +1,4 @@
-import { TableName } from '../../../../database/constant';
+import { CommentType, TableName } from '../../../../database/constant';
 
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
@@ -11,11 +11,18 @@ export class Comment {
 
   @ApiProperty({ example: 1 })
   @Column({ nullable: false })
-  usercourseId: number;
+  userId: string;
 
   @ApiProperty({ example: 1 })
   @Column({ nullable: true })
-  topicId: number;
+  sourceId: number;
+
+  @Column({
+    type: 'enum',
+    enum: CommentType,
+    default: CommentType.course,
+  })
+  type: CommentType;
 
   @ApiProperty({ example: '123abc' })
   @Column({ length: 255, nullable: false })
@@ -34,6 +41,6 @@ export class Comment {
   isBad: boolean;
 
   @ApiProperty({ example: false })
-  @Column({ type: 'boolean', nullable: false, default: false })
+  @Column({ type: 'boolean', nullable: true, default: false })
   isBlock: boolean;
 }

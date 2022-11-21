@@ -4,45 +4,25 @@ import {
   ValidationPipe,
 } from 'src/common/pipe/joi.request.pipe';
 
-const courseIdParamSchema = Joi.object().keys({
+
+const commentBodySchema = Joi.object().keys({
+  comment: Joi.string().min(1).message('comment should be a string'),
+});
+
+const topicQuerySchema = Joi.object().keys({
+  topicId: Joi.string()
+    .pattern(/^[0-9]+$/)
+    .message('topicId should be a number'),
+});
+const commentParamSchema = Joi.object().keys({
   courseId: Joi.string()
     .pattern(/^[0-9]+$/)
-    .message('courseId should be a number'),
+    .message('topicId should be a number'),
 });
-
-const verifyCourseParamSchema = Joi.object().keys({
-  courseId: Joi.string()
-    .pattern(/^[0-9]+$/)
-    .message('courseId should be a number'),
-});
-
-const categoryParamSchema = Joi.object().keys({
-  courseId: Joi.string()
-    .pattern(/^[0-9]+$/)
-    .message('categoryId should be a number'),
-  code: Joi.string()
-    .pattern(/^[0-9]+$/)
-    .message('categoryId should be a number'),
-});
-
-const createCourseSchema = Joi.object().keys({
-  name: Joi.string()
-    .required()
-    .min(1)
-    .message('name should have at least one character'),
-  description: Joi.string()
-    .required()
-    .min(1)
-    .message('name should have at least one character'),
-  isPublished: Joi.boolean().optional(),
-  price: Joi.number().min(1).optional(),
-});
-
 const validationSchemas = {
-  courseIdParamSchema,
-  categoryParamSchema,
-  createCourseSchema,
-  verifyCourseParamSchema,
+  topicQuerySchema,
+  commentBodySchema,
+  commentParamSchema
 };
 
 type validationKeyType = keyof typeof validationSchemas;

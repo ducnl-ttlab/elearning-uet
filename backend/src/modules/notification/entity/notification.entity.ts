@@ -22,7 +22,7 @@ export class NotificationCourse {
   @Column({
     type: 'enum',
     enum: NotificationType,
-    default: NotificationType.comment,
+    default: NotificationType.studentJoinCourse,
   })
   type: NotificationType;
 

@@ -41,7 +41,7 @@ export class Notifications1667388280824 implements MigrationInterface {
             type: 'enum',
             enum: Object.values(NotificationType),
             enumName: 'type',
-            default: `'${NotificationType.comment}'`,
+            default: `'${NotificationType.studentJoinCourse}'`,
           },
           {
             name: 'title',

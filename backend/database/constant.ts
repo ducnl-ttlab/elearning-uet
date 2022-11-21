@@ -36,8 +36,14 @@ export enum NotificationType {
   studentInvitation = 'student_invitation',
   topicCreation = 'topic_createion',
   homework = 'homework',
-  comment = 'comment',
+  topicComment = 'topic_comment',
+  courseComment = 'course_comment',
   rating = 'rating',
   quiz = 'quiz',
   studentJoinCourse = 'student_join_course',
+}
+
+export enum CommentType {
+  course = 'course',
+  topic = 'topic'
 }

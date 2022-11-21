@@ -33,7 +33,7 @@ export class TopicService {
   async existTopic(id: number): Promise<Topic> {
     let existCourse = await this.findOneById(id);
     if (!existCourse) {
-      throw new NotFoundException('Not found course');
+      throw new NotFoundException('Not found topic');
     }
     return existCourse;
   }

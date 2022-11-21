@@ -1,3 +1,4 @@
+import { TopicModule } from './../topics/topic.module';
 import { AuthModule } from '../auth/auth.module'
 import { Module } from '@nestjs/common';
 import { CommentController } from './comment.controller';
@@ -12,11 +13,10 @@ import { UserCourseModule } from '../user-courses/user-courses.module';
 @Module({
   imports: [
     TypeOrmModule.forFeature([Comment]),
-    CategoryModule,
     CourseModule,
     UserModule,
-    AuthModule,
-    UserCourseModule
+    UserCourseModule,
+    TopicModule
   ],
   controllers: [CommentController],
   providers: [CommentService],

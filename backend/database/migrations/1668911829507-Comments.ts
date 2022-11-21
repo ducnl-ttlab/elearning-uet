@@ -1,4 +1,4 @@
-import { TableName } from 'database/constant';
+import { CommentType, NotificationType, TableName } from 'database/constant';
 import {
   MigrationInterface,
   QueryRunner,
@@ -20,13 +20,19 @@ export class Comments1668911829507 implements MigrationInterface {
             generationStrategy: 'increment',
           },
           {
-            name: 'usercourseId',
+            name: 'userId',
+            type: 'string',
+          },
+          {
+            name: 'sourceId',
             type: 'int',
           },
           {
-            name: 'topicId',
-            type: 'int',
-            isNullable: true,
+            name: 'type',
+            type: 'enum',
+            enum: Object.values(CommentType),
+            enumName: 'type',
+            default: `'${CommentType.course}'`,
           },
           {
             name: 'comment',
@@ -58,19 +64,9 @@ export class Comments1668911829507 implements MigrationInterface {
     await queryRunner.createForeignKey(
       TableName.comments,
       new TableForeignKey({
-        columnNames: ['usercourseId'],
+        columnNames: ['userId'],
         referencedColumnNames: ['id'],
-        referencedTableName: TableName.userCourse,
-        onDelete: 'CASCADE',
-      }),
-    );
-
-    await queryRunner.createForeignKey(
-      TableName.comments,
-      new TableForeignKey({
-        columnNames: ['topicId'],
-        referencedColumnNames: ['id'],
-        referencedTableName: TableName.topics,
+        referencedTableName: TableName.user,
         onDelete: 'CASCADE',
       }),
     );
