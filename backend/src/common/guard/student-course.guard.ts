@@ -28,11 +28,12 @@ export class CourseGuard implements CanActivate {
     private readonly course: CourseService,
   ) {}
   async canActivate(context: ExecutionContext): Promise<boolean> {
+
+    const request = context.switchToHttp().getRequest();
     const {
       user,
       params: { courseId },
-    } = context.switchToHttp().getRequest();
-
+    }  = request
 
     if (user.role === Role.student) {
       let studentInCourse = await this.userCourse.findOneByUsercourse(
@@ -44,12 +45,14 @@ export class CourseGuard implements CanActivate {
         UserCourseStatus.commentBlocking,
       ];
       let isStudentInCourse = studentAccepted.includes(studentInCourse.status);
+
+      request.userCourse = studentInCourse
       
       return isStudentInCourse;
     } else if (user.role === Role.instructor) {
-      let courseInstructor = await this.course.findOneById(courseId);
+      let courseInstructor = await this.course.findOneById(courseId); 
       let isInstructorCourse = courseInstructor.instructorId === user.id;
-
+      request.instructorCourse = courseInstructor
       return isInstructorCourse;
     }
     return true;

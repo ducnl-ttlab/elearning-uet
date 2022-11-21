@@ -12,7 +12,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
 import { NotificationService } from './service/notification.service';
 import { IUserJwt } from 'src/common/interfaces';
-import { User } from 'src/common/decorator/user.decorator';
+import { User } from 'src/common/decorator/custom.decorator';
 import { SuccessResponse } from 'src/common/helpers/api.response';
 import { JWTAuthGuard } from '../auth/guard/jwt-auth.guard';
 import {

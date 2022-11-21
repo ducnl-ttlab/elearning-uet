@@ -20,7 +20,7 @@ import {
 import { ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { Request, Response } from 'express';
 import { IUserJwt } from 'src/common/interfaces';
-import { User } from 'src/common/decorator/user.decorator';
+import { User } from 'src/common/decorator/custom.decorator';
 import { Auth, CourseAuth } from 'src/common/decorator/auth.decorator';
 import { validation } from './joi.request.pipe';
 import { SuccessResponse } from 'src/common/helpers/api.response';
@@ -50,8 +50,7 @@ export class CommentController {
 
   @Post(':courseId')
   @CourseAuth()
-  async comment(@Res() res: Response) {
-
-    return res.status(HttpStatus.OK).json(new SuccessResponse())
+  async comment(@Res() res: Response, @Req() req) {
+    return res.status(HttpStatus.OK).json(new SuccessResponse(req.instructor, req.student))
   }
 }

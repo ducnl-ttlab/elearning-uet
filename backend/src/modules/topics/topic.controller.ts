@@ -19,7 +19,7 @@ import {
 import { ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { Request, Response } from 'express';
 import { IUserJwt } from 'src/common/interfaces';
-import { User } from 'src/common/decorator/user.decorator';
+import { User } from 'src/common/decorator/custom.decorator';
 import { Auth, JoinCourseAuth } from 'src/common/decorator/auth.decorator';
 import { userCourseValidation } from './joi.request.pipe';
 import { SuccessResponse } from 'src/common/helpers/api.response';
