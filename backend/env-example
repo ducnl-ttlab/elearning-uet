@@ -11,6 +11,7 @@ DB_USERNAME=root
 DB_PASSWORD=ttlab
 DB_NAME=elearning2020
 
+
 EMAIL_ID=ducnl@tokyotechlab.com
 EMAIL_PASS=hgrbwxysawfhumns
 EMAIL_HOST=imap.gmail.com
@@ -33,3 +34,18 @@ STRIPE_API_KEY=sk_test_51LyHkTH1BtfLIBkLfKm1vWCzInEVf6MOv9YTe3On8FYSbULVPp0yqigr
 ELASTICSEARCH_NODEz=https://elearningz.es.us-central1.gcp.cloud.es.io
 ELASTICSEARCH_USERNAMEz=elastic
 ELASTICSEARCH_PASSWORDz=vT8c3FiTtLCtbklYGlzMle66
+
+draft.DB_HOST=bizkkjsokx5irbvlztqy-mysql.services.clever-cloud.com
+draft.DB_PORT=3306
+draft.DB_USERNAME=uunxrmn0vcu2oe8p
+draft.DB_PASSWORD=eh2CtquMu69qm0QDZaMg
+draft.DB_NAME=bizkkjsokx5irbvlztqy
+
+draft.ELASTICSEARCH_NODE=https://elearningz.es.us-central1.gcp.cloud.es.io
+draft.ELASTICSEARCH_USERNAME=elastic
+draft.ELASTICSEARCH_PASSWORD=vT8c3FiTtLCtbklYGlzMle66
+
+draft.REDIS_HOST=redis-12379.c292.ap-southeast-1-1.ec2.cloud.redislabs.com
+draft.REDIS_PORT=12379
+draft.REDIS_USER=default
+draft.REDIS_PASSWORD=1s6ybIWw2r5E9PMvtXrHaY4wPRCNP8Xf
