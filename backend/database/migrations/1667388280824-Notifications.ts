@@ -21,7 +21,8 @@ export class Notifications1667388280824 implements MigrationInterface {
           },
           {
             name: 'sourceId',
-            type: 'int',
+            type: 'varchar',
+            length: '255',
             isNullable: true,
           },
           {
@@ -30,11 +31,17 @@ export class Notifications1667388280824 implements MigrationInterface {
             isNullable: true,
           },
           {
+            name: 'isRead',
+            type: 'tinyint',
+            isNullable: false,
+            default: false,
+          },
+          {
             name: 'type',
             type: 'enum',
             enum: Object.values(NotificationType),
             enumName: 'type',
-            default: `'${NotificationType.comment}'`,
+            default: `'${NotificationType.studentJoinCourse}'`,
           },
           {
             name: 'title',

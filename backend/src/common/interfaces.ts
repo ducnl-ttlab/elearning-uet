@@ -1,8 +1,10 @@
+import { UserCourse } from './../modules/user-courses/entity/user-course.entity';
 import { HttpCode, HttpStatus } from '@nestjs/common';
 import { User } from 'src/modules/user/entity/user.entity';
 import { Request } from 'express';
 import { Role } from 'database/constant';
 import { Socket } from 'socket.io';
+import { Course } from 'src/modules/course/entity/course.entity';
 
 export interface IUserJwt {
   role: Role;
@@ -34,6 +36,16 @@ export interface IUserReq<T> extends Request {
 }
 
 export type IUserJwtReq = IUserReq<IUserJwt>;
+
+
+export interface IuserCourse extends IUserJwtReq {
+  userCourse: UserCourse;
+}
+
+export interface IinstructorCourse extends IUserJwtReq {
+  instructorCourse: Course;
+}
+
 
 export interface SearchServiceInterface<T> {
   insertIndex(bulkData: T): Promise<T>;

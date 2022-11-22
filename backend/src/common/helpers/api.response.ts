@@ -11,6 +11,9 @@ export class ApiResponse<T> {
 
 export class CommonListResponse<T> {
   items: T[];
+  page?: number;
+  pageSize?: number;
+  total_pages?: number;
   totalItems: number;
 }
 

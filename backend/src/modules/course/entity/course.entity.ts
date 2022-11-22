@@ -31,7 +31,7 @@ export class Course {
   @Column({ type: 'text', nullable: false })
   description: string;
 
-  @ApiProperty({ example: 'Html course description' })
+  @ApiProperty({ example: false })
   @Column({ type: 'boolean', nullable: false, default: false })
   isPublished: boolean;
 
@@ -42,6 +42,22 @@ export class Course {
   @ApiProperty({ example: 'http://locadlhost/course.png' })
   @Column({ length: 255, nullable: true })
   image: string;
+
+  @ApiProperty({ type: 'date' })
+  @CreateDateColumn({
+    type: 'timestamp',
+    precision: 3,
+    nullable: true
+  })
+  startCourseTime: Date;
+
+  @ApiProperty({ type: 'date' })
+  @CreateDateColumn({
+    type: 'timestamp',
+    precision: 3,
+    nullable: true
+  })
+  endCourseTime: Date;
 
   @ApiProperty({ type: 'date' })
   @CreateDateColumn({

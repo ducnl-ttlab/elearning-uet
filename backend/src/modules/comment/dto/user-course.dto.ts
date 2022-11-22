@@ -10,6 +10,18 @@ export class CheckoutDto {
   items: ItemCheckout[];
 }
 
+export class CheckoutCourseDto {
+  @ApiProperty()
+  courseId: number;
+}
+export class JoinCourseDto {
+  @ApiProperty()
+  courseId: number;
+
+  @ApiProperty()
+  code: string;
+}
+
 export class CategoryDto {
   @ApiProperty()
   categoryId: number;

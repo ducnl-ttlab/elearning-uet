@@ -41,6 +41,16 @@ export class UserCourses1666985998127 implements MigrationInterface {
             isNullable: true,
           },
           {
+            name: 'startBlockTime',
+            type: 'timestamp',
+            isNullable: true,
+          },
+          {
+            name: 'blockDuration',
+            type: 'int',
+            isNullable: true,
+          },
+          {
             name: 'created_at',
             type: 'timestamp',
             default: 'now()',

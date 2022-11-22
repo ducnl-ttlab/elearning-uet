@@ -55,6 +55,16 @@ export class Courses1666736253433 implements MigrationInterface {
             isNullable: true,
           },
           {
+            name: 'startCourseTime',
+            type: 'timestamp',
+            isNullable: true,
+          },
+          {
+            name: 'endCourseTime',
+            type: 'timestamp',
+            isNullable: true,
+          },
+          {
             name: 'created_at',
             type: 'timestamp',
             default: 'now()',
