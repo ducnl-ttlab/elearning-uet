@@ -4,19 +4,20 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { CommentType, TableName } from 'database/constant';
+import { getManager, Repository } from 'typeorm';
 import { Comment } from '../entity/comment.entity';
 
 @Injectable()
 export class CommentService {
   constructor(
     @InjectRepository(Comment)
-    private readonly comment: Repository<Comment>,
+    private readonly commentRepository: Repository<Comment>,
   ) {}
 
   async saveComment(comment: Partial<Comment>): Promise<Comment> {
     try {
-      return this.comment.save(comment);
+      return this.commentRepository.save(comment);
     } catch (error) {
       throw new InternalServerErrorException(error);
     }
@@ -24,7 +25,29 @@ export class CommentService {
 
   async findOneById(id: number): Promise<Comment> {
     try {
-      return this.comment.findOne(id);
+      return this.commentRepository.findOne(id);
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+  async findCommentors(
+    type: CommentType,
+    sourceId: number,
+  ): Promise<string[]> {
+    const entityManager = getManager();
+    let query = `SELECT ${TableName.comments}.userId 
+      FROM ${TableName.comments}
+      WHERE type = ? and sourceId = ?
+      GROUP BY ${TableName.comments}.userId
+      `;
+    try {
+      const resultItems = (await entityManager.query(query, [
+        type,
+        sourceId,
+      ])) as { userId: string }[];
+
+      let result = resultItems.map(item => item.userId)
+      return result;
     } catch (error) {
       throw new InternalServerErrorException(error);
     }
