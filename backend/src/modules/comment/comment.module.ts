@@ -1,3 +1,4 @@
+import { NotificationModule } from './../notification/notification.module';
 import { TopicModule } from './../topics/topic.module';
 import { AuthModule } from '../auth/auth.module'
 import { Module } from '@nestjs/common';
@@ -16,7 +17,8 @@ import { UserCourseModule } from '../user-courses/user-courses.module';
     CourseModule,
     UserModule,
     UserCourseModule,
-    TopicModule
+    TopicModule,
+    NotificationModule
   ],
   controllers: [CommentController],
   providers: [CommentService],

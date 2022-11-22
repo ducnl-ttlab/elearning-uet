@@ -1,7 +1,11 @@
 import { TopicService } from './../topics/service/topic.service';
 import { UserCourse } from './../user-courses/entity/user-course.entity';
 import { CommentService } from './service/comment.service';
-import { CommentType, UserCourseStatus } from 'database/constant';
+import {
+  CommentType,
+  NotificationType,
+  UserCourseStatus,
+} from 'database/constant';
 import {
   Body,
   Controller,
@@ -48,6 +52,7 @@ import { AuthService } from '../auth/service/auth.service';
 import { Comment } from './entity/comment.entity';
 import { Course } from '../course/entity/course.entity';
 import { Topic } from '../topics/entity/topic.entity';
+import { NotificationService } from '../notification/service/notification.service';
 
 @ApiTags('Comment')
 @Controller('comment')
@@ -55,6 +60,7 @@ export class CommentController {
   constructor(
     private readonly commentService: CommentService,
     private readonly topicService: TopicService,
+    private readonly notificationService: NotificationService,
   ) {}
 
   @Post(':courseId')
@@ -73,14 +79,14 @@ export class CommentController {
     @User() user: IUserJwt,
     @Query() query: { topicId: string },
     @Body() body: { comment: string },
-    @Param() param: {courseId: string}
+    @Param() param: { courseId: string },
   ) {
     let topic: Partial<Topic> = {};
     if (query?.topicId) {
       topic = await this.topicService.existTopic(+query?.topicId);
     }
-    const {comment} = body
-    let idBad = false
+    const { comment } = body;
+    let idBad = false;
     // check comment
 
     // save comment to db
@@ -91,13 +97,69 @@ export class CommentController {
       comment,
       time: new Date(),
       isBad: idBad,
-    }
-    await this.commentService.saveComment(newComment)
+    };
+    await this.commentService.saveComment(newComment);
 
-    return res
-      .status(HttpStatus.OK)
-      .json(
-        new SuccessResponse(),
-      );
+    // get commentor in course or topic
+    let commentorIds = await this.commentService.findCommentors(
+      newComment.type,
+      newComment.sourceId,
+    );
+
+    await Promise.all(
+      commentorIds.map((userId) => {
+        if(userId !== user.id) {
+          let newNotification = {
+            userId,
+            type:
+              newComment.type === CommentType.topic
+                ? NotificationType.topicComment
+                : NotificationType.courseComment,
+            parentId: newComment.sourceId,
+            isRead: false,
+            title: `Bình luận ${
+              newComment.type === CommentType.topic
+                ? 'khóa học'
+                : 'chủ đề khóa học'
+            }`,
+            description: `${user.username} đã bình luận khóa học`,
+          };
+          this.notificationService.saveNotification(newNotification);
+        }
+      }),
+    );
+
+    return res.status(HttpStatus.OK).json(new SuccessResponse());
+  }
+
+  @Get(':courseId')
+  @CourseAuth()
+  @UsePipes(
+    ...validation(
+      { type: 'query', key: 'topicQuerySchema' },
+      { type: 'param', key: 'commentParamSchema' },
+    ),
+  )
+  async getComment(
+    @Res() res: Response,
+    @Instructor() instructor: Course,
+    @Student() student: UserCourse,
+    @User() user: IUserJwt,
+    @Query() query: { topicId: string },
+    @Body() body: { comment: string },
+    @Param() param: { courseId: string },
+  ) {
+    let topic: Partial<Topic> = {};
+    if (query?.topicId) {
+      topic = await this.topicService.existTopic(+query?.topicId);
+    }
+
+    // get commentor in course or topic
+    let commentors = await this.commentService.findCommentors(
+      CommentType.course,
+      1,
+    );
+
+    return res.status(HttpStatus.OK).json(new SuccessResponse(commentors));
   }
 }
