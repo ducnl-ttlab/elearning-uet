@@ -47,7 +47,7 @@ export class CourseGuard implements CanActivate {
         UserCourseStatus.accepted,
         UserCourseStatus.commentBlocking,
       ];
-      let isStudentInCourse = studentAccepted.includes(studentInCourse.status);
+      let isStudentInCourse = studentAccepted.includes(studentInCourse?.status);
 
       request.userCourse = studentInCourse;
 

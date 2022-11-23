@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CommentType, TableName } from 'database/constant';
-import { getManager, Repository } from 'typeorm';
+import { DeleteResult, getManager, Repository } from 'typeorm';
 import { Comment } from '../entity/comment.entity';
 
 @Injectable()
@@ -22,7 +22,13 @@ export class CommentService {
       throw new InternalServerErrorException(error);
     }
   }
-
+  async deleteComment(id: number): Promise<DeleteResult> {
+    try {
+      return this.commentRepository.delete(id);
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
   async findOneById(id: number): Promise<Comment> {
     try {
       return this.commentRepository.findOne(id);
@@ -36,7 +42,7 @@ export class CommentService {
     let c = TableName.comments;
     let u = TableName.user;
 
-    let select = `${c}.*, ${u}.username, ${u}.email, ${u}.role, ${u}.avatar`
+    let select = `${c}.*, ${u}.username, ${u}.email, ${u}.role, ${u}.avatar`;
     let query = `SELECT ${select}
     FROM ${c} JOIN ${u} ON ${u}.id=${c}.userId  
     WHERE ${c}.type = ? and ${c}.sourceId = ?`;
@@ -72,7 +78,7 @@ export class CommentService {
   async existComment(id: number): Promise<Comment> {
     let existCourse = await this.findOneById(id);
     if (!existCourse) {
-      throw new NotFoundException('Not found course');
+      throw new NotFoundException('Not found comment');
     }
     return existCourse;
   }

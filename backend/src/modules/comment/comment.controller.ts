@@ -1,7 +1,7 @@
 import { TopicService } from './../topics/service/topic.service';
 import { UserCourse } from './../user-courses/entity/user-course.entity';
 import { CommentService } from './service/comment.service';
-import { CommentType, NotificationType } from 'database/constant';
+import { CommentType, NotificationType, Role } from 'database/constant';
 import {
   Body,
   Controller,
@@ -12,6 +12,9 @@ import {
   Res,
   UsePipes,
   Query,
+  Delete,
+  NotFoundException,
+  ForbiddenException,
 } from '@nestjs/common';
 import { ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { Request, Response } from 'express';
@@ -151,5 +154,27 @@ export class CommentController {
     };
 
     return res.status(HttpStatus.OK).json(new SuccessResponse(response));
+  }
+
+  @Delete(':courseId/:commentId')
+  @CourseAuth()
+  @UsePipes(...validation({ type: 'param', key: 'deleteCommentParamSchema' }))
+  async deleteComment(
+    @Res() res: Response,
+    @User() user: IUserJwt,
+    @Param() param: { courseId: string; commentId: string },
+  ) {
+    let { commentId } = param;
+    if (!commentId) {
+      throw new NotFoundException('not found commentId');
+    }
+    let existComment = await this.commentService.existComment(+commentId);
+
+    if(user.role === Role.student && existComment.userId !== user.id) {
+      throw new ForbiddenException("you can not delete this comment" );
+    }
+
+    this.commentService.deleteComment(+commentId);
+    return res.status(HttpStatus.OK).json(new SuccessResponse());
   }
 }

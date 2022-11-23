@@ -33,12 +33,20 @@ const queryListSchema = Joi.object().keys({
     .message('pageSize should be a number')
     .optional(),
 });
-
+const deleteCommentParamSchema = Joi.object().keys({
+  courseId: Joi.string()
+    .pattern(/^[0-9]+$/)
+    .message('topicId should be a number'),
+  commentId: Joi.string()
+    .pattern(/^[0-9]+$/)
+    .message('topicId should be a number'),
+});
 const validationSchemas = {
   topicQuerySchema,
   commentBodySchema,
   commentParamSchema,
-  queryListSchema
+  queryListSchema,
+  deleteCommentParamSchema
 };
 
 type validationKeyType = keyof typeof validationSchemas;
