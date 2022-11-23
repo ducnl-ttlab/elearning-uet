@@ -51,7 +51,7 @@ export const mysqlToTime = (startTime: Date, endTime: Date) => {
 };
 
 export const mysqlTimeStamp = (time: Date) => {
-  return moment(time).utc().format('YYYY-MM-DD hh-mm-ss') as unknown as Date;
+  return moment(time).utc(true).format('YYYY/MM/DD hh:mm:ss') as unknown as Date;
 };
 
 export const defaultResponseTime = (created_at: Date, updated_at: Date) => {

@@ -30,10 +30,26 @@ export class CommentService {
       throw new InternalServerErrorException(error);
     }
   }
-  async findCommentors(
-    type: CommentType,
-    sourceId: number,
-  ): Promise<string[]> {
+
+  async findComments(type: CommentType, sourceId: number) {
+    const entityManager = getManager();
+    let c = TableName.comments;
+    let u = TableName.user;
+
+    let select = `${c}.*, ${u}.username, ${u}.email, ${u}.role, ${u}.avatar`
+    let query = `SELECT ${select}
+    FROM ${c} JOIN ${u} ON ${u}.id=${c}.userId  
+    WHERE ${c}.type = ? and ${c}.sourceId = ?`;
+    try {
+      const resultItems = await entityManager.query(query, [type, sourceId]);
+
+      return resultItems;
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  async findCommentors(type: CommentType, sourceId: number): Promise<string[]> {
     const entityManager = getManager();
     let query = `SELECT ${TableName.comments}.userId 
       FROM ${TableName.comments}
@@ -46,7 +62,7 @@ export class CommentService {
         sourceId,
       ])) as { userId: string }[];
 
-      let result = resultItems.map(item => item.userId)
+      let result = resultItems.map((item) => item.userId);
       return result;
     } catch (error) {
       throw new InternalServerErrorException(error);

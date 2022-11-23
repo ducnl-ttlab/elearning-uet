@@ -19,10 +19,26 @@ const commentParamSchema = Joi.object().keys({
     .pattern(/^[0-9]+$/)
     .message('topicId should be a number'),
 });
+
+const queryListSchema = Joi.object().keys({
+  topicId: Joi.string()
+    .pattern(/^[0-9]+$/)
+    .message('topicId should be a number'),
+  page: Joi.string()
+    .pattern(/^[0-9]+$/)
+    .message('page should be a number')
+    .optional(),
+  pageSize: Joi.string()
+    .pattern(/^[0-9]+$/)
+    .message('pageSize should be a number')
+    .optional(),
+});
+
 const validationSchemas = {
   topicQuerySchema,
   commentBodySchema,
-  commentParamSchema
+  commentParamSchema,
+  queryListSchema
 };
 
 type validationKeyType = keyof typeof validationSchemas;

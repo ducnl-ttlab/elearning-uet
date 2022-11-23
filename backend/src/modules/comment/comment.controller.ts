@@ -28,7 +28,8 @@ import { Comment } from './entity/comment.entity';
 import { Course } from '../course/entity/course.entity';
 import { Topic } from '../topics/entity/topic.entity';
 import { NotificationService } from '../notification/service/notification.service';
-import { checkBadWordScript } from 'src/infra/python-script/check-bad-word';
+import { getPaginatedItems, mysqlTimeStamp } from 'src/common/ultils';
+// import { checkBadWordScript } from 'src/infra/python-script/check-bad-word';
 
 @ApiTags('Comment')
 @Controller('comment')
@@ -63,7 +64,9 @@ export class CommentController {
     }
     const { comment } = body;
     // check comment
-    let idBad = await checkBadWordScript(comment);
+    // let idBad = await checkBadWordScript(comment);
+
+    let idBad = false;
 
     // save comment to db
     let newComment: Partial<Comment> = {
@@ -112,30 +115,41 @@ export class CommentController {
   @CourseAuth()
   @UsePipes(
     ...validation(
-      { type: 'query', key: 'topicQuerySchema' },
+      { type: 'query', key: 'queryListSchema' },
       { type: 'param', key: 'commentParamSchema' },
     ),
   )
   async getComment(
     @Res() res: Response,
-    @Instructor() instructor: Course,
-    @Student() student: UserCourse,
-    @User() user: IUserJwt,
-    @Query() query: { topicId: string },
-    @Body() body: { comment: string },
+    @Query() query: { topicId: string; page: string; pageSize: string },
     @Param() param: { courseId: string },
   ) {
     let topic: Partial<Topic> = {};
-    if (query?.topicId) {
-      topic = await this.topicService.existTopic(+query?.topicId);
+    let { topicId, page = 1, pageSize = 8 } = query;
+    if (topicId) {
+      topic = await this.topicService.existTopic(+topicId);
     }
 
     // get commentor in course or topic
-    let commentors = await this.commentService.findCommentors(
-      CommentType.course,
-      1,
+    let commentors = await this.commentService.findComments(
+      topicId ? CommentType.topic : CommentType.course,
+      topicId ? +topicId : +param.courseId,
     );
 
-    return res.status(HttpStatus.OK).json(new SuccessResponse(commentors));
+    let response = {
+      ...getPaginatedItems(
+        commentors.map((item) => {
+          return {
+            ...item,
+            time: mysqlTimeStamp(item.time),
+          };
+        }),
+        +page,
+        +pageSize,
+      ),
+      totalItems: commentors?.length,
+    };
+
+    return res.status(HttpStatus.OK).json(new SuccessResponse(response));
   }
 }
