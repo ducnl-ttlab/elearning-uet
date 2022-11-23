@@ -1,27 +1,16 @@
 import { TopicService } from './../topics/service/topic.service';
 import { UserCourse } from './../user-courses/entity/user-course.entity';
 import { CommentService } from './service/comment.service';
-import {
-  CommentType,
-  NotificationType,
-  UserCourseStatus,
-} from 'database/constant';
+import { CommentType, NotificationType } from 'database/constant';
 import {
   Body,
   Controller,
   Get,
   HttpStatus,
-  NotFoundException,
   Param,
   Post,
-  Req,
   Res,
-  UploadedFile,
-  UseInterceptors,
   UsePipes,
-  Headers,
-  Inject,
-  UseGuards,
   Query,
 } from '@nestjs/common';
 import { ApiConsumes, ApiTags } from '@nestjs/swagger';
@@ -32,27 +21,14 @@ import {
   Student,
   User,
 } from 'src/common/decorator/custom.decorator';
-import { Auth, CourseAuth } from 'src/common/decorator/auth.decorator';
+import { CourseAuth } from 'src/common/decorator/auth.decorator';
 import { validation } from './joi.request.pipe';
 import { SuccessResponse } from 'src/common/helpers/api.response';
-import {
-  CategoryDto,
-  CheckoutDto,
-  CheckoutCourseDto,
-  JoinCourseDto,
-} from './dto/user-course.dto';
-import { CategoryService } from '../category/service/category.service';
-import LocalFilesInterceptor, {
-  imageParams,
-} from 'src/infra/local-file/local-files.interceptor';
-import { STRIPE_CLIENT } from 'src/common/constant';
-import Stripe from 'stripe';
-import { CourseService } from '../course/service/course.service';
-import { AuthService } from '../auth/service/auth.service';
 import { Comment } from './entity/comment.entity';
 import { Course } from '../course/entity/course.entity';
 import { Topic } from '../topics/entity/topic.entity';
 import { NotificationService } from '../notification/service/notification.service';
+import { checkBadWordScript } from 'src/infra/python-script/check-bad-word';
 
 @ApiTags('Comment')
 @Controller('comment')
@@ -86,8 +62,8 @@ export class CommentController {
       topic = await this.topicService.existTopic(+query?.topicId);
     }
     const { comment } = body;
-    let idBad = false;
     // check comment
+    let idBad = await checkBadWordScript(comment);
 
     // save comment to db
     let newComment: Partial<Comment> = {
@@ -98,7 +74,6 @@ export class CommentController {
       time: new Date(),
       isBad: idBad,
     };
-    await this.commentService.saveComment(newComment);
 
     // get commentor in course or topic
     let commentorIds = await this.commentService.findCommentors(
@@ -106,9 +81,9 @@ export class CommentController {
       newComment.sourceId,
     );
 
-    await Promise.all(
-      commentorIds.map((userId) => {
-        if(userId !== user.id) {
+    await Promise.all([
+      ...commentorIds.map((userId) => {
+        if (userId !== user.id) {
           let newNotification = {
             userId,
             type:
@@ -127,7 +102,8 @@ export class CommentController {
           this.notificationService.saveNotification(newNotification);
         }
       }),
-    );
+      this.commentService.saveComment(newComment),
+    ]);
 
     return res.status(HttpStatus.OK).json(new SuccessResponse());
   }
