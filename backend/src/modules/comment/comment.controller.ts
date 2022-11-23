@@ -1,3 +1,4 @@
+import { UserCourseStatus } from './../../../database/constant';
 import { TopicService } from './../topics/service/topic.service';
 import { UserCourse } from './../user-courses/entity/user-course.entity';
 import { CommentService } from './service/comment.service';
@@ -61,6 +62,10 @@ export class CommentController {
     @Body() body: { comment: string },
     @Param() param: { courseId: string },
   ) {
+
+    if(student.status === UserCourseStatus.commentBlocking) {
+      throw new ForbiddenException("you can not comment in this course" );
+    }
     let topic: Partial<Topic> = {};
     if (query?.topicId) {
       topic = await this.topicService.existTopic(+query?.topicId);
