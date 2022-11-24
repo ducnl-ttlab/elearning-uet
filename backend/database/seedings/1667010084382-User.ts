@@ -1,6 +1,7 @@
 import { TableName, Role } from '../constant';
 import { MigrationInterface, QueryRunner } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
+const gravatar = require('gravatar');
 
 export class User1667010084382 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -72,8 +73,14 @@ export class User1667010084382 implements MigrationInterface {
     let itemDatas = await Promise.all(
       items.map(async (item) => {
         const hashedPassword = await bcrypt.hash(item.password, 8);
+        let avatar = await gravatar.url(
+          item.email,
+          { s: '100', r: 'x', d: 'retro' },
+          true,
+        );
         return {
           ...item,
+          avatar,
           password: hashedPassword,
         };
       }),
