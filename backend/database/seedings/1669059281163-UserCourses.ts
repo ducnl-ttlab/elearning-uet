@@ -21,6 +21,8 @@ export class UserCourses1669059281163 implements MigrationInterface {
         userId: '123456xsabxf',
         status: UserCourseStatus.commentBlocking,
         startCourseTime: new Date(),
+        startBlockTime: new Date(),
+        blockDuration: 45
       },
       {
         courseId: 1,
