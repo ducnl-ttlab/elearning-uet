@@ -10,7 +10,7 @@ export class Comments1668911829507 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: TableName.comments,
+        name: TableName.comment,
         columns: [
           {
             name: 'id',
@@ -64,7 +64,7 @@ export class Comments1668911829507 implements MigrationInterface {
     );
 
     await queryRunner.createForeignKey(
-      TableName.comments,
+      TableName.comment,
       new TableForeignKey({
         columnNames: ['userId'],
         referencedColumnNames: ['id'],
@@ -75,6 +75,6 @@ export class Comments1668911829507 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable(TableName.comments);
+    await queryRunner.dropTable(TableName.comment);
   }
 }

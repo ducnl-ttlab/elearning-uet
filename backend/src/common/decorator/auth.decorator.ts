@@ -3,7 +3,7 @@ import { ApiBearerAuth, ApiUnauthorizedResponse } from '@nestjs/swagger';
 import { Role } from 'database/constant';
 import { JWTAuthGuard } from 'src/modules/auth/guard/jwt-auth.guard';
 import { RoleGuards } from '../guard/role.guard';
-import { CourseGuard, JoinCourseGuard } from '../guard/student-course.guard';
+import { CourseGuard, JoinCourseGuard, StudentCourseGuard } from '../guard/student-course.guard';
 
 type ERole = keyof typeof Role;
 
@@ -31,6 +31,15 @@ export function CourseAuth() {
   return applyDecorators(
     Roles('student', 'instructor'),
     UseGuards(JWTAuthGuard, RoleGuards, CourseGuard),
+    ApiBearerAuth(),
+    ApiUnauthorizedResponse({ description: 'Unauthorized' }),
+  );
+}
+
+export function StudentCourseAuth() {
+  return applyDecorators(
+    Roles('student'),
+    UseGuards(JWTAuthGuard, RoleGuards, StudentCourseGuard),
     ApiBearerAuth(),
     ApiUnauthorizedResponse({ description: 'Unauthorized' }),
   );

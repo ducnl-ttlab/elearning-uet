@@ -3,7 +3,7 @@ import { CommentType, TableName } from '../../../../database/constant';
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 
-@Entity({ name: TableName.comments })
+@Entity({ name: TableName.comment })
 export class Comment {
   @ApiProperty({ example: 1 })
   @PrimaryGeneratedColumn()

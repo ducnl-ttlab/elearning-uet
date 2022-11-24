@@ -7,8 +7,9 @@ export enum TableName {
   course = 'courses',
   userCourse = 'user_courses',
   notification = 'notifications',
-  topics="topics",
-  comments="comments"
+  topic="topics",
+  comment="comments",
+  rating="ratings"
 }
 
 export enum Role {
@@ -47,3 +48,5 @@ export enum CommentType {
   course = 'course',
   topic = 'topic'
 }
+
+

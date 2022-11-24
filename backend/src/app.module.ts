@@ -22,6 +22,7 @@ import { PollModule } from './modules/poll/polls.module';
 import { JWTModule } from './modules/jwt/jwt.module';
 import { TopicModule } from './modules/topics/topic.module';
 import { CommentModule } from './modules/comment/comment.module';
+import { RatingModule } from './modules/rating/rating.module';
 
 @Module({
   imports: [
@@ -44,7 +45,8 @@ import { CommentModule } from './modules/comment/comment.module';
     JWTModule,
     PollModule,
     TopicModule,
-    CommentModule
+    CommentModule,
+    RatingModule
   ],
   controllers: [AppController],
   providers: [AppService],

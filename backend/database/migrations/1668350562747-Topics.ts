@@ -5,7 +5,7 @@ export class Topics1668350562747 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: TableName.topics,
+        name: TableName.topic,
         columns: [
           {
             name: 'id',
@@ -46,7 +46,7 @@ export class Topics1668350562747 implements MigrationInterface {
     );
 
     await queryRunner.createForeignKey(
-        TableName.topics,
+        TableName.topic,
         new TableForeignKey({
           columnNames: ['courseId'],
           referencedColumnNames: ['id'],
@@ -57,6 +57,6 @@ export class Topics1668350562747 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable(TableName.topics);
+    await queryRunner.dropTable(TableName.topic);
   }
 }

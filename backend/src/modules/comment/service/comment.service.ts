@@ -39,7 +39,7 @@ export class CommentService {
 
   async findComments(type: CommentType, sourceId: number) {
     const entityManager = getManager();
-    let c = TableName.comments;
+    let c = TableName.comment;
     let u = TableName.user;
 
     let select = `${c}.*, ${u}.username, ${u}.email, ${u}.role, ${u}.avatar`;
@@ -57,10 +57,10 @@ export class CommentService {
 
   async findCommentors(type: CommentType, sourceId: number): Promise<string[]> {
     const entityManager = getManager();
-    let query = `SELECT ${TableName.comments}.userId 
-      FROM ${TableName.comments}
+    let query = `SELECT ${TableName.comment}.userId 
+      FROM ${TableName.comment}
       WHERE type = ? and sourceId = ?
-      GROUP BY ${TableName.comments}.userId
+      GROUP BY ${TableName.comment}.userId
       `;
     try {
       const resultItems = (await entityManager.query(query, [

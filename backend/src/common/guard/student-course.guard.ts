@@ -62,3 +62,27 @@ export class CourseGuard implements CanActivate {
     return true;
   }
 }
+@Injectable()
+export class StudentCourseGuard implements CanActivate {
+  constructor(private readonly userCourse: UserCourseService) {}
+  async canActivate(context: ExecutionContext): Promise<boolean> {
+    const request = context.switchToHttp().getRequest();
+    const {
+      user,
+      params: { courseId },
+    } = request;
+    if(user.role !== Role.student) return false
+
+    let studentCourse = await this.userCourse.findOneByUsercourse(
+      user.id,
+      courseId,
+    );
+    let studentAccepted = [
+      UserCourseStatus.reject,
+      UserCourseStatus.expired,
+    ];
+    let checkStudentInCourse = !studentAccepted.includes(studentCourse?.status);
+    request.userCourse = studentCourse;
+    return checkStudentInCourse;
+  }
+}

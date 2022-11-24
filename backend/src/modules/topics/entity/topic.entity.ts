@@ -3,7 +3,7 @@ import { TableName } from '../../../../database/constant';
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 
-@Entity({ name: TableName.topics })
+@Entity({ name: TableName.topic })
 export class Topic {
   @ApiProperty({ example: 1 })
   @PrimaryGeneratedColumn()
