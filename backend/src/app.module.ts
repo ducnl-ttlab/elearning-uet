@@ -2,10 +2,7 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { Connection } from 'typeorm';
-import { StoryModule } from './modules/story/story.module';
 import { DatabaseModule } from './common/database.module';
-import { FavoriteStoryModule } from './modules/favorite-story/favorite-story.module';
-import { StoryCategoryModule } from './modules/story-category/story-category.module';
 import { CourseModule } from './modules/course/course.module';
 import { UserModule } from './modules/user/user.module';
 import { AuthModule } from './modules/auth/auth.module';
@@ -31,7 +28,6 @@ import { RatingModule } from './modules/rating/rating.module';
     ConfigModule,
     DatabaseModule,
     CategoryModule,
-    StoryModule,
     UserModule,
     AuthModule,
     MailModule,
@@ -40,8 +36,6 @@ import { RatingModule } from './modules/rating/rating.module';
     LocalFileModule,
     RedisCacheModule,
     NotificationModule,
-    FavoriteStoryModule,
-    StoryCategoryModule,
     JWTModule,
     PollModule,
     TopicModule,
