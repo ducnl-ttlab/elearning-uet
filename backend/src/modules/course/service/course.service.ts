@@ -8,6 +8,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/modules/user/entity/user.entity';
 import { DeleteResult, Repository } from 'typeorm';
 import { Course } from '../entity/course.entity';
+import { TableName } from 'database/constant';
 
 @Injectable()
 export class CourseService {
@@ -20,6 +21,24 @@ export class CourseService {
   async saveCourse(course: Partial<Course>): Promise<Course> {
     try {
       return this.course.save(course);
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  async findInstructorCourse(
+    instructorId: string,
+    keyword?: string,
+  ): Promise<Course[]> {
+    try {
+      let c = TableName.course;
+      let queryKeywork = keyword ? `and ${c}.name LIKE "%${keyword}%"` : '';
+      console.log("o", queryKeywork)
+      let query = `SELECT *
+       FROM ${c}
+       WHERE ${c}.instructorId = "${instructorId}" ${queryKeywork}`;
+
+      return this.course.query(query);
     } catch (error) {
       throw new InternalServerErrorException(error);
     }
@@ -42,7 +61,7 @@ export class CourseService {
   }
 
   async getCourseInstrutor(id: string): Promise<User> {
-    return this.user.findOneById(id)
+    return this.user.findOneById(id);
   }
 
   async existCourse(id: number): Promise<Course> {
@@ -53,7 +72,7 @@ export class CourseService {
     return existCourse;
   }
 
-  async deleteCourse(id: number): Promise<DeleteResult> { 
+  async deleteCourse(id: number): Promise<DeleteResult> {
     try {
       return this.course.delete(id);
     } catch (error) {

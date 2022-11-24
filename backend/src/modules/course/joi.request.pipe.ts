@@ -45,9 +45,8 @@ const courseSearchQueryListSchema = Joi.object().keys({
     .pattern(/^[0-9]+$/)
     .message('pageSize should be a number')
     .optional(),
-  fields: Joi.string()
+  fields: Joi.string(),
 });
-
 
 const createCourseSchema = Joi.object().keys({
   name: Joi.string()
@@ -70,13 +69,21 @@ const createCourseSchema = Joi.object().keys({
     .optional(),
 });
 
+const instructorCourseSchema = Joi.object().keys({
+  instructorId: Joi.string()
+    .required()
+    .min(1)
+    .message('name should have at least one character'),
+});
+
 const courseValidationSchemas = {
   tokenSchema,
   categoryParamSchema,
   createCourseSchema,
   deleteCourseParamSchema,
   courseQueryListSchema,
-  courseSearchQueryListSchema
+  courseSearchQueryListSchema,
+  instructorCourseSchema,
 };
 
 type courseValidationKey = keyof typeof courseValidationSchemas;

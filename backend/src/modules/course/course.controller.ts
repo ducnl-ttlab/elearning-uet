@@ -166,6 +166,31 @@ export class CourseController {
     return res.status(HttpStatus.CREATED).json(new SuccessResponse(response));
   }
 
+  @Get('instructor/:instructorId')
+  @UsePipes(
+    ...courseValidation(
+      { type: 'param', key: 'instructorCourseSchema' },
+      { type: 'query', key: 'courseQueryListSchema' },
+    ),
+  )
+  async getInstructorCourses(
+    @Res() res: Response,
+    @Req() req: Request,
+    @Query() query: CourseQueryDto,
+    @Param() param: { instructorId: string },
+  ) {
+    let { keyword, page = 1, pageSize = 8 } = query;
+    const course = await this.courseService.findInstructorCourse(
+      param?.instructorId,
+      keyword,
+    );
+    let response: CourseListResponse = {
+      ...getPaginatedItems(course, +page, +pageSize),
+      totalItems: course.length,
+    };
+    return res.status(HttpStatus.CREATED).json(new SuccessResponse(response));
+  }
+
   @Get(':id')
   async getCourse(
     @Param() param: CourseDto,
