@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { CommentController as RatingController } from './rating.controller';
-import { CommentService as RatingService } from './service/rating.service';
+import { RatingService } from './service/rating.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Rating } from './entity/rating.entity';
 import { UserCourseModule } from '../user-courses/user-courses.module';
@@ -12,7 +12,7 @@ import { UserModule } from '../user/user.module';
     TypeOrmModule.forFeature([Rating]),
     UserCourseModule,
     CourseModule,
-    UserModule
+    UserModule,
   ],
   controllers: [RatingController],
   providers: [RatingService],

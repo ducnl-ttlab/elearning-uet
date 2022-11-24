@@ -4,11 +4,12 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { TableName } from 'database/constant';
 import { DeleteResult, getManager, Repository } from 'typeorm';
 import { Rating } from '../entity/rating.entity';
 
 @Injectable()
-export class CommentService {
+export class RatingService {
   constructor(
     @InjectRepository(Rating)
     private readonly ratingRepository: Repository<Rating>,
@@ -17,6 +18,15 @@ export class CommentService {
   async saveRating(rating: Partial<Rating>): Promise<Rating> {
     try {
       return this.ratingRepository.save(rating);
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  async upsertRating(rating: Partial<Rating>): Promise<Rating>  {
+    try {
+    let query = `INSERT INTO ${TableName.rating} (userCourseId, rating) VALUES (${rating.userCourseId}, '${rating.rating}') ON DUPLICATE KEY UPDATE rating = ${rating.rating}`
+      return this.ratingRepository.query(query);
     } catch (error) {
       throw new InternalServerErrorException(error);
     }

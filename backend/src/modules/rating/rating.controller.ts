@@ -1,44 +1,27 @@
-import { UserCourseStatus } from '../../../database/constant';
-import { TopicService } from '../topics/service/topic.service';
 import { UserCourse } from '../user-courses/entity/user-course.entity';
-import { CommentService } from './service/rating.service';
-import { CommentType, NotificationType, Role } from 'database/constant';
+import { RatingService } from './service/rating.service';
 import {
   Body,
   Controller,
-  Get,
   HttpStatus,
   Param,
   Post,
   Res,
   UsePipes,
-  Query,
-  Delete,
-  NotFoundException,
   ForbiddenException,
 } from '@nestjs/common';
-import { ApiConsumes, ApiTags } from '@nestjs/swagger';
-import { Request, Response } from 'express';
-import { IUserJwt } from 'src/common/interfaces';
-import {
-  Instructor,
-  Student,
-  User,
-} from 'src/common/decorator/custom.decorator';
-import { CourseAuth, StudentCourseAuth } from 'src/common/decorator/auth.decorator';
+import { ApiTags } from '@nestjs/swagger';
+import { Response } from 'express';
+import { Student } from 'src/common/decorator/custom.decorator';
+import { StudentCourseAuth } from 'src/common/decorator/auth.decorator';
 import { validation } from './joi.request.pipe';
 import { SuccessResponse } from 'src/common/helpers/api.response';
-import { Course } from '../course/entity/course.entity';
-import { Topic } from '../topics/entity/topic.entity';
-import { NotificationService } from '../notification/service/notification.service';
-import { getPaginatedItems, mysqlTimeStamp } from 'src/common/ultils';
+import { Rating } from './entity/rating.entity';
 
 @ApiTags('Rating')
 @Controller('rating')
 export class CommentController {
-  constructor() // private readonly topicService: TopicService, // private readonly commentService: CommentService,
-  // private readonly notificationService: NotificationService,
-  {}
+  constructor(private readonly ratingService: RatingService) {}
 
   @Post(':courseId')
   @StudentCourseAuth()
@@ -48,16 +31,25 @@ export class CommentController {
       { type: 'param', key: 'ratingParamSchema' },
     ),
   )
-  async comment(
+  async rating(
     @Res() res: Response,
     @Student() student: UserCourse,
-    @User() user: IUserJwt,
-    @Query() query: { topicId: string },
     @Body() body: { rating: string },
     @Param() param: { courseId: string },
   ) {
-    console.log(param, body);
+    let ratingEnum = ['1', '2', '3', '4', '5'];
+    let { rating } = body;
+    if (!ratingEnum.includes(rating)) {
+      throw new ForbiddenException('rating not in range 1 - 5');
+    }
+    let newRating: Partial<Rating> = {
+      userCourseId: student.id,
+      rating,
+    };
+    await this.ratingService.upsertRating(newRating);
 
-    return res.status(HttpStatus.OK).json(new SuccessResponse({ student }));
+    return res
+      .status(HttpStatus.OK)
+      .json(new SuccessResponse());
   }
 }

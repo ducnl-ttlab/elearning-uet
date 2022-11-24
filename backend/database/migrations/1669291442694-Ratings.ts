@@ -43,6 +43,9 @@ export class Ratings1669291442694 implements MigrationInterface {
         onDelete: 'CASCADE',
       }),
     );
+    await queryRunner.query(
+      `CREATE UNIQUE INDEX usercourse_index ON ${TableName.rating} (userCourseId) `,
+    );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {}
