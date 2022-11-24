@@ -176,6 +176,7 @@ export class CourseController {
   async getInstructorCourses(
     @Res() res: Response,
     @Req() req: Request,
+    @Headers('host') host: Headers,
     @Query() query: CourseQueryDto,
     @Param() param: { instructorId: string },
   ) {
@@ -184,8 +185,27 @@ export class CourseController {
       param?.instructorId,
       keyword,
     );
+
+    let coursesResponse = course.map((course) => {
+      const { created_at, image, endCourseTime, startCourseTime, updated_at } =
+        course;
+      let date = startCourseTime
+        ? mysqlToTime(startCourseTime, endCourseTime)
+        : {};
+
+      return {
+        ...course,
+        ...date,
+        image: image.startsWith('http')
+          ? image
+          : `${req.protocol}://${host}/course/image/${image}`,
+        created_at: mysqlTimeStamp(created_at),
+        updated_at: mysqlTimeStamp(updated_at),
+      };
+    });
+    
     let response: CourseListResponse = {
-      ...getPaginatedItems(course, +page, +pageSize),
+      ...getPaginatedItems(coursesResponse, +page, +pageSize),
       totalItems: course.length,
     };
     return res.status(HttpStatus.CREATED).json(new SuccessResponse(response));
