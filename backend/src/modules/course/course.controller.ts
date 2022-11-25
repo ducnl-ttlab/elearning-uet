@@ -203,7 +203,7 @@ export class CourseController {
         updated_at: mysqlTimeStamp(updated_at),
       };
     });
-    
+
     let response: CourseListResponse = {
       ...getPaginatedItems(coursesResponse, +page, +pageSize),
       totalItems: course.length,

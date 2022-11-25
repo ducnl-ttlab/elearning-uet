@@ -40,12 +40,18 @@ import { AuthService } from '../auth/service/auth.service';
 import { Topic } from './entity/topic.entity';
 import moment from 'moment';
 import { JoinCourseGuard } from 'src/common/guard/student-course.guard';
+import { TopicService } from './service/topic.service';
 
 @ApiTags('Topic')
 @Controller('topic')
 export class TopicController {
   constructor(
-
+    private readonly topicService: TopicService
   ) {}
 
+  @Get('')
+  async getTopics(@Res() response: Response) {
+
+      return response.status(HttpStatus.OK).json("ok")
+  }
 }
