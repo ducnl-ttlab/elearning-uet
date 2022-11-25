@@ -1,0 +1,14 @@
+SELECT ca.id, ca.name, ca.image, ROUND(AVG(CAST(r.rating AS UNSIGNED)),1) as rating, COUNT(uc.id) as studentTotal, COUNT(c.id) as courseTotal
+
+FROM categories ca 
+LEFT JOIN courses c on c.categoryId = ca.id 
+LEFT JOIN user_courses uc on uc.courseId = c.id 
+LEFT JOIN ratings r on r.userCourseId = uc.id 
+WHERE uc.status <> 'expired' and uc.status <> 'reject'
+GROUP BY ca.id
+
+SELECT c.id ,  ROUND(AVG(CAST(r.rating AS UNSIGNED)),1) as rating, COUNT(uc.id) as studentTotal FROM courses c
+LEFT JOIN user_courses uc on uc.courseId = c.id and uc.status <> 'expired' and uc.status <> 'reject'
+LEFT JOIN ratings r on r.userCourseId = uc.id 
+GROUP BY c.id
+
