@@ -51,7 +51,7 @@ export class TopicController {
 
   @Get('')
   async getTopics(@Res() response: Response) {
-
+      
       return response.status(HttpStatus.OK).json("ok")
   }
 }
