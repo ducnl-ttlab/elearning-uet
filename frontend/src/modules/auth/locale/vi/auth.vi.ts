@@ -129,11 +129,15 @@ export const auth = {
     },
 
     role: {
-        selectRole: 'Xin mời chọn vai trò',
+        selectRole: 'Bạn là ... ?',
         student: 'Học sinh',
         instructor: 'Giảng viên',
         skip: 'Tôi muốn xem trang web trước',
         pendingRole: 'Đang chờ duyệt',
-        pendingMessage: 'Yêu cầu của bạn đã được gửi lên cho quản trị. Vui lòng chờ xét duyệt!',        
+        pendingMessage: 'Yêu cầu của bạn đã được gửi lên cho quản trị. Vui lòng chờ xét duyệt!',   
+        description: {
+            instructor: 'Thỏa sức sáng tạo với bộ bài giảng được chau chuốt tỉ mỉ bởi đội ngũ cố vấn của chúng tôi.',
+            student: 'Đắm chìm vào những bài học giá trị trong bất kỳ lĩnh vực nào, ở bất cứ đâu.',
+        }     
     }
 };

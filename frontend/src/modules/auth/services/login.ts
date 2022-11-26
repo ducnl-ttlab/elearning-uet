@@ -6,6 +6,6 @@ const FE_URL = process.env.VUE_APP_FE_BASE_URL;
 const BE_URL = process.env.VUE_APP_API_URL;
 
 export async function login(params: IGoogleLoginParams): Promise<AxiosDefaultResponse> {
-    const response = await axios.post(`${BE_URL}/auth/signup`, params)
+    const response = await axios.post(`${BE_URL}/auth/login`, params)
     return response;
 }
