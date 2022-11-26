@@ -20,7 +20,7 @@ import { verifyToken } from '../services/register';
 @Options({
     components: { SetPasswordForm },
 })
-export default class ActiveEmailPage extends Vue {
+export default class CreatePasswordPage extends Vue {
     token = '';
     created() {
         this.token = this.$route.params.token as string;

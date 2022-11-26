@@ -5,7 +5,11 @@
         </div>
         <div class="role-selector d-flex flex-row justify-content-between">
             <div v-for="(roleData, index) in selectRoleData" :key="index">
-                <SelectRole :title="roleData.title" :role="roleData.role" />
+                <SelectRole
+                    :title="roleData.title"
+                    :role="roleData.role"
+                    :description="roleData.description"
+                />
             </div>
         </div>
         <div class="skip-button w-100 d-flex justify-content-end">
@@ -30,10 +34,12 @@ export default class SelectRolePage extends Vue {
             {
                 title: this.$t('auth.role.instructor'),
                 role: 'instructor',
+                description: this.$t('auth.role.description.instructor'),
             },
             {
                 title: this.$t('auth.role.student'),
                 role: 'student',
+                description: this.$t('auth.role.description.student'),
             },
         ];
     }
@@ -42,9 +48,9 @@ export default class SelectRolePage extends Vue {
 
 <style lang="scss">
 .select-role-container {
-    padding: 13vh 18vw;
+    padding: 13vh 22vw;
     height: 100vh;
-    background: $color-accent-violet-03;
+    background: $color-gray-05;
 }
 
 .select-role-title {
@@ -52,7 +58,7 @@ export default class SelectRolePage extends Vue {
     font-weight: 700;
     font-size: 32px;
     line-height: 48px;
-    padding-bottom: 3vh;
+    padding-bottom: 7vh;
 }
 
 .skip-button {
@@ -71,5 +77,11 @@ export default class SelectRolePage extends Vue {
 .double-arrow {
     color: blue;
     padding-right: 4px;
+}
+
+@media only screen and (max-width: map-get($map: $grid-breakpoints, $key: md)) {
+    .select-role-container {
+        padding: 13vh 10vw;
+    }
 }
 </style>

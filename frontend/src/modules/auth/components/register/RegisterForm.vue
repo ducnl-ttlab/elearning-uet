@@ -48,7 +48,8 @@ export default class InputCredentialForm extends Vue {
             );
         } else {
             showErrorNotificationFunction(
-                response?.data?.message || this.$t('auth.login.defaultError'),
+                response?.data?.message ||
+                    this.$t('auth.register.defaultError.registerEmail'),
             );
         }
         commonModule.setLoadingIndicator(false);
