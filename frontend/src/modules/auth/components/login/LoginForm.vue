@@ -36,7 +36,7 @@ import {
     showSuccessNotificationFunction,
 } from '@/common/helpers';
 import { Options, Vue } from 'vue-class-component';
-import { loginWithGoogle } from '../../services/login';
+import { login } from '../../services/login';
 import { commonModule } from '@/common/store/common.store';
 
 @Options({
@@ -53,7 +53,7 @@ export default class InputCredentialForm extends Vue {
             email: this.credential,
             password: this.password,
         };
-        const response = await loginWithGoogle(params);
+        const response = await login(params);
         console.log(response.data);
         if (response?.data?.message === 'success') {
             showSuccessNotificationFunction(
@@ -126,7 +126,3 @@ export default class InputCredentialForm extends Vue {
     }
 }
 </style>
-
-function loginWithGoogle(credential: string) { throw new Error('Function not
-implemented.'); } function loginWithGoogle(credential: string) { throw new Error('Function
-not implemented.'); }
