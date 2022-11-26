@@ -9,7 +9,11 @@ export enum TableName {
   notification = 'notifications',
   topic="topics",
   comment="comments",
-  rating="ratings"
+  rating="ratings",
+  quiz="quizes",
+  question="questions",
+  answer="answers",
+  userAnswer="user_answers"
 }
 
 export enum Role {

@@ -6,11 +6,11 @@ import {
   TableForeignKey,
 } from 'typeorm';
 
-export class Ratings1669291442694 implements MigrationInterface {
+export class Questions1669435014767 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: TableName.rating,
+        name: TableName.question,
         columns: [
           {
             name: 'id',
@@ -20,35 +20,35 @@ export class Ratings1669291442694 implements MigrationInterface {
             generationStrategy: 'increment',
           },
           {
-            name: 'userCourseId',
+            name: 'quizId',
             type: 'int',
           },
           {
-            name: 'rating',
-            type: 'enum',
-            enum: ['1','2','3','4','5'],
-            enumName: 'type',
-            default: `'1'`,
+            name: 'name',
+            type: 'varchar',
+            length: '255',
+            isNullable: false,
+          },
+          {
+            name: 'mark',
+            type: 'int',
           },
         ],
       }),
     );
 
     await queryRunner.createForeignKey(
-      TableName.rating,
+      TableName.question,
       new TableForeignKey({
-        columnNames: ['userCourseId'],
+        columnNames: ['quizId'],
         referencedColumnNames: ['id'],
-        referencedTableName: TableName.userCourse,
+        referencedTableName: TableName.quiz,
         onDelete: 'CASCADE',
       }),
-    );
-    await queryRunner.query(
-      `CREATE UNIQUE INDEX usercourse_index ON ${TableName.rating} (userCourseId) `,
     );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable(TableName.rating);
+    await queryRunner.dropTable(TableName.question);
   }
 }
