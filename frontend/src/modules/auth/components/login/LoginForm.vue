@@ -53,7 +53,6 @@ export default class InputCredentialForm extends Vue {
             password: this.password,
         };
         const response = await login(params);
-        console.log(response.data);
         if (response?.data?.message === 'success') {
             //logic
         } else {

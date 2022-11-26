@@ -44,8 +44,9 @@ import { ForgotPasswordDto, VerifyCodeDto } from './dto/forgot-password.dto';
 import { Provider, Role } from 'database/constant';
 import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { User } from 'src/common/decorator/custom.decorator';
-import { Auth, Roles } from 'src/common/decorator/auth.decorator';
+import { Auth } from 'src/common/decorator/auth.decorator';
 import { RoleDto } from './dto/role.dto';
+const gravatar = require('gravatar');
 
 @ApiTags('Authentication')
 @Controller('auth')
@@ -89,6 +90,12 @@ export class AuthController {
       email,
       id,
     });
+    let avatar = await gravatar.url(
+      email,
+      { s: '100', r: 'x', d: 'retro' },
+      true,
+    );
+
     await Promise.all([
       this.mailService.sendUserEmailConfirmation(
         { email, username: email.split('@')[0] },
@@ -99,6 +106,7 @@ export class AuthController {
         email,
         verified: false,
         password: accessToken,
+        avatar,
       }),
     ]);
 
@@ -172,7 +180,10 @@ export class AuthController {
   async verifyCode(@Query() query: VerifyCodeDto, @Res() res: Response) {
     const { email, code } = query;
     let user = await this.authService.existEmail(email);
-    let { accessToken } = await this.authService.generateTokenByCode(code, user);
+    let { accessToken } = await this.authService.generateTokenByCode(
+      code,
+      user,
+    );
     return res.status(HttpStatus.OK).json(new SuccessResponse({ accessToken }));
   }
 
