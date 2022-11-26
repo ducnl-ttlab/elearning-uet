@@ -8,6 +8,7 @@ export enum PageName {
     NOT_FOUND_PAGE = 'NotFoundPage',
     CREATE_PASSWORD_PAGE = 'CreatePasswordPage',
     SELECT_ROLE_PAGE = 'SELECT_ROLE_PAGE',
+    PENDING_APPROVE_PAGE = 'PENDING_APPROVE_PAGE',
 }
 
 export enum SupportLanguage {
@@ -101,11 +102,11 @@ export enum BooleanEnum {
 }
 
 export enum SystemRole {
-    admin = 'admin',
-    guest = 'guest',
-    student = 'student',
-    instructor = 'instructor',
-    pending = 'pending',
+    ADMIN = 'admin',
+    GUEST = 'guest',
+    STUDENT = 'student',
+    INSTRUCTOR = 'instructor',
+    PENDING = 'pending',
 }
 
 export enum LocalStackStoragePath {
@@ -206,36 +207,6 @@ export const AllowDecimalCodes = [
 
 export enum KeyCode {
     ENTER = 'Enter',
-}
-
-export enum PageName {
-    // for guest
-    GUEST_LANDING_PAGE = 'GuestLandingPage',
-    GUEST_LOGIN_PAGE = 'GuestLoginPage',
-    GUEST_REGISTER_PAGE = 'GuestRegisterPage',
-    GUEST_ACTIVE_EMAIL_PAGE = 'GuestActiveEmailPage',
-    GUEST_INIT_PROFILE_PAGE = 'GuestInitProfilePage',
-    GUEST_FORGOT_PASSWORD_PAGE = 'GuestForgotPasswordPage',
-    GUEST_FACEBOOK_LOGIN_PAGE = 'GuestFacebookLoginPage',
-    GUEST_GOOGLE_LOGIN_PAGE = 'GuestGoogleLoginPage',
-    GUEST_ZALO_LOGIN_PAGE = 'GuestZaloLoginPage',
-    GUEST_RESET_PASSWORD_PAGE = 'GuestResetPasswordPage',
-    GUEST_NOT_FOUND_PAGE = 'GuestNotFoundPage',
-    GUEST_PROFILE_PAGE = 'GuestProfilePage',
-    GUEST_FACEBOOK_LINK_PAGE = 'GuestFacebookLinkPage',
-    GUEST_ZALO_LINK_PAGE = 'GuestZaloLinkPage',
-    // for teacher
-    TEACHER_HOME_PAGE = 'TeacherOnlineHomePage',
-    TEACHER_CALENDAR_PAGE = 'TeacherCalendarPage',
-    TEACHER_CLASSROOM_PAGE = 'TeacherClassroomPage',
-    TEACHER_COURSE_PAGE = 'TeacherCoursePage',
-    TEACHER_TRAINING_MATERIAL_PAGE = 'TeacherTrainingMaterialPage',
-    TEACHER_QUESTION_PAGE = 'TeacherQuestionPage',
-    TEACHER_GROUP_PAGE = 'TeacherGroupPage',
-    TEACHER_ONLINE_ROOM_PAGE = 'TeacherOnlineRoomPage',
-    // for student
-    STUDENT_ONLINE_ROOM_PAGE = 'StudentOnlineRoomPage',
-    STUDENT_HOME_PAGE = 'StudentHomePage',
 }
 
 export enum DeviceType {

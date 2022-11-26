@@ -12,7 +12,7 @@
                 />
             </div>
         </div>
-        <div class="skip-button w-100 d-flex justify-content-end">
+        <div @click="handleSkip" class="skip-button w-100 d-flex justify-content-end">
             <div class="double-arrow">
                 <img src="@/assets/auth/icons/next.svg" alt="" />
                 <img src="@/assets/auth/icons/next.svg" alt="" />
@@ -23,6 +23,7 @@
 </template>
 
 <script lang="ts">
+import { PageName, SystemRole } from '@/common/constants';
 import { Options, Vue } from 'vue-class-component';
 import SelectRole from '../components/role-select/SelectRole.vue';
 @Options({
@@ -33,7 +34,7 @@ export default class SelectRolePage extends Vue {
         return [
             {
                 title: this.$t('auth.role.instructor'),
-                role: 'instructor',
+                role: SystemRole.INSTRUCTOR,
                 description: this.$t('auth.role.description.instructor'),
             },
             {
@@ -42,6 +43,10 @@ export default class SelectRolePage extends Vue {
                 description: this.$t('auth.role.description.student'),
             },
         ];
+    }
+
+    handleSkip() {
+        this.$router.push({ name: PageName.LANDING_PAGE });
     }
 }
 </script>

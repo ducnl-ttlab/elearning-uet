@@ -12,10 +12,12 @@
     </div>
 </template>
 <script lang="ts">
+import { PageName } from '@/common/constants';
 import { commonModule } from '@/common/store/common.store';
 import { Options, Vue } from 'vue-class-component';
 import SetPasswordForm from '../components/register/SetPasswordForm.vue';
 import { verifyToken } from '../services/register';
+import { registerModule } from '../store/register.store';
 
 @Options({
     components: { SetPasswordForm },
@@ -30,10 +32,9 @@ export default class CreatePasswordPage extends Vue {
         commonModule.setLoadingIndicator(true);
         const response = await verifyToken(token);
         if (response?.data?.success) {
-            //TODO: proceed to setPassword
+            registerModule.setActiveEmailToken(token as string);
         } else {
-            //Error -> show popup error
-            console.log(response?.data?.message);
+            this.$router.push({ name: PageName.NOT_FOUND_PAGE });
         }
         commonModule.setLoadingIndicator(false);
     }
