@@ -6,6 +6,8 @@ export enum PageName {
     GOOGLE_PAGE = 'GooglePage',
     LANDING_PAGE = 'LandingPage',
     NOT_FOUND_PAGE = 'NotFoundPage',
+    CREATE_PASSWORD_PAGE = 'CreatePasswordPage',
+    SELECT_ROLE_PAGE = 'SELECT_ROLE_PAGE',
 }
 
 export enum SupportLanguage {
@@ -99,11 +101,11 @@ export enum BooleanEnum {
 }
 
 export enum SystemRole {
-    INHOUSE_ADMIN = 'inhouse_admin',
-    COMPANY_ADMIN = 'company_admin',
-    TEACHER = 'teacher',
-    STUDENT = 'student',
-    PARENTS = 'parents',
+    admin = 'admin',
+    guest = 'guest',
+    student = 'student',
+    instructor = 'instructor',
+    pending = 'pending',
 }
 
 export enum LocalStackStoragePath {

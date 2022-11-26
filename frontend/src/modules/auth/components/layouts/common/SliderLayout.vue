@@ -10,8 +10,8 @@
                     <div class="d-flex justify-content-center">
                         <img :src="content.image" />
                     </div>
-                    <div class="splide-title" v-html="content.title" />
-                    <div class="splide-description" v-html="content.description" />
+                    <div class="splide-title">{{ content.title }}</div>
+                    <div class="splide-description">{{ content.description }}</div>
                 </div>
             </SplideSlide>
         </Splide>

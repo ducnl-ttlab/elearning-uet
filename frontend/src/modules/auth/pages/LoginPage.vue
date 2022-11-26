@@ -1,28 +1,61 @@
 <template>
-    <div>123</div>
+    <div
+        class="d-flex flex-column justify-content-center align-items-center register-container"
+    >
+        <img src="@/assets/auth/images/auth-logo.png" alt="" />
+
+        <div class="form">
+            <LoginForm />
+        </div>
+
+        <SocialButtonBox />
+        <div class="bottom-wrapper">
+            <span
+                >{{ $t('auth.login.notHaveAccount') }}
+                <router-link to="/register">{{ $t('auth.login.register') }}</router-link>
+            </span>
+        </div>
+    </div>
 </template>
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
+import LoginForm from '@/modules/auth/components/login/LoginForm.vue';
+import SocialButtonBox from '@/modules/auth/components/layouts/common/SocialButtonBox.vue';
 
 @Options({
-    components: {},
+    components: { SocialButtonBox, LoginForm },
 })
-export default class LoginPage extends Vue {
-    created() {
-        // fetch(
-        //     'http://localhost:5000/auth/google/callback?code=4/0ARtbsJofNxSuOhbyOyE2Un2-2wbucQwOulBC_vJyPhxmSOVbTpoWUbFt0G__v9e9VyYXbQ&scope=email%20profile%20https://www.googleapis.com/auth/userinfo.email%20https://www.googleapis.com/auth/userinfo.profile%20openid&authuser=0&hd=tokyotechlab.com&prompt=consent',
-        // ).then((data) => {
-        //     console.log(data);
-        // }); // window.location.href = 'http://localhost:5000/auth/google';
-        console.log(this.$route);
-    }
+export default class LoginPage extends Vue {}
+</script>
+<style lang="scss" scoped>
+.register-container {
+    margin: 24px auto;
+}
 
-    fetchApi() {
-        fetch('http://localhost:5000/auth/google/callback').then((data) => {
-            console.log(data);
-        });
+.form {
+    max-width: 454px;
+    width: 90vw;
+    margin: 10px auto;
+}
+.bottom-wrapper {
+    color: $color-gray-03;
+    font-size: 14px;
+    line-height: 21px;
+    margin: 20px 0;
+    a {
+        color: $color-violet-new-1;
+        text-decoration: none;
+        margin: 0 10px;
+        &:hover {
+            color: $color-violet-new;
+        }
     }
 }
-</script>
-<style lang="scss" scoped></style>
+
+@media only screen and (max-width: map-get($map: $grid-breakpoints, $key: md)) {
+    .form {
+        margin: 40px auto 51px !important;
+    }
+}
+</style>

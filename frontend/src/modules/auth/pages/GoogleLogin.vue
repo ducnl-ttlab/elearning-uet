@@ -1,5 +1,5 @@
 <template>
-    <div class="center"></div>
+    <div class="center">Google Login</div>
 </template>
 
 <script lang="ts">
@@ -11,23 +11,7 @@ import * as loadingGif from './assets/loading-process.json';
     components: {},
 })
 export default class LoginPage extends Vue {
-    defaultOptions: Record<string, unknown> = {};
-    loadingGif: Record<string, unknown> = {};
-
-    created() {
-        this.defaultOptions = { animationData };
-        this.loadingGif = { animationData: loadingGif };
-        console.log(this.$route.params.token);
-    }
-
-    fetchApi() {
-        fetch('http://localhost:5000/auth/google/callback').then((data) => {
-            console.log(data);
-        });
-    }
-    handleAnimation() {
-        console.log('ok');
-    }
+    
 }
 </script>
 <style lang="scss" scoped>
