@@ -35,8 +35,10 @@ import {
     showSuccessNotificationFunction,
 } from '@/common/helpers';
 import { Options, Vue } from 'vue-class-component';
-import { login } from '../../services/login';
+import { IErrorMessage, login } from '../../services/login';
 import { commonModule } from '@/common/store/common.store';
+import { loginModule } from '../../store/login.store';
+import { PageName, SystemRole } from '@/common/constants';
 
 @Options({
     components: {},
@@ -44,7 +46,15 @@ import { commonModule } from '@/common/store/common.store';
 export default class InputCredentialForm extends Vue {
     credential = '';
     credentialError = '';
-    password = '';
+    password = '12345678';
+
+    get loginCredential() {
+        return loginModule.loginCredential;
+    }
+
+    get accessToken() {
+        return loginModule.accessToken;
+    }
 
     async handleLogin() {
         commonModule.setLoadingIndicator(true);
@@ -53,12 +63,22 @@ export default class InputCredentialForm extends Vue {
             password: this.password,
         };
         const response = await login(params);
-        if (response?.data?.message === 'success') {
-            //logic
+        if (response?.success) {
+            loginModule.setLoginCredential(response?.data?.user || {});
+            loginModule.setAccessToken(response?.data?.accessToken || '');
+
+            if (this.loginCredential.role === SystemRole.GUEST) {
+                this.$router.push({
+                    name: PageName.SELECT_ROLE_PAGE,
+                });
+            } else if (this.loginCredential.role === SystemRole.PENDING) {
+                this.$router.push({ name: PageName.PENDING_APPROVE_PAGE });
+            } else {
+                this.$router.push({ name: PageName.LANDING_PAGE });
+            }
         } else {
-            showErrorNotificationFunction(
-                response?.data?.message || this.$t('auth.login.defaultError'),
-            );
+            let res = response?.errors || [{ message: 'SOME ERRORS' }];
+            showErrorNotificationFunction(res[0].message);
         }
         commonModule.setLoadingIndicator(false);
     }

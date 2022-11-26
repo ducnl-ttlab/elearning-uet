@@ -39,7 +39,6 @@ export default class InputCredentialForm extends Vue {
     async onSubmitCredential() {
         commonModule.setLoadingIndicator(true);
         const response = await signupWithGoogle(this.credential);
-        console.log(response.data);
         if (response?.data?.message === 'success') {
             showSuccessNotificationFunction(
                 this.$t('auth.register.success.description', {
