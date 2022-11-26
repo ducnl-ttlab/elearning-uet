@@ -66,12 +66,11 @@ export default class InputCredentialForm extends Vue {
         if (response?.success) {
             loginModule.setLoginCredential(response?.data?.user || {});
             loginModule.setAccessToken(response?.data?.accessToken || '');
-            console.log('cre', this.loginCredential.role === SystemRole.GUEST);
+
             if (this.loginCredential.role === SystemRole.GUEST) {
                 this.$router.push({
                     name: PageName.SELECT_ROLE_PAGE,
                 });
-                console.log('cre', params);
             } else if (this.loginCredential.role === SystemRole.PENDING) {
                 this.$router.push({ name: PageName.PENDING_APPROVE_PAGE });
             } else {

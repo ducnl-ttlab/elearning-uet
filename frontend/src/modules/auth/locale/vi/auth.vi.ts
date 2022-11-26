@@ -122,9 +122,11 @@ export const auth = {
         placeholder: 'Nhập mật khẩu',
         success: 'Đặt mật khẩu thành công, vui lòng đăng nhập',
         errors: {
-            mismatchError: 'Mật khẩu khởi tạo và xác nhận chưa khớp, xin vui lòng thử lại.',
+            mismatchError:
+                'Mật khẩu khởi tạo và xác nhận chưa khớp, xin vui lòng thử lại.',
             defaultError: 'Đặt mật khẩu không thành công, xin vui lòng thử lại.',
-            regexError: 'Vui lòng đặt mật khẩu có chứa cả chữ số, chữ in hoa và kí tự đặc biệt.'
+            regexError:
+                'Vui lòng đặt mật khẩu có chứa cả chữ số, chữ in hoa và kí tự đặc biệt.',
         },
     },
 
@@ -134,10 +136,14 @@ export const auth = {
         instructor: 'Giảng viên',
         skip: 'Tôi muốn xem trang web trước',
         pendingRole: 'Đang chờ duyệt',
-        pendingMessage: 'Yêu cầu của bạn đã được gửi lên cho quản trị. Vui lòng chờ xét duyệt!',   
+        pendingMessage:
+            'Yêu cầu của bạn đã được gửi lên cho quản trị. Vui lòng chờ xét duyệt!',
         description: {
-            instructor: 'Thỏa sức sáng tạo với bộ bài giảng được chau chuốt tỉ mỉ bởi đội ngũ cố vấn của chúng tôi.',
-            student: 'Đắm chìm vào những bài học giá trị trong bất kỳ lĩnh vực nào, ở bất cứ đâu.',
-        }     
-    }
+            instructor:
+                'Thỏa sức sáng tạo với bộ bài giảng được chau chuốt tỉ mỉ bởi đội ngũ cố vấn của chúng tôi.',
+            student:
+                'Đắm chìm vào những bài học giá trị trong bất kỳ lĩnh vực nào, ở bất cứ đâu.',
+        },
+        successMessage: 'Bạn đã đăng ký trở thành {role}',
+    },
 };

@@ -112,9 +112,11 @@ export const auth = {
         placeholder: 'Nhập mật khẩu',
         success: 'Đặt mật khẩu thành công, vui lòng đăng nhập',
         errors: {
-            mismatchError: 'Mật khẩu khởi tạo và xác nhận chưa khớp, xin vui lòng thử lại.',
+            mismatchError:
+                'Mật khẩu khởi tạo và xác nhận chưa khớp, xin vui lòng thử lại.',
             defaultError: 'Đặt mật khẩu không thành công, xin vui lòng thử lại.',
-            regexError: 'Vui lòng đặt mật khẩu có chứa cả chữ số, chữ in hoa và kí tự đặc biệt.'
+            regexError:
+                'Vui lòng đặt mật khẩu có chứa cả chữ số, chữ in hoa và kí tự đặc biệt.',
         },
     },
 
@@ -124,10 +126,14 @@ export const auth = {
         instructor: 'Instructor',
         skip: `No thanks, I'm just casually browsing`,
         pendingRole: 'Pending',
-        pendingMessage: 'Your request has been submitted to the administrator. Please kindly wait!',
+        pendingMessage:
+            'Your request has been submitted to the administrator. Please kindly wait!',
         description: {
-            instructor: 'Put your creative ideas into practice with our decorative lectures, made only for you.',
-            student: 'Embrace yourself with knowledge and social academic activities, anywhere, anytime.',
-        }  
-    }
+            instructor:
+                'Put your creative ideas into practice with our decorative lectures, made only for you.',
+            student:
+                'Embrace yourself with knowledge and social academic activities, anywhere, anytime.',
+        },
+        successMessage: 'You have registered as a {role}',
+    },
 };

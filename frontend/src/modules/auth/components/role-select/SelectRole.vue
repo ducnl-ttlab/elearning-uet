@@ -11,6 +11,12 @@
 </template>
 
 <script lang="ts">
+import { PageName } from '@/common/constants';
+import {
+    showErrorNotificationFunction,
+    showSuccessNotificationFunction,
+} from '@/common/helpers';
+import { commonModule } from '@/common/store/common.store';
 import { Options, Vue } from 'vue-class-component';
 import { Prop } from 'vue-property-decorator';
 import { selectRole } from '../../services/login';
@@ -28,8 +34,20 @@ export default class SelectRole extends Vue {
     }
 
     async selectRole() {
+        commonModule.setLoadingIndicator(true);
         const response = await selectRole(this.role, this.accessToken);
-        console.log(response);
+        if (response.data?.success) {
+            showSuccessNotificationFunction(
+                this.$t('auth.role.successMessage', {
+                    role: this.$t(`auth.role.${this.role}`),
+                }),
+            );
+            commonModule.setLoadingIndicator(false);
+            this.$router.push({ name: PageName.LANDING_PAGE });
+        } else {
+            let res = response?.data?.errors || [{ message: 'SOME ERRORS' }];
+            showErrorNotificationFunction(res[0].message);
+        }
     }
 }
 </script>
