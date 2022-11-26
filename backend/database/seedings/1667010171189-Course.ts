@@ -18,7 +18,7 @@ export class Course1667010171189 implements MigrationInterface {
         categoryId: 2,
         name: 'khoa hoc AI co ban',
         description: 'khoa hoc AI co ban',
-        price: 12321.1,
+        price: 0,
         isPublished: true,
         image: 'https://cdn.vietnambiz.vn/2019/9/24/w020190722589883245257-15692906256681976192157.jpg'
       },
@@ -27,7 +27,7 @@ export class Course1667010171189 implements MigrationInterface {
         categoryId: 3,
         name: 'khoa hoc lap trinh nang cao',
         description: 'khoa hoc lap trinh nang cao',
-        price: 12321.1,
+        price: 1000,
         isPublished: true,
         image: 'https://prod-discovery.edx-cdn.org/media/course/image/825420a7-fa09-4c94-8deb-1e4decb916f4-56f44cd9d8e7.small.jpeg'
       },
@@ -36,7 +36,7 @@ export class Course1667010171189 implements MigrationInterface {
         categoryId: 4,
         name: 'khoa hoc lap trinh python',
         description: 'khoa hoc lap trinh python',
-        price: 12321.1,
+        price: 15000,
         isPublished: true,
         image: 'https://images.viblo.asia/35852bff-d14e-457f-b562-00db7c0494cb.png'
       },
@@ -45,7 +45,7 @@ export class Course1667010171189 implements MigrationInterface {
         categoryId: 5,
         name: 'khoa hoc machine learning',
         description: 'khoa hoc machine learning',
-        price: 12321.1,
+        price: 20000,
         isPublished: true,
         image: 'https://csc.edu.vn/data/images/mon-hoc/lap-trinh/mon-hoc-machine-learning-voi-python.png'
       },
@@ -54,7 +54,7 @@ export class Course1667010171189 implements MigrationInterface {
         categoryId: 6,
         name: 'khoa hoc deep learning',
         description: 'khoa hoc deep learning',
-        price: 12321.1,
+        price: 40000,
         isPublished: true,
         image: 'https://nordiccoder.com/app/uploads/2019/08/Machine_learning.jpg'
       },
@@ -63,7 +63,7 @@ export class Course1667010171189 implements MigrationInterface {
         categoryId: 7,
         name: 'khoa hoc computer vision',
         description: 'khoa hoc computer vision',
-        price: 12321.1,
+        price: 40000,
         isPublished: true,
         image: 'https://www.oracle.com/a/tech/img/og-computer-vision-facebook.jpg'
       },
@@ -72,7 +72,7 @@ export class Course1667010171189 implements MigrationInterface {
         categoryId: 8,
         name: 'khoa hoc natural language processing',
         description: 'khoa hoc natural language processing',
-        price: 12321.1,
+        price: 50000,
         isPublished: true,
         image: 'https://i0.wp.com/trituenhantao.io/wp-content/uploads/2019/06/nlp.jpg?fit=1200%2C600&ssl=1'
       },
