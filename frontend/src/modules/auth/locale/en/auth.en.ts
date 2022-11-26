@@ -119,11 +119,15 @@ export const auth = {
     },
 
     role: {
-        selectRole: 'Please select your role',
+        selectRole: 'You are... ?',
         student: 'Student',
         instructor: 'Instructor',
         skip: `No thanks, I'm just casually browsing`,
         pendingRole: 'Pending',
-        pendingMessage: 'Your request has been submitted to the administrator. Please kindly wait!'
+        pendingMessage: 'Your request has been submitted to the administrator. Please kindly wait!',
+        description: {
+            instructor: 'Put your creative ideas into practice with our decorative lectures, made only for you.',
+            student: 'Embrace yourself with knowledge and social academic activities, anywhere, anytime.',
+        }  
     }
 };

@@ -1,7 +1,6 @@
 <template>
     <div class="login-form-container d-flex flex-column">
         <div class="title">{{ $t('auth.general.welcomeTitle') }}</div>
-        <div class="sub-title">{{ $t('auth.register.welcomeDescription') }}</div>
         <div class="inputs d-flex flex-column">
             <BaseInputText
                 class="input"
@@ -21,7 +20,7 @@
             />
         </div>
         <el-button
-            :disabled="!credential ? '' : disabled"
+            :disabled="!password ? true : false"
             type="primary"
             class="login-button"
             @click="handleLogin"
@@ -56,11 +55,7 @@ export default class InputCredentialForm extends Vue {
         const response = await loginWithGoogle(params);
         console.log(response.data);
         if (response?.data?.message === 'success') {
-            showSuccessNotificationFunction(
-                this.$t('auth.register.success.description', {
-                    email: this.credential,
-                }),
-            );
+            //logic
         } else {
             showErrorNotificationFunction(
                 response?.data?.message || this.$t('auth.login.defaultError'),

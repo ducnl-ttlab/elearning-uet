@@ -27,3 +27,15 @@ export async function setPassword(password: string, token: string): Promise<Axio
       });
     return response;
 }
+
+
+export async function selectRole(role: string, token: string): Promise<AxiosDefaultResponse> {
+    const response = await axios.put(`${BE_URL}/auth/select-role`, {
+        role: role,
+    }, {
+        headers: {
+          Authorization: 'Bearer ' + token
+        }
+      });
+    return response;
+}
