@@ -1,0 +1,24 @@
+SELECT ca.id, ca.name, ca.image, ROUND(AVG(filters.rating),1) as rating, COUNT(c.id) as courseTotal ,SUM(filters.studentTotal) as studentTotal
+FROM categories ca
+LEFT JOIN courses c on c.categoryId = ca.id
+LEFT JOIN ( 
+	SELECT c.id, AVG(CAST(r.rating AS UNSIGNED)) as rating, COUNT(uc.id) as studentTotal FROM courses c
+    LEFT JOIN user_courses uc on uc.courseId = c.id and uc.status <> 'expired' and uc.status <> 'reject'
+    LEFT JOIN ratings r on r.userCourseId = uc.id 
+    GROUP BY c.id
+) as filters on filters.id = c.id
+GROUP BY ca.id
+
+
+id, name, description, instructorName, avgRating, studentTotal, startCourse, endCourse, price
+
+SELECT c.id, c.name, c.description, u.username as instructorName, uc.avgRating, uc.studentTotal, c.startCourseTime as startCourse, c.endCourseTime as endCourse  
+FROM courses c
+JOIN users u on u.id = c.instructorId
+LEFT JOIN ( 
+	SELECT c.id, AVG(CAST(r.rating AS UNSIGNED)) as avgRating, COUNT(uc.id) as studentTotal FROM courses c
+    LEFT JOIN user_courses uc on uc.courseId = c.id and uc.status <> 'expired' and uc.status <> 'reject'
+    LEFT JOIN ratings r on r.userCourseId = uc.id 
+    GROUP BY c.id
+) as uc on uc.id = c.id
+

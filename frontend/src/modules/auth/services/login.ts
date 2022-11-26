@@ -22,9 +22,7 @@ export interface IErrorMessage {
     message?: string;
 }
 
-export async function loginWithGoogle(
-    params: IGoogleLoginParams,
-): Promise<ILoginResponse> {
+export async function login(params: IGoogleLoginParams): Promise<ILoginResponse> {
     const response = await axios.post(`${BE_URL}/auth/login`, params);
     return response.data;
 }

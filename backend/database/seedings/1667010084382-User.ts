@@ -1,6 +1,7 @@
 import { TableName, Role } from '../constant';
 import { MigrationInterface, QueryRunner } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
+const gravatar = require('gravatar');
 
 export class User1667010084382 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -33,6 +34,33 @@ export class User1667010084382 implements MigrationInterface {
         role: Role.student,
       },
       {
+        id: '123456xsabf',
+        username: 'hanhnd',
+        email: 'hanhnd@tokyotechlab.com',
+        phone: '012345678',
+        password: '12345678',
+        verified: true,
+        role: Role.student,
+      },
+      {
+        id: '123456xsabxf',
+        username: 'congdv',
+        email: 'congdv@tokyotechlab.com',
+        phone: '012345678',
+        password: '12345678',
+        verified: true,
+        role: Role.student,
+      },
+      {
+        id: '123456xsabxfxa',
+        username: 'vupa',
+        email: 'vupa@tokyotechlab.com',
+        phone: '012345678',
+        password: '12345678',
+        verified: true,
+        role: Role.student,
+      },
+      {
         id: '123456abg',
         username: 'hieuxoan',
         email: '19020291@vnu.edu.vn',
@@ -45,8 +73,14 @@ export class User1667010084382 implements MigrationInterface {
     let itemDatas = await Promise.all(
       items.map(async (item) => {
         const hashedPassword = await bcrypt.hash(item.password, 8);
+        let avatar = await gravatar.url(
+          item.email,
+          { s: '100', r: 'x', d: 'retro' },
+          true,
+        );
         return {
           ...item,
+          avatar,
           password: hashedPassword,
         };
       }),

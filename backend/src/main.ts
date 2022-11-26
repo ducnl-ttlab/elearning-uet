@@ -44,7 +44,6 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, document);
   await generateChunkFiles();
-
   app.useWebSocketAdapter(new SocketIOAdapter(app, configService));
   
   await app.listen(port);

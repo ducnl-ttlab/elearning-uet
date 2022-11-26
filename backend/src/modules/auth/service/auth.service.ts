@@ -39,7 +39,7 @@ export class AuthService {
         email,
         avatar,
         username,
-        role: Role.guess,
+        role: Role.guest,
         verified: true,
         provider: Provider.google,
       };

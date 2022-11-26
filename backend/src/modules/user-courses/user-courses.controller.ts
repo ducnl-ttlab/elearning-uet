@@ -1,4 +1,5 @@
-import { UserCourseStatus } from 'database/constant';
+import { NotificationService } from './../notification/service/notification.service';
+import { NotificationType, UserCourseStatus } from 'database/constant';
 import {
   Body,
   Controller,
@@ -20,7 +21,7 @@ import { ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { Request, Response } from 'express';
 import { UserCourseService } from './service/user-course.service';
 import { IUserJwt } from 'src/common/interfaces';
-import { User } from 'src/common/decorator/user.decorator';
+import { User } from 'src/common/decorator/custom.decorator';
 import { Auth, JoinCourseAuth } from 'src/common/decorator/auth.decorator';
 import { userCourseValidation } from './joi.request.pipe';
 import { SuccessResponse } from 'src/common/helpers/api.response';
@@ -40,14 +41,13 @@ import { CourseService } from '../course/service/course.service';
 import { AuthService } from '../auth/service/auth.service';
 import { UserCourse } from './entity/user-course.entity';
 import moment from 'moment';
-import { JoinCourseGuard } from 'src/common/guard/student-course.guard';
 
 @ApiTags('UserCourse')
 @Controller('user-course')
 export class UserCourseController {
   constructor(
     private readonly userCourseService: UserCourseService,
-    private readonly categoryService: CategoryService,
+    private readonly notification: NotificationService,
     private readonly courseService: CourseService,
     private readonly authService: AuthService,
     @Inject(STRIPE_CLIENT) private stripe: Stripe,
@@ -148,7 +148,7 @@ export class UserCourseController {
     await this.authService.verifyCode(code, existUser, 100 * 60);
 
     // check course
-    await this.courseService.existCourse(param.courseId);
+    let course = await this.courseService.existCourse(param.courseId);
 
     let newUserCourse: Partial<UserCourse> = {
       courseId,
@@ -157,9 +157,22 @@ export class UserCourseController {
       startCourseTime: new Date(),
     };
 
-    let userCourse = this.userCourseService.saveUserCourse(newUserCourse);
+    //send notification to instructor
+    let newNotification = {
+      userId: course.instructorId,
+      type: NotificationType.studentJoinCourse,
+      sourceId: id,
+      parentId: courseId,
+      isRead: false,
+      title: 'Học sinh tham gia khóa học',
+      description: `học sinh ${user.username} đã tham gia khóa học ${course.name} của bạn`,
+    };
 
-    await Promise.all([userCourse, this.authService.resetTokenById(id)]);
+    await Promise.all([
+      this.userCourseService.saveUserCourse(newUserCourse),
+      this.authService.resetTokenById(id),
+      this.notification.saveNotification(newNotification),
+    ]);
 
     return res.status(HttpStatus.OK).json(new SuccessResponse());
   }

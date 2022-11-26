@@ -22,17 +22,21 @@ export class NotificationCourse {
   @Column({
     type: 'enum',
     enum: NotificationType,
-    default: NotificationType.comment,
+    default: NotificationType.studentJoinCourse,
   })
   type: NotificationType;
 
   @ApiProperty({ example: 1 })
   @Column({ nullable: true })
-  sourceId: number;
+  sourceId: string;
 
   @ApiProperty({ example: 1 })
   @Column({ nullable: true })
   parentId: number;
+
+  @ApiProperty({ example: 1 })
+  @Column({ nullable: true, type: 'tinyint', default: false })
+  isRead: boolean;
 
   @ApiProperty({ example: '123abc' })
   @Column({ length: 255, nullable: false })

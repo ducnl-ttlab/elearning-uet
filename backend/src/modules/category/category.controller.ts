@@ -1,3 +1,4 @@
+import { CourseCategoryResponse } from './dto/api-response.dto';
 import {
   Controller,
   Get,
@@ -12,12 +13,11 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { SuccessResponse } from 'src/common/helpers/api.response';
-import { CategoryListResponse } from 'src/modules/category/dto/api-response.dto';
 import { querySchema } from 'src/common/helpers/api.request';
 import { CategoryService } from './service/category.service';
 import { JoiValidationPipe } from 'src/common/joi.validation.pipe';
 import { QueryListDTO } from 'src/common/dto/api.request.dto';
-import { CategoryDto } from './dto/category.dto';
+import { CourseCategoryDto } from './dto/category.dto';
 import { ApiResponse, ApiTags, ApiParam } from '@nestjs/swagger';
 import { Request, Response } from 'express';
 import { createReadStream } from 'fs';
@@ -44,25 +44,24 @@ export class CategoryController {
       let response = (await this.cacheManager.setOrgetCache(
         'category',
         async () => {
-          const categoryListService: CategoryListResponse =
-            await this.categoryService.findAll(query);
-          const categoryListResponse: CategoryDto[] =
-            categoryListService.items.map(
-              (category: CategoryDto, index: number) => {
-                return {
-                  id: category.id,
-                  name: category.name,
-                  image: `${req.protocol}://${host}/category/image/${category.image}`,
-                  avgRating: 5,
-                  courseTotal: index,
-                  studentTotal: index * 2,
-                };
-              },
-            );
+          const categoryListService: CourseCategoryResponse =
+            await this.categoryService.findCourseCategories();
+          const categoryListResponse: CourseCategoryDto[] =
+            categoryListService.items.map((category: CourseCategoryDto) => {
+              let { id, name, avgRating, courseTotal, studentTotal } = category;
+              return {
+                id,
+                name,
+                image: `${req.protocol}://${host}/category/image/${category.image}`,
+                avgRating,
+                courseTotal,
+                studentTotal,
+              };
+            });
           categoryListService.items = categoryListResponse;
           return categoryListService;
         },
-      )) as CategoryListResponse;
+      )) as CourseCategoryResponse;
 
       return new SuccessResponse(response, 'success');
     } catch (error) {

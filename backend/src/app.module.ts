@@ -2,10 +2,7 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { Connection } from 'typeorm';
-import { StoryModule } from './modules/story/story.module';
 import { DatabaseModule } from './common/database.module';
-import { FavoriteStoryModule } from './modules/favorite-story/favorite-story.module';
-import { StoryCategoryModule } from './modules/story-category/story-category.module';
 import { CourseModule } from './modules/course/course.module';
 import { UserModule } from './modules/user/user.module';
 import { AuthModule } from './modules/auth/auth.module';
@@ -20,6 +17,9 @@ import { UserCourseModule } from './modules/user-courses/user-courses.module';
 import { NotificationModule } from './modules/notification/notification.module';
 import { PollModule } from './modules/poll/polls.module';
 import { JWTModule } from './modules/jwt/jwt.module';
+import { TopicModule } from './modules/topics/topic.module';
+import { CommentModule } from './modules/comment/comment.module';
+import { RatingModule } from './modules/rating/rating.module';
 
 @Module({
   imports: [
@@ -28,7 +28,6 @@ import { JWTModule } from './modules/jwt/jwt.module';
     ConfigModule,
     DatabaseModule,
     CategoryModule,
-    StoryModule,
     UserModule,
     AuthModule,
     MailModule,
@@ -37,10 +36,11 @@ import { JWTModule } from './modules/jwt/jwt.module';
     LocalFileModule,
     RedisCacheModule,
     NotificationModule,
-    FavoriteStoryModule,
-    StoryCategoryModule,
     JWTModule,
-    PollModule
+    PollModule,
+    TopicModule,
+    CommentModule,
+    RatingModule
   ],
   controllers: [AppController],
   providers: [AppService],

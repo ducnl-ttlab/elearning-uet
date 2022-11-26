@@ -35,7 +35,7 @@ import {
     showSuccessNotificationFunction,
 } from '@/common/helpers';
 import { Options, Vue } from 'vue-class-component';
-import { IErrorMessage, loginWithGoogle } from '../../services/login';
+import { IErrorMessage, login } from '../../services/login';
 import { commonModule } from '@/common/store/common.store';
 import { loginModule } from '../../store/login.store';
 import { PageName, SystemRole } from '@/common/constants';
@@ -62,7 +62,7 @@ export default class InputCredentialForm extends Vue {
             email: this.credential,
             password: this.password,
         };
-        const response = await loginWithGoogle(params);
+        const response = await login(params);
         if (response?.success) {
             loginModule.setLoginCredential(response?.data?.user || {});
             loginModule.setAccessToken(response?.data?.accessToken || '');
@@ -141,7 +141,3 @@ export default class InputCredentialForm extends Vue {
     }
 }
 </style>
-
-function loginWithGoogle(credential: string) { throw new Error('Function not
-implemented.'); } function loginWithGoogle(credential: string) { throw new Error('Function
-not implemented.'); }

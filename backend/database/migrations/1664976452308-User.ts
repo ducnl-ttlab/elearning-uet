@@ -60,7 +60,7 @@ export class User1664976452308 implements MigrationInterface {
             type: 'enum',
             enum: Object.values(Role),
             enumName: 'roleEnum',
-            default: `'${Role.guess}'`,
+            default: `'${Role.guest}'`,
           },
           {
             name: 'provider',

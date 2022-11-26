@@ -7,6 +7,7 @@ import { UserCourse } from './entity/user-course.entity';
 import { CategoryModule } from '../category/category.module';
 import { CourseModule } from '../course/course.module';
 import { UserModule } from '../user/user.module';
+import { NotificationModule } from '../notification/notification.module';
 
 @Module({
   imports: [
@@ -14,7 +15,8 @@ import { UserModule } from '../user/user.module';
     CategoryModule,
     CourseModule,
     UserModule,
-    AuthModule
+    AuthModule,
+    NotificationModule
   ],
   controllers: [UserCourseController],
   providers: [UserCourseService],
