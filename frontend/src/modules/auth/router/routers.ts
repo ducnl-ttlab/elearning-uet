@@ -5,6 +5,7 @@ import LoginPage from '../pages/LoginPage.vue';
 import RegisterPage from '../pages/RegisterPage.vue';
 import GoogleLogin from '../pages/GoogleLogin.vue';
 import CreatePasswordPage from '../pages/CreatePasswordPage.vue'
+import SelectRolePage from '../pages/SelectRolePage.vue'
 
 const authRouters: Array<RouteRecordRaw> = [
     {
@@ -25,16 +26,21 @@ const authRouters: Array<RouteRecordRaw> = [
                 path: '/create-password/:token',
                 name: PageName.CREATE_PASSWORD_PAGE,
                 component: CreatePasswordPage,
-                
+  
             },
-
             // {
             //     path: '/auth/google/:token',
             //     name: PageName.LOGIN_PAGE,
             //     component: GoogleLogin,
             // },
         ],
+
     },
+    {
+        path: '/select-role/:token',
+        name: PageName.SELECT_ROLE_PAGE,
+        component: SelectRolePage,
+    }
 ];
 
 export default authRouters;

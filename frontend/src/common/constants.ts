@@ -7,6 +7,7 @@ export enum PageName {
     LANDING_PAGE = 'LandingPage',
     NOT_FOUND_PAGE = 'NotFoundPage',
     CREATE_PASSWORD_PAGE = 'CreatePasswordPage',
+    SELECT_ROLE_PAGE = 'SELECT_ROLE_PAGE',
 }
 
 export enum SupportLanguage {

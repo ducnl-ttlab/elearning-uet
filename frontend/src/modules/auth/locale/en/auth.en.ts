@@ -117,4 +117,13 @@ export const auth = {
             regexError: 'Vui lòng đặt mật khẩu có chứa cả chữ số, chữ in hoa và kí tự đặc biệt.'
         },
     },
+
+    role: {
+        selectRole: 'Please select your role',
+        student: 'Student',
+        instructor: 'Instructor',
+        skip: `No thanks, I'm just casually browsing`,
+        pendingRole: 'Pending',
+        pendingMessage: 'Your request has been submitted to the administrator. Please kindly wait!'
+    }
 };
