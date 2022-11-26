@@ -13,7 +13,7 @@ export class UserCourses1669059281163 implements MigrationInterface {
       {
         courseId: 1,
         userId: '123456xsabf',
-        status: UserCourseStatus.,
+        status: UserCourseStatus.accepted,
         startCourseTime: new Date(),
       },
       {
