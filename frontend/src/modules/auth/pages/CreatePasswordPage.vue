@@ -31,7 +31,8 @@ export default class CreatePasswordPage extends Vue {
     async verifyToken(token: string) {
         commonModule.setLoadingIndicator(true);
         const response = await verifyToken(token);
-        if (response?.data?.success) {
+        console.log(response);
+        if (response?.success) {
             registerModule.setActiveEmailToken(token as string);
         } else {
             this.$router.push({ name: PageName.NOT_FOUND_PAGE });
