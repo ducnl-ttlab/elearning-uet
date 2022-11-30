@@ -3,7 +3,7 @@
         <router-link class="text-decoration-none" to="#">
             <img
                 class="nav-icon"
-                src="@/assets/common/icons/header-button-nav.svg"
+                src="@/assets/common/icons/header/header-button-nav.svg"
                 alt=""
             />
         </router-link>

@@ -4,7 +4,7 @@
             <div class="d-flex flex-row align-items-center" style="cursor: pointer">
                 <img
                     class="user-avatar"
-                    src="@/assets/common/images/header-user.svg"
+                    src="@/assets/common/images/header/header-user.svg"
                     alt=""
                 />
                 <span class="name">{{ userName }}</span>
@@ -20,7 +20,7 @@
                                 <div class="dropdown-item-icon-container">
                                     <img
                                         class="dropdown-item-icon"
-                                        src="@/assets/common/icons/header-profile.svg"
+                                        src="@/assets/common/icons/header/header-profile.svg"
                                         alt=""
                                     />
                                 </div>
@@ -39,7 +39,7 @@
                                 <div class="dropdown-item-icon-container">
                                     <img
                                         class="dropdown-item-icon"
-                                        src="@/assets/common/icons/header-change-password.svg"
+                                        src="@/assets/common/icons/header/header-change-password.svg"
                                         alt=""
                                     />
                                 </div>
@@ -57,7 +57,7 @@
                             <div class="dropdown-item-icon-container">
                                 <img
                                     class="dropdown-item-icon"
-                                    src="@/assets/common/icons/header-logout.svg"
+                                    src="@/assets/common/icons/header/header-logout.svg"
                                     alt=""
                                 />
                             </div>

@@ -25,4 +25,16 @@ export const common = {
         dropdownPassword: 'Change Password',
         dropdownLogout: 'Log out',
     },
+    footer: {
+        appName: 'Academix',
+        address: '144 Xuan Thuy, Dich Vong Hau, Cau Giay, Hanoi, Vietnam',
+        email: "syntaxerror{'@'}vnu.edu.vn",
+        contact: {
+            title: 'Contact us',
+        },
+        mobileApp: {
+            title: 'Mobile App',
+            description: 'Create and join online lectures',
+        },
+    },
 };

@@ -8,13 +8,13 @@
                 >
                     <img
                         :src="
-                            require(`@/assets/common/icons/language-${selectedLanguage}.svg`)
+                            require(`@/assets/common/icons/header/language-${selectedLanguage}.svg`)
                         "
                         alt=""
                     />
                     {{ $t(`common.header.languages.${selectedLanguage}`) }}
                 </span>
-                <img src="@/assets/common/icons/header-select-arrow.svg" alt="" />
+                <img src="@/assets/common/icons/header/header-select-arrow.svg" alt="" />
             </div>
             <template #dropdown>
                 <el-dropdown-menu>
@@ -26,7 +26,7 @@
                         <div class="dropdown-item d-flex align-items-center">
                             <img
                                 :src="
-                                    require(`@/assets/common/icons/language-${language}.svg`)
+                                    require(`@/assets/common/icons/header/language-${language}.svg`)
                                 "
                                 alt=""
                             />

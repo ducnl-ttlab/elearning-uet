@@ -5,22 +5,23 @@
             <component :is="Component" />
         </router-view>
     </div>
-    <MainFooter />
+    <Footer />
 </template>
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
 import Header from '@/components/header/Header.vue';
+import Footer from '@/components/footer/Footer.vue';
 
 @Options({
-    components: { Header },
+    components: { Header, Footer },
 })
 export default class MainLayout extends Vue {}
 </script>
 <style lang="scss" scoped>
 .main-layout {
     padding: 5vh 6vw;
-    min-height: 100vh;
+    min-height: calc(100vh - 90px - 235px);
     background-color: $pale-blue;
 }
 </style>

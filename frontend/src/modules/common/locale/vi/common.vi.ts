@@ -25,4 +25,16 @@ export const common = {
         dropdownPassword: 'Đổi mật khẩu',
         dropdownLogout: 'Đăng xuất',
     },
+    footer: {
+        appName: 'Sorademic',
+        address: '144 Xuân Thủy, Dịch Vọng Hậu, Cầu Giấy, Hà Nội, Việt Nam',
+        email: "syntaxerror{'@'}vnu.edu.vn",
+        contact: {
+            title: 'Liên hệ với chúng tôi',
+        },
+        mobileApp: {
+            title: 'Ứng dụng',
+            description: 'Tạo và tham gia lớp học trực tuyến',
+        },
+    },
 };

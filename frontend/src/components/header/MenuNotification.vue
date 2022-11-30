@@ -4,7 +4,7 @@
             <div
                 class="notification-container d-flex align-items-center justify-content-center"
             >
-                <img src="@/assets/common/images/notification.svg" alt="" />
+                <img src="@/assets/common/images/header/notification.svg" alt="" />
                 <span class="notification-number">{{ notification }}</span>
             </div>
         </router-link>
