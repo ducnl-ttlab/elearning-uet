@@ -1,20 +1,27 @@
 <template>
-    <header class="container">
+    <div class="header-wrapper">
         <div class="header header-height d-flex flex-row justify-content-center">
-            <div class="header-content d-flex flex-row justify-content-between">
+            <div class="header-content d-flex flex-row justify-content-between w-100">
                 <div class="d-flex flex-row align-items-center">
-                    <div>Logo</div>
+                    <Logo />
                     <HeaderTitle />
                 </div>
-                <div class="header-guest d-flex flex-row align-items-center">
+                <div
+                    v-if="isUserLogin"
+                    class="d-flex align-items-center"
+                    style="gap: 24px"
+                >
                     <MenuLanguage />
-                    <HeaderGuest />
+                    <MenuCourses />
+                    <MenuNotification />
+                    <MenuAccount />
                 </div>
+                <HeaderGuest v-else />
                 <HeaderMobileNav />
             </div>
         </div>
         <div class="header-height"></div>
-    </header>
+    </div>
 </template>
 
 <script lang="ts">
@@ -22,7 +29,11 @@ import { Vue, Options } from 'vue-class-component';
 import HeaderTitle from './HeaderTitle.vue';
 import HeaderGuest from './HeaderGuest.vue';
 import HeaderMobileNav from './HeaderMobileNav.vue';
+import MenuAccount from './MenuAccount.vue';
+import MenuNotification from './MenuNotification.vue';
+import Logo from './Logo.vue';
 import MenuLanguage from './MenuLanguage.vue';
+import MenuCourses from './MenuCourses.vue';
 
 @Options({
     components: {
@@ -30,37 +41,40 @@ import MenuLanguage from './MenuLanguage.vue';
         HeaderGuest,
         HeaderMobileNav,
         MenuLanguage,
+        MenuAccount,
+        MenuNotification,
+        Logo,
+        MenuCourses,
     },
 })
 export default class Header extends Vue {
     get isUserLogin(): boolean {
-        return false;
+        return true;
     }
 }
 </script>
 
 <style lang="scss" scoped>
-.container {
+.header-wrapper {
     width: 100vw !important;
-    margin: 0 !important;
-    padding: 0 20px;
+    background-color: $color-white;
 }
 
 .header-height {
     height: 90px;
+    width: 100%;
 }
 
 .header {
-    width: 100%;
     position: fixed;
-    background-color: $color-white-opacity-30;
+    background-color: $color-gray-opacity-30;
     backdrop-filter: blur(32px);
     z-index: map-get($map: $zIndex, $key: menu);
+    padding: 0 6vw;
 }
 
-.header-content {
-    width: 100%;
-    margin: 0 $margin-x-content-landing-page;
+.right-area {
+    gap: 25px;
 }
 
 @media only screen and (max-width: map-get($map: $grid-breakpoints, $key: xs)) {

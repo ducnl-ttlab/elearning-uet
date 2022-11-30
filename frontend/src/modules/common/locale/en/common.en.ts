@@ -1,16 +1,16 @@
 export const common = {
-    notification: 'Thông báo',
+    notification: 'Notification',
     error: {
-        systemError: 'Có lỗi xảy ra, vui lòng thử lại sau ít phút',
+        systemError: 'We are experiencing some issues. Please try again later!',
     },
     gender: {
-        male: 'Nam',
-        female: 'Nữ',
-        other: 'Khác',
+        male: 'Male',
+        female: 'Female',
+        other: 'Other',
     },
-    homePage: 'Trang chủ',
+    homePage: 'Homepage',
     navigate: {
-        back: 'Quay lại',
+        back: 'Back',
     },
     header: {
         languages: {
@@ -18,5 +18,11 @@ export const common = {
             en: 'English',
         },
         appName: 'Academix',
+        loginButton: 'Login',
+        registerButton: 'Register',
+        courses: 'My Courses',
+        dropdownProfile: 'My Profile',
+        dropdownPassword: 'Change Password',
+        dropdownLogout: 'Log out',
     },
 };
