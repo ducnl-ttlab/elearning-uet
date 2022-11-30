@@ -12,4 +12,11 @@ export const common = {
     navigate: {
         back: 'Quay lại',
     },
+    header: {
+        languages: {
+            vi: 'Vietnamese',
+            en: 'English',
+        },
+        appName: 'Academix',
+    },
 };

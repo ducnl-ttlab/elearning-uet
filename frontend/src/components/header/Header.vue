@@ -19,7 +19,6 @@
 
 <script lang="ts">
 import { Vue, Options } from 'vue-class-component';
-import { appModule } from '@/plugins/vuex/appModule';
 import HeaderTitle from './HeaderTitle.vue';
 import HeaderGuest from './HeaderGuest.vue';
 import HeaderMobileNav from './HeaderMobileNav.vue';
@@ -44,7 +43,7 @@ export default class Header extends Vue {
 .container {
     width: 100vw !important;
     margin: 0 !important;
-    padding: 0 !important;
+    padding: 0 20px;
 }
 
 .header-height {
@@ -60,7 +59,6 @@ export default class Header extends Vue {
 }
 
 .header-content {
-    max-width: 1128px;
     width: 100%;
     margin: 0 $margin-x-content-landing-page;
 }
