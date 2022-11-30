@@ -36,7 +36,7 @@ export default class SelectRole extends Vue {
     async selectRole() {
         commonModule.setLoadingIndicator(true);
         const response = await selectRole(this.role, this.accessToken);
-        if (response.data?.success) {
+        if (response?.success) {
             showSuccessNotificationFunction(
                 this.$t('auth.role.successMessage', {
                     role: this.$t(`auth.role.${this.role}`),

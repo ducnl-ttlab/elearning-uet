@@ -36,7 +36,7 @@ import { showErrorNotificationFunction } from '@/common/helpers';
 import { AuthProvider } from '@/modules/auth/constants/auth.constants';
 import { Options, Vue } from 'vue-class-component';
 import { Prop } from 'vue-property-decorator';
-import { signupWithGoogle } from '@/modules/auth/services/register';
+import { register } from '@/modules/auth/services/register';
 
 @Options({
     components: {},
@@ -44,9 +44,9 @@ import { signupWithGoogle } from '@/modules/auth/services/register';
 export default class SocialButtonBox extends Vue {
     @Prop({ default: true }) readonly isLogin!: boolean;
     AuthProvider = AuthProvider;
-    async signupWithGoogle() {
+    async register() {
         const email = '19020286@vnu.edu.vn';
-        let response = await signupWithGoogle(email);
+        let response = await register(email);
     }
 }
 </script>

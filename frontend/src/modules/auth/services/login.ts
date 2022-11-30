@@ -13,24 +13,36 @@ export interface ILoginData {
 export async function login(
     params: IGoogleLoginParams,
 ): Promise<IAxiosDefaultResponse<ILoginData>> {
-    const response = await axios.post(`${BE_URL}/auth/login`, params);
-    return response.data;
+    return axios
+        .post(`${BE_URL}/auth/login`, params)
+        .then((res) => {
+            return res.data;
+        })
+        .catch((error) => {
+            return error.response.data;
+        });
 }
 
 export async function selectRole(
     role: string,
     token: string,
 ): Promise<IAxiosDefaultResponse<Record<string, never>>> {
-    const response = await axios.put(
-        `${BE_URL}/auth/select-role`,
-        {
-            role: role,
-        },
-        {
-            headers: {
-                Authorization: 'Bearer ' + token,
+    return axios
+        .put(
+            `${BE_URL}/auth/select-role`,
+            {
+                role: role,
             },
-        },
-    );
-    return response.data;
+            {
+                headers: {
+                    Authorization: 'Bearer ' + token,
+                },
+            },
+        )
+        .then((res) => {
+            return res.data;
+        })
+        .catch((error) => {
+            return error.response.data;
+        });
 }

@@ -26,7 +26,7 @@ import {
     showSuccessNotificationFunction,
 } from '@/common/helpers';
 import { Options, Vue } from 'vue-class-component';
-import { signupWithGoogle } from '../../services/register';
+import { register } from '../../services/register';
 import { commonModule } from '@/common/store/common.store';
 import { PageName } from '@/common/constants';
 
@@ -39,8 +39,7 @@ export default class InputCredentialForm extends Vue {
 
     async onSubmitCredential() {
         commonModule.setLoadingIndicator(true);
-        const response = await signupWithGoogle(this.credential);
-        console.log(response);
+        const response = await register(this.credential);
         if (response?.success) {
             showSuccessNotificationFunction(
                 this.$t('auth.register.success.description', {
