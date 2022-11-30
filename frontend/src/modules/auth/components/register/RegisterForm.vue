@@ -26,8 +26,9 @@ import {
     showSuccessNotificationFunction,
 } from '@/common/helpers';
 import { Options, Vue } from 'vue-class-component';
-import { signupWithGoogle } from '../../services/register';
+import { register } from '../../services/register';
 import { commonModule } from '@/common/store/common.store';
+import { PageName } from '@/common/constants';
 
 @Options({
     components: {},
@@ -38,17 +39,17 @@ export default class InputCredentialForm extends Vue {
 
     async onSubmitCredential() {
         commonModule.setLoadingIndicator(true);
-        const response = await signupWithGoogle(this.credential);
-        if (response?.data?.message === 'success') {
+        const response = await register(this.credential);
+        if (response?.success) {
             showSuccessNotificationFunction(
                 this.$t('auth.register.success.description', {
                     email: this.credential,
                 }),
             );
+            this.$router.push({ name: PageName.LOGIN_PAGE });
         } else {
             showErrorNotificationFunction(
-                response?.data?.message ||
-                    this.$t('auth.register.defaultError.registerEmail'),
+                response?.message || this.$t('auth.register.defaultError.registerEmail'),
             );
         }
         commonModule.setLoadingIndicator(false);

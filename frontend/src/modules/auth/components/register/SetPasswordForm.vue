@@ -41,11 +41,12 @@ export default class SetPasswordForm extends GlobalMixin {
     async handleSubmitPassword() {
         if (this.password !== this.confirmPassword) {
             showErrorNotificationFunction(
-                this.$t('auth.setPassword.error.mismatchError'),
+                this.$t('auth.setPassword.errors.mismatchError'),
             );
         } else {
             const response = await setPassword(this.password, this.token);
-            if (response?.data?.success) {
+            console.log(response);
+            if (response?.success) {
                 showSuccessNotificationFunction(this.$t('auth.setPassword.success'));
                 this.$router.push({ name: PageName.LOGIN_PAGE });
             }

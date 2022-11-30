@@ -1,15 +1,19 @@
 <template>
-    <div class="d-flex flex-row align-items-center" style="gap: 20px">
-        <MenuLanguage />
-        <router-link class="text-decoration-none" :to="{ name: PageName.LOGIN_PAGE }">
-            <span class="guest-button login-button">
-                {{ $t('common.header.loginButton') }}
-            </span>
-        </router-link>
+    <div>
         <router-link class="text-decoration-none" :to="{ name: PageName.REGISTER_PAGE }">
-            <span class="guest-button register-button">
-                {{ $t('common.header.registerButton') }}
-            </span>
+            <div
+                class="courses-button d-flex flex-row align-items-center"
+                style="gap: 8px"
+            >
+                <img
+                    src="https://img.icons8.com/external-vitaliy-gorbachev-lineal-color-vitaly-gorbachev/2x/external-book-back-to-school-vitaliy-gorbachev-lineal-color-vitaly-gorbachev.png"
+                    alt=""
+                    width="20"
+                />
+                <span>
+                    {{ $t('common.header.courses') }}
+                </span>
+            </div>
         </router-link>
     </div>
 </template>
@@ -33,48 +37,24 @@ export default class HeaderGuest extends Vue {
 </script>
 
 <style lang="scss" scoped>
-.guest-button {
+.courses-button {
     font-size: 17px !important;
     font-weight: 600 !important;
     line-height: 24px !important;
     border-radius: 8px;
     white-space: nowrap;
     padding: 12px 24px;
-    transition: all 0.44s ease 0s;
-    &:hover {
-        color: $color-white;
-        background-color: $color-violet-new-opacity-50;
-        border: 1px solid $color-violet-new-opacity-50;
-    }
-}
-
-.login-button {
     color: $color-gray-01;
     background-color: $color-white;
     border: 1px solid black;
-}
-
-.register-button {
-    color: $color-white;
-    background-color: $color-violet-new;
-    border: 1px solid $color-violet-new;
+    transition: all 0.44s ease 0s;
+    &:hover {
+        color: $color-white;
+        background-color: $color-violet-new;
+        border: 1px solid $color-violet-new;
+    }
 }
 
 @media only screen and (max-width: map-get($map: $grid-breakpoints, $key: lg)) {
-    .select-language {
-        margin-right: 12px;
-    }
-
-    :deep(.el-input__suffix-inner > :first-child) {
-        margin-left: 0px !important;
-    }
-
-    .login-button {
-        margin-right: 12px;
-    }
-
-    .register-button {
-        width: 114px !important;
-    }
 }
 </style>

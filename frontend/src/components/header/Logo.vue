@@ -1,10 +1,7 @@
 <template>
-    <div class="title-container">
-        <router-link
-            class="title text-decoration-none"
-            :to="{ name: PageName.LANDING_PAGE }"
-        >
-            {{ $t('common.header.appName') }}
+    <div class="d-flex flex-row align-items-center">
+        <router-link class="text-decoration-none" :to="{ name: PageName.LANDING_PAGE }">
+            <img class="logo" src="@/assets/common/images/logo2.svg" alt="" />
         </router-link>
     </div>
 </template>
@@ -13,15 +10,18 @@
 import { Vue, Options } from 'vue-class-component';
 import { PageName } from '@/common/constants';
 
-@Options({
-    components: {},
-})
-export default class HeaderTitle extends Vue {
+@Options({})
+export default class HeaderLogo extends Vue {
     PageName = PageName;
 }
 </script>
 
 <style lang="scss" scoped>
+.logo {
+    width: 56px;
+    height: 56px;
+}
+
 .title-container {
     margin-left: 14px;
 
@@ -40,6 +40,11 @@ export default class HeaderTitle extends Vue {
 }
 
 @media only screen and (max-width: map-get($map: $grid-breakpoints, $key: xs)) {
+    .logo {
+        width: 28px;
+        height: 28px;
+    }
+
     .title-container {
         margin-left: 6px;
 

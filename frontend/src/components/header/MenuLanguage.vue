@@ -1,16 +1,35 @@
 <template>
     <div class="select-language d-flex">
         <el-dropdown>
-            <div class="d-flex align-items-center">
-                <span class="dropdown-selected d-flex justify-content-end">
+            <div class="d-flex align-items-center" style="cursor: pointer">
+                <span
+                    class="dropdown-selected d-flex justify-content-end"
+                    style="gap: 10px"
+                >
+                    <img
+                        :src="
+                            require(`@/assets/common/icons/header/language-${selectedLanguage}.svg`)
+                        "
+                        alt=""
+                    />
                     {{ $t(`common.header.languages.${selectedLanguage}`) }}
                 </span>
-                <img src="@/assets/common/icons/header-select-arrow.svg" alt="" />
+                <img src="@/assets/common/icons/header/header-select-arrow.svg" alt="" />
             </div>
             <template #dropdown>
                 <el-dropdown-menu>
-                    <el-dropdown-item v-for="language in languages" :key="language">
+                    <el-dropdown-item
+                        v-for="language in languages"
+                        :key="language"
+                        @click="changeLanguage(language)"
+                    >
                         <div class="dropdown-item d-flex align-items-center">
+                            <img
+                                :src="
+                                    require(`@/assets/common/icons/header/language-${language}.svg`)
+                                "
+                                alt=""
+                            />
                             <span class="dropdown-item-text">
                                 {{ $t(`common.header.languages.${language}`) }}
                             </span>
@@ -38,13 +57,16 @@ export default class MenuLanguage extends Vue {
         localStorageTokenService.setLanguage(selectedLanguage);
         i18n.global.locale.value = selectedLanguage;
         appModule.setCurrentLanguage(selectedLanguage);
+        console.log(this.selectedLanguage);
     };
 }
 </script>
 
 <style lang="scss" scoped>
 .select-language {
-    margin-right: 50.5px;
+    padding: 10px 20px;
+    border-radius: 10px;
+    background: #e9e9e9;
 }
 .dropdown-selected,
 .dropdown-item-text {

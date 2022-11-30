@@ -35,7 +35,7 @@ import {
     showSuccessNotificationFunction,
 } from '@/common/helpers';
 import { Options, Vue } from 'vue-class-component';
-import { IErrorMessage, login } from '../../services/login';
+import { login } from '../../services/login';
 import { commonModule } from '@/common/store/common.store';
 import { loginModule } from '../../store/login.store';
 import { PageName, SystemRole } from '@/common/constants';
