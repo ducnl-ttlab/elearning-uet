@@ -83,6 +83,7 @@ export const auth = {
             description: 'Nhập mã OTP đã gửi qua số điện thoại',
         },
         defaultError: 'Địa chỉ email hoặc mật khẩu chưa đúng',
+        loginError: 'Có lỗi khi đăng nhập. Xin vui lòng thử lại sau.',
         success: 'Đăng nhập thành công',
         sendOtpSuccess: 'Hãy kiểm tra mã OTP đã gửi qua số điện thoại %{phoneNumber}',
     },

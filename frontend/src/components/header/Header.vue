@@ -7,7 +7,7 @@
                     <HeaderTitle />
                 </div>
                 <div
-                    v-if="isUserLogin"
+                    v-if="isLoggedIn"
                     class="d-flex align-items-center"
                     style="gap: 24px"
                 >
@@ -34,6 +34,7 @@ import MenuNotification from './MenuNotification.vue';
 import Logo from './Logo.vue';
 import MenuLanguage from './MenuLanguage.vue';
 import MenuCourses from './MenuCourses.vue';
+import { loginModule } from '@/modules/auth/store/login.store';
 
 @Options({
     components: {
@@ -48,8 +49,8 @@ import MenuCourses from './MenuCourses.vue';
     },
 })
 export default class Header extends Vue {
-    get isUserLogin(): boolean {
-        return true;
+    get isLoggedIn() {
+        return loginModule.isLoggedIn;
     }
 }
 </script>
@@ -62,7 +63,7 @@ export default class Header extends Vue {
 
 .header-height {
     height: 90px;
-    width: 100%;
+    width: 100vw;
 }
 
 .header {

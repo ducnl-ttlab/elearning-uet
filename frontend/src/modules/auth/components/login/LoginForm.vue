@@ -64,8 +64,10 @@ export default class InputCredentialForm extends Vue {
         };
         const response = await login(params);
         if (response?.success) {
+            showSuccessNotificationFunction(response.message || 'Success');
             loginModule.setLoginCredential(response?.data?.user || {});
             loginModule.setAccessToken(response?.data?.accessToken || '');
+            loginModule.setLoginState(true);
 
             if (this.loginCredential.role === SystemRole.GUEST) {
                 this.$router.push({
@@ -77,7 +79,7 @@ export default class InputCredentialForm extends Vue {
                 this.$router.push({ name: PageName.LANDING_PAGE });
             }
         } else {
-            let res = response?.errors || [{ message: 'SOME ERRORS' }];
+            let res = response?.errors || [{ message: this.$t('auth.login.loginError') }];
             showErrorNotificationFunction(res[0].message);
         }
         commonModule.setLoadingIndicator(false);
