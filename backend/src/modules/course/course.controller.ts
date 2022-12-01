@@ -137,30 +137,29 @@ export class CourseController {
     @Req() req: Request,
     @Query() query: CourseQueryDto,
   ) {
-    const { page, pageSize, keyword, rating } = query;
-    const courseList = await this.courseService.findCourseList();
+    const { page, pageSize, keyword, rating, categoryId } = query;
+    const courseList = await this.courseService.findCourses(
+      +categoryId,
+      keyword,
+      +rating,
+    );
 
-    let coursesResponse = courseList[0].map((course) => {
-      const { created_at, image, endCourseTime, startCourseTime, updated_at } =
-        course;
-      let date = startCourseTime
-        ? mysqlToTime(startCourseTime, endCourseTime)
-        : {};
+    let coursesResponse = courseList.map((course) => {
+      const { image, startCourse, endCourse } = course;
 
       return {
         ...course,
-        ...date,
         image: image.startsWith('http')
           ? image
           : `${req.protocol}://${host}/course/image/${image}`,
-        created_at: mysqlTimeStamp(created_at),
-        updated_at: mysqlTimeStamp(updated_at),
+        startCourse: (startCourse && mysqlTimeStamp(startCourse)) || '',
+        endCourse: (endCourse && mysqlTimeStamp(endCourse)) || '',
       };
     });
 
     let response: CourseListResponse = {
       ...getPaginatedItems(coursesResponse, +page, +pageSize),
-      totalItems: courseList[1],
+      totalItems: coursesResponse.length,
     };
 
     return res.status(HttpStatus.CREATED).json(new SuccessResponse(response));

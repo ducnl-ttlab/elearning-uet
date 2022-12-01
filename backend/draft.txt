@@ -9,7 +9,6 @@ LEFT JOIN (
 ) as filters on filters.id = c.id
 GROUP BY ca.id
 
-
 id, name, description, instructorName, avgRating, studentTotal, startCourse, endCourse, price
 
 SELECT c.id, c.name, c.description, u.username as instructorName, uc.avgRating, uc.studentTotal, c.startCourseTime as startCourse, c.endCourseTime as endCourse  
@@ -22,3 +21,4 @@ LEFT JOIN (
     GROUP BY c.id
 ) as uc on uc.id = c.id
 
+id, name, price, description, startCourse, endCourse, totalStudent, rating, instructorName

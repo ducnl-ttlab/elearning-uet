@@ -25,7 +25,7 @@ export class CategoryService {
     }
   }
 
-  async findCourseCategories (): Promise<CourseCategoryResponse>  {
+  async findCourseCategories(): Promise<CourseCategoryResponse> {
     try {
       let query = `
       SELECT ca.id, ca.name, ca.image, ROUND(AVG(filters.rating),1) as avgRating, COUNT(c.id) as courseTotal ,SUM(filters.studentTotal) as studentTotal
@@ -38,9 +38,9 @@ export class CategoryService {
           GROUP BY c.id
       ) as filters on filters.id = c.id
       GROUP BY ca.id
-      `
+      `;
       let result = await this.categoryRepository.query(query);
-      return  {
+      return {
         items: result,
         totalItems: result?.length,
       };

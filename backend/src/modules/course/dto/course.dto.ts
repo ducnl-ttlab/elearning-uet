@@ -62,3 +62,17 @@ export class CourseDto {
   id: number;
 }
 export class CourseListResponse extends CommonListResponse<CourseDto> {}
+
+export interface CourseSearch {
+  id: number;
+  categoryId: number;
+  name: string;
+  price: number;
+  image: string;
+  description: string;
+  instructorName: string;
+  avgRating: number | null;
+  studentTotal: string;
+  startCourse: Date;
+  endCourse: Date;
+}
