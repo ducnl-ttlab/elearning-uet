@@ -34,6 +34,10 @@ const courseQueryListSchema = Joi.object().keys({
     .pattern(/^[0-9]+$/)
     .message('pageSize should be a number')
     .optional(),
+  categoryId: Joi.string()
+    .pattern(/^[0-9]+$/)
+    .message('categoryId should be a number')
+    .optional(),
 });
 const courseSearchQueryListSchema = Joi.object().keys({
   page: Joi.string()

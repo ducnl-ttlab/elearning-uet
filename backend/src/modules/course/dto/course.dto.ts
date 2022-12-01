@@ -45,16 +45,17 @@ export class CategoryDto {
   categoryId: number;
 }
 export interface CourseQueryDto {
-  page: number
-  keyword: string
-  rating: number
-  pageSize: number
+  page: number;
+  keyword: string;
+  rating: number;
+  pageSize: number;
+  categoryId: number;
 }
 export interface CourseSearchQueryDto {
-  page: number
-  keyword: string
-  pageSize: number
-  fields: string
+  page: number;
+  keyword: string;
+  pageSize: number;
+  fields: string;
 }
 export class CourseDto {
   @ApiProperty()
