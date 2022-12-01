@@ -1,12 +1,15 @@
 <template>
-    <div>This is Landing Page</div>
+    <div class="landing-wrapper">
+        <Categories />
+    </div>
 </template>
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
+import Categories from '@/modules/landing/components/MainCategories.vue';
 
 @Options({
-    components: {},
+    components: { Categories },
 })
 export default class LandingPage extends Vue {}
 </script>

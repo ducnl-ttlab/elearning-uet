@@ -51,7 +51,7 @@
                     </el-dropdown-item>
                     <el-dropdown-item>
                         <div
-                            @click="logout"
+                            @click="handleLogout"
                             class="dropdown-item d-flex flex-row align-items-center"
                         >
                             <div class="dropdown-item-icon-container">
@@ -77,6 +77,9 @@ import { Vue, Options } from 'vue-class-component';
 import { appModule } from '@/plugins/vuex/appModule';
 import { PageName } from '@/common/constants';
 import { IUserData } from '@/modules/auth/constants/auth.interfaces';
+import { commonModule } from '@/common/store/common.store';
+import { loginModule } from '@/modules/auth/store/login.store';
+import { showErrorNotificationFunction } from '@/common/helpers';
 
 @Options({
     components: {},
@@ -89,6 +92,20 @@ export default class HeaderMenuAccount extends Vue {
 
     get userName(): string {
         return this.loginUser.username!;
+    }
+
+    async handleLogout() {
+        commonModule.setLoadingIndicator(true);
+
+        loginModule.setLoginCredential({});
+        loginModule.setAccessToken('');
+        loginModule.setLoginState(false);
+
+        this.$router.push({
+            name: PageName.LOGIN_PAGE,
+        });
+
+        commonModule.setLoadingIndicator(false);
     }
 }
 </script>
