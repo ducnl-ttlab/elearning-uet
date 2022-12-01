@@ -34,7 +34,7 @@ export default class Footer extends Vue {}
 }
 
 .footer-wrapper {
-    width: 100%;
+    width: 100vw;
     margin: 0 6vw;
 }
 
