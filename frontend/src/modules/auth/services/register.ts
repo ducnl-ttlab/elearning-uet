@@ -8,7 +8,7 @@ const BE_URL = process.env.VUE_APP_API_URL;
 export async function register(email: string): Promise<IAxiosDefaultResponse<string>> {
     return axios
         .post(`${BE_URL}/auth/signup`, {
-            url: `${FE_URL}/create-password/`,
+            url: `${FE_URL}/auth/create-password/`,
             email: email,
         })
         .then((res) => {

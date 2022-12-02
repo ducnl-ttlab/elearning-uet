@@ -29,6 +29,7 @@ import {
     showSuccessNotificationFunction,
 } from '@/common/helpers';
 import { PageName } from '@/common/constants';
+import { commonModule } from '@/common/store/common.store';
 
 Options({
     components: {},
@@ -39,6 +40,7 @@ export default class SetPasswordForm extends GlobalMixin {
     confirmPassword = '';
 
     async handleSubmitPassword() {
+        commonModule.setLoadingIndicator(true);
         if (this.password !== this.confirmPassword) {
             showErrorNotificationFunction(
                 this.$t('auth.setPassword.errors.mismatchError'),
@@ -51,6 +53,7 @@ export default class SetPasswordForm extends GlobalMixin {
                 this.$router.push({ name: PageName.LOGIN_PAGE });
             }
         }
+        commonModule.setLoadingIndicator(false);
     }
 }
 </script>
