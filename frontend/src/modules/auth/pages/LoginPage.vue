@@ -12,7 +12,9 @@
         <div class="bottom-wrapper">
             <span
                 >{{ $t('auth.login.notHaveAccount') }}
-                <router-link to="/register">{{ $t('auth.login.register') }}</router-link>
+                <router-link :to="{ name: PageName.REGISTER_PAGE }">{{
+                    $t('auth.login.register')
+                }}</router-link>
             </span>
         </div>
     </div>
@@ -22,11 +24,14 @@
 import { Options, Vue } from 'vue-class-component';
 import LoginForm from '@/modules/auth/components/login/LoginForm.vue';
 import SocialButtonBox from '@/modules/auth/components/layouts/common/SocialButtonBox.vue';
+import { PageName } from '@/common/constants';
 
 @Options({
     components: { SocialButtonBox, LoginForm },
 })
-export default class LoginPage extends Vue {}
+export default class LoginPage extends Vue {
+    PageName = PageName;
+}
 </script>
 <style lang="scss" scoped>
 .register-container {

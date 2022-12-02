@@ -24,6 +24,7 @@ export const common = {
         dropdownProfile: 'Thông tin cá nhân',
         dropdownPassword: 'Đổi mật khẩu',
         dropdownLogout: 'Đăng xuất',
+        dropdownCart: 'Thông tin thanh toán',
     },
     footer: {
         appName: 'Sorademic',
