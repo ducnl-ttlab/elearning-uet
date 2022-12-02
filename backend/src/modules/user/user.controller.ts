@@ -6,6 +6,12 @@ import {
   Res,
   HttpStatus,
   Put,
+  UsePipes,
+  Body,
+  UseInterceptors,
+  UploadedFile,
+  NotFoundException,
+  BadRequestException,
 } from '@nestjs/common';
 import { SuccessResponse } from 'src/common/helpers/api.response';
 
@@ -16,6 +22,11 @@ import { AuthService } from '../auth/service/auth.service';
 import { filterUser } from 'src/common/ultils';
 import { Response, Request } from 'express';
 import { ApiTags } from '@nestjs/swagger';
+import { validation } from './joi.request.pipe';
+import { UserChangeDto } from './dto/user';
+import LocalFilesInterceptor, {
+  imageParams,
+} from 'src/infra/local-file/local-files.interceptor';
 
 @ApiTags('User')
 @Controller('user')
@@ -37,7 +48,19 @@ export class UserController {
 
   @Put('profile')
   @UseGuards(JWTAuthGuard)
-  async editProfile(@Req() req: IUserReq<IUserJwt>, @Res() res: Response) {
+  @UseInterceptors(LocalFilesInterceptor(imageParams('avatar')))
+  @UsePipes(...validation({ type: 'body', key: 'userChangePwSchema' }))
+  async editProfile(
+    @Req() req: IUserReq<IUserJwt>,
+    @Res() res: Response,
+    @Body() body: UserChangeDto,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    console.log('body', body, file);
+    if (Object.keys(body).length) {
+      throw new BadRequestException();
+    }
+
     let user = await this.authService.existEmail(req.user.email);
 
     return res
