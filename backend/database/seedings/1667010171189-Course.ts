@@ -7,12 +7,372 @@ export class Course1667010171189 implements MigrationInterface {
       {
         instructorId: '123456abc',
         categoryId: 1,
-        name: 'khoa hoc lap trinh co ban',
-        description: 'khoa hoc lap trinh co ban',
-        price: 12321.1,
+        name: 'Khoá học lập trình cơ bản',
+        description: 'Khoá học lập trình cơ bản',
+        price: 1,
         isPublished: true,
         image:
           'https://lptech.asia/uploads/files/2020/05/25/lap-trinh-web-php-mysql.png',
+      },
+      {
+        instructorId: '123456abc',
+        categoryId: 1,
+        name: 'Khoá học lập trình cơ bản',
+        description: 'Khoá học lập trình cơ bản',
+        price: 20,
+        isPublished: true,
+        image:
+          'https://lptech.asia/uploads/files/2020/05/25/lap-trinh-web-php-mysql.png',
+      },
+      {
+        instructorId: '123456abc',
+        categoryId: 1,
+        name: 'Khoá học lập trình cơ bản',
+        description: 'Khoá học lập trình cơ bản',
+        price: 50,
+        isPublished: true,
+        image:
+          'https://lptech.asia/uploads/files/2020/05/25/lap-trinh-web-php-mysql.png',
+      },
+      {
+        instructorId: '123456abc',
+        categoryId: 1,
+        name: 'Khoá học lập trình cơ bản',
+        description: 'Khoá học lập trình cơ bản',
+        price: 1,
+        isPublished: true,
+        image:
+          'https://lptech.asia/uploads/files/2020/05/25/lap-trinh-web-php-mysql.png',
+      },
+      {
+        instructorId: '123456abc',
+        categoryId: 1,
+        name: 'Khoá học lập trình cơ bản',
+        description: 'Khoá học lập trình cơ bản',
+        price: 20,
+        isPublished: true,
+        image:
+          'https://lptech.asia/uploads/files/2020/05/25/lap-trinh-web-php-mysql.png',
+      },
+      {
+        instructorId: '123456abc',
+        categoryId: 1,
+        name: 'Khoá học lập trình cơ bản',
+        description: 'Khoá học lập trình cơ bản',
+        price: 50,
+        isPublished: true,
+        image:
+          'https://lptech.asia/uploads/files/2020/05/25/lap-trinh-web-php-mysql.png',
+      },
+      {
+        instructorId: '123456abc',
+        categoryId: 1,
+        name: 'Khoá học lập trình cơ bản',
+        description: 'Khoá học lập trình cơ bản',
+        price: 1,
+        isPublished: true,
+        image:
+          'https://lptech.asia/uploads/files/2020/05/25/lap-trinh-web-php-mysql.png',
+      },
+      {
+        instructorId: '123456abc',
+        categoryId: 1,
+        name: 'Khoá học lập trình cơ bản',
+        description: 'Khoá học lập trình cơ bản',
+        price: 20,
+        isPublished: true,
+        image:
+          'https://lptech.asia/uploads/files/2020/05/25/lap-trinh-web-php-mysql.png',
+      },
+      {
+        instructorId: '123456abc',
+        categoryId: 1,
+        name: 'Khoá học lập trình cơ bản',
+        description: 'Khoá học lập trình cơ bản',
+        price: 50,
+        isPublished: true,
+        image:
+          'https://lptech.asia/uploads/files/2020/05/25/lap-trinh-web-php-mysql.png',
+      },
+      {
+        instructorId: '123456abc',
+        categoryId: 1,
+        name: 'Khoá học lập trình cơ bản',
+        description: 'Khoá học lập trình cơ bản',
+        price: 1,
+        isPublished: true,
+        image:
+          'https://lptech.asia/uploads/files/2020/05/25/lap-trinh-web-php-mysql.png',
+      },
+      {
+        instructorId: '123456abc',
+        categoryId: 1,
+        name: 'Khoá học lập trình cơ bản',
+        description: 'Khoá học lập trình cơ bản',
+        price: 20,
+        isPublished: true,
+        image:
+          'https://lptech.asia/uploads/files/2020/05/25/lap-trinh-web-php-mysql.png',
+      },
+      {
+        instructorId: '123456abc',
+        categoryId: 1,
+        name: 'Khoá học lập trình cơ bản',
+        description: 'Khoá học lập trình cơ bản',
+        price: 50,
+        isPublished: true,
+        image:
+          'https://lptech.asia/uploads/files/2020/05/25/lap-trinh-web-php-mysql.png',
+      },
+      {
+        instructorId: '123456abc',
+        categoryId: 1,
+        name: 'Khoá học lập trình cơ bản',
+        description: 'Khoá học lập trình cơ bản',
+        price: 1,
+        isPublished: true,
+        image:
+          'https://lptech.asia/uploads/files/2020/05/25/lap-trinh-web-php-mysql.png',
+      },
+      {
+        instructorId: '123456abc',
+        categoryId: 1,
+        name: 'Khoá học lập trình cơ bản',
+        description: 'Khoá học lập trình cơ bản',
+        price: 20,
+        isPublished: true,
+        image:
+          'https://lptech.asia/uploads/files/2020/05/25/lap-trinh-web-php-mysql.png',
+      },
+      {
+        instructorId: '123456abc',
+        categoryId: 1,
+        name: 'Khoá học lập trình cơ bản',
+        description: 'Khoá học lập trình cơ bản',
+        price: 50,
+        isPublished: true,
+        image:
+          'https://lptech.asia/uploads/files/2020/05/25/lap-trinh-web-php-mysql.png',
+      },
+      {
+        instructorId: '123456abc',
+        categoryId: 1,
+        name: 'Khoá học lập trình cơ bản',
+        description: 'Khoá học lập trình cơ bản',
+        price: 1,
+        isPublished: true,
+        image:
+          'https://lptech.asia/uploads/files/2020/05/25/lap-trinh-web-php-mysql.png',
+      },
+      {
+        instructorId: '123456abc',
+        categoryId: 1,
+        name: 'Khoá học lập trình cơ bản',
+        description: 'Khoá học lập trình cơ bản',
+        price: 20,
+        isPublished: true,
+        image:
+          'https://lptech.asia/uploads/files/2020/05/25/lap-trinh-web-php-mysql.png',
+      },
+      {
+        instructorId: '123456abc',
+        categoryId: 1,
+        name: 'Khoá học lập trình cơ bản',
+        description: 'Khoá học lập trình cơ bản',
+        price: 50,
+        isPublished: true,
+        image:
+          'https://lptech.asia/uploads/files/2020/05/25/lap-trinh-web-php-mysql.png',
+      },
+      {
+        instructorId: '123456abc',
+        categoryId: 1,
+        name: 'Khoá học lập trình cơ bản',
+        description: 'Khoá học lập trình cơ bản',
+        price: 1,
+        isPublished: true,
+        image:
+          'https://lptech.asia/uploads/files/2020/05/25/lap-trinh-web-php-mysql.png',
+      },
+      {
+        instructorId: '123456abc',
+        categoryId: 1,
+        name: 'Khoá học lập trình cơ bản',
+        description: 'Khoá học lập trình cơ bản',
+        price: 20,
+        isPublished: true,
+        image:
+          'https://lptech.asia/uploads/files/2020/05/25/lap-trinh-web-php-mysql.png',
+      },
+      {
+        instructorId: '123456abc',
+        categoryId: 1,
+        name: 'Khoá học lập trình cơ bản',
+        description: 'Khoá học lập trình cơ bản',
+        price: 50,
+        isPublished: true,
+        image:
+          'https://lptech.asia/uploads/files/2020/05/25/lap-trinh-web-php-mysql.png',
+      },
+      {
+        instructorId: '123456abc',
+        categoryId: 1,
+        name: 'Khoá học lập trình cơ bản',
+        description: 'Khoá học lập trình cơ bản',
+        price: 1,
+        isPublished: true,
+        image:
+          'https://lptech.asia/uploads/files/2020/05/25/lap-trinh-web-php-mysql.png',
+      },
+      {
+        instructorId: '123456abc',
+        categoryId: 1,
+        name: 'Khoá học lập trình cơ bản',
+        description: 'Khoá học lập trình cơ bản',
+        price: 20,
+        isPublished: true,
+        image:
+          'https://lptech.asia/uploads/files/2020/05/25/lap-trinh-web-php-mysql.png',
+      },
+      {
+        instructorId: '123456abc',
+        categoryId: 1,
+        name: 'Khoá học lập trình cơ bản',
+        description: 'Khoá học lập trình cơ bản',
+        price: 50,
+        isPublished: true,
+        image:
+          'https://lptech.asia/uploads/files/2020/05/25/lap-trinh-web-php-mysql.png',
+      },
+      {
+        instructorId: '123456abc',
+        categoryId: 1,
+        name: 'Khoá học lập trình cơ bản',
+        description: 'Khoá học lập trình cơ bản',
+        price: 13,
+        isPublished: true,
+        image:
+          'https://lptech.asia/uploads/files/2020/05/25/lap-trinh-web-php-mysql.png',
+      },
+      {
+        instructorId: '123456abc',
+        categoryId: 1,
+        name: 'Khoá học lập trình cơ bản',
+        description: 'Khoá học lập trình cơ bản',
+        price: 432,
+        isPublished: true,
+        image:
+          'https://lptech.asia/uploads/files/2020/05/25/lap-trinh-web-php-mysql.png',
+      },
+      {
+        instructorId: '19020281',
+        categoryId: 2,
+        name: 'khoa hoc AI co ban',
+        description: 'khoa hoc AI co ban',
+        price: 0,
+        isPublished: true,
+        image:
+          'https://cdn.vietnambiz.vn/2019/9/24/w020190722589883245257-15692906256681976192157.jpg',
+      },
+      {
+        instructorId: '19020281',
+        categoryId: 2,
+        name: 'khoa hoc AI co ban',
+        description: 'khoa hoc AI co ban',
+        price: 0,
+        isPublished: true,
+        image:
+          'https://cdn.vietnambiz.vn/2019/9/24/w020190722589883245257-15692906256681976192157.jpg',
+      },
+      {
+        instructorId: '19020281',
+        categoryId: 2,
+        name: 'khoa hoc AI co ban',
+        description: 'khoa hoc AI co ban',
+        price: 0,
+        isPublished: true,
+        image:
+          'https://cdn.vietnambiz.vn/2019/9/24/w020190722589883245257-15692906256681976192157.jpg',
+      },
+      {
+        instructorId: '19020281',
+        categoryId: 2,
+        name: 'khoa hoc AI co ban',
+        description: 'khoa hoc AI co ban',
+        price: 0,
+        isPublished: true,
+        image:
+          'https://cdn.vietnambiz.vn/2019/9/24/w020190722589883245257-15692906256681976192157.jpg',
+      },
+      {
+        instructorId: '19020281',
+        categoryId: 2,
+        name: 'khoa hoc AI co ban',
+        description: 'khoa hoc AI co ban',
+        price: 0,
+        isPublished: true,
+        image:
+          'https://cdn.vietnambiz.vn/2019/9/24/w020190722589883245257-15692906256681976192157.jpg',
+      },
+      {
+        instructorId: '19020281',
+        categoryId: 2,
+        name: 'khoa hoc AI co ban',
+        description: 'khoa hoc AI co ban',
+        price: 0,
+        isPublished: true,
+        image:
+          'https://cdn.vietnambiz.vn/2019/9/24/w020190722589883245257-15692906256681976192157.jpg',
+      },
+      {
+        instructorId: '19020281',
+        categoryId: 2,
+        name: 'khoa hoc AI co ban',
+        description: 'khoa hoc AI co ban',
+        price: 0,
+        isPublished: true,
+        image:
+          'https://cdn.vietnambiz.vn/2019/9/24/w020190722589883245257-15692906256681976192157.jpg',
+      },
+      {
+        instructorId: '19020281',
+        categoryId: 2,
+        name: 'khoa hoc AI co ban',
+        description: 'khoa hoc AI co ban',
+        price: 0,
+        isPublished: true,
+        image:
+          'https://cdn.vietnambiz.vn/2019/9/24/w020190722589883245257-15692906256681976192157.jpg',
+      },
+      {
+        instructorId: '19020281',
+        categoryId: 2,
+        name: 'khoa hoc AI co ban',
+        description: 'khoa hoc AI co ban',
+        price: 0,
+        isPublished: true,
+        image:
+          'https://cdn.vietnambiz.vn/2019/9/24/w020190722589883245257-15692906256681976192157.jpg',
+      },
+      {
+        instructorId: '19020281',
+        categoryId: 2,
+        name: 'khoa hoc AI co ban',
+        description: 'khoa hoc AI co ban',
+        price: 0,
+        isPublished: true,
+        image:
+          'https://cdn.vietnambiz.vn/2019/9/24/w020190722589883245257-15692906256681976192157.jpg',
+      },
+      {
+        instructorId: '19020281',
+        categoryId: 2,
+        name: 'khoa hoc AI co ban',
+        description: 'khoa hoc AI co ban',
+        price: 0,
+        isPublished: true,
+        image:
+          'https://cdn.vietnambiz.vn/2019/9/24/w020190722589883245257-15692906256681976192157.jpg',
       },
       {
         instructorId: '19020281',
