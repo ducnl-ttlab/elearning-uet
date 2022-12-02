@@ -1,11 +1,13 @@
 <template>
-    <Header />
-    <div class="main-layout">
-        <router-view v-slot="{ Component }">
-            <component :is="Component" />
-        </router-view>
+    <div style="overflow-x: hidden">
+        <Header />
+        <div class="main-layout">
+            <router-view v-slot="{ Component }">
+                <component :is="Component" />
+            </router-view>
+        </div>
+        <Footer />
     </div>
-    <Footer />
 </template>
 
 <script lang="ts">
@@ -23,6 +25,5 @@ export default class MainLayout extends Vue {}
     padding: 5vh 6vw;
     min-height: calc(100vh - 90px - 235px);
     background-color: $pale-blue;
-    overflow-x: none !important;
 }
 </style>

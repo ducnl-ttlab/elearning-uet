@@ -9,6 +9,7 @@ export enum PageName {
     CREATE_PASSWORD_PAGE = 'CreatePasswordPage',
     SELECT_ROLE_PAGE = 'SELECT_ROLE_PAGE',
     PENDING_APPROVE_PAGE = 'PENDING_APPROVE_PAGE',
+    USER_PROFILE_PAGE = 'USER_PROFILE_PAGE',
 }
 
 export enum SupportLanguage {

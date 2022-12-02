@@ -6,7 +6,7 @@ import {
     ScreenWidthBreakpoint,
     SupportLanguage,
 } from '@/common/constants';
-import { IUser } from '@/common/tokenService';
+import { IUserInfo } from '@/modules/user/constants/user.interfaces';
 
 @Module({
     name: 'app',
@@ -16,7 +16,7 @@ import { IUser } from '@/common/tokenService';
     store,
 })
 class AppModule extends VuexModule {
-    loginUser: IUser = {} as IUser;
+    loginUser: IUserInfo = {} as IUserInfo;
     screenWidth = window.innerWidth;
     currentLanguage = DEFAULT_LANGUAGE;
 
@@ -31,7 +31,7 @@ class AppModule extends VuexModule {
     }
 
     @Action
-    setLoginUser(user: IUser) {
+    setLoginUser(user: IUserInfo) {
         this.SET_LOGIN_USER(user);
     }
 
@@ -51,7 +51,7 @@ class AppModule extends VuexModule {
     }
 
     @Mutation
-    SET_LOGIN_USER(user: IUser) {
+    SET_LOGIN_USER(user: IUserInfo) {
         this.loginUser = user;
     }
 

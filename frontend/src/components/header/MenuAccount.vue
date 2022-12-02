@@ -14,7 +14,7 @@
                     <el-dropdown-item>
                         <router-link
                             class="dropdown-item-link text-decoration-none"
-                            :to="{ name: PageName.GUEST_PROFILE_PAGE }"
+                            :to="{ name: PageName.USER_PROFILE_PAGE }"
                         >
                             <div class="dropdown-item d-flex flex-row align-items-center">
                                 <div class="dropdown-item-icon-container">
@@ -76,17 +76,17 @@
 import { Vue, Options } from 'vue-class-component';
 import { appModule } from '@/plugins/vuex/appModule';
 import { PageName } from '@/common/constants';
-import { IUserData } from '@/modules/auth/constants/auth.interfaces';
 import { commonModule } from '@/common/store/common.store';
 import { loginModule } from '@/modules/auth/store/login.store';
 import { showErrorNotificationFunction } from '@/common/helpers';
+import { IUserInfo } from '@/modules/user/constants/user.interfaces';
 
 @Options({
     components: {},
 })
 export default class HeaderMenuAccount extends Vue {
     PageName = PageName;
-    get loginUser(): IUserData {
+    get loginUser(): IUserInfo {
         return { username: 'hieuhieu' };
     }
 
