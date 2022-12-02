@@ -1,4 +1,4 @@
-import { TableName, Role } from '../constant';
+import { TableName } from '../constant';
 import { MigrationInterface, QueryRunner } from 'typeorm';
 export class Ratings1669291453294 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {

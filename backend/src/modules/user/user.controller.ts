@@ -56,8 +56,8 @@ export class UserController {
     @Body() body: UserChangeDto,
     @UploadedFile() file: Express.Multer.File,
   ) {
-    console.log('body', body, file);
-    if (Object.keys(body).length) {
+    console.log('body', body, file, Object.keys(body).length);
+    if (Object.keys(body).length < 1) {
       throw new BadRequestException();
     }
 
