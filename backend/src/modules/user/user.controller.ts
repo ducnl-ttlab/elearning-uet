@@ -5,6 +5,7 @@ import {
   Req,
   Res,
   HttpStatus,
+  Put,
 } from '@nestjs/common';
 import { SuccessResponse } from 'src/common/helpers/api.response';
 
@@ -27,6 +28,16 @@ export class UserController {
   @Get('profile')
   @UseGuards(JWTAuthGuard)
   async getProfile(@Req() req: IUserReq<IUserJwt>, @Res() res: Response) {
+    let user = await this.authService.existEmail(req.user.email);
+
+    return res
+      .status(HttpStatus.OK)
+      .json(new SuccessResponse(filterUser(user)));
+  }
+
+  @Put('profile')
+  @UseGuards(JWTAuthGuard)
+  async editProfile(@Req() req: IUserReq<IUserJwt>, @Res() res: Response) {
     let user = await this.authService.existEmail(req.user.email);
 
     return res
