@@ -55,16 +55,18 @@ export default class SelectRole extends Vue {
 <style lang="scss">
 .role-container {
     height: 400px;
-    border: 3px solid $color-violet-new-2;
+    border: 3px solid #0909093f;
     box-shadow: 0px 8px 32px rgba(106, 117, 171, 0.17);
     border-radius: 32px;
     background: $color-gray-05;
     cursor: pointer;
+    transition: all 0.66s ease-in-out;
 
     &:hover {
         background: $color-accent-violet-03;
+        border: 3px solid $color-violet-new-2;
         transform: scale(1.03);
-        transition: 1s ease-in-out;
+
         img {
             background: #d9d8ff;
         }
