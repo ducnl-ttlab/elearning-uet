@@ -39,6 +39,7 @@ import { login } from '../../services/login';
 import { commonModule } from '@/common/store/common.store';
 import { loginModule } from '../../store/login.store';
 import { PageName, SystemRole } from '@/common/constants';
+import { userModule } from '@/modules/user/store/user.store';
 
 @Options({
     components: {},
@@ -48,8 +49,8 @@ export default class InputCredentialForm extends Vue {
     credentialError = '';
     password = '12345678';
 
-    get loginCredential() {
-        return loginModule.loginCredential;
+    get userData() {
+        return userModule.userData;
     }
 
     get accessToken() {
@@ -65,15 +66,15 @@ export default class InputCredentialForm extends Vue {
         const response = await login(params);
         if (response?.success) {
             showSuccessNotificationFunction(response.message || 'Success');
-            loginModule.setLoginCredential(response?.data?.user || {});
+            userModule.setUserData(response?.data?.user || {});
             loginModule.setAccessToken(response?.data?.accessToken || '');
             loginModule.setLoginState(true);
 
-            if (this.loginCredential.role === SystemRole.GUEST) {
+            if (this.userData.role === SystemRole.GUEST) {
                 this.$router.push({
                     name: PageName.SELECT_ROLE_PAGE,
                 });
-            } else if (this.loginCredential.role === SystemRole.PENDING) {
+            } else if (this.userData.role === SystemRole.PENDING) {
                 this.$router.push({ name: PageName.PENDING_APPROVE_PAGE });
             } else {
                 this.$router.push({ name: PageName.LANDING_PAGE });

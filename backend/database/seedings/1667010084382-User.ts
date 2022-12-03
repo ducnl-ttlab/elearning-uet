@@ -385,6 +385,15 @@ export class User1667010084382 implements MigrationInterface {
         verified: true,
         role: Role.instructor,
       },
+      {
+        id: '19020466',
+        username: 'Hieu mup',
+        email: 'dthieu13701@gmail.com',
+        phone: '012345678',
+        password: '12345678',
+        verified: true,
+        role: Role.student,
+      },
     ];
     let itemDatas = await Promise.all(
       items.map(async (item) => {

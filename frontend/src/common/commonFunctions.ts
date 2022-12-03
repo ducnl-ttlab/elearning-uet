@@ -5,7 +5,7 @@ import isPlainObject from 'lodash/isPlainObject';
 import mapKeys from 'lodash/mapKeys';
 import cloneDeep from 'lodash/cloneDeep';
 import trim from 'lodash/trim';
-import { DateFormat } from './constants';
+import { DateFormat, DEFAULT_AVATAR_COLORS } from './constants';
 
 export function convertTimeToUTC(time: string | Date) {
     return momentTimezone.tz(time, 'UTC').toDate();
@@ -47,9 +47,7 @@ export function parseToCamelCase(data: any) {
                 parse(item[keyInCamelCase]);
             }
             if (isArray(item[keyInCamelCase])) {
-                item[keyInCamelCase].forEach((childItem: any) =>
-                    parse(childItem),
-                );
+                item[keyInCamelCase].forEach((childItem: any) => parse(childItem));
             }
         });
     }
@@ -69,10 +67,7 @@ export function trimData(body: any): void {
             else if (Array.isArray(value)) {
                 value.forEach((subValue, index) => {
                     // remove string contain only space characters
-                    if (
-                        typeof subValue === 'string' &&
-                        !trim(subValue as string)
-                    ) {
+                    if (typeof subValue === 'string' && !trim(subValue as string)) {
                         value.splice(index, 1);
                     } else if (isPlainObject(subValue)) {
                         trimValue(subValue);
@@ -108,10 +103,7 @@ export function removeEmptyValue(query: any): void {
                     }
 
                     // remove string contain only space characters
-                    else if (
-                        typeof property === 'string' &&
-                        !trim(property as string)
-                    ) {
+                    else if (typeof property === 'string' && !trim(property as string)) {
                         value.splice(index, 1);
                     }
                 });
@@ -120,4 +112,24 @@ export function removeEmptyValue(query: any): void {
     };
 
     removeEmpty(query);
+}
+
+export function getFirstLetterOfName(name: string) {
+    const splittedName = name.split(/[ -]/);
+    return splittedName[0].charAt(0).toUpperCase();
+}
+
+//hash function to generate unique hash string for each username
+export function getHashOfString(name: string) {
+    let hash = 0;
+    for (let i = 0; i < name?.length; i++) {
+        // tslint:disable-next-line: no-bitwise
+        hash = name.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    hash = Math.abs(hash);
+    return hash;
+}
+
+export function generateDefaultAvatarColor(name: string) {
+    return DEFAULT_AVATAR_COLORS[getHashOfString(name) % 6];
 }

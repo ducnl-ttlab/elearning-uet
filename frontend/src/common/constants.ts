@@ -9,17 +9,13 @@ export enum PageName {
     CREATE_PASSWORD_PAGE = 'CreatePasswordPage',
     SELECT_ROLE_PAGE = 'SELECT_ROLE_PAGE',
     PENDING_APPROVE_PAGE = 'PENDING_APPROVE_PAGE',
+    USER_PROFILE_PAGE = 'USER_PROFILE_PAGE',
     COURSE_LIST_PAGE = 'COURSE_LIST_PAGE',
 }
 
 export enum SupportLanguage {
     EN = 'en',
     VI = 'vi',
-}
-
-export enum OrderDirection {
-    ASCENDING = 'ascending',
-    DESCENDING = 'descending',
 }
 
 export enum OrderBy {
@@ -243,4 +239,32 @@ export const GenderOptions = [
         name: i18n.global.t('common.gender.other'),
         id: Gender.OTHER,
     },
+];
+
+export const DEFAULT_AVATAR_COLORS = [
+    '#5FC8A2',
+    '#AA59D7',
+    '#FFA800',
+    '#5FA0FA',
+    '#FDD443',
+    '#DD2E44',
+];
+
+export const OrderDirection = {
+    ASC: 'asc',
+    DESC: 'desc',
+};
+
+export const IMAGE_EXTENSION_LIST = [
+    'apng',
+    'avif',
+    'gif',
+    'jpg',
+    'jpeg',
+    'jfif',
+    'pjpeg',
+    'pjp',
+    'png',
+    'svg',
+    'webp',
 ];

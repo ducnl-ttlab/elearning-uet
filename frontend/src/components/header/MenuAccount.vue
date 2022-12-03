@@ -3,18 +3,27 @@
         <el-dropdown trigger="click" :hide-on-click="true">
             <div class="d-flex flex-row align-items-center" style="cursor: pointer">
                 <img
+                    v-if="userImage"
                     class="user-avatar"
-                    src="@/assets/common/images/header/header-user.svg"
+                    width="50px"
+                    :src="userImage"
                     alt=""
                 />
-                <span class="name">{{ userName }}</span>
+                <div
+                    v-else
+                    class="user-avatar default-avatar d-flex justify-content-center align-items-center"
+                    :style="{ 'background-color': defaultAvatarColor }"
+                >
+                    <span>{{ defaultAvatarName }}</span>
+                </div>
+                <span class="name">{{ userName || 'Anonymous' }}</span>
             </div>
             <template #dropdown>
                 <el-dropdown-menu>
                     <el-dropdown-item>
                         <router-link
                             class="dropdown-item-link text-decoration-none"
-                            :to="{ name: PageName.GUEST_PROFILE_PAGE }"
+                            :to="{ name: PageName.USER_PROFILE_PAGE }"
                         >
                             <div class="dropdown-item d-flex flex-row align-items-center">
                                 <div class="dropdown-item-icon-container">
@@ -52,7 +61,7 @@
                     <el-dropdown-item>
                         <router-link
                             class="dropdown-item-link text-decoration-none"
-                            :to="{ name: PageName.GUEST_PROFILE_PAGE }"
+                            :to="{ name: PageName.PAYMENT_PAGE }"
                         >
                             <div class="dropdown-item d-flex flex-row align-items-center">
                                 <div class="dropdown-item-icon-container">
@@ -95,26 +104,43 @@
 <script lang="ts">
 import { Vue, Options } from 'vue-class-component';
 import { PageName } from '@/common/constants';
-import { IUserData } from '@/modules/auth/constants/auth.interfaces';
+import { IUserData } from '@/common/interfaces';
 import { commonModule } from '@/common/store/common.store';
 import { loginModule } from '@/modules/auth/store/login.store';
+import {
+    generateDefaultAvatarColor,
+    getFirstLetterOfName,
+} from '@/common/commonFunctions';
+import { userModule } from '@/modules/user/store/user.store';
 
 @Options({
     components: {},
 })
 export default class HeaderMenuAccount extends Vue {
     PageName = PageName;
-    get loginUser(): IUserData {
-        return { ...loginModule.loginCredential, username: 'hieuhieu' };
+    get userData(): IUserData {
+        return { ...userModule.userData };
     }
 
-    get userName(): string {
-        return this.loginUser.username!;
+    get userName() {
+        return this.userData.username;
+    }
+
+    get userImage() {
+        return this.userData.avatar;
+    }
+
+    get defaultAvatarColor() {
+        return generateDefaultAvatarColor(this.userData?.username || '').trim();
+    }
+
+    get defaultAvatarName() {
+        return getFirstLetterOfName(this.userData?.username || '').trim();
     }
 
     async handleLogout() {
         commonModule.setLoadingIndicator(true);
-        loginModule.setLoginCredential({});
+        userModule.setUserData({});
         loginModule.setAccessToken('');
         loginModule.setLoginState(false);
 
@@ -142,6 +168,7 @@ export default class HeaderMenuAccount extends Vue {
 }
 
 .user-avatar {
+    border-radius: 50%;
     width: 50px;
     height: 50px;
 }
@@ -197,6 +224,21 @@ export default class HeaderMenuAccount extends Vue {
     .dropdown-item:last-of-type {
         border-bottom-left-radius: 12px;
         border-bottom-right-radius: 12px;
+    }
+}
+
+.default-avatar {
+    cursor: pointer;
+    font-style: normal;
+    color: white;
+    text-align: center;
+    font-weight: 400;
+    font-size: 22px;
+}
+
+@media only screen and (max-width: map-get($map: $grid-breakpoints, $key: md)) {
+    .name {
+        display: none !important;
     }
 }
 </style>

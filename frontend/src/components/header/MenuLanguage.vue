@@ -57,7 +57,6 @@ export default class MenuLanguage extends Vue {
         localStorageTokenService.setLanguage(selectedLanguage);
         i18n.global.locale.value = selectedLanguage;
         appModule.setCurrentLanguage(selectedLanguage);
-        console.log(this.selectedLanguage);
     };
 }
 </script>
