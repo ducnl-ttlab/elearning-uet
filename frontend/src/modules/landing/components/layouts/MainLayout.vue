@@ -1,11 +1,13 @@
 <template>
-    <Header />
-    <div class="main-layout">
-        <router-view v-slot="{ Component }">
-            <component :is="Component" />
-        </router-view>
+    <div style="overflow-x: hidden">
+        <Header />
+        <div class="main-layout">
+            <router-view v-slot="{ Component }">
+                <component :is="Component" />
+            </router-view>
+        </div>
+        <Footer />
     </div>
-    <Footer />
 </template>
 
 <script lang="ts">

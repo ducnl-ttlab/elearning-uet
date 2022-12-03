@@ -45,7 +45,6 @@ export default class CourseGrid extends Vue {
     async created() {
         window.scrollTo(0, 0);
         await this.getCourseList();
-        console.log(this.courseList, 'courseList');
     }
 }
 </script>

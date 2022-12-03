@@ -45,11 +45,9 @@ export default class MainCategories extends Vue {
 
     async created() {
         await this.getCategoryList();
-        console.log(this.categoryList, 123);
     }
 
     handleCategoryClick(id: number) {
-        console.log('click');
         this.$router.push({
             name: PageName.COURSE_LIST_PAGE,
             params: {

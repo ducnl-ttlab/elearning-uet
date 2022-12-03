@@ -43,7 +43,6 @@ export default class CourseList extends Vue {
     async created() {
         window.scrollTo(0, 0);
         await this.getCourseList();
-        console.log(this.courseList, 'courseList');
     }
 }
 </script>
