@@ -141,8 +141,6 @@ export default class UserProfileForm extends Vue {
             this.isChangingAvatar = false;
             return;
         } else {
-            this.isChangingAvatar = true;
-
             return URL.createObjectURL(file);
         }
     }
@@ -158,7 +156,6 @@ export default class UserProfileForm extends Vue {
     handleChangeProfileImage(files: File[]) {
         this.thumbnail = files[0];
         this.userForm.file = this.previewImagePath(this.thumbnail);
-        console.log(this.userForm.file, 'filename');
         this.isChangingAvatar = true;
         if (this.checkImageFormat(files[0].name)) {
             showSuccessNotificationFunction('Success');
@@ -193,9 +190,6 @@ export default class UserProfileForm extends Vue {
         if (this.userForm.file) {
             formData.append('file', this.thumbnail || '');
         }
-        console.log(userData, 'userData');
-        console.log(formData, 'formData');
-        console.log(this.userForm, 'userForm');
         const response = await updateUserData(formData);
         if (response.success) {
             await this.getUserData();

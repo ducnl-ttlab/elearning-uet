@@ -47,7 +47,6 @@ export default class SetPasswordForm extends GlobalMixin {
             );
         } else {
             const response = await setPassword(this.password, this.token);
-            console.log(response);
             if (response?.success) {
                 showSuccessNotificationFunction(this.$t('auth.setPassword.success'));
                 this.$router.push({ name: PageName.LOGIN_PAGE });
