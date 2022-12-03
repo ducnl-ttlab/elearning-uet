@@ -18,11 +18,6 @@ export enum SupportLanguage {
     VI = 'vi',
 }
 
-export enum OrderDirection {
-    ASCENDING = 'ascending',
-    DESCENDING = 'descending',
-}
-
 export enum OrderBy {
     ID = '_id',
     CREATED_AT = 'createdAt',
@@ -244,4 +239,32 @@ export const GenderOptions = [
         name: i18n.global.t('common.gender.other'),
         id: Gender.OTHER,
     },
+];
+
+export const DEFAULT_AVATAR_COLORS = [
+    '#5FC8A2',
+    '#AA59D7',
+    '#FFA800',
+    '#5FA0FA',
+    '#FDD443',
+    '#DD2E44',
+];
+
+export const OrderDirection = {
+    ASC: 'asc',
+    DESC: 'desc',
+};
+
+export const IMAGE_EXTENSION_LIST = [
+    'apng',
+    'avif',
+    'gif',
+    'jpg',
+    'jpeg',
+    'jfif',
+    'pjpeg',
+    'pjp',
+    'png',
+    'svg',
+    'webp',
 ];

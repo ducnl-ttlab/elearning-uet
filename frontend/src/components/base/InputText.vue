@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="d-flex" :class="{ 'flex-column': !isHorizontal }">
+        <div class="d-flex pb-3" :class="{ 'flex-column': !isHorizontal }">
             <label
                 v-if="label"
                 class="fw-bold text-start mb-2 d-flex align-items-center"
@@ -26,14 +26,19 @@
                     @blur="onBlur"
                     @keyup="onKeyup"
                 />
-                <div v-if="!isHorizontal" class="validation-error text-start mb-3">
+                <div v-if="!isHorizontal && error" class="validation-error text-start">
                     {{ error }}&nbsp;
                 </div>
             </div>
         </div>
         <div class="d-flex mb-3" v-if="isHorizontal">
             <div class="w-25"></div>
-            <div class="w-75 validation-error text-start">{{ error }}&nbsp;</div>
+            <div
+                class="w-75 validation-error text-start"
+                v-if="error && error.length >= 1"
+            >
+                {{ error }}&nbsp;
+            </div>
         </div>
     </div>
 </template>

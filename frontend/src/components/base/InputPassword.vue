@@ -1,5 +1,5 @@
 <template>
-    <div class="form-group d-flex" :class="{ 'flex-column': !isHorizontal }">
+    <div class="form-group d-flex mb-3" :class="{ 'flex-column': !isHorizontal }">
         <label
             v-if="label"
             class="fw-bold text-start mb-2"
@@ -59,6 +59,10 @@ export default class InputPassword extends Vue {
 <style lang="scss" scoped>
 .input-password-icon {
     cursor: pointer;
+}
+
+:deep(.el-input__inner) {
+    height: 48px !important;
 }
 .fa {
     font-size: 16px;

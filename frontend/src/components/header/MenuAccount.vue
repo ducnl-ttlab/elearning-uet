@@ -14,7 +14,7 @@
                     <el-dropdown-item>
                         <router-link
                             class="dropdown-item-link text-decoration-none"
-                            :to="{ name: PageName.GUEST_PROFILE_PAGE }"
+                            :to="{ name: PageName.USER_PROFILE_PAGE }"
                         >
                             <div class="dropdown-item d-flex flex-row align-items-center">
                                 <div class="dropdown-item-icon-container">
@@ -52,7 +52,7 @@
                     <el-dropdown-item>
                         <router-link
                             class="dropdown-item-link text-decoration-none"
-                            :to="{ name: PageName.GUEST_PROFILE_PAGE }"
+                            :to="{ name: PageName.PAYMENT_PAGE }"
                         >
                             <div class="dropdown-item d-flex flex-row align-items-center">
                                 <div class="dropdown-item-icon-container">
