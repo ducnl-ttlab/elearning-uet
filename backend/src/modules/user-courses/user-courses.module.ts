@@ -8,6 +8,8 @@ import { CategoryModule } from '../category/category.module';
 import { CourseModule } from '../course/course.module';
 import { UserModule } from '../user/user.module';
 import { NotificationModule } from '../notification/notification.module';
+import { RedisCacheModule } from '../cache/redis-cache.module';
+import { RedisCacheService } from '../cache/redis-cache.service';
 
 @Module({
   imports: [
@@ -16,10 +18,11 @@ import { NotificationModule } from '../notification/notification.module';
     CourseModule,
     UserModule,
     AuthModule,
-    NotificationModule
+    NotificationModule,
+    RedisCacheModule,
   ],
   controllers: [UserCourseController],
-  providers: [UserCourseService],
+  providers: [UserCourseService, RedisCacheService],
   exports: [UserCourseService],
 })
 export class UserCourseModule {}

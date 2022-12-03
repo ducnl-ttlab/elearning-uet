@@ -3,6 +3,9 @@ import { User } from 'src/modules/user/entity/user.entity';
 import { EXPIRED_TOKEN_SECONDS } from './constant';
 import { FilteredUser } from './interfaces';
 import * as _ from 'lodash';
+import { join } from 'path';
+const fs = require('fs');
+
 export const filterUser = (user: User): FilteredUser => {
   delete user.password;
   delete user.resetToken;
@@ -51,7 +54,9 @@ export const mysqlToTime = (startTime: Date, endTime: Date) => {
 };
 
 export const mysqlTimeStamp = (time: Date) => {
-  return moment(time).utc(true).format('YYYY/MM/DD hh:mm:ss') as unknown as Date;
+  return moment(time)
+    .utc(true)
+    .format('YYYY/MM/DD hh:mm:ss') as unknown as Date;
 };
 
 export const defaultResponseTime = (created_at: Date, updated_at: Date) => {
@@ -78,4 +83,12 @@ export function getPaginatedItems(
     pageSize: showPageSize,
     total_pages: Math.ceil(items.length / pgSize),
   };
+}
+type Folder = 'avatar' | 'course';
+
+export function removeImageFile(image: string, folder: Folder) {
+  let path = join(process.cwd(), `/uploads/${folder}/${image}`);
+  if (fs.existsSync(path)) {
+    fs.unlinkSync(path);
+  }
 }

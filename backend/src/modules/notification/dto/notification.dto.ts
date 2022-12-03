@@ -20,9 +20,24 @@ export interface QueryNotificationDto {
   pageSize: string;
 }
 
-export interface CommentNotification {
+export interface CommentNotificationDto {
   commentType: CommentType;
   userId: string;
   courseOrTopicId: number;
   username: string;
+}
+
+type PickKey<T, K extends keyof T> = Extract<keyof T, K>;
+type Picked_KeysOfEnum = PickKey<
+  typeof NotificationType,
+  'studentJoinCourse' | 'studentJoinCourseFree'
+>;
+
+export interface StudentJoinCourseDto {
+  instructorId: string;
+  type: Picked_KeysOfEnum;
+  studentId: string;
+  courseId: number;
+  studentName: string;
+  courseName: string;
 }

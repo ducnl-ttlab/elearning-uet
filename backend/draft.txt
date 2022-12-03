@@ -22,3 +22,25 @@ LEFT JOIN (
 ) as uc on uc.id = c.id
 
 id, name, price, description, startCourse, endCourse, totalStudent, rating, instructorName
+
+// find studen courses
+startCourseTime: string;
+startBlockTime: number;
+status: UserCourseStatus;
+rating: number;
+courseId: number;
+courseName: string;
+instructorName: string;
+beginCourse: string;
+endCourse: string;
+price: number;
+image: string;
+
+SELECT *
+FROM user_courses uc 
+JOIN (
+    SELECT c.id as courseId, c.name, c.price, c.image, c.startCourseTime as beginCourseTime, c.endCourseTime, u.username
+    FROM courses c
+    JOIN users u ON u.id = c.instructorId
+) as c on c.courseId = uc.courseId
+WHERE uc.userId = '123456abf';

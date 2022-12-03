@@ -128,6 +128,10 @@ export class AuthService {
     return user;
   }
 
+  comparePw(pw: string, hashPw: string) {
+    return bcrypt.compare(pw, hashPw) as Promise<Boolean>;
+  }
+
   async verifyCode(code: string, user: VerifyCodeUser, expiredTime?: number) {
     let { id, email, resetToken, expiredTokenTime } = user;
 

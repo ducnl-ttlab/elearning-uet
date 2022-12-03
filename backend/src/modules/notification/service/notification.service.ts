@@ -7,7 +7,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { CommentType, NotificationType, TableName } from 'database/constant';
 import { ResultSetHeader } from 'mysql2/promise';
 import { getManager, Repository } from 'typeorm';
-import { CommentNotification } from '../dto/notification.dto';
+import {
+  CommentNotificationDto,
+  StudentJoinCourseDto,
+} from '../dto/notification.dto';
 import { NotificationCourse } from '../entity/notification.entity';
 
 @Injectable()
@@ -22,7 +25,7 @@ export class NotificationService {
     userId,
     courseOrTopicId,
     username,
-  }: CommentNotification) {
+  }: CommentNotificationDto) {
     let notificationType = {
       [CommentType.topic]: {
         type: NotificationType.topicComment,
@@ -47,6 +50,27 @@ export class NotificationService {
     };
 
     this.saveNotification(newNotification);
+  }
+
+  async studentJoinCourse({
+    instructorId,
+    type,
+    studentId,
+    courseId,
+    studentName,
+    courseName,
+  }: StudentJoinCourseDto) {
+    let newNotification = {
+      userId: instructorId,
+      type: NotificationType[type],
+      sourceId: studentId,
+      parentId: courseId,
+      isRead: false,
+      title: 'Học sinh tham gia khóa học',
+      description: `Học sinh ${studentName} đã tham gia khóa học ${courseName} của bạn`,
+    };
+
+    return this.saveNotification(newNotification);
   }
 
   async saveNotification(

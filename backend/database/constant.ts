@@ -7,13 +7,13 @@ export enum TableName {
   course = 'courses',
   userCourse = 'user_courses',
   notification = 'notifications',
-  topic="topics",
-  comment="comments",
-  rating="ratings",
-  quiz="quizes",
-  question="questions",
-  answer="answers",
-  userAnswer="user_answers"
+  topic = 'topics',
+  comment = 'comments',
+  rating = 'ratings',
+  quiz = 'quizes',
+  question = 'questions',
+  answer = 'answers',
+  userAnswer = 'user_answers',
 }
 
 export enum Role {
@@ -21,7 +21,7 @@ export enum Role {
   instructor = 'instructor',
   admin = 'admin',
   guest = 'guest',
-  pending = 'pending'
+  pending = 'pending',
 }
 
 export enum Provider {
@@ -34,7 +34,7 @@ export enum UserCourseStatus {
   accepted = 'accepted',
   reject = 'reject',
   expired = 'expired',
-  commentBlocking = 'comment_blocking'
+  commentBlocking = 'comment_blocking',
 }
 
 export enum NotificationType {
@@ -46,11 +46,10 @@ export enum NotificationType {
   rating = 'rating',
   quiz = 'quiz',
   studentJoinCourse = 'student_join_course',
+  studentJoinCourseFree = 'student_join_course_free',
 }
 
 export enum CommentType {
   course = 'course',
-  topic = 'topic'
+  topic = 'topic',
 }
-
-

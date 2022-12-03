@@ -38,10 +38,23 @@ const createCourseSchema = Joi.object().keys({
   price: Joi.number().min(1).optional(),
 });
 
+const userCourseQueryListSchema = Joi.object().keys({
+  page: Joi.string()
+    .pattern(/^[0-9]+$/)
+    .message('page should be a number')
+    .optional(),
+  keyword: Joi.string().optional(),
+  pageSize: Joi.string()
+    .pattern(/^[0-9]+$/)
+    .message('pageSize should be a number')
+    .optional(),
+});
+
 const courseValidationSchemas = {
   courseIdParamSchema,
   categoryParamSchema,
   createCourseSchema,
+  userCourseQueryListSchema,
   verifyCourseParamSchema,
 };
 

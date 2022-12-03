@@ -1,3 +1,4 @@
+import { getPaginatedItems, mysqlTime } from 'src/common/ultils';
 import { NotificationService } from './../notification/service/notification.service';
 import { NotificationType, UserCourseStatus } from 'database/constant';
 import {
@@ -16,12 +17,13 @@ import {
   Headers,
   Inject,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { Request, Response } from 'express';
 import { UserCourseService } from './service/user-course.service';
 import { IUserJwt } from 'src/common/interfaces';
-import { User } from 'src/common/decorator/custom.decorator';
+import { Student, User } from 'src/common/decorator/custom.decorator';
 import { Auth, JoinCourseAuth } from 'src/common/decorator/auth.decorator';
 import { userCourseValidation } from './joi.request.pipe';
 import { SuccessResponse } from 'src/common/helpers/api.response';
@@ -30,6 +32,8 @@ import {
   CheckoutDto,
   CheckoutCourseDto,
   JoinCourseDto,
+  StudenCourseListResponse,
+  StudentCourseDto,
 } from './dto/user-course.dto';
 import { CategoryService } from '../category/service/category.service';
 import LocalFilesInterceptor, {
@@ -41,6 +45,8 @@ import { CourseService } from '../course/service/course.service';
 import { AuthService } from '../auth/service/auth.service';
 import { UserCourse } from './entity/user-course.entity';
 import moment from 'moment';
+import { StudentJoinCourseDto } from '../notification/dto/notification.dto';
+import { RedisCacheService } from '../cache/redis-cache.service';
 
 @ApiTags('UserCourse')
 @Controller('user-course')
@@ -51,27 +57,83 @@ export class UserCourseController {
     private readonly courseService: CourseService,
     private readonly authService: AuthService,
     @Inject(STRIPE_CLIENT) private stripe: Stripe,
+    private readonly cache: RedisCacheService,
   ) {}
 
-  @Get()
-  async testStripe() {
-    // return await this.stripe.balance.retrieve();
-    // return await this.stripe.customers.create({
-    //   phone: '0915213123',
-    //   name: 'ducnong',
-    //   email: '19020153@vnu.edu.vn',
-    // });
-    return await this.stripe.customers.list({
-      limit: 3,
-    });
-    // return await this.stripe.balance.retrieve();
-    // return await this.stripe.sources.create({
-    //   type: 'ach_credit_transfer',
-    //   currency: 'usd',
-    //   owner: {
-    //     email: 'jenny.rosen@example.com',
-    //   },
-    // });
+  // @Get()
+  // async testStripe() {
+  //   // return await this.stripe.balance.retrieve();
+  //   // return await this.stripe.customers.create({
+  //   //   phone: '0915213123',
+  //   //   name: 'ducnong',
+  //   //   email: '19020153@vnu.edu.vn',
+  //   // });
+  //   return await this.stripe.customers.list({
+  //     limit: 3,
+  //   });
+  //   // return await this.stripe.balance.retrieve();
+  //   // return await this.stripe.sources.create({
+  //   //   type: 'ach_credit_transfer',
+  //   //   currency: 'usd',
+  //   //   owner: {
+  //   //     email: 'jenny.rosen@example.com',
+  //   //   },
+  //   // });
+  // }
+
+  @Get('')
+  @Auth('student')
+  @UsePipes(
+    ...userCourseValidation({
+      key: 'userCourseQueryListSchema',
+      type: 'param',
+    }),
+  )
+  async getCourses(
+    @User() user: IUserJwt,
+    @Res() res: Response,
+    @Query() query: { keyword: string; page: number; pageSize: number },
+  ) {
+    const { keyword, page, pageSize } = query;
+
+    let userCourses: StudentCourseDto[] = await this.cache.setOrgetCache(
+      `usercourse${user.id}`,
+      async () => {
+        let usercourseList = await this.userCourseService.findCoursesByUserId(
+          user.id,
+        );
+
+        return usercourseList.map((item) => {
+          let {
+            startBlockTime,
+            startCourseTime,
+            beginCourseTime,
+            endCourseTime,
+          } = item;
+          return {
+            ...item,
+            startCourseTime: mysqlTime(startCourseTime),
+            startBlockTime: mysqlTime(startBlockTime),
+            beginCourseTime: mysqlTime(beginCourseTime),
+            endCourseTime: mysqlTime(endCourseTime),
+          };
+        });
+      },
+    );
+    if (keyword) {
+      userCourses = [
+        ...userCourses.filter((item) => {
+          return item.courseName.includes(keyword);
+        }),
+      ];
+    }
+
+    const response: StudenCourseListResponse = {
+      ...getPaginatedItems(userCourses, +page, +pageSize),
+      totalItems: userCourses.length,
+    };
+
+    return res.status(HttpStatus.OK).json(new SuccessResponse(response));
   }
 
   @Post('create-course-checkout/:courseId')
@@ -142,7 +204,7 @@ export class UserCourseController {
     @Res() res: Response,
   ) {
     let { courseId, code } = param;
-    let { id } = user;
+    let { id, username } = user;
     // check token
     let existUser = await this.authService.existEmail(user.email);
     await this.authService.verifyCode(code, existUser, 100 * 60);
@@ -158,20 +220,63 @@ export class UserCourseController {
     };
 
     //send notification to instructor
-    let newNotification = {
-      userId: course.instructorId,
-      type: NotificationType.studentJoinCourse,
-      sourceId: id,
-      parentId: courseId,
-      isRead: false,
-      title: 'Học sinh tham gia khóa học',
-      description: `học sinh ${user.username} đã tham gia khóa học ${course.name} của bạn`,
+    let newNotification: StudentJoinCourseDto = {
+      instructorId: course.instructorId,
+      type: 'studentJoinCourse',
+      studentId: id,
+      courseId: course.id,
+      studentName: username,
+      courseName: course.name,
     };
 
     await Promise.all([
       this.userCourseService.saveUserCourse(newUserCourse),
       this.authService.resetTokenById(id),
-      this.notification.saveNotification(newNotification),
+      this.notification.studentJoinCourse(newNotification),
+    ]);
+
+    return res.status(HttpStatus.OK).json(new SuccessResponse());
+  }
+
+  @Post('register-free-course/:courseId')
+  @UsePipes(
+    ...userCourseValidation({
+      key: 'courseIdParamSchema',
+      type: 'param',
+    }),
+  )
+  @JoinCourseAuth()
+  async registerFreeCourse(
+    @User() user: IUserJwt,
+    @Param() param: CheckoutCourseDto,
+    @Res() res: Response,
+  ) {
+    let { courseId } = param;
+    let { id, username } = user;
+
+    // check course
+    let course = await this.courseService.existCourse(param.courseId);
+
+    let newUserCourse: Partial<UserCourse> = {
+      courseId,
+      userId: id,
+      status: UserCourseStatus.accepted,
+      startCourseTime: new Date(),
+    };
+
+    //send notification to instructor
+    let newNotification: StudentJoinCourseDto = {
+      instructorId: course.instructorId,
+      type: 'studentJoinCourseFree',
+      studentId: id,
+      courseId: course.id,
+      studentName: username,
+      courseName: course.name,
+    };
+
+    await Promise.all([
+      this.userCourseService.saveUserCourse(newUserCourse),
+      this.notification.studentJoinCourse(newNotification),
     ]);
 
     return res.status(HttpStatus.OK).json(new SuccessResponse());

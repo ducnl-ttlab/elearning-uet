@@ -45,6 +45,7 @@ import {
   getPaginatedItems,
   mysqlTimeStamp,
   mysqlToTime,
+  removeImageFile,
 } from 'src/common/ultils';
 import { TableName } from 'database/constant';
 import { join } from 'path';
@@ -240,8 +241,7 @@ export class CourseController {
     const { id, image } = course;
     try {
       if (image) {
-        let path = join(process.cwd(), `/uploads/course/${image}`);
-        fs.unlinkSync(path);
+        removeImageFile(image, 'course');
       }
       await Promise.all([
         this.courseService.deleteCourse(id),

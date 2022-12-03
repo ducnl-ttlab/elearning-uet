@@ -15,6 +15,7 @@ import {
   Param,
   NotFoundException,
   StreamableFile,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { SuccessResponse } from 'src/common/helpers/api.response';
 import { createReadStream } from 'fs';
@@ -23,7 +24,7 @@ import { UserService } from 'src/modules/user/service/user.service';
 import { JWTAuthGuard } from '../auth/guard/jwt-auth.guard';
 import { IUserJwt, IUserReq } from 'src/common/interfaces';
 import { AuthService } from '../auth/service/auth.service';
-import { filterUser, mysqlTimeStamp } from 'src/common/ultils';
+import { filterUser, mysqlTimeStamp, removeImageFile } from 'src/common/ultils';
 import { Response } from 'express';
 import { ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { validation } from './joi.request.pipe';
@@ -89,16 +90,24 @@ export class UserController {
     let avatar = file?.filename;
     const { username, phone, address, password, currentPassword } = body;
 
+    let existUser = await this.authService.existEmail(req.user.email);
+
+    if (existUser.avatar && !existUser.avatar.startsWith('http')) {
+      removeImageFile(existUser.avatar, 'avatar');
+    }
+
     if (Object.keys(body).length < 1) {
       throw new BadRequestException();
     }
 
     if (currentPassword && password) {
-      await this.authService.validateLocalUser(
-        req.user.email,
+      let isMatch = await this.authService.comparePw(
         currentPassword,
-        'Current password incorrect',
+        existUser.password,
       );
+      if (!isMatch) {
+        throw new UnauthorizedException('currentPassword incorrect.');
+      }
     }
     const hashedPassword =
       (password && (await bcrypt.hash(password, 8))) || undefined;

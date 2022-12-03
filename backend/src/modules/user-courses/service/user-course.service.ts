@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { StudentCourseDto } from '../dto/user-course.dto';
 import { UserCourse } from '../entity/user-course.entity';
 
 @Injectable()
@@ -30,13 +31,35 @@ export class UserCourseService {
     }
   }
 
-  async findOneByUsercourse(userId: string,courseId: number): Promise<UserCourse> {
+  async findCoursesByUserId(userId: string): Promise<StudentCourseDto[]> {
+    try {
+      let query = `
+      SELECT uc.id, uc.status, uc.startCourseTime, uc.blockDuration, r.rating, c.*
+      FROM user_courses uc 
+      LEFT JOIN (
+          SELECT c.id as courseId, c.name as courseName, u.username as instructorName, c.price, c.image, c.startCourseTime as beginCourseTime, c.endCourseTime
+          FROM courses c
+          JOIN users u ON u.id = c.instructorId
+      ) as c on c.courseId = uc.courseId
+      LEFT JOIN ratings r on r.userCourseId = uc.id
+      WHERE uc.userId = ?;
+      `;
+      return this.usercourse.query(query, [userId]);
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  async findOneByUsercourse(
+    userId: string,
+    courseId: number,
+  ): Promise<UserCourse> {
     try {
       return this.usercourse.findOne({
         where: {
           userId,
-          courseId
-        }
+          courseId,
+        },
       });
     } catch (error) {
       throw new InternalServerErrorException(error);
