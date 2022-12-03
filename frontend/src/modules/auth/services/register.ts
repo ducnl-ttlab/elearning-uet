@@ -1,6 +1,6 @@
 import { IAxiosDefaultResponse } from '@/common/interfaces';
 import axios from 'axios';
-import { IUserInfo } from '@/modules/user/constants/user.interfaces';
+import { IUserData } from '../constants/auth.interfaces';
 
 const FE_URL = process.env.VUE_APP_FE_BASE_URL;
 const BE_URL = process.env.VUE_APP_API_URL;
@@ -21,7 +21,7 @@ export async function register(email: string): Promise<IAxiosDefaultResponse<str
 
 export async function verifyToken(
     token: string,
-): Promise<IAxiosDefaultResponse<IUserInfo>> {
+): Promise<IAxiosDefaultResponse<IUserData>> {
     return axios
         .get(`${BE_URL}/auth/verify-email/${token}`)
         .then((res) => {
