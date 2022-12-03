@@ -96,11 +96,12 @@ export class UserController {
     if (currentPassword && password) {
       await this.authService.validateLocalUser(
         req.user.email,
-        password,
+        currentPassword,
         'Current password incorrect',
       );
     }
-    const hashedPassword = await bcrypt.hash(password, 8);
+    const hashedPassword =
+      (password && (await bcrypt.hash(password, 8))) || undefined;
     await Promise.all([
       this.usersService.updateUser(req.user.id, {
         avatar,
