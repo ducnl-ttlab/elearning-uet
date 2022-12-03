@@ -1,6 +1,14 @@
 import { DEFAULT_LANGUAGE, SupportLanguage } from '@/common/constants';
-import { IUserInfo } from '@/modules/user/constants/user.interfaces';
 import { storage } from './localStorage';
+
+export interface IUser {
+    id?: number;
+    firstName?: string;
+    lastName?: string;
+    password?: string;
+    email?: string;
+    phoneNumber?: string;
+}
 
 export const enum AUTH_SERVICE_KEY {
     ACCESS_TOKEN = 'ACCESS_TOKEN',
@@ -64,10 +72,10 @@ class LocalStorageTokenService {
     }
 
     // LOGIN USER
-    setLoginUser(user: IUserInfo): void {
+    setLoginUser(user: IUser): void {
         storage.setLocalStorage(AUTH_SERVICE_KEY.LOGIN_USER, JSON.stringify(user || ''));
     }
-    getLoginUser(): IUserInfo | null {
+    getLoginUser(): IUser | null {
         return storage.getLocalStorage(AUTH_SERVICE_KEY.LOGIN_USER)
             ? JSON.parse(storage.getLocalStorage(AUTH_SERVICE_KEY.LOGIN_USER))
             : null;
