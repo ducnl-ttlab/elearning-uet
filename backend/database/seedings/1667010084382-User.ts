@@ -386,7 +386,7 @@ export class User1667010084382 implements MigrationInterface {
         role: Role.instructor,
       },
       {
-        id: '19020466',
+        id: '190204p6',
         username: 'Hieu mup',
         email: 'dthieu13701@gmail.com',
         phone: '012345678',
