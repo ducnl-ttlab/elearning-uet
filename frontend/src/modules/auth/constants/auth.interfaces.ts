@@ -1,5 +1,4 @@
 import { SystemRole } from '@/common/constants';
-
 export interface IUserData {
     id?: string;
     username?: string;
