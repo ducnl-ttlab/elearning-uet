@@ -223,9 +223,12 @@ export class CourseController {
 
     const courseRes = {
       ...course,
-      image: course.image
-        ? `${req.protocol}://${host}/image/${course.image}`
-        : '',
+      image:
+        (course.image &&
+          (course.image.startsWith('http')
+            ? course.image
+            : `${req.protocol}://${host}/course/image/${course.image}`)) ||
+        '',
     };
 
     return res.status(HttpStatus.CREATED).json(new SuccessResponse(courseRes));
