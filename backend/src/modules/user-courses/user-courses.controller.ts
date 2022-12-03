@@ -1,4 +1,8 @@
-import { getPaginatedItems, mysqlTime } from 'src/common/ultils';
+import {
+  getPaginatedItems,
+  mysqlTime,
+  mysqlTimeStamp,
+} from 'src/common/ultils';
 import { NotificationService } from './../notification/service/notification.service';
 import { NotificationType, UserCourseStatus } from 'database/constant';
 import {
@@ -99,11 +103,11 @@ export class UserCourseController {
     let userCourses: StudentCourseDto[] = await this.cache.setOrgetCache(
       `usercourse${user.id}`,
       async () => {
-        let usercourseList = await this.userCourseService.findCoursesByUserId(
+        let userCourses = await this.userCourseService.findCoursesByUserId(
           user.id,
         );
 
-        return usercourseList.map((item) => {
+        userCourses = userCourses.map((item) => {
           let {
             startBlockTime,
             startCourseTime,
@@ -113,13 +117,14 @@ export class UserCourseController {
           return {
             ...item,
             startCourseTime: mysqlTime(startCourseTime),
-            startBlockTime: mysqlTime(startBlockTime),
+            startBlockTime: mysqlTimeStamp(startBlockTime),
             beginCourseTime: mysqlTime(beginCourseTime),
             endCourseTime: mysqlTime(endCourseTime),
           };
         });
       },
     );
+
     if (keyword) {
       userCourses = [
         ...userCourses.filter((item) => {
