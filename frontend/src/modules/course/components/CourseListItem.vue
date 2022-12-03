@@ -11,12 +11,16 @@
                 {{ course.description }}
             </div>
             <div class="course-list-item-rating d-flex flex-row align-items-center">
-                <span>{{ course.avgRating || $t('course.course.notRated') }}</span>
+                <span>{{
+                    Math.round(course.avgRating * 100) / 100 ||
+                    $t('course.course.notRated')
+                }}</span>
                 <img
                     v-if="course.avgRating"
                     src="@/assets/landing/icons/star.svg"
                     width="16"
                     alt=""
+                    class="mx-1"
                 />
             </div>
             <div class="course-list-item-instructor">
@@ -80,7 +84,7 @@ export default class CourseListItem extends Vue {
     }
 
     &-description {
-        width: 25vw;
+        width: 20vw;
         font-weight: 600;
     }
 
@@ -89,6 +93,10 @@ export default class CourseListItem extends Vue {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+    }
+
+    &-rating {
+        width: 7vw;
     }
 }
 

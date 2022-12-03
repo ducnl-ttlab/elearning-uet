@@ -13,4 +13,13 @@ export const course = {
         category: 'Category',
         instructor: 'Instructor',
     },
+
+    table: {
+        title: 'Title',
+        description: 'Description',
+        rating: 'Rating',
+        instructor: 'Instructor',
+        studentCount: 'Attendee',
+        price: 'Price',
+    },
 };

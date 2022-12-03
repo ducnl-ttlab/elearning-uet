@@ -19,6 +19,7 @@
             class="display-button"
         />
     </div>
+    <CourseListTable v-if="courseListDisplayMode === CourseListDisplayMode.LIST" />
     <div class="course-list-page-wrapper">
         <CourseGrid v-if="courseListDisplayMode === CourseListDisplayMode.GRID" />
         <CourseList v-if="courseListDisplayMode === CourseListDisplayMode.LIST" />
@@ -29,11 +30,12 @@
 import { Options, Vue } from 'vue-class-component';
 import CourseGrid from '../components/CourseGrid.vue';
 import CourseList from '../components/CourseList.vue';
+import CourseListTable from '../components/CourseListTable.vue';
 import { CourseListDisplayMode } from '../constants/course.constants';
 import { courseModule } from '../store/course.store';
 
 @Options({
-    components: { CourseGrid, CourseList },
+    components: { CourseGrid, CourseList, CourseListTable },
 })
 export default class CourseListPage extends Vue {
     CourseListDisplayMode = CourseListDisplayMode;

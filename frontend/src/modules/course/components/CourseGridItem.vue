@@ -1,20 +1,17 @@
 <template>
     <div class="course-grid-item-wrapper d-flex flex-column gap-3">
-        <div
-            class="price-tag"
-            :style="{
-                'background-color': course.price
-                    ? getPriceBackgroundColor(course.price)
-                    : '#3BB143',
-            }"
-        >
+        <div class="price-tag">
             {{ $t('course.course.price', { price: course.price }) }}
         </div>
         <div class="course-grid-item-rating d-flex flex-row align-items-center">
             <div v-if="course.avgRating">{{ $t('course.course.rating') }}</div>
             <div>
-                <span>{{ course.avgRating || $t('course.course.notRated') }}</span>
+                <span>{{
+                    Math.round(course.avgRating * 100) / 100 ||
+                    $t('course.course.notRated')
+                }}</span>
                 <img
+                    class="mx-1 mb-1"
                     v-if="course.avgRating"
                     src="@/assets/landing/icons/star.svg"
                     width="16"

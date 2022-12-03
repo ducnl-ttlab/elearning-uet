@@ -14,4 +14,13 @@ export const course = {
         category: 'Danh mục',
         instructor: 'Giảng viên',
     },
+
+    table: {
+        title: 'Tên khóa học',
+        description: 'Mô tả',
+        rating: 'Đánh giá',
+        instructor: 'Giảng viên',
+        studentCount: 'Số học viên',
+        price: 'Giá',
+    },
 };
