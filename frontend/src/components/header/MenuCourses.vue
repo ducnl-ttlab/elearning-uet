@@ -50,8 +50,8 @@ export default class HeaderGuest extends Vue {
     transition: all 0.44s ease 0s;
     &:hover {
         color: $color-white;
-        background-color: $color-violet-new;
-        border: 1px solid $color-violet-new;
+        background-color: $color-violet-new-1;
+        border: 1px solid $color-violet-new-1;
     }
 }
 

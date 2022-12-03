@@ -2,13 +2,13 @@ import { IAxiosDefaultResponse } from '@/common/interfaces';
 import axios from 'axios';
 import { IUserInfo } from '@/modules/user/constants/user.interfaces';
 
-const AUTH_FE_URL = `${process.env.VUE_APP_FE_BASE_URL}/auth`;
+const FE_URL = process.env.VUE_APP_FE_BASE_URL;
 const BE_URL = process.env.VUE_APP_API_URL;
 
 export async function register(email: string): Promise<IAxiosDefaultResponse<string>> {
     return axios
         .post(`${BE_URL}/auth/signup`, {
-            url: `${AUTH_FE_URL}/create-password/`,
+            url: `${FE_URL}/auth/create-password/`,
             email: email,
         })
         .then((res) => {

@@ -24,6 +24,7 @@ export const common = {
         dropdownProfile: 'My Profile',
         dropdownPassword: 'Change Password',
         dropdownLogout: 'Log out',
+        dropdownCart: 'Your purchases',
     },
     footer: {
         appName: 'Academix',

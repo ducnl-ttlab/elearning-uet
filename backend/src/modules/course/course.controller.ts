@@ -1,3 +1,4 @@
+import { RedisCacheService } from './../cache/redis-cache.service';
 import { SearchService } from './../search/search.service';
 import {
   Body,

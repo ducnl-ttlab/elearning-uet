@@ -33,7 +33,7 @@
                     <el-dropdown-item>
                         <router-link
                             class="dropdown-item-link text-decoration-none"
-                            to="#"
+                            :to="{ name: PageName.CHANGE_PASSWORD_PAGE }"
                         >
                             <div class="dropdown-item d-flex flex-row align-items-center">
                                 <div class="dropdown-item-icon-container">
@@ -45,6 +45,26 @@
                                 </div>
                                 <span class="dropdown-item-text">
                                     {{ $t('common.header.dropdownPassword') }}
+                                </span>
+                            </div>
+                        </router-link>
+                    </el-dropdown-item>
+                    <el-dropdown-item>
+                        <router-link
+                            class="dropdown-item-link text-decoration-none"
+                            :to="{ name: PageName.GUEST_PROFILE_PAGE }"
+                        >
+                            <div class="dropdown-item d-flex flex-row align-items-center">
+                                <div class="dropdown-item-icon-container">
+                                    <img
+                                        class="dropdown-item-icon"
+                                        src="@/assets/common/icons/header/header-cart.svg"
+                                        alt=""
+                                        width="20"
+                                    />
+                                </div>
+                                <span class="dropdown-item-text">
+                                    {{ $t('common.header.dropdownCart') }}
                                 </span>
                             </div>
                         </router-link>
@@ -74,7 +94,6 @@
 
 <script lang="ts">
 import { Vue, Options } from 'vue-class-component';
-import { appModule } from '@/plugins/vuex/appModule';
 import { PageName } from '@/common/constants';
 import { commonModule } from '@/common/store/common.store';
 import { loginModule } from '@/modules/auth/store/login.store';
@@ -86,8 +105,8 @@ import { IUserInfo } from '@/modules/user/constants/user.interfaces';
 })
 export default class HeaderMenuAccount extends Vue {
     PageName = PageName;
-    get loginUser(): IUserInfo {
-        return { username: 'hieuhieu' };
+    get loginUser(): IUserData {
+        return { ...loginModule.loginCredential, username: 'hieuhieu' };
     }
 
     get userName(): string {
@@ -96,7 +115,6 @@ export default class HeaderMenuAccount extends Vue {
 
     async handleLogout() {
         commonModule.setLoadingIndicator(true);
-
         loginModule.setLoginCredential({});
         loginModule.setAccessToken('');
         loginModule.setLoginState(false);
