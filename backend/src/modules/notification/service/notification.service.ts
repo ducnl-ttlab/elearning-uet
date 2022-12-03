@@ -4,9 +4,10 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { TableName } from 'database/constant';
+import { CommentType, NotificationType, TableName } from 'database/constant';
 import { ResultSetHeader } from 'mysql2/promise';
 import { getManager, Repository } from 'typeorm';
+import { CommentNotification } from '../dto/notification.dto';
 import { NotificationCourse } from '../entity/notification.entity';
 
 @Injectable()
@@ -15,6 +16,38 @@ export class NotificationService {
     @InjectRepository(NotificationCourse)
     private readonly notification: Repository<NotificationCourse>,
   ) {}
+
+  async saveComment({
+    commentType,
+    userId,
+    courseOrTopicId,
+    username,
+  }: CommentNotification) {
+    let notificationType = {
+      [CommentType.topic]: {
+        type: NotificationType.topicComment,
+        title: 'Chủ đề khóa học',
+        description: `${username} đã bình luận về chủ đề trong khóa học`,
+      },
+      [CommentType.course]: {
+        type: NotificationType.courseComment,
+        title: 'Khóa học',
+        description: `${username} đã bình luận về chủ đề trong khóa học`,
+      },
+    };
+
+    const { type, title, description } = notificationType[commentType];
+    let newNotification = {
+      userId,
+      type: type,
+      parentId: courseOrTopicId,
+      isRead: false,
+      title: title,
+      description: description,
+    };
+
+    this.saveNotification(newNotification);
+  }
 
   async saveNotification(
     notification: Partial<NotificationCourse>,

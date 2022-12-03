@@ -1,4 +1,4 @@
-import { NotificationType } from 'database/constant';
+import { CommentType, NotificationType } from 'database/constant';
 import { CommonListResponse } from 'src/common/helpers/api.response';
 
 export interface NotificationDto {
@@ -15,8 +15,14 @@ export interface NotificationDto {
 }
 export class NotificationListResponse extends CommonListResponse<NotificationDto> {}
 
-
 export interface QueryNotificationDto {
-  page: string,
-  pageSize: string
+  page: string;
+  pageSize: string;
+}
+
+export interface CommentNotification {
+  commentType: CommentType;
+  userId: string;
+  courseOrTopicId: number;
+  username: string;
 }

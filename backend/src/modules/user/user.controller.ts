@@ -34,6 +34,7 @@ import LocalFilesInterceptor, {
 import { RedisCacheService } from '../cache/redis-cache.service';
 import { User } from './entity/user.entity';
 const fs = require('fs');
+import * as bcrypt from 'bcryptjs';
 
 @ApiTags('User')
 @Controller('user')
@@ -78,7 +79,7 @@ export class UserController {
   @Put('profile')
   @UseGuards(JWTAuthGuard)
   @UseInterceptors(LocalFilesInterceptor(imageParams('avatar')))
-  @UsePipes(...validation({ type: 'body', key: 'userChangePwSchema' }))
+  @UsePipes(...validation({ type: 'body', key: 'userChangeSchema' }))
   async editProfile(
     @Req() req: IUserReq<IUserJwt>,
     @Res() res: Response,
@@ -86,18 +87,27 @@ export class UserController {
     @UploadedFile() file: Express.Multer.File,
   ) {
     let avatar = file?.filename;
-    const { username, phone, address } = body;
+    const { username, phone, address, password, currentPassword } = body;
 
     if (Object.keys(body).length < 1) {
       throw new BadRequestException();
     }
 
+    if (currentPassword && password) {
+      await this.authService.validateLocalUser(
+        req.user.email,
+        password,
+        'Current password incorrect',
+      );
+    }
+    const hashedPassword = await bcrypt.hash(password, 8);
     await Promise.all([
       this.usersService.updateUser(req.user.id, {
         avatar,
         username,
         phone,
         address,
+        password: hashedPassword,
       }),
       this.cacheManager.deleteByKey(`user${req.user.id}`),
     ]);
