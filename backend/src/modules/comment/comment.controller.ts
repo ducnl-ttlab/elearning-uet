@@ -62,9 +62,8 @@ export class CommentController {
     @Body() body: { comment: string },
     @Param() param: { courseId: string },
   ) {
-
-    if(student.status === UserCourseStatus.commentBlocking) {
-      throw new ForbiddenException("you can not comment in this course" );
+    if (student.status === UserCourseStatus.commentBlocking) {
+      throw new ForbiddenException('you can not comment in this course');
     }
     let topic: Partial<Topic> = {};
     if (query?.topicId) {
@@ -96,21 +95,13 @@ export class CommentController {
       ...commentorIds.map((userId) => {
         if (userId !== user.id) {
           let newNotification = {
+            commentType: newComment.type,
             userId,
-            type:
-              newComment.type === CommentType.topic
-                ? NotificationType.topicComment
-                : NotificationType.courseComment,
-            parentId: newComment.sourceId,
-            isRead: false,
-            title: `Bình luận ${
-              newComment.type === CommentType.topic
-                ? 'khóa học'
-                : 'chủ đề khóa học'
-            }`,
-            description: `${user.username} đã bình luận khóa học`,
+            courseOrTopicId: newComment.sourceId,
+            username:
+              user.role === Role.instructor ? 'Giảng viên' : user.username,
           };
-          this.notificationService.saveNotification(newNotification);
+          this.notificationService.saveComment(newNotification);
         }
       }),
       this.commentService.saveComment(newComment),
@@ -175,8 +166,8 @@ export class CommentController {
     }
     let existComment = await this.commentService.existComment(+commentId);
 
-    if(user.role === Role.student && existComment.userId !== user.id) {
-      throw new ForbiddenException("you can not delete this comment" );
+    if (user.role === Role.student && existComment.userId !== user.id) {
+      throw new ForbiddenException('you can not delete this comment');
     }
 
     this.commentService.deleteComment(+commentId);
