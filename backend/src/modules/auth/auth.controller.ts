@@ -7,6 +7,7 @@ import {
   HttpStatus,
   Body,
   Res,
+  Headers,
   Param,
   UsePipes,
   ConflictException,
@@ -135,7 +136,13 @@ export class AuthController {
 
   @Post('login')
   @UsePipes(LoginBodyValidation)
-  async login(@Body() body: LoginBody, @Res() res: Response) {
+  async login(
+    @Body() body: LoginBody,
+    @Res() res: Response,
+    @Req() req: IUserReq<IUserJwt>,
+
+    @Headers('host') host: Headers,
+  ) {
     const { email, password } = body;
     let user = await this.authService.validateLocalUser(email, password);
 
@@ -145,6 +152,11 @@ export class AuthController {
       username: user.username,
       role: user.role,
     });
+    const { avatar } = user;
+
+    user.avatar = avatar.startsWith('http')
+      ? avatar
+      : `${req.protocol}://${host}/user/image/${avatar}`;
 
     return res
       .status(HttpStatus.OK)
