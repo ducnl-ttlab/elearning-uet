@@ -34,6 +34,7 @@ import LocalFilesInterceptor, {
 import { RedisCacheService } from '../cache/redis-cache.service';
 import { User } from './entity/user.entity';
 const fs = require('fs');
+import * as bcrypt from 'bcryptjs';
 
 @ApiTags('User')
 @Controller('user')
@@ -99,14 +100,14 @@ export class UserController {
         'Current password incorrect',
       );
     }
-
+    const hashedPassword = await bcrypt.hash(password, 8);
     await Promise.all([
       this.usersService.updateUser(req.user.id, {
         avatar,
         username,
         phone,
         address,
-        password,
+        password: hashedPassword,
       }),
       this.cacheManager.deleteByKey(`user${req.user.id}`),
     ]);
