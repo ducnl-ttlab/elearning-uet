@@ -44,14 +44,14 @@ export class UserCourses1669059281163 implements MigrationInterface {
       {
         id: 6,
         courseId: 3,
-        userId: '19020301',
+        userId: '123456abf',
         status: UserCourseStatus.accepted,
         startCourseTime: new Date(),
       },
       {
         id: 7,
         courseId: 2,
-        userId: '19020080',
+        userId: '123456abf',
         status: UserCourseStatus.reject,
         startCourseTime: new Date(),
       },
@@ -79,7 +79,7 @@ export class UserCourses1669059281163 implements MigrationInterface {
       {
         id: 11,
         courseId: 4,
-        userId: '19020371',
+        userId: '123456abf',
         status: UserCourseStatus.accepted,
         startCourseTime: new Date(),
       },

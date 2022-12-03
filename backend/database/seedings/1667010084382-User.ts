@@ -31,7 +31,7 @@ export class User1667010084382 implements MigrationInterface {
         phone: '012345678',
         password: '12345678',
         verified: true,
-        role: Role.instructor,
+        role: Role.student,
       },
       {
         id: '123456xsabf',

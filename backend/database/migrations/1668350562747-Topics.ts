@@ -1,5 +1,10 @@
 import { TableName } from 'database/constant';
-import { MigrationInterface, QueryRunner, Table, TableForeignKey } from 'typeorm';
+import {
+  MigrationInterface,
+  QueryRunner,
+  Table,
+  TableForeignKey,
+} from 'typeorm';
 
 export class Topics1668350562747 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -39,21 +44,21 @@ export class Topics1668350562747 implements MigrationInterface {
             name: 'video',
             type: 'varchar',
             length: '255',
-            isNullable: false,
+            isNullable: true,
           },
         ],
       }),
     );
 
     await queryRunner.createForeignKey(
-        TableName.topic,
-        new TableForeignKey({
-          columnNames: ['courseId'],
-          referencedColumnNames: ['id'],
-          referencedTableName: TableName.course,
-          onDelete: 'CASCADE',
-        }),
-      );
+      TableName.topic,
+      new TableForeignKey({
+        columnNames: ['courseId'],
+        referencedColumnNames: ['id'],
+        referencedTableName: TableName.course,
+        onDelete: 'CASCADE',
+      }),
+    );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {

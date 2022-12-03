@@ -139,7 +139,7 @@ export class CourseController {
     @Req() req: Request,
     @Query() query: CourseQueryDto,
   ) {
-    const { page, pageSize, keyword, rating, categoryId } = query;
+    const { page = 1, pageSize = 8, keyword, rating, categoryId } = query;
     const courseList = await this.courseService.findCourses(
       +categoryId,
       keyword,
