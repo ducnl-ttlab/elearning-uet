@@ -39,7 +39,7 @@ export class Topics1668350562747 implements MigrationInterface {
             name: 'video',
             type: 'varchar',
             length: '255',
-            isNullable: false,
+            isNullable: true,
           },
         ],
       }),

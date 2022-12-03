@@ -160,7 +160,7 @@ export class Comments1668911845586 implements MigrationInterface {
         userId: '19020221',
         sourceId: 3,
         type: CommentType.course,
-        comment: 'lộ clip em mèo 2006 dáng đẹp show hàng thủ dâm 😗',
+        comment: 'lộ clip em mèo 2006 dáng đẹp show hàng thủ dâm',
         time: new Date(),
         isBad: 1,
         isBlock: 1,
