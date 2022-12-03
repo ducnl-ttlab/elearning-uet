@@ -102,7 +102,11 @@ export class AuthService {
     return user;
   }
 
-  async validateLocalUser(email: string, pass: string): Promise<User> {
+  async validateLocalUser(
+    email: string,
+    pass: string,
+    customMessage?: string,
+  ): Promise<User> {
     const user = await this.existEmail(email);
 
     // Accounts that are registered via oAuth should not be accessible via local signin.
@@ -116,17 +120,15 @@ export class AuthService {
     );
 
     if (!isPasswordCorrect) {
-      throw new UnauthorizedException('Email or password incorrect.');
+      throw new UnauthorizedException(
+        customMessage || 'Email or password incorrect.',
+      );
     }
 
     return user;
   }
 
-  async verifyCode(
-    code: string,
-    user: VerifyCodeUser,
-    expiredTime?: number,
-  ) {
+  async verifyCode(code: string, user: VerifyCodeUser, expiredTime?: number) {
     let { id, email, resetToken, expiredTokenTime } = user;
 
     if (!resetToken || !expiredTokenTime) {

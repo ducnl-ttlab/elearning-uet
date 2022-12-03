@@ -78,7 +78,7 @@ export class UserController {
   @Put('profile')
   @UseGuards(JWTAuthGuard)
   @UseInterceptors(LocalFilesInterceptor(imageParams('avatar')))
-  @UsePipes(...validation({ type: 'body', key: 'userChangePwSchema' }))
+  @UsePipes(...validation({ type: 'body', key: 'userChangeSchema' }))
   async editProfile(
     @Req() req: IUserReq<IUserJwt>,
     @Res() res: Response,
@@ -86,10 +86,18 @@ export class UserController {
     @UploadedFile() file: Express.Multer.File,
   ) {
     let avatar = file?.filename;
-    const { username, phone, address } = body;
+    const { username, phone, address, password, currentPassword } = body;
 
     if (Object.keys(body).length < 1) {
       throw new BadRequestException();
+    }
+
+    if (currentPassword && password) {
+      await this.authService.validateLocalUser(
+        req.user.email,
+        password,
+        'Current password incorrect',
+      );
     }
 
     await Promise.all([
@@ -98,6 +106,7 @@ export class UserController {
         username,
         phone,
         address,
+        password,
       }),
       this.cacheManager.deleteByKey(`user${req.user.id}`),
     ]);

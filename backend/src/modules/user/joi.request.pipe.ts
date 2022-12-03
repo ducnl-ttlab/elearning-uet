@@ -4,17 +4,19 @@ import {
   ValidationPipe,
 } from 'src/common/pipe/joi.request.pipe';
 
-const userChangePwSchema = Joi.object().keys({
+const userChangeSchema = Joi.object().keys({
   username: Joi.string().min(1).message('username should be string').optional(),
   address: Joi.string().min(1).message('address should be string').optional(),
   phone: Joi.string()
     .pattern(/^[0-9]+$/)
     .message('phone should be a number')
     .optional(),
+  currentPassword: Joi.string().min(8).optional(),
+  password: Joi.string().min(8).optional(),
 });
 
 const validationSchemas = {
-  userChangePwSchema,
+  userChangeSchema,
 };
 
 type validationKeyType = keyof typeof validationSchemas;
