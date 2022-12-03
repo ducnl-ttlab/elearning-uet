@@ -1,12 +1,13 @@
 import { IAxiosDefaultResponse } from '@/common/interfaces';
-import { IUserInfo } from '@/modules/user/constants/user.interfaces';
 import axios from 'axios';
-import { IGoogleLoginParams } from '../constants/auth.interfaces';
+import { IGoogleLoginParams, IUserData } from '../constants/auth.interfaces';
+
+const FE_URL = process.env.VUE_APP_FE_BASE_URL;
 const BE_URL = process.env.VUE_APP_API_URL;
 
 export interface ILoginData {
     accessToken?: string;
-    user: IUserInfo;
+    user: IUserData;
 }
 
 export async function login(
