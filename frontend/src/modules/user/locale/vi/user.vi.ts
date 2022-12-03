@@ -3,6 +3,10 @@ export const user = {
         getUserDataError: 'Có lỗi khi lấy thông tin cá nhân. Xin vui lòng thử lại sau!',
         updateUserDataError:
             'Có lỗi khi cập nhật thông tin cá nhân. Xin vui lòng thử lại sau!',
+        invalidImage: 'Vui lòng chọn đúng định dạng',
+    },
+    success: {
+        updateUserDataSuccess: 'Lưu thông tin thành công!',
     },
     profile: {
         form: {

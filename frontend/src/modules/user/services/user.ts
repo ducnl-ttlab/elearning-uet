@@ -1,5 +1,4 @@
-import { IAxiosDefaultResponse } from '@/common/interfaces';
-import { IUserData } from '@/modules/auth/constants/auth.interfaces';
+import { IAxiosDefaultResponse, IUserData } from '@/common/interfaces';
 import { loginModule } from '@/modules/auth/store/login.store';
 import axios from 'axios';
 import { IUpdateUserData } from '../constants/user.interfaces';
@@ -23,15 +22,21 @@ export async function getUserData(): Promise<IAxiosDefaultResponse<IUserData>> {
 }
 
 export async function updateUserData(
-    params: IUpdateUserData,
+    params: FormData,
 ): Promise<IAxiosDefaultResponse<Record<string, unknown>>> {
     return axios
-        .put(`${BE_URL}/user/profile`, {
-            params: params,
-            headers: {
-                Authorization: 'Bearer ' + loginModule.accessToken,
+        .put(
+            `${BE_URL}/user/profile`,
+
+            params,
+
+            {
+                headers: {
+                    Authorization: 'Bearer ' + loginModule.accessToken,
+                    'Content-Type': 'multipart/form-data',
+                },
             },
-        })
+        )
         .then((res) => {
             return res.data;
         })

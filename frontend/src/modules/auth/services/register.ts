@@ -1,6 +1,5 @@
-import { IAxiosDefaultResponse } from '@/common/interfaces';
+import { IAxiosDefaultResponse, IUserData } from '@/common/interfaces';
 import axios from 'axios';
-import { IUserData } from '../constants/auth.interfaces';
 
 const FE_URL = process.env.VUE_APP_FE_BASE_URL;
 const BE_URL = process.env.VUE_APP_API_URL;

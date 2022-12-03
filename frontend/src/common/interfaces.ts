@@ -1,3 +1,5 @@
+import { SystemRole } from './constants';
+
 export interface IErrorMessage {
     key?: string;
     errorCode?: number;
@@ -15,4 +17,18 @@ export interface IAxiosDefaultResponse<T> {
     message?: string;
     success?: boolean;
     errors?: Array<IErrorMessage>;
+}
+
+export interface IUserData {
+    id?: string;
+    username?: string;
+    email?: string;
+    verified?: boolean;
+    address?: string;
+    phone?: string;
+    avatar?: string;
+    role?: SystemRole;
+    provider?: string;
+    created_at?: string;
+    updated_at?: string;
 }

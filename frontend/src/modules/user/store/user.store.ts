@@ -1,6 +1,6 @@
 import { Module, VuexModule, Action, Mutation, getModule } from 'vuex-module-decorators';
 import store from '@/plugins/vuex/index';
-import { IUserData } from '@/modules/auth/constants/auth.interfaces';
+import { IUserData } from '@/common/interfaces';
 
 @Module({ dynamic: true, namespaced: true, store, name: 'landing' })
 class UserModule extends VuexModule {

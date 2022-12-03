@@ -14,10 +14,10 @@
             </div>
             <div
                 v-else
-                class="default-avatar profile-image d-flex align-center justify-center"
+                class="default-avatar profile-image d-flex align-items-center justify-content-center"
                 :style="{ 'background-color': defaultAvatarColor }"
             >
-                {{ defaultAvatarName }}
+                <span>{{ defaultAvatarName }}</span>
             </div>
             <label class="upload-button" for="file-input">
                 <div class="camera-wrapper">
@@ -28,7 +28,7 @@
                 type="file"
                 class="d-none"
                 id="file-input"
-                @change="uploadProfilePicture($event.target.files)"
+                @change="handleChangeProfileImage($event.target.files)"
                 accept="image/*"
             />
         </div>
@@ -81,7 +81,10 @@
 import { Options, Vue } from 'vue-class-component';
 
 import { getUserData, updateUserData } from '../services/user';
-import { showErrorNotificationFunction } from '@/common/helpers';
+import {
+    showErrorNotificationFunction,
+    showSuccessNotificationFunction,
+} from '@/common/helpers';
 import {
     generateDefaultAvatarColor,
     getFirstLetterOfName,
@@ -91,6 +94,7 @@ import { userModule } from '../store/user.store';
 import { IUpdateUserData } from '../constants/user.interfaces';
 import { loginModule } from '@/modules/auth/store/login.store';
 import { commonModule } from '@/common/store/common.store';
+import { IUserData } from '@/common/interfaces';
 
 @Options({
     components: {},
@@ -99,8 +103,8 @@ export default class UserProfileForm extends Vue {
     isChangingAvatar = false;
     userForm = {} as IUpdateUserData;
     credentialError = '';
-
-    get userData() {
+    thumbnail: File | null = null;
+    get userData(): IUserData {
         return userModule.userData;
     }
 
@@ -128,14 +132,17 @@ export default class UserProfileForm extends Vue {
 
     async created() {
         await this.getUserData();
-        console.log(this.userData, 123);
+        this.userForm = this.userData;
     }
 
     previewImagePath(file: File) {
         if (!this.checkImageFormat(file.name)) {
+            showErrorNotificationFunction(this.$t('user.errors.invalidImage') as string);
             this.isChangingAvatar = false;
-            showErrorNotificationFunction(this.$t('auth.error.invalidImage') as string);
+            return;
         } else {
+            this.isChangingAvatar = true;
+
             return URL.createObjectURL(file);
         }
     }
@@ -148,22 +155,53 @@ export default class UserProfileForm extends Vue {
         return true;
     }
 
+    handleChangeProfileImage(files: File[]) {
+        this.thumbnail = files[0];
+        this.userForm.file = this.previewImagePath(this.thumbnail);
+        console.log(this.userForm.file, 'filename');
+        this.isChangingAvatar = true;
+        if (this.checkImageFormat(files[0].name)) {
+            showSuccessNotificationFunction('Success');
+        } else return;
+    }
+
     async handleUpdateUser() {
         commonModule.setLoadingIndicator(true);
-        const userData: IUpdateUserData = {
-            username: (this.userForm.username || '').trim(),
-            phone: this.userForm.phone,
-            address: (this.userForm.address || '').trim(),
-        };
-        if (this.userForm.password !== '') {
+        const userData: IUpdateUserData = {};
+        let formData = new FormData();
+        if (this.userForm.username) {
+            userData.username = this.userForm.username;
+            formData.append('username', this.userForm?.username || '');
+        }
+        if (this.userForm.phone) {
+            userData.phone = this.userForm.phone;
+            formData.append('phone', this.userForm.phone || '');
+        }
+        if (this.userForm.address) {
+            userData.address = this.userForm.address;
+            formData.append('address', this.userForm.address || '');
+        }
+        if (this.userForm.password) {
             userData.password = this.userForm.password;
+            formData.append('password', this.userForm.password || '');
         }
-        if (this.userForm.currentPassword !== '') {
+        if (this.userForm.currentPassword) {
             userData.currentPassword = this.userForm.currentPassword;
+            formData.append('currentPassword', userData.currentPassword || '');
         }
-        const response = await updateUserData(userData);
+
+        if (this.userForm.file) {
+            formData.append('file', this.thumbnail || '');
+        }
+        console.log(userData, 'userData');
+        console.log(formData, 'formData');
+        console.log(this.userForm, 'userForm');
+        const response = await updateUserData(formData);
         if (response.success) {
-            userModule.setUserData(userData);
+            await this.getUserData();
+            showSuccessNotificationFunction(
+                this.$t('user.success.updateUserDataSuccess'),
+            );
         } else {
             let res = response?.errors || [
                 { message: this.$t('user.errors.updateUserDataError') },
@@ -195,7 +233,7 @@ export default class UserProfileForm extends Vue {
         font-style: normal;
         color: white;
         text-align: center;
-        font-weight: 100;
+        font-weight: 400;
         font-size: 80px;
     }
     .upload-button {

@@ -4,6 +4,9 @@ export const user = {
         updateUserDataError:
             'Error updating personal information. Please try again later!',
     },
+    success: {
+        updateUserDataSuccess: 'Save user profile successfully!',
+    },
     profile: {
         form: {
             username: 'Username',
