@@ -61,7 +61,7 @@ export class TopicController {
   ) {
     const { courseId } = param;
 
-    let course = await this.courseService.existCourse(courseId);
+    let [course] = await this.courseService.instructorCourseDetail(courseId);
 
     course.image =
       (course.image &&
@@ -69,6 +69,14 @@ export class TopicController {
           ? course.image
           : `${req.protocol}://${host}/course/image/${course.image}`)) ||
       '';
+
+    course.avatar =
+      (course.avatar &&
+        (course.avatar.startsWith('http')
+          ? course.avatar
+          : `${req.protocol}://${host}/user/image/${course.avatar}`)) ||
+      '';
+
     course.startCourseTime =
       (course.startCourseTime && mysqlTime(course.startCourseTime)) ||
       ('' as unknown as Date);
@@ -76,10 +84,12 @@ export class TopicController {
     course.endCourseTime =
       (course.endCourseTime && mysqlTime(course.endCourseTime)) ||
       ('' as unknown as Date);
+
     let { created_at, updated_at } = defaultResponseTime(
       course.created_at,
       course.updated_at,
     );
+
     course.created_at = created_at;
     course.updated_at = updated_at;
 

@@ -8,7 +8,7 @@ export class Course1667010171189 implements MigrationInterface {
         name: 'Khóa học Web căn bản (HTML - CSS - Javascript)',
         description: 'Dành cho những học viên có đam mê lập trình web',
         categoryId: 3,
-        instructorId: '123456abc',
+        instructorId: '19020226',
         image:
           'https://res.cloudinary.com/subarashis/image/upload/v1639155388/courses/rgthp2ykumyyyfq4q6tx.jpg',
         isPublished: 1,
@@ -19,7 +19,7 @@ export class Course1667010171189 implements MigrationInterface {
         description:
           'Khóa học tiếp theo của khóa Web căn bản, dành cho các bạn theo thiên hướng Front-end',
         categoryId: 3,
-        instructorId: '123456abf',
+        instructorId: '19020226',
         image:
           'https://res.cloudinary.com/subarashis/image/upload/v1637942622/courses/csetvbz8bxpzzlkpy9nx.png',
         isPublished: 1,
@@ -30,7 +30,7 @@ export class Course1667010171189 implements MigrationInterface {
         description:
           'Khóa học tiếp theo của khóa Web căn bản, dành cho các bạn theo thiên hướng Back-end',
         categoryId: 3,
-        instructorId: '123456xsabf',
+        instructorId: '19020226',
         image:
           'https://res.cloudinary.com/subarashis/image/upload/v1639155399/courses/gsbhupxwpafhsi3sbiqa.jpg',
         isPublished: 1,
@@ -41,7 +41,7 @@ export class Course1667010171189 implements MigrationInterface {
         description:
           'Khóa học cho các học viên đã học xong hai khóa Front-end và Back-end, muốn tạo cho mình một dự án riêng',
         categoryId: 3,
-        instructorId: '19020211',
+        instructorId: '19020226',
         image:
           'https://res.cloudinary.com/subarashis/image/upload/v1637942672/courses/jpjdpc9ui2tu35cjet71.png',
         isPublished: 1,
@@ -51,7 +51,7 @@ export class Course1667010171189 implements MigrationInterface {
         name: 'Khóa học Lập trình Hướng đối tượng (Java)',
         description: 'Khóa học cho các bạn muốn tìm hiểu thêm về OOP',
         categoryId: 3,
-        instructorId: '19020075',
+        instructorId: '19020226',
         image:
           'https://res.cloudinary.com/subarashis/image/upload/v1637942746/courses/o55oms4bthat8wugtip1.jpg',
         isPublished: 1,
@@ -62,7 +62,7 @@ export class Course1667010171189 implements MigrationInterface {
         description:
           'Giúp các bạn hiểu rõ hơn về các thuật toán và cấu trúc dữ liệu cơ bản',
         categoryId: 3,
-        instructorId: '19020281',
+        instructorId: '19020226',
         image:
           'https://res.cloudinary.com/subarashis/image/upload/v1637942841/courses/fbhwewswidmiovdqq2pc.jpg',
         isPublished: 1,
@@ -73,7 +73,7 @@ export class Course1667010171189 implements MigrationInterface {
         description:
           'Làm chủ ngành sale: Thuần thục những chiến lược cơ bản để chốt đơn với nhiều khách hàng tiềm năng hơn',
         categoryId: 6,
-        instructorId: '19020286',
+        instructorId: '19020226',
         image:
           'https://res.cloudinary.com/subarashis/image/upload/v1639401456/courses/sha14782tzrqimg9gfey.jpg',
         isPublished: 1,
@@ -84,7 +84,7 @@ export class Course1667010171189 implements MigrationInterface {
         description:
           'Khóa học đầu tay của tiến sĩ Nông Lương Đức, những nghiên cứu trong khóa học đã giúp rất nhiều học viên trở thành chiên da buôn bán.',
         categoryId: 6,
-        instructorId: '19020476',
+        instructorId: '19020226',
         image:
           'https://res.cloudinary.com/subarashis/image/upload/v1639401557/courses/fpghpkaq9kimvm6no4bc.jpg',
         isPublished: 1,
@@ -95,7 +95,7 @@ export class Course1667010171189 implements MigrationInterface {
         description:
           'Ethically Proven Persuasion Techniques, Sales Systems, Effective Negotiations & Pitches, All Backed By Years of Science',
         categoryId: 6,
-        instructorId: '19020171',
+        instructorId: '19020226',
         image:
           'https://res.cloudinary.com/subarashis/image/upload/v1639401605/courses/kwxmz80tvpccsddimmal.jpg',
         isPublished: 1,
@@ -106,7 +106,7 @@ export class Course1667010171189 implements MigrationInterface {
         description:
           'Ensure your customers stay longer, buy more, and advocate for you by helping them achieve their desired outcome.',
         categoryId: 6,
-        instructorId: '19020451',
+        instructorId: '19020226',
         image:
           'https://res.cloudinary.com/subarashis/image/upload/v1639401653/courses/vfuqnre7khxsxk4k43y7.jpg',
         isPublished: 1,
@@ -117,7 +117,7 @@ export class Course1667010171189 implements MigrationInterface {
         description:
           'Selling Techniques and Sales Strategy that Every Salesperson Ought to Know - Sales Training For the Modern World',
         categoryId: 6,
-        instructorId: '19020456',
+        instructorId: '19020226',
         image:
           'https://res.cloudinary.com/subarashis/image/upload/v1639401678/courses/v3wiufcbyodyqjyupcqi.jpg',
         isPublished: 1,
@@ -128,7 +128,7 @@ export class Course1667010171189 implements MigrationInterface {
         description:
           'Cách tiếp cận mảng bán hàng online dành cho những ai thất nghiệp mùa dịch mà muốn có thêm thu nhập. Gọi ngay Zalo 0915181042 để biết thêm thông tin chi tiết!',
         categoryId: 6,
-        instructorId: '19020471',
+        instructorId: '19020226',
         image:
           'https://res.cloudinary.com/subarashis/image/upload/v1639401748/courses/tyb8j3erktt8ladoyukl.jpg',
         isPublished: 1,
@@ -139,7 +139,7 @@ export class Course1667010171189 implements MigrationInterface {
         description:
           'Bạn muốn trở thành nhà đầu tư bất động sản mà chưa có vốn? Đừng lo, ở đây chúng tôi cho vay! Giải Ngân Nhanh Chóng. Xét Duyệt Hồ Sơ Chỉ Trong 3 Ngày. Ân Hạn Nợ Gốc 3 Kỳ Đầu. Tư Vấn Làm Thủ Tục Miễn Phí. Vay Tiền Online 24/7. Không Cần Thế Chấp. Thủ Tục Dễ',
         categoryId: 6,
-        instructorId: '19020466',
+        instructorId: '19020226',
         image:
           'https://res.cloudinary.com/subarashis/image/upload/v1639401869/courses/bevuwtxxthjthdtbmscy.jpg',
         isPublished: 1,
@@ -150,7 +150,7 @@ export class Course1667010171189 implements MigrationInterface {
         description:
           'Thiên Phú cung cấp bán và cho thuê giàn giáo ở những khu vực nào? — Kiểm tra và vệ sinh sản phẩm, in logo lên giàn giáo theo yêu cầu của khách hàng để tiện ...',
         categoryId: 6,
-        instructorId: '19020466',
+        instructorId: '19020226',
         image:
           'https://res.cloudinary.com/subarashis/image/upload/v1639402174/courses/xzzopsj7j8wec3apo0ja.jpg',
         isPublished: 1,
@@ -161,7 +161,7 @@ export class Course1667010171189 implements MigrationInterface {
         description:
           'Đây là một lớp học online rất chất lượng từ hành trang sống giúp bạn vượt qua rào cản, rèn luyện, thuyết trình kỹ năng tư duy sáng tạo trong học tập, kinh doanh và giải quyết vấn đề, cung cấp sơ đồ hình cây phù hợp để dạy cho trẻ mầm non và của sinh viên.',
         categoryId: 4,
-        instructorId: '19020456',
+        instructorId: '19020226',
         image:
           'https://res.cloudinary.com/subarashis/image/upload/v1639402672/courses/yvrxxzulo6d8mkr0rajc.jpg',
         isPublished: 1,
