@@ -49,8 +49,8 @@
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
 import { Prop } from 'vue-property-decorator';
-import { ICourseData } from '../constants/course.interfaces';
-import { getPriceBackgroundColor } from '../helpers/commonFunctions';
+import { ICourseData } from '../../constants/course.interfaces';
+import { getPriceBackgroundColor } from '../../helpers/commonFunctions';
 
 @Options({
     components: {},

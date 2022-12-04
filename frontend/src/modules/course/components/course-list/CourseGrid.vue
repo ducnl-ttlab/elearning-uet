@@ -8,12 +8,8 @@
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
-import { showErrorNotificationFunction } from '@/common/helpers';
+import { courseModule } from '../../store/course.store';
 import CourseGridItem from './CourseGridItem.vue';
-import { courseModule } from '../store/course.store';
-import { getCourseList } from '../services/course';
-import { MAX_COURSE_GRID_ITEMS } from '../constants/course.constants';
-import { commonModule } from '@/modules/common/store/common.store';
 
 @Options({
     components: { CourseGridItem },

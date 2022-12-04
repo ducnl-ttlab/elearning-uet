@@ -6,8 +6,8 @@
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
+import { courseModule } from '../../store/course.store';
 import CourseListItem from './CourseListItem.vue';
-import { courseModule } from '../store/course.store';
 
 @Options({
     components: { CourseListItem },
