@@ -16,6 +16,7 @@ export interface ICourseListParams {
     page?: number;
     pageSize?: number;
     keyword?: string;
-    rating?: number;
+    rating?: string;
     categoryId?: number;
+    instructorIds?: string;
 }

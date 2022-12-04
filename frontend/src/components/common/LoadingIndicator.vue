@@ -14,7 +14,7 @@
 
 <script lang="ts">
 import { Options, Vue } from 'vue-property-decorator';
-import { commonModule } from '@/common/store/common.store';
+import { commonModule } from '@/modules/common/store/common.store';
 
 @Options({
     components: {},
