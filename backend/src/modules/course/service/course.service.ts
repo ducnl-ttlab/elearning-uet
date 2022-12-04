@@ -76,7 +76,7 @@ export class CourseService {
       let keywordJoin = (text && rating && ' and') || '';
 
       let query = `
-      SELECT c.id, c.categoryId, c.name, c.image, c.price, c.description, u.username as instructorName, uc.avgRating, uc.studentTotal, c.startCourseTime as startCourse, c.endCourseTime as endCourse  
+      SELECT c.id, c.categoryId, c.name, c.image, c.price, c.description, u.username as instructorName, ROUND(uc.avgRating, 1) as avgRating, uc.studentTotal, c.startCourseTime as startCourse, c.endCourseTime as endCourse  
       FROM courses c
       JOIN users u on u.id = c.instructorId
       LEFT JOIN ( 
