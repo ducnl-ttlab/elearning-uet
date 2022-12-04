@@ -7,9 +7,17 @@ import { Course } from './entity/course.entity';
 import { CategoryModule } from '../category/category.module';
 import { ConfigModule } from '@nestjs/config';
 import { UserModule } from '../user/user.module';
+import { RedisCacheModule } from '../cache/redis-cache.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Course]), ConfigModule, CategoryModule, UserModule, SearchModule],
+  imports: [
+    TypeOrmModule.forFeature([Course]),
+    ConfigModule,
+    CategoryModule,
+    UserModule,
+    SearchModule,
+    RedisCacheModule,
+  ],
   providers: [CourseService],
   controllers: [CourseController],
   exports: [CourseService],

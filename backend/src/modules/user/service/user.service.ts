@@ -1,10 +1,11 @@
+import { InstructorDto } from './../dto/user';
 import {
   BadRequestException,
   Injectable,
   InternalServerErrorException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Provider } from 'database/constant';
+import { Provider, Role } from 'database/constant';
 import { Repository } from 'typeorm';
 import { User } from '../entity/user.entity';
 
@@ -18,6 +19,15 @@ export class UserService {
 
   async saveUser(user: Partial<User>): Promise<User> {
     return this.userRepository.save(user);
+  }
+
+  async getInstructorList(): Promise<InstructorDto[]> {
+    return this.userRepository.find({
+      where: {
+        role: Role.instructor,
+      },
+      select: ['id', 'username', 'email', 'phone', 'address'],
+    });
   }
 
   async updateUser(id: string, properties: Partial<User>) {
