@@ -33,19 +33,18 @@
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
-import CourseGrid from '../components/CourseGrid.vue';
-import CourseList from '../components/CourseList.vue';
-import SortTable from '../components/SortTable.vue';
-import CourseListTable from '../components/CourseListTable.vue';
+import CourseGrid from '../components/course-list/CourseGrid.vue';
+import CourseList from '../components/course-list/CourseList.vue';
+import SortTable from '../components/course-list/SortTable.vue';
+import CourseListTable from '../components/course-list/CourseListTable.vue';
 import {
     CourseListDisplayMode,
     MAX_COURSE_GRID_ITEMS,
 } from '../constants/course.constants';
-import { courseModule } from '../store/course.store';
-import { getInstructorList } from '@/modules/common/services/common';
-import { commonModule } from '@/modules/common/store/common.store';
-import { commonModule as commonModuleA } from '@/modules/common/store/common.store';
 import { showErrorNotificationFunction } from '@/common/helpers';
+import { commonModule } from '@/modules/common/store/common.store';
+import { getInstructorList } from '@/modules/common/services/common';
+import { courseModule } from '../store/course.store';
 import { getCourseList } from '../services/course';
 
 @Options({
@@ -70,12 +69,12 @@ export default class CourseListPage extends Vue {
         commonModule.setLoadingIndicator(true);
         const response = await getInstructorList();
         if (response.success) {
-            commonModuleA.setInstructorList(response?.data?.items || []);
+            commonModule.setInstructorList(response?.data?.items || []);
         } else {
             let res = response?.errors || [
                 { message: this.$t('landing.categories.errors.getCategoryListError') },
             ];
-            commonModuleA.setInstructorList([]);
+            commonModule.setInstructorList([]);
             showErrorNotificationFunction(res[0].message);
         }
         commonModule.setLoadingIndicator(false);

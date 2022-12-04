@@ -58,10 +58,10 @@
 import { showErrorNotificationFunction } from '@/common/helpers';
 import { commonModule } from '@/modules/common/store/common.store';
 import { Options, Vue } from 'vue-class-component';
-import { MAX_COURSE_LIST_ITEMS } from '../constants/course.constants';
-import { ICourseListParams } from '../constants/course.interfaces';
-import { getCourseList } from '../services/course';
-import { courseModule } from '../store/course.store';
+import { MAX_COURSE_LIST_ITEMS } from '../../constants/course.constants';
+import { ICourseListParams } from '../../constants/course.interfaces';
+import { getCourseList } from '../../services/course';
+import { courseModule } from '../../store/course.store';
 
 @Options({
     components: {},

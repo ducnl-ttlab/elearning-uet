@@ -3,6 +3,7 @@ export const course = {
         price: '${price}',
         free: 'Free',
         rating: 'Rating:\xa0',
+        instructor: 'Instructor: {instructor}',
         notRated: 'Not rated',
         studentTotal: 'Attenders: {studentTotal}',
         ratingList: {
@@ -21,19 +22,24 @@ export const course = {
         rating: 'Rating',
         category: 'Category',
         instructor: 'Instructor',
-        apply: 'Filtẻ',
+        apply: 'Filter',
     },
 
     table: {
         title: 'Title',
         description: 'Description',
         rating: 'Rating',
-        instructor: 'Instructor',
+        instructor: 'Instructor:\xa0 {instructor}',
         studentCount: 'Attendee',
         price: 'Price',
     },
 
+    preview: {
+        content: 'Course Content',
+    },
+
     errors: {
         emptyCourseList: 'Cannot find any course.',
+        emptyTopicList: 'Cannot find any topic.',
     },
 };
