@@ -1,22 +1,30 @@
 <template>
-    <div class="course-grid-item-wrapper d-flex flex-column gap-3">
-        <div class="price-tag">
-            {{ $t('course.course.price', { price: course.price }) }}
-        </div>
-        <div class="course-grid-item-rating d-flex flex-row align-items-center">
-            <div v-if="course.avgRating">{{ $t('course.course.rating') }}</div>
-            <div>
-                <span>{{
-                    Math.round(course.avgRating * 100) / 100 ||
-                    $t('course.course.notRated')
-                }}</span>
-                <img
-                    class="mx-1 mb-1"
-                    v-if="course.avgRating"
-                    src="@/assets/landing/icons/star.svg"
-                    width="16"
-                    alt=""
-                />
+    <div
+        class="course-grid-item-wrapper d-flex flex-column gap-3"
+        @click="handleCourseClick(course.id)"
+    >
+        <div class="d-flex flex-row justify-content-between">
+            <div class="course-grid-item-instructor" style="font-weight: bold">
+                <img src="@/assets/landing/icons/student.svg" width="16" alt="" />
+                <span>
+                    {{ course.instructorName }}
+                </span>
+            </div>
+            <div class="course-grid-item-rating d-flex flex-row align-items-center">
+                <div v-if="course.avgRating">{{ $t('course.course.rating') }}</div>
+                <div>
+                    <span>{{
+                        Math.round(course.avgRating * 100) / 100 ||
+                        $t('course.course.notRated')
+                    }}</span>
+                    <img
+                        class="mx-1 mb-1"
+                        v-if="course.avgRating"
+                        src="@/assets/landing/icons/star.svg"
+                        width="16"
+                        alt=""
+                    />
+                </div>
             </div>
         </div>
         <div class="course-grid-item-image">
@@ -28,8 +36,10 @@
         <div class="course-grid-item-description text">
             {{ course.description }}
         </div>
-        <div class="d-flex flex-row course-grid-item-infos justify-content-between pt-2">
-            <div class="course-grid-item-student">
+        <div
+            class="d-flex flex-row course-grid-item-infos align-items-center justify-content-between pt-2"
+        >
+            <div class="course-grid-item-student" style="font-weight: bold">
                 <span>
                     {{
                         $t('course.course.studentTotal', {
@@ -39,17 +49,24 @@
                 </span>
                 <img src="@/assets/landing/icons/student.svg" width="16" alt="" />
             </div>
-            <div class="course-grid-item-instructor">
-                <span>
-                    {{ course.instructorName }}
-                </span>
-                <img src="@/assets/landing/icons/student.svg" width="16" alt="" />
+            <div
+                class="price-tag"
+                v-if="course.price"
+                :style="{
+                    'background-color': getPriceBackgroundColor(course.price),
+                }"
+            >
+                {{ $t('course.course.price', { price: course.price }) }}
+            </div>
+            <div v-else class="price-tag" style="background-color: #3bb143">
+                {{ $t('course.course.free') }}
             </div>
         </div>
     </div>
 </template>
 
 <script lang="ts">
+import { PageName } from '@/common/constants';
 import { Options, Vue } from 'vue-class-component';
 import { Prop } from 'vue-property-decorator';
 import { ICourseData } from '../../constants/course.interfaces';
@@ -62,6 +79,14 @@ export default class CourseListItem extends Vue {
     @Prop({ default: '' }) readonly course!: ICourseData;
     getPriceBackgroundColor(price: number) {
         return getPriceBackgroundColor(price);
+    }
+    handleCourseClick(courseId: number) {
+        this.$router.push({
+            name: PageName.COURSE_DETAIL_PAGE,
+            params: {
+                courseId,
+            },
+        });
     }
 }
 </script>
@@ -83,7 +108,6 @@ export default class CourseListItem extends Vue {
     }
 
     &-rating {
-        align-self: flex-end;
         font-weight: bold;
     }
 
@@ -99,18 +123,12 @@ export default class CourseListItem extends Vue {
         line-height: 150%;
         height: 68px;
     }
-
-    &-infos {
-        font-weight: bold;
-    }
 }
 
 .price-tag {
-    position: absolute;
-    padding: 5px 10px;
-    top: 10px;
+    padding: 5px 16px;
     border-radius: 10px;
-    color: $color-white;
+    color: white;
 }
 
 .text {

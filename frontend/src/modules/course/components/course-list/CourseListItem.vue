@@ -1,5 +1,8 @@
 <template>
-    <div class="course-list-item-wrapper d-flex w-100 flex-row align-items-center">
+    <div
+        class="course-list-item-wrapper d-flex w-100 flex-row align-items-center"
+        @click="handleCourseClick(course.id)"
+    >
         <div class="d-flex w-100 flex-row align-items-center" style="gap: 2.5vw">
             <div class="course-list-item-title text">
                 {{ course.name }}
@@ -35,18 +38,21 @@
         </div>
         <div
             class="price-tag"
+            v-if="course.price"
             :style="{
-                'background-color': course.price
-                    ? getPriceBackgroundColor(course.price)
-                    : '#3BB143',
+                'background-color': getPriceBackgroundColor(course.price),
             }"
         >
             {{ $t('course.course.price', { price: course.price }) }}
+        </div>
+        <div v-else class="price-tag" style="background-color: #3bb143">
+            {{ $t('course.course.free') }}
         </div>
     </div>
 </template>
 
 <script lang="ts">
+import { PageName } from '@/common/constants';
 import { Options, Vue } from 'vue-class-component';
 import { Prop } from 'vue-property-decorator';
 import { ICourseData } from '../../constants/course.interfaces';
@@ -59,6 +65,14 @@ export default class CourseListItem extends Vue {
     @Prop({ default: '' }) readonly course!: ICourseData;
     getPriceBackgroundColor(price: number) {
         return getPriceBackgroundColor(price);
+    }
+    handleCourseClick(courseId: number) {
+        this.$router.push({
+            name: PageName.COURSE_DETAIL_PAGE,
+            params: {
+                courseId,
+            },
+        });
     }
 }
 </script>
