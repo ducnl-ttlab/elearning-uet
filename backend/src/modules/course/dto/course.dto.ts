@@ -51,6 +51,7 @@ export interface CourseQueryDto {
   rating: number;
   pageSize: number;
   categoryId: number;
+  instructorIds: string;
 }
 export interface CourseSearchQueryDto {
   page: number;

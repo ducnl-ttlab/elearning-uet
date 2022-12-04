@@ -64,15 +64,22 @@ export class CourseService {
     categoryId?: number,
     text?: string,
     rating?: number,
+    instructorIds?: string,
   ): Promise<CourseSearch[]> {
     try {
-      let where = ((categoryId || text || rating) && 'where ') || '';
+      let instructorIdArr = instructorIds?.split(',');
+
+      let where =
+        ((categoryId || text || rating || instructorIds) && 'where ') || '';
       let category = (categoryId && `c.categoryId = ${categoryId}`) || '';
       let categoryJoin = (categoryId && text && ' and') || '';
       let keyword = (text && `c.name like '%${text}%'`) || '';
 
       let rate = (rating && `uc.avgRating > ${rating}`) || '';
       let keywordJoin = (text && rating && ' and') || '';
+
+      let instructor = (instructorIds && `c.instructorId in (?)`) || '';
+      let instructorJoin = (instructorIds && rating && ' and') || '';
 
       let query = `
       SELECT c.id, c.categoryId, c.name, c.image, c.price, c.description, u.username as instructorName, ROUND(uc.avgRating, 1) as avgRating, uc.studentTotal, c.startCourseTime as startCourse, c.endCourseTime as endCourse  
@@ -84,9 +91,9 @@ export class CourseService {
           LEFT JOIN ratings r on r.userCourseId = uc.id 
           GROUP BY c.id
       ) as uc on uc.id = c.id
-      ${where}${category} ${categoryJoin} ${keyword} ${keywordJoin} ${rate} 
+      ${where}${category} ${categoryJoin} ${keyword} ${keywordJoin} ${rate} ${instructorJoin} ${instructor}
       `;
-      let result = await this.course.query(query);
+      let result = await this.course.query(query, [instructorIdArr]);
       return result;
     } catch (error) {
       throw new InternalServerErrorException(error);
