@@ -20,7 +20,7 @@ import { JWTModule } from './modules/jwt/jwt.module';
 import { TopicModule } from './modules/topics/topic.module';
 import { CommentModule } from './modules/comment/comment.module';
 import { RatingModule } from './modules/rating/rating.module';
-import { FavoriteModule } from './modules/topics copy/topic.module';
+import { FavoriteModule } from './modules/favorite/favorite.module';
 
 @Module({
   imports: [

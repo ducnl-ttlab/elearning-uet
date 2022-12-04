@@ -1,6 +1,6 @@
-import { RedisCacheModule } from './../cache/redis-cache.module';
+import { RedisCacheModule } from '../cache/redis-cache.module';
 import { Module } from '@nestjs/common';
-import { TopicController } from './topic.controller';
+import { TopicController } from './favorite.controller';
 import { FavoriteService } from './service/favorite.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CourseModule } from '../course/course.module';
