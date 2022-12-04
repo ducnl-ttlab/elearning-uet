@@ -179,11 +179,20 @@ export class CourseController {
     @Req() req: Request,
     @Query() query: CourseQueryDto,
   ) {
-    const { page = 1, pageSize = 8, keyword, rating, categoryId } = query;
+    const {
+      page = 1,
+      pageSize = 8,
+      keyword,
+      rating,
+      categoryId,
+      instructorIds = '',
+    } = query;
+
     const courseList = await this.courseService.findCourses(
       +categoryId,
       keyword,
-      +rating,
+      rating,
+      instructorIds,
     );
 
     let coursesResponse = courseList.map((course) => {

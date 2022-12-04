@@ -63,16 +63,23 @@ export class CourseService {
   async findCourses(
     categoryId?: number,
     text?: string,
-    rating?: number,
+    rating?: string,
+    instructorIds?: string,
   ): Promise<CourseSearch[]> {
     try {
-      let where = ((categoryId || text || rating) && 'where ') || '';
-      let category = (categoryId && `c.categoryId = ${categoryId}`) || '';
-      let categoryJoin = (categoryId && text && ' and') || '';
-      let keyword = (text && `c.name like '%${text}%'`) || '';
+      let instructorIdArr = instructorIds?.split(',');
 
-      let rate = (rating && `uc.avgRating > ${rating}`) || '';
-      let keywordJoin = (text && rating && ' and') || '';
+      let where =
+        ((categoryId || text || rating || instructorIds) && 'where ') || '';
+
+      let queryArr: string[] = [];
+
+      categoryId && queryArr.push(`c.categoryId = ${categoryId}`);
+      text && queryArr.push(`c.name like '%${text}%'`);
+      rating && queryArr.push(`uc.avgRating > ${rating}`);
+      instructorIds && queryArr.push(`c.instructorId in (?)`);
+
+      let queryWhereStr = queryArr.join(' and ');
 
       let query = `
       SELECT c.id, c.categoryId, c.name, c.image, c.price, c.description, u.username as instructorName, ROUND(uc.avgRating, 1) as avgRating, uc.studentTotal, c.startCourseTime as startCourse, c.endCourseTime as endCourse  
@@ -84,9 +91,9 @@ export class CourseService {
           LEFT JOIN ratings r on r.userCourseId = uc.id 
           GROUP BY c.id
       ) as uc on uc.id = c.id
-      ${where}${category} ${categoryJoin} ${keyword} ${keywordJoin} ${rate} 
+      ${where}${queryWhereStr}
       `;
-      let result = await this.course.query(query);
+      let result = await this.course.query(query, [instructorIdArr]);
       return result;
     } catch (error) {
       throw new InternalServerErrorException(error);

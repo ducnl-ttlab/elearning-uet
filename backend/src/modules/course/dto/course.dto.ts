@@ -48,9 +48,10 @@ export class CategoryDto {
 export interface CourseQueryDto {
   page: number;
   keyword: string;
-  rating: number;
+  rating: string;
   pageSize: number;
   categoryId: number;
+  instructorIds: string;
 }
 export interface CourseSearchQueryDto {
   page: number;
