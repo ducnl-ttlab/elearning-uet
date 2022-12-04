@@ -53,18 +53,31 @@ export default class CourseListItem extends Vue {
         return getPriceBackgroundColor(price);
     }
 
+    sortDesc = true;
+
     get courseList() {
         return courseModule.courseList;
     }
 
     sortTable(type: ICourseDataKeys = 'name') {
-        courseModule.setCourseList(
-            this.courseList.sort((a: ICourseData, b: ICourseData) => {
-                let sa = a[type] as string;
-                let sb = b[type] as string;
-                return sa > sb ? 1 : -1;
-            }),
-        );
+        this.sortDesc = !this.sortDesc;
+        if (this.sortDesc) {
+            courseModule.setCourseList(
+                this.courseList.sort((a: ICourseData, b: ICourseData) => {
+                    let sa = a[type] as string;
+                    let sb = b[type] as string;
+                    return sa > sb ? 1 : -1;
+                }),
+            );
+        } else {
+            courseModule.setCourseList(
+                this.courseList.sort((a: ICourseData, b: ICourseData) => {
+                    let sa = a[type] as string;
+                    let sb = b[type] as string;
+                    return sa < sb ? 1 : -1;
+                }),
+            );
+        }
     }
 }
 </script>

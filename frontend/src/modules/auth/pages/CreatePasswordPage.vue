@@ -13,7 +13,7 @@
 </template>
 <script lang="ts">
 import { PageName } from '@/common/constants';
-import { commonModule } from '@/common/store/common.store';
+import { commonModule } from '@/modules/common/store/common.store';
 import { Options, Vue } from 'vue-class-component';
 import SetPasswordForm from '../components/register/SetPasswordForm.vue';
 import { verifyToken } from '../services/register';

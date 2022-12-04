@@ -19,7 +19,12 @@
             class="display-button"
         />
     </div>
+    <SortTable />
     <CourseListTable v-if="courseListDisplayMode === CourseListDisplayMode.LIST" />
+    <BaseNoResult
+        v-if="courseList.length === 0"
+        :message="$t('course.errors.emptyCourseList')"
+    />
     <div class="course-list-page-wrapper">
         <CourseGrid v-if="courseListDisplayMode === CourseListDisplayMode.GRID" />
         <CourseList v-if="courseListDisplayMode === CourseListDisplayMode.LIST" />
@@ -30,15 +35,27 @@
 import { Options, Vue } from 'vue-class-component';
 import CourseGrid from '../components/CourseGrid.vue';
 import CourseList from '../components/CourseList.vue';
+import SortTable from '../components/SortTable.vue';
 import CourseListTable from '../components/CourseListTable.vue';
-import { CourseListDisplayMode } from '../constants/course.constants';
+import {
+    CourseListDisplayMode,
+    MAX_COURSE_GRID_ITEMS,
+} from '../constants/course.constants';
 import { courseModule } from '../store/course.store';
+import { getInstructorList } from '@/modules/common/services/common';
+import { commonModule } from '@/modules/common/store/common.store';
+import { commonModule as commonModuleA } from '@/modules/common/store/common.store';
+import { showErrorNotificationFunction } from '@/common/helpers';
+import { getCourseList } from '../services/course';
 
 @Options({
-    components: { CourseGrid, CourseList, CourseListTable },
+    components: { CourseGrid, CourseList, CourseListTable, SortTable },
 })
 export default class CourseListPage extends Vue {
     CourseListDisplayMode = CourseListDisplayMode;
+    get courseList() {
+        return courseModule.courseList;
+    }
     get courseListDisplayMode() {
         return courseModule.courseListDisplayMode;
     }
@@ -47,6 +64,49 @@ export default class CourseListPage extends Vue {
     }
     handleListClick() {
         courseModule.setCourseListDisplayMode(CourseListDisplayMode.LIST);
+    }
+
+    async initInstructorList() {
+        commonModule.setLoadingIndicator(true);
+        const response = await getInstructorList();
+        if (response.success) {
+            commonModuleA.setInstructorList(response?.data?.items || []);
+        } else {
+            let res = response?.errors || [
+                { message: this.$t('landing.categories.errors.getCategoryListError') },
+            ];
+            commonModuleA.setInstructorList([]);
+            showErrorNotificationFunction(res[0].message);
+        }
+        commonModule.setLoadingIndicator(false);
+    }
+
+    async getCourseList() {
+        commonModule.setLoadingIndicator(true);
+        const id: number = parseInt(this.$route.params.id as string);
+        const response = await getCourseList({
+            pageSize: MAX_COURSE_GRID_ITEMS,
+            categoryId: id,
+        });
+        if (response.success) {
+            courseModule.setCourseList(response?.data?.items || []);
+        } else {
+            let res = response?.errors || [
+                { message: this.$t('landing.categories.errors.getCategoryListError') },
+            ];
+            courseModule.setCourseList([]);
+            showErrorNotificationFunction(res[0].message);
+        }
+        commonModule.setLoadingIndicator(false);
+    }
+
+    async initCoursePage() {
+        await this.getCourseList();
+        await this.initInstructorList();
+    }
+
+    async created() {
+        await this.initCoursePage();
     }
 }
 </script>

@@ -94,6 +94,12 @@ export default class CourseListItem extends Vue {
         height: 108px;
     }
 
+    &-description {
+        font-size: 15px;
+        line-height: 150%;
+        height: 68px;
+    }
+
     &-infos {
         font-weight: bold;
     }

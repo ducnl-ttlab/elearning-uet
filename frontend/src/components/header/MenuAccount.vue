@@ -105,7 +105,7 @@
 import { Vue, Options } from 'vue-class-component';
 import { PageName } from '@/common/constants';
 import { IUserData } from '@/common/interfaces';
-import { commonModule } from '@/common/store/common.store';
+import { commonModule } from '@/modules/common/store/common.store';
 import { loginModule } from '@/modules/auth/store/login.store';
 import {
     generateDefaultAvatarColor,

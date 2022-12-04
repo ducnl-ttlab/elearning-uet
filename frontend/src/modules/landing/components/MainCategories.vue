@@ -13,12 +13,11 @@
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
 import { landingModule } from '@/modules/landing/store/landing.store';
-import { getCategoryList, ICategoryItemList } from '@/modules/landing/services/landing';
+import { getCategoryList } from '@/modules/landing/services/landing';
 import { showErrorNotificationFunction } from '@/common/helpers';
 import CategoryCard from './CategoryCard.vue';
 import { PageName } from '@/common/constants';
-import { ICategoryData } from '../constants/landing.interfaces';
-import { commonModule } from '@/common/store/common.store';
+import { commonModule } from '@/modules/common/store/common.store';
 
 @Options({
     components: { CategoryCard },
