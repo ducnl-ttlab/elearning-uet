@@ -1,3 +1,4 @@
+import { UserService } from 'src/modules/user/service/user.service';
 import { RedisCacheService } from './../cache/redis-cache.service';
 import { SearchService } from './../search/search.service';
 import {
@@ -34,6 +35,7 @@ import {
   CourseListResponse,
   CourseQueryDto,
   CourseSearchQueryDto,
+  InstructorListReponse,
 } from './dto/course.dto';
 import { CategoryService } from '../category/service/category.service';
 import LocalFilesInterceptor, {
@@ -59,7 +61,45 @@ export class CourseController {
     private readonly courseService: CourseService,
     private readonly categoryService: CategoryService,
     private readonly searchService: SearchService,
+    private readonly redisCacheService: RedisCacheService,
+    private readonly userService: UserService,
   ) {}
+
+  @Get('instructor-list')
+  async getInstructorList(@Res() res: Response) {
+    let instructorListCache = await this.redisCacheService.setOrgetCache(
+      'instructor-list',
+      () => this.userService.getInstructorList(),
+    );
+
+    let reponse: InstructorListReponse = {
+      items: instructorListCache,
+      totalItems: instructorListCache.length,
+    };
+    return res.status(HttpStatus.CREATED).json(new SuccessResponse(reponse));
+  }
+
+  @Get(':id')
+  async getCourse(
+    @Param() param: CourseDto,
+    @Res() res: Response,
+    @Req() req: Request,
+    @Headers('host') host: Headers,
+  ) {
+    const course = await this.courseService.existCourse(param.id);
+
+    const courseRes = {
+      ...course,
+      image:
+        (course.image &&
+          (course.image.startsWith('http')
+            ? course.image
+            : `${req.protocol}://${host}/course/image/${course.image}`)) ||
+        '',
+    };
+
+    return res.status(HttpStatus.CREATED).json(new SuccessResponse(courseRes));
+  }
 
   @Post(':categoryId')
   @Auth('instructor')
@@ -210,25 +250,6 @@ export class CourseController {
       totalItems: course.length,
     };
     return res.status(HttpStatus.CREATED).json(new SuccessResponse(response));
-  }
-
-  @Get(':id')
-  async getCourse(
-    @Param() param: CourseDto,
-    @Res() res: Response,
-    @Req() req: Request,
-    @Headers('host') host: Headers,
-  ) {
-    const course = await this.courseService.existCourse(param.id);
-
-    const courseRes = {
-      ...course,
-      image: course.image
-        ? `${req.protocol}://${host}/image/${course.image}`
-        : '',
-    };
-
-    return res.status(HttpStatus.CREATED).json(new SuccessResponse(courseRes));
   }
 
   @Delete(':id')

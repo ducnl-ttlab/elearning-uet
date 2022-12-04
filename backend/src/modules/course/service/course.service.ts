@@ -34,7 +34,6 @@ export class CourseService {
     try {
       let c = TableName.course;
       let queryKeywork = keyword ? `and ${c}.name LIKE "%${keyword}%"` : '';
-      console.log('o', queryKeywork);
       let query = `SELECT *
        FROM ${c}
        WHERE ${c}.instructorId = "${instructorId}" ${queryKeywork}`;
@@ -76,7 +75,7 @@ export class CourseService {
       let keywordJoin = (text && rating && ' and') || '';
 
       let query = `
-      SELECT c.id, c.categoryId, c.name, c.image, c.price, c.description, u.username as instructorName, uc.avgRating, uc.studentTotal, c.startCourseTime as startCourse, c.endCourseTime as endCourse  
+      SELECT c.id, c.categoryId, c.name, c.image, c.price, c.description, u.username as instructorName, ROUND(uc.avgRating, 1) as avgRating, uc.studentTotal, c.startCourseTime as startCourse, c.endCourseTime as endCourse  
       FROM courses c
       JOIN users u on u.id = c.instructorId
       LEFT JOIN ( 
@@ -85,7 +84,7 @@ export class CourseService {
           LEFT JOIN ratings r on r.userCourseId = uc.id 
           GROUP BY c.id
       ) as uc on uc.id = c.id
-      ${where}${category} ${categoryJoin} ${keyword} ${keywordJoin} ${rate}
+      ${where}${category} ${categoryJoin} ${keyword} ${keywordJoin} ${rate} 
       `;
       let result = await this.course.query(query);
       return result;

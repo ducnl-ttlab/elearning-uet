@@ -1,3 +1,4 @@
+import { defaultResponseTime, mysqlTime } from 'src/common/ultils';
 import { UserCourseStatus } from 'database/constant';
 import {
   Body,
@@ -21,7 +22,6 @@ import { Request, Response } from 'express';
 import { IUserJwt } from 'src/common/interfaces';
 import { User } from 'src/common/decorator/custom.decorator';
 import { Auth, JoinCourseAuth } from 'src/common/decorator/auth.decorator';
-import { userCourseValidation } from './joi.request.pipe';
 import { SuccessResponse } from 'src/common/helpers/api.response';
 import {
   CategoryDto,
@@ -41,17 +41,53 @@ import { Topic } from './entity/topic.entity';
 import moment from 'moment';
 import { JoinCourseGuard } from 'src/common/guard/student-course.guard';
 import { TopicService } from './service/topic.service';
+import { validation } from './joi.request.pipe';
 
 @ApiTags('Topic')
 @Controller('topic')
 export class TopicController {
   constructor(
-    private readonly topicService: TopicService
+    private readonly topicService: TopicService,
+    private readonly courseService: CourseService,
   ) {}
 
-  @Get('')
-  async getTopics(@Res() response: Response) {
-      
-      return response.status(HttpStatus.OK).json("ok")
+  @Get('short/:courseId')
+  @UsePipes(...validation({ key: 'courseIdParamSchema', type: 'param' }))
+  async getTopics(
+    @Req() req: Request,
+    @Res() response: Response,
+    @Param() param: { courseId: number },
+    @Headers('host') host: Headers,
+  ) {
+    const { courseId } = param;
+
+    let course = await this.courseService.existCourse(courseId);
+
+    course.image =
+      (course.image &&
+        (course.image.startsWith('http')
+          ? course.image
+          : `${req.protocol}://${host}/course/image/${course.image}`)) ||
+      '';
+    course.startCourseTime =
+      (course.startCourseTime && mysqlTime(course.startCourseTime)) ||
+      ('' as unknown as Date);
+
+    course.endCourseTime =
+      (course.endCourseTime && mysqlTime(course.endCourseTime)) ||
+      ('' as unknown as Date);
+    let { created_at, updated_at } = defaultResponseTime(
+      course.created_at,
+      course.updated_at,
+    );
+    course.created_at = created_at;
+    course.updated_at = updated_at;
+
+    const topics = await this.topicService.findShortCourseTopicList(courseId);
+    const res = {
+      topics: topics,
+      course: course,
+    };
+    return response.status(HttpStatus.OK).json(new SuccessResponse(res));
   }
 }

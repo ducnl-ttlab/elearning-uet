@@ -22,6 +22,20 @@ export class TopicService {
     }
   }
 
+  async findShortCourseTopicList(courseId: number): Promise<Topic[]> {
+    try {
+      return this.topic.find({
+        where: {
+          courseId,
+        },
+        select: ['id', 'name', 'description'],
+        take: 4,
+      });
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
   async findOneById(id: number): Promise<Topic> {
     try {
       return this.topic.findOne(id);

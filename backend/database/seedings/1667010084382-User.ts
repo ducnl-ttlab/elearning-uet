@@ -377,7 +377,7 @@ export class User1667010084382 implements MigrationInterface {
         role: Role.instructor,
       },
       {
-        id: '19020466',
+        id: '1902046p6',
         username: 'Vũ Đức Trung',
         email: '19020466@vnu.edu.vn',
         phone: '012345678',

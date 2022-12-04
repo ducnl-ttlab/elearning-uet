@@ -1,6 +1,6 @@
 import { CommonListResponse } from './../../../common/helpers/api.response';
 import { ApiProperty } from '@nestjs/swagger';
-import { UserCourseStatus } from 'database/constant';
+import { Role, UserCourseStatus } from 'database/constant';
 
 interface ItemCheckout {
   id: number;
@@ -50,3 +50,7 @@ export interface StudentCourseDto {
 }
 
 export class StudenCourseListResponse extends CommonListResponse<StudentCourseDto> {}
+
+export interface CheckRegisterDto {
+  status: UserCourseStatus | Role | 'guest';
+}

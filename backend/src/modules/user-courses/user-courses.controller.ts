@@ -4,53 +4,43 @@ import {
   mysqlTimeStamp,
 } from 'src/common/ultils';
 import { NotificationService } from './../notification/service/notification.service';
-import { NotificationType, UserCourseStatus } from 'database/constant';
+import { UserCourseStatus } from 'database/constant';
 import {
-  Body,
   Controller,
   Get,
   HttpStatus,
   NotFoundException,
   Param,
   Post,
-  Req,
   Res,
-  UploadedFile,
-  UseInterceptors,
   UsePipes,
-  Headers,
   Inject,
   UseGuards,
   Query,
 } from '@nestjs/common';
-import { ApiConsumes, ApiTags } from '@nestjs/swagger';
-import { Request, Response } from 'express';
+import { ApiTags } from '@nestjs/swagger';
+import { Response } from 'express';
 import { UserCourseService } from './service/user-course.service';
 import { IUserJwt } from 'src/common/interfaces';
-import { Student, User } from 'src/common/decorator/custom.decorator';
+import { User } from 'src/common/decorator/custom.decorator';
 import { Auth, JoinCourseAuth } from 'src/common/decorator/auth.decorator';
 import { userCourseValidation } from './joi.request.pipe';
 import { SuccessResponse } from 'src/common/helpers/api.response';
 import {
-  CategoryDto,
-  CheckoutDto,
   CheckoutCourseDto,
   JoinCourseDto,
   StudenCourseListResponse,
   StudentCourseDto,
+  CheckRegisterDto,
 } from './dto/user-course.dto';
-import { CategoryService } from '../category/service/category.service';
-import LocalFilesInterceptor, {
-  imageParams,
-} from 'src/infra/local-file/local-files.interceptor';
 import { STRIPE_CLIENT } from 'src/common/constant';
 import Stripe from 'stripe';
 import { CourseService } from '../course/service/course.service';
 import { AuthService } from '../auth/service/auth.service';
 import { UserCourse } from './entity/user-course.entity';
-import moment from 'moment';
 import { StudentJoinCourseDto } from '../notification/dto/notification.dto';
 import { RedisCacheService } from '../cache/redis-cache.service';
+import { JWTAuthGuard } from '../auth/guard/jwt-auth.guard';
 
 @ApiTags('UserCourse')
 @Controller('user-course')
@@ -285,5 +275,33 @@ export class UserCourseController {
     ]);
 
     return res.status(HttpStatus.OK).json(new SuccessResponse());
+  }
+
+  @Get('check/:courseId')
+  @UsePipes(
+    ...userCourseValidation({
+      key: 'courseIdParamSchema',
+      type: 'param',
+    }),
+  )
+  @UseGuards(JWTAuthGuard)
+  async checkCourseRegistration(
+    @User() user: IUserJwt,
+    @Param() param: CheckoutCourseDto,
+    @Res() res: Response,
+  ) {
+    let course = await this.courseService.existCourse(param.courseId);
+    if (!course) {
+      throw new NotFoundException('Not found course');
+    }
+    let userCourse = await this.userCourseService.findOneByUsercourse(
+      user.id,
+      course.id,
+    );
+
+    let status: CheckRegisterDto['status'] =
+      userCourse?.status || user.role || 'guest';
+
+    return res.status(HttpStatus.OK).json(new SuccessResponse({ status }));
   }
 }
