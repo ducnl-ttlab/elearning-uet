@@ -191,7 +191,7 @@ export class CourseController {
     const courseList = await this.courseService.findCourses(
       +categoryId,
       keyword,
-      +rating,
+      rating,
       instructorIds,
     );
 
