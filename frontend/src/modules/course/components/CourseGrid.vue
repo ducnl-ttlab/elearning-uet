@@ -13,7 +13,7 @@ import CourseGridItem from './CourseGridItem.vue';
 import { courseModule } from '../store/course.store';
 import { getCourseList } from '../services/course';
 import { MAX_COURSE_GRID_ITEMS } from '../constants/course.constants';
-import { commonModule } from '@/common/store/common.store';
+import { commonModule } from '@/modules/common/store/common.store';
 
 @Options({
     components: { CourseGridItem },
@@ -23,28 +23,8 @@ export default class CourseGrid extends Vue {
         return courseModule.courseList;
     }
 
-    async getCourseList() {
-        commonModule.setLoadingIndicator(true);
-        const id: number = parseInt(this.$route.params.id as string);
-        const response = await getCourseList({
-            pageSize: MAX_COURSE_GRID_ITEMS,
-            categoryId: id,
-        });
-        if (response.success) {
-            courseModule.setCourseList(response?.data?.items || []);
-        } else {
-            let res = response?.errors || [
-                { message: this.$t('landing.categories.errors.getCategoryListError') },
-            ];
-            courseModule.setCourseList([]);
-            showErrorNotificationFunction(res[0].message);
-        }
-        commonModule.setLoadingIndicator(false);
-    }
-
-    async created() {
+    created() {
         window.scrollTo(0, 0);
-        await this.getCourseList();
     }
 }
 </script>

@@ -29,7 +29,7 @@ import {
     showSuccessNotificationFunction,
 } from '@/common/helpers';
 import { PageName } from '@/common/constants';
-import { commonModule } from '@/common/store/common.store';
+import { commonModule } from '@/modules/common/store/common.store';
 
 Options({
     components: {},

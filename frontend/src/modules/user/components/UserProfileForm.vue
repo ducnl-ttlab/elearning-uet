@@ -93,7 +93,7 @@ import { IMAGE_EXTENSION_LIST } from '@/common/constants';
 import { userModule } from '../store/user.store';
 import { IUpdateUserData } from '../constants/user.interfaces';
 import { loginModule } from '@/modules/auth/store/login.store';
-import { commonModule } from '@/common/store/common.store';
+import { commonModule } from '@/modules/common/store/common.store';
 import { IUserData } from '@/common/interfaces';
 
 @Options({

@@ -38,6 +38,9 @@ const courseQueryListSchema = Joi.object().keys({
     .pattern(/^[0-9]+$/)
     .message('categoryId should be a number')
     .optional(),
+  instructorIds: Joi.string()
+    .min(1)
+    .message('instructorIds should be a string separated by comma'),
 });
 const courseSearchQueryListSchema = Joi.object().keys({
   page: Joi.string()

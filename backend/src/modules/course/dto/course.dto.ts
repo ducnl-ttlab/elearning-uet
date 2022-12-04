@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { CommonListResponse } from 'src/common/helpers/api.response';
+import { InstructorDto } from 'src/modules/user/dto/user';
 
 export class CourseCreateDto {
   @ApiProperty({
@@ -47,9 +48,10 @@ export class CategoryDto {
 export interface CourseQueryDto {
   page: number;
   keyword: string;
-  rating: number;
+  rating: string;
   pageSize: number;
   categoryId: number;
+  instructorIds: string;
 }
 export interface CourseSearchQueryDto {
   page: number;
@@ -62,6 +64,8 @@ export class CourseDto {
   id: number;
 }
 export class CourseListResponse extends CommonListResponse<CourseDto> {}
+
+export class InstructorListReponse extends CommonListResponse<InstructorDto> {}
 
 export interface CourseSearch {
   id: number;
