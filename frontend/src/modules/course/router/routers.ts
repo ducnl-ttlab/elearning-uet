@@ -21,9 +21,18 @@ const courseRouters: Array<RouteRecordRaw> = [
         ],
     },
     {
-        path: '/course-creation',
-        component: CreateCoursePage,
-        name: PageName.CREATE_COURSE_PAGE,
+        path: '/create-course',
+        component: MainLayout,
+        meta: {
+            isPublic: true,
+        },
+        children: [
+            {
+                path: '',
+                name: PageName.CREATE_COURSE_PAGE,
+                component: CreateCoursePage,
+            },
+        ],
     },
 ];
 

@@ -1,6 +1,6 @@
 <template>
     <div class="form-group flex-column position-relative">
-        <label class="mb-2" v-if="label"
+        <label class="fw-bold text-start mb-2 d-flex align-items-center" v-if="label"
             >{{ label }} <span v-if="isRequired" class="mark-required">*</span></label
         >
         <el-input
@@ -67,4 +67,30 @@ export default class InputNumber extends Vue {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+// :deep(.el-input__inner::-webkit-outer-spin-button),
+// :deep(.el-input__inner::-webkit-inner-spin-button) {
+//     -webkit-appearance: none;
+//     margin: 0;
+// }
+
+:deep(.el-input__inner) {
+    height: 48px !important;
+}
+
+.validation-error {
+    font-size: 12px;
+    color: $color-red-01;
+    margin: 5px 0;
+}
+
+.is-error {
+    :deep(.el-input .el-input__wrapper) {
+        box-shadow: 0 0 0 1px $color-red-01;
+        background-color: $color-green-03;
+    }
+    label {
+        color: $color-red-01;
+    }
+}
+</style>

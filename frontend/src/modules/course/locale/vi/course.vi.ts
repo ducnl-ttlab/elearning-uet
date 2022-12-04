@@ -14,6 +14,18 @@ export const course = {
             one: '1 sao trở lên',
             none: 'Tất cả',
         },
+        createCourse: 'Tạo khóa học',
+        active: 'Kích hoạt khóa học',
+        inactive: 'Tạm ngừng khóa học',
+        title: 'Tên khóa học',
+        placeholder: 'Nhập tên khóa học',
+        selectCategory: 'Thể loại khóa học',
+        description: 'Mô tả',
+        coursePrice: 'Giá tiền khóa học',
+        startDate: 'Ngày bắt đầu',
+        endDate: 'Ngày kết thúc',
+        dateRange: 'Thời Gian khóa học',
+        courseImage: 'Ảnh khóa học',
     },
 
     filters: {

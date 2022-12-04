@@ -7,7 +7,7 @@
                 <img
                     class="profile-image w-100"
                     :src="
-                        !isChangingAvatar ? userData.avatar : previewImagePath(thumbnail)
+                        !isChangingAvatar ? userData.avatar : previewImagePath(thumbnail!!)
                     "
                     alt=""
                 />
@@ -28,7 +28,7 @@
                 type="file"
                 class="d-none"
                 id="file-input"
-                @change="handleChangeProfileImage($event.target.files)"
+                @change="handleChangeProfileImage(($event.target as any)?.files)"
                 accept="image/*"
             />
         </div>
@@ -92,7 +92,6 @@ import {
 import { IMAGE_EXTENSION_LIST } from '@/common/constants';
 import { userModule } from '../store/user.store';
 import { IUpdateUserData } from '../constants/user.interfaces';
-import { loginModule } from '@/modules/auth/store/login.store';
 import { commonModule } from '@/modules/common/store/common.store';
 import { IUserData } from '@/common/interfaces';
 
