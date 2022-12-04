@@ -47,3 +47,10 @@ WHERE uc.userId = '123456abf';
 
 
 id, userId, courseId, time
+
+DB_3stephandshake
+DB_HOST=ban9dqrtopa9assok3uy-mysql.services.clever-cloud.com
+DB_NAME=ban9dqrtopa9assok3uy
+DB_USERNAME=ufrytofmodiyzv6i
+DB_PASSWORD=w28eTnJP5HDjgqJ1RbTj
+DB_PORT=3306
