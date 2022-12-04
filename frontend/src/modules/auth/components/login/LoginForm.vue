@@ -36,7 +36,7 @@ import {
 } from '@/common/helpers';
 import { Options, Vue } from 'vue-class-component';
 import { login } from '../../services/login';
-import { commonModule } from '@/common/store/common.store';
+import { commonModule } from '@/modules/common/store/common.store';
 import { loginModule } from '../../store/login.store';
 import { PageName, SystemRole } from '@/common/constants';
 import { userModule } from '@/modules/user/store/user.store';

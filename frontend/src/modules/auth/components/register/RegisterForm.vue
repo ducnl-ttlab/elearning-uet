@@ -27,7 +27,7 @@ import {
 } from '@/common/helpers';
 import { Options, Vue } from 'vue-class-component';
 import { register } from '../../services/register';
-import { commonModule } from '@/common/store/common.store';
+import { commonModule } from '@/modules/common/store/common.store';
 import { PageName } from '@/common/constants';
 
 @Options({
