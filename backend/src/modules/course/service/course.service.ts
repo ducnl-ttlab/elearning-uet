@@ -1,3 +1,4 @@
+import { instructorCourseDetailDto } from './../dto/course.dto';
 import { UserService } from 'src/modules/user/service/user.service';
 import {
   Injectable,
@@ -22,6 +23,28 @@ export class CourseService {
   async saveCourse(course: Partial<Course>): Promise<Course> {
     try {
       return this.course.save(course);
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  async instructorCourseDetail(
+    courseId: number,
+  ): Promise<instructorCourseDetailDto[]> {
+    try {
+      let query = `
+        SELECT c.*, u.username, u.email, u.address, u.phone, u.avatar, ROUND(uc.avgRating, 1) as avgRating, uc.studentTotal
+        FROM courses c
+        LEFT JOIN ( 
+          SELECT c.id, AVG(CAST(r.rating AS UNSIGNED)) as avgRating, COUNT(uc.id) as studentTotal FROM courses c
+            LEFT JOIN user_courses uc on uc.courseId = c.id and uc.status <> 'expired' and uc.status <> 'reject'
+            LEFT JOIN ratings r on r.userCourseId = uc.id 
+            GROUP BY c.id
+        ) as uc on uc.id = c.id
+        JOIN users u ON c.instructorId = u.id
+        WHERE c.id = ?
+      `;
+      return this.course.query(query, [courseId]);
     } catch (error) {
       throw new InternalServerErrorException(error);
     }
