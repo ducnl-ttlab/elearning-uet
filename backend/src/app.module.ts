@@ -20,6 +20,7 @@ import { JWTModule } from './modules/jwt/jwt.module';
 import { TopicModule } from './modules/topics/topic.module';
 import { CommentModule } from './modules/comment/comment.module';
 import { RatingModule } from './modules/rating/rating.module';
+import { FavoriteModule } from './modules/topics copy/topic.module';
 
 @Module({
   imports: [
@@ -40,7 +41,8 @@ import { RatingModule } from './modules/rating/rating.module';
     PollModule,
     TopicModule,
     CommentModule,
-    RatingModule
+    RatingModule,
+    FavoriteModule,
   ],
   controllers: [AppController],
   providers: [AppService],

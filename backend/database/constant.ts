@@ -11,6 +11,7 @@ export enum TableName {
   question = 'questions',
   answer = 'answers',
   userAnswer = 'user_answers',
+  favorite = 'favorites',
 }
 
 export enum Role {

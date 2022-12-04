@@ -44,3 +44,6 @@ JOIN (
     JOIN users u ON u.id = c.instructorId
 ) as c on c.courseId = uc.courseId
 WHERE uc.userId = '123456abf';
+
+
+id, userId, courseId, time
