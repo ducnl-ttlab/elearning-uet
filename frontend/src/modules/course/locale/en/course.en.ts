@@ -14,6 +14,18 @@ export const course = {
             one: 'From 1 stars',
             none: 'All',
         },
+        createCourse: 'Create Course',
+        active: 'Activate course',
+        inactive: 'Suspend course',
+        title: 'Course name',
+        placeholder: 'Enter a course name',
+        selectCategory: 'Course Category',
+        description: 'Description',
+        coursePrice: 'Course prices',
+        startDate: 'Start date',
+        endDate: 'End date',
+        dateRange: 'Course date range',
+        courseImage: 'Course image',
     },
 
     filters: {

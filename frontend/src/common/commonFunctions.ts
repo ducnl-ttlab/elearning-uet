@@ -6,6 +6,7 @@ import mapKeys from 'lodash/mapKeys';
 import cloneDeep from 'lodash/cloneDeep';
 import trim from 'lodash/trim';
 import { DateFormat, DEFAULT_AVATAR_COLORS } from './constants';
+import moment from 'moment';
 
 export function convertTimeToUTC(time: string | Date) {
     return momentTimezone.tz(time, 'UTC').toDate();
@@ -133,3 +134,7 @@ export function getHashOfString(name: string) {
 export function generateDefaultAvatarColor(name: string) {
     return DEFAULT_AVATAR_COLORS[getHashOfString(name) % 6];
 }
+
+export const yyyymmddFormat = (date: Date | string) => {
+    return moment(date).format('YYYY-MM-DD');
+};

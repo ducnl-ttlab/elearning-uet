@@ -1,4 +1,5 @@
 import { IAxiosDefaultResponse } from '@/common/interfaces';
+import { loginModule } from '@/modules/auth/store/login.store';
 import axios from 'axios';
 import {
     ICourseData,
@@ -27,6 +28,17 @@ export async function getCourseList(
         .catch((error) => {
             return error.response.data;
         });
+}
+
+export async function createCourse(
+    params: FormData,
+): Promise<IAxiosDefaultResponse<Record<string, unknown>>> {
+    return axios.post(`${BE_URL}/course`, params, {
+        headers: {
+            Authorization: 'Bearer ' + loginModule.accessToken,
+            'Content-Type': 'multipart/form-data',
+        },
+    });
 }
 
 export async function getCoursePreviewData(

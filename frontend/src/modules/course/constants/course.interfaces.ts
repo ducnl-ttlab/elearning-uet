@@ -21,6 +21,16 @@ export interface ICourseListParams {
     instructorIds?: string;
 }
 
+export interface ICourseCreation {
+    isPublished: boolean;
+    name: string;
+    description: string;
+    price: number;
+    startCourseTime: string;
+    endCourseTime: string;
+    file?: string;
+}
+
 export interface ICoursePreviewTopic {
     id?: number;
     name?: string;

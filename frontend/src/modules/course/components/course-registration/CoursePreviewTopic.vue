@@ -16,7 +16,7 @@
             </div>
         </div>
         <BaseNoResult
-            v-if="coursePreviewTopicList.length === 0"
+            v-if="coursePreviewTopicList?.length === 0"
             :message="$t('course.errors.emptyTopicList')"
         />
     </div>

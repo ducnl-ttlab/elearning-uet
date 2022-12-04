@@ -1,8 +1,11 @@
 import { PageName } from '@/common/constants';
 import { RouteRecordRaw } from 'vue-router';
 import CourseListPage from '@/modules/course/pages/CourseListPage.vue';
+import CreateCoursePage from '@/modules/course/pages/CreateCoursePage.vue';
+
 import CourseDetailPage from '@/modules/course/pages/CourseDetailPage.vue';
 import MainLayout from '@/modules/landing/components/layouts/MainLayout.vue';
+
 const courseRouters: Array<RouteRecordRaw> = [
     {
         path: '/category/:id',
@@ -29,6 +32,11 @@ const courseRouters: Array<RouteRecordRaw> = [
                 path: ':courseId',
                 name: PageName.COURSE_DETAIL_PAGE,
                 component: CourseDetailPage,
+            },
+            {
+                path: 'create',
+                name: PageName.CREATE_COURSE_PAGE,
+                component: CreateCoursePage,
             },
         ],
     },
