@@ -46,7 +46,12 @@ export const course = {
         price: 'Giá',
     },
 
+    preview: {
+        content: 'Nội dung khóa học',
+    },
+
     errors: {
         emptyCourseList: 'Không tìm thấy khóa học nào theo bộ lọc.',
+        emptyTopicList: 'Không tìm thấy chủ đề nào.',
     },
 };

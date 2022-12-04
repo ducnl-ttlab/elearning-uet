@@ -30,3 +30,14 @@ export interface ICourseCreation {
     endCourseTime: string;
     file?: string;
 }
+
+export interface ICoursePreviewTopic {
+    id?: number;
+    name?: string;
+    description?: string;
+}
+
+export interface ICoursePreviewData {
+    topics?: Array<ICoursePreviewTopic>;
+    course?: ICourseData;
+}

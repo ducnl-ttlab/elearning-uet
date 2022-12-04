@@ -88,4 +88,6 @@ export interface instructorCourseDetailDto extends Course {
   address: string;
   phone: string;
   avatar: string;
+  avgRating: string;
+  studentTotal: string;
 }
