@@ -68,10 +68,8 @@ export const mysqlTimeStamp = (time: Date) => {
 
 export const defaultResponseTime = (created_at: Date, updated_at: Date) => {
   return {
-    created_at:
-      (created_at && mysqlTimeStamp(created_at)) || ('' as unknown as Date),
-    updated_at:
-      (updated_at && mysqlTimeStamp(updated_at)) || ('' as unknown as Date),
+    created_at: mysqlTimeStamp(created_at),
+    updated_at: mysqlTimeStamp(updated_at),
   };
 };
 
