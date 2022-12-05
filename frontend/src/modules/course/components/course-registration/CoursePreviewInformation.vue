@@ -52,37 +52,57 @@
             <div class="course-p-image">
                 <img :src="coursePreviewInformation?.image" alt="" />
             </div>
-            <div class="course-p-price d-flex flex-row">
-                <div
-                    v-if="coursePreviewInformation?.price"
-                    style="width: 80%"
-                    :style="{
-                        'background-color': getPriceBackgroundColor(
-                            coursePreviewInformation?.price,
-                        ),
-                        width: coursePreviewInformation?.price ? '80%' : '100%',
-                    }"
-                >
-                    {{
-                        $t('course.course.price', {
-                            price: coursePreviewInformation?.price,
-                        })
-                    }}
+            <div class="course-p-action d-flex flex-row">
+                <div v-if="actionButton === 0" style="width: 80%">
+                    <div
+                        v-if="coursePreviewInformation?.price"
+                        :style="{
+                            'background-color': getPriceBackgroundColor(
+                                coursePreviewInformation?.price,
+                            ),
+                        }"
+                    >
+                        {{
+                            $t('course.course.price', {
+                                price: coursePreviewInformation?.price,
+                            })
+                        }}
+                    </div>
+                    <div v-else style="background-color: #3bb143">
+                        {{ $t('course.course.free') }}
+                    </div>
                 </div>
-                <div v-else style="background-color: #3bb143; width: 100%">
-                    {{ $t('course.course.free') }}
+                <div v-if="actionButton === 1" style="width: 80%">
+                    <div style="background-color: #3bb143">
+                        {{ $t('course.course.goToCourse') }}
+                    </div>
+                </div>
+                <div v-if="actionButton === 2" style="width: 80%">
+                    <div style="background-color: #f9f9f9">
+                        {{ $t('course.course.notOwnedCourse') }}
+                    </div>
+                </div>
+                <div v-if="actionButton === 3" style="width: 80%">
+                    <div style="background-color: #f9f9f9">
+                        {{ $t('course.course.rejectedCourse') }}
+                    </div>
+                </div>
+                <div v-if="actionButton === 4" style="width: 80%">
+                    <div style="background-color: #f9f9f9">
+                        {{ $t('course.course.pendingCourse') }}
+                    </div>
+                </div>
+                <div v-if="actionButton === 5" style="width: 80%">
+                    <div style="background-color: #3bb143">
+                        {{ $t('course.course.expiredCourse') }}
+                    </div>
                 </div>
                 <div
-                    v-if="coursePreviewInformation?.price"
-                    class="course-p-cart"
-                    style="width: 20%; background-color: #ffae42"
-                    @click="handleAddToCart"
+                    class="course-p-favorite"
+                    style="width: 20%; background-color: #fff"
+                    @click="handleToggleFavorite"
                 >
-                    <img
-                        src="@/assets/common/icons/header/header-cart.svg"
-                        width="25"
-                        alt=""
-                    />
+                    <img src="@/assets/course/icons/heart.svg" width="25" alt="" />
                 </div>
             </div>
         </div>
@@ -90,16 +110,58 @@
 </template>
 
 <script lang="ts">
+import { PageName } from '@/common/constants';
+import { showErrorNotificationFunction } from '@/common/helpers';
+import { loginModule } from '@/modules/auth/store/login.store';
+import { commonModule } from '@/modules/common/store/common.store';
 import { Options, Vue } from 'vue-class-component';
+import { UserCourseStatus } from '../../constants/course.constants';
 import { getPriceBackgroundColor } from '../../helpers/commonFunctions';
+import { toggleCourseFavorite } from '../../services/user-course';
 import { courseModule } from '../../store/course.store';
+import { userCourseModule } from '../../store/user-course.store';
 
 @Options({
     components: {},
 })
 export default class CoursePreviewTopic extends Vue {
     get coursePreviewInformation() {
-        return courseModule.coursePreviewData.course;
+        return courseModule.coursePreviewData?.course;
+    }
+
+    get userCourseData() {
+        return userCourseModule.userCourseData;
+    }
+
+    get isCourseOwner() {
+        return false;
+    }
+
+    get actionButton() {
+        switch (userCourseModule.userCourseData.status) {
+            case UserCourseStatus.STUDENT:
+            case UserCourseStatus.GUEST:
+                return 0;
+            case UserCourseStatus.ADMIN:
+            case UserCourseStatus.ACCEPTED:
+            case UserCourseStatus.COMMENT_BLOCKED:
+                return 1;
+            case UserCourseStatus.INSTRUCTOR:
+                if (this.isCourseOwner) return 1;
+                else return 2;
+            case UserCourseStatus.REJECTED:
+                return 3;
+            case UserCourseStatus.EXPIRED:
+                return 4;
+            case UserCourseStatus.PENDING:
+                return 5;
+            default:
+                return 0;
+        }
+    }
+
+    handleAction() {
+        console.log(1);
     }
 
     getPriceBackgroundColor(price: number) {
@@ -110,8 +172,30 @@ export default class CoursePreviewTopic extends Vue {
         //call API accessCourse
     }
 
-    handleAddToCart() {
-        //call API AddToCart
+    async handleToggleFavorite() {
+        if (!loginModule.accessToken) {
+            this.$router.push({ name: PageName.LOGIN_PAGE });
+        } else {
+            commonModule.setLoadingIndicator(true);
+            const id: number = parseInt(this.$route.params.courseId as string);
+            const response = await toggleCourseFavorite(id);
+            if (response.success) {
+                userCourseModule.setFavoriteCourse(response?.data?.favorite || false);
+            } else {
+                let res = response?.errors || [
+                    {
+                        message: this.$t(
+                            'landing.categories.errors.getCategoryListError',
+                        ),
+                    },
+                ];
+                userCourseModule.setFavoriteCourse(
+                    this.userCourseData?.favorite || false,
+                );
+                showErrorNotificationFunction(res[0].message);
+            }
+            commonModule.setLoadingIndicator(false);
+        }
     }
 }
 </script>
@@ -148,7 +232,7 @@ export default class CoursePreviewTopic extends Vue {
     &-infos {
         width: 80%;
     }
-    &-price {
+    &-action {
         text-align: center;
         width: 100%;
         line-height: 40px;

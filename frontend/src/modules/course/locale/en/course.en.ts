@@ -26,6 +26,13 @@ export const course = {
         endDate: 'End date',
         dateRange: 'Course date range',
         courseImage: 'Course image',
+        actionList: {
+            goToCourse: 'Join the course.',
+            notOwnedCourse: 'This course belongs to another instructor.',
+            rejectedCourse: 'You have been blocked from this course.',
+            pendingCourse: 'Waiting the instructor to approve your request.',
+            expiredCourse: 'The course has been expired.',
+        },
     },
 
     filters: {
@@ -53,5 +60,6 @@ export const course = {
     errors: {
         emptyCourseList: 'Cannot find any course.',
         emptyTopicList: 'Cannot find any topic.',
+        courseRejected: 'You have been blocked by the instructor.',
     },
 };
