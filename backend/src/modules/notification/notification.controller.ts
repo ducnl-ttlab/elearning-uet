@@ -52,7 +52,6 @@ export class NotificationController {
     @Query() query: QueryNotificationDto,
   ) {
     let { page, pageSize } = query;
-    console.log(user.id);
     let notification = await this.notification.getNotificationsByUserId(
       user.id,
     );
