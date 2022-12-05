@@ -92,28 +92,30 @@ export class UserCourseController {
   ) {
     const { keyword, page, pageSize } = query;
 
-    let userCourses: StudentCourseDto[] = await this.cache.setOrgetCache(
+    let userCourses: StudentCourseDto[] = await this.cache?.setOrgetCache(
       `usercourse${user.id}`,
       async () => {
-        let userCourses = await this.userCourseService.findCoursesByUserId(
-          user.id,
-        );
+        let userCourses =
+          (await this.userCourseService.findCoursesByUserId(user.id)) || [];
 
-        userCourses = userCourses.map((item) => {
-          let {
-            startBlockTime,
-            startCourseTime,
-            beginCourseTime,
-            endCourseTime,
-          } = item;
-          return {
-            ...item,
-            startCourseTime: mysqlTime(startCourseTime),
-            startBlockTime: mysqlTimeStamp(startBlockTime),
-            beginCourseTime: mysqlTime(beginCourseTime),
-            endCourseTime: mysqlTime(endCourseTime),
-          };
-        });
+        userCourses =
+          userCourses?.map((item) => {
+            let {
+              startBlockTime,
+              startCourseTime,
+              beginCourseTime,
+              endCourseTime,
+            } = item;
+            return {
+              ...item,
+              startCourseTime: mysqlTime(startCourseTime),
+              startBlockTime: mysqlTimeStamp(startBlockTime),
+              beginCourseTime: mysqlTime(beginCourseTime),
+              endCourseTime: mysqlTime(endCourseTime),
+            };
+          }) || [];
+
+        return userCourses;
       },
     );
 
@@ -146,45 +148,79 @@ export class UserCourseController {
     @Param() param: CheckoutCourseDto,
     @Res() res: Response,
   ) {
-    let course = await this.courseService.existCourse(param.courseId);
-    let instructor = await this.courseService.getCourseInstrutor(
-      course.instructorId,
-    );
+    const { courseId } = param;
+
+    const { id: userId, username } = user;
+
+    let course = await this.courseService.existCourse(courseId);
+
     let { name, price, image } = course;
-    const { phone, username } = instructor;
 
-    let images = (image && [image]) || [];
-    let { code, token, time } = await this.authService.generateAuthToken();
+    if (!price) {
+      let newUserCourse: Partial<UserCourse> = {
+        courseId,
+        userId,
+        status: UserCourseStatus.accepted,
+        startCourseTime: new Date(),
+      };
 
-    const session = await this.stripe.checkout.sessions.create({
-      payment_method_types: ['card'],
-      mode: 'payment',
-      line_items: [
-        {
-          price_data: {
-            currency: 'usd',
-            product_data: {
-              name,
-              images,
-              description: `Giảng viên: ${username} ${
-                phone ? `, Số điện thoại: ${phone}` : ''
-              }`,
-              metadata: {
-                instructor: instructor.username,
+      //send notification to instructor
+      let newNotification: StudentJoinCourseDto = {
+        instructorId: course.instructorId,
+        type: 'studentJoinCourseFree',
+        studentId: userId,
+        courseId: courseId,
+        studentName: username,
+        courseName: course.name,
+      };
+
+      await Promise.all([
+        this.userCourseService.saveUserCourse(newUserCourse),
+        this.notification.studentJoinCourse(newNotification),
+      ]);
+
+      return res.status(HttpStatus.OK).json(new SuccessResponse());
+    } else {
+      let instructor = await this.courseService.getCourseInstrutor(
+        course.instructorId,
+      );
+      const { phone, username } = instructor;
+
+      let images = (image && [image]) || [];
+      let { code, token, time } = await this.authService.generateAuthToken();
+
+      const session = await this.stripe.checkout.sessions.create({
+        payment_method_types: ['card'],
+        mode: 'payment',
+        line_items: [
+          {
+            price_data: {
+              currency: 'usd',
+              product_data: {
+                name,
+                images,
+                description: `Giảng viên: ${username} ${
+                  phone ? `, Số điện thoại: ${phone}` : ''
+                }`,
+                metadata: {
+                  instructor: instructor.username,
+                },
               },
+              unit_amount: parseInt(`${price}`),
             },
-            unit_amount: parseInt(`${price}`),
+            quantity: 1,
           },
-          quantity: 1,
-        },
-      ],
-      success_url: `http://localhost:8081/${code}`,
-      cancel_url: `http://localhost:8081/cancel`,
-    });
+        ],
+        success_url: `http://localhost:8081/${code}`,
+        cancel_url: `http://localhost:8081/cancel`,
+      });
 
-    // save token to db
-    await this.authService.saveResetToken(user.id, token, time);
-    return res.status(HttpStatus.OK).json({ url: session.url });
+      // save token to db
+      await this.authService.saveResetToken(user.id, token, time);
+      return res
+        .status(HttpStatus.OK)
+        .json(new SuccessResponse({ url: session.url }));
+    }
   }
 
   @Post('join-course/:courseId/:code')
@@ -229,50 +265,6 @@ export class UserCourseController {
     await Promise.all([
       this.userCourseService.saveUserCourse(newUserCourse),
       this.authService.resetTokenById(id),
-      this.notification.studentJoinCourse(newNotification),
-    ]);
-
-    return res.status(HttpStatus.OK).json(new SuccessResponse());
-  }
-
-  @Post('register-free-course/:courseId')
-  @UsePipes(
-    ...userCourseValidation({
-      key: 'courseIdParamSchema',
-      type: 'param',
-    }),
-  )
-  @JoinCourseAuth()
-  async registerFreeCourse(
-    @User() user: IUserJwt,
-    @Param() param: CheckoutCourseDto,
-    @Res() res: Response,
-  ) {
-    let { courseId } = param;
-    let { id, username } = user;
-
-    // check course
-    let course = await this.courseService.existCourse(param.courseId);
-
-    let newUserCourse: Partial<UserCourse> = {
-      courseId,
-      userId: id,
-      status: UserCourseStatus.accepted,
-      startCourseTime: new Date(),
-    };
-
-    //send notification to instructor
-    let newNotification: StudentJoinCourseDto = {
-      instructorId: course.instructorId,
-      type: 'studentJoinCourseFree',
-      studentId: id,
-      courseId: course.id,
-      studentName: username,
-      courseName: course.name,
-    };
-
-    await Promise.all([
-      this.userCourseService.saveUserCourse(newUserCourse),
       this.notification.studentJoinCourse(newNotification),
     ]);
 
