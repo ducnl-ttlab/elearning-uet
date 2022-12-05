@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { DeleteResult, Repository } from 'typeorm';
 import { Favorite } from '../entity/favorite.entity';
 
 @Injectable()
@@ -14,9 +14,13 @@ export class FavoriteService {
     private readonly favorite: Repository<Favorite>,
   ) {}
 
-  async saveFavorite(Favorite: Partial<Favorite>): Promise<Favorite> {
+  async saveFavorite(userId: string, courseId: number): Promise<Favorite> {
     try {
-      return this.favorite.save(Favorite);
+      return this.favorite.save({
+        userId,
+        courseId,
+        time: new Date(),
+      });
     } catch (error) {
       throw new InternalServerErrorException(error);
     }
@@ -30,11 +34,27 @@ export class FavoriteService {
     }
   }
 
-  async existFavorite(id: number): Promise<Favorite> {
-    let existCourse = await this.findOneById(id);
-    if (!existCourse) {
-      throw new NotFoundException('Not found Favorite');
+  async existFavorite(userId: string, courseId: number): Promise<Favorite> {
+    try {
+      let existCourse = await this.favorite.findOne({
+        where: {
+          userId,
+          courseId,
+        },
+      });
+
+      return existCourse;
+    } catch (error) {
+      throw new InternalServerErrorException(error);
     }
-    return existCourse;
+  }
+
+  async deleteFavorite(id: number): Promise<DeleteResult> {
+    try {
+      let deleteFavorite = await this.favorite.delete(id);
+      return deleteFavorite;
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
   }
 }
