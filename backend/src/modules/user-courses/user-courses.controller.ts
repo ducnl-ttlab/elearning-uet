@@ -160,7 +160,7 @@ export class UserCourseController {
       let newUserCourse: Partial<UserCourse> = {
         courseId,
         userId,
-        status: UserCourseStatus.accepted,
+        status: UserCourseStatus.pending,
         startCourseTime: new Date(),
       };
 
