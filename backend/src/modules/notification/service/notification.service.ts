@@ -104,6 +104,18 @@ export class NotificationService {
     }
   }
 
+  async countUnreadNotification(userId: string) {
+    try {
+      return this.notification.count({
+        where: {
+          userId,
+        },
+      });
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
   async getNotificationsByUserId(
     userId: string,
   ): Promise<[NotificationCourse[], number]> {

@@ -1,3 +1,4 @@
+import { NotificationService } from './../notification/service/notification.service';
 import {
   Controller,
   Get,
@@ -56,6 +57,7 @@ export class AuthController {
     private readonly authService: AuthService,
     private readonly mailService: MailService,
     private readonly userService: UserService,
+    private readonly notificationService: NotificationService,
   ) {}
 
   @Get('google')
@@ -145,6 +147,8 @@ export class AuthController {
   ) {
     const { email, password } = body;
     let user = await this.authService.validateLocalUser(email, password);
+    let unreadNotification =
+      await this.notificationService.countUnreadNotification(user.id);
 
     const { accessToken } = await this.authService.signUserJwt({
       email,
@@ -158,9 +162,12 @@ export class AuthController {
       ? avatar
       : `${req.protocol}://${host}/user/image/${avatar}`;
 
-    return res
-      .status(HttpStatus.OK)
-      .json(new SuccessResponse({ user: filterUser(user), accessToken }));
+    return res.status(HttpStatus.OK).json(
+      new SuccessResponse({
+        user: { ...filterUser(user), unreadNotification },
+        accessToken,
+      }),
+    );
   }
 
   @Post('forgot-password')
