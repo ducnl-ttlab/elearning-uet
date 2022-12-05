@@ -5,18 +5,21 @@
                 class="notification-container d-flex align-items-center justify-content-center"
             >
                 <img src="@/assets/common/images/header/notification.svg" alt="" />
-                <span class="notification-number">{{ notification }}</span>
+                <span class="notification-number">{{ getUnreadNotification }}</span>
             </div>
         </router-link>
     </div>
 </template>
 
 <script lang="ts">
+import { userModule } from '@/modules/user/store/user.store';
 import { Vue, Options } from 'vue-class-component';
 
 @Options({})
 export default class MenuNotification extends Vue {
-    notification = 123;
+    get getUnreadNotification() {
+        return userModule.userData.unreadNotification || 0;
+    }
 }
 </script>
 
