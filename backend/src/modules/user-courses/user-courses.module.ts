@@ -1,3 +1,4 @@
+import { FavoriteModule } from './../favorite/favorite.module';
 import { AuthModule } from './../auth/auth.module';
 import { Module } from '@nestjs/common';
 import { UserCourseController } from './user-courses.controller';
@@ -20,6 +21,7 @@ import { RedisCacheService } from '../cache/redis-cache.service';
     AuthModule,
     NotificationModule,
     RedisCacheModule,
+    FavoriteModule,
   ],
   controllers: [UserCourseController],
   providers: [UserCourseService, RedisCacheService],

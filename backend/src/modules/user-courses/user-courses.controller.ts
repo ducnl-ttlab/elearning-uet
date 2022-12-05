@@ -1,3 +1,4 @@
+import { FavoriteService } from './../favorite/service/favorite.service';
 import {
   getPaginatedItems,
   mysqlTime,
@@ -52,6 +53,7 @@ export class UserCourseController {
     private readonly authService: AuthService,
     @Inject(STRIPE_CLIENT) private stripe: Stripe,
     private readonly cache: RedisCacheService,
+    private readonly favoriteService: FavoriteService,
   ) {}
 
   // @Get()
@@ -299,9 +301,13 @@ export class UserCourseController {
       course.id,
     );
 
+    let favorite = await this.favoriteService.existFavorite(user.id, course.id);
+
     let status: CheckRegisterDto['status'] =
       userCourse?.status || user.role || 'guest';
 
-    return res.status(HttpStatus.OK).json(new SuccessResponse({ status }));
+    return res
+      .status(HttpStatus.OK)
+      .json(new SuccessResponse({ status, favorite: !!favorite }));
   }
 }
