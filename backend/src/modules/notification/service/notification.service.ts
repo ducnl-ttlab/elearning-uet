@@ -109,6 +109,7 @@ export class NotificationService {
       return this.notification.count({
         where: {
           userId,
+          isRead: false,
         },
       });
     } catch (error) {
