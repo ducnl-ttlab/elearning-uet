@@ -206,7 +206,7 @@ export class UserCourseController {
                   instructor: instructor.username,
                 },
               },
-              unit_amount: parseInt(`${price}`),
+              unit_amount: parseInt(`${price * 100}`),
             },
             quantity: 1,
           },
