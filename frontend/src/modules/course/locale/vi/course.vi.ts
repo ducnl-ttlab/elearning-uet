@@ -68,5 +68,10 @@ export const course = {
             add: 'Bạn đã thêm khóa học này vào danh sách yêu thích',
             remove: 'Bạn đã xóa khóa học này khỏi danh sách yêu thích.',
         },
+        courseCheckout: {
+            freeCourse:
+                'Đã gửi yêu cầu tham gia khóa học tới giảng viên. Xin hãy chờ phê duyệt',
+            paidCourse: 'Vui lòng tiến hành thanh toán',
+        },
     },
 };

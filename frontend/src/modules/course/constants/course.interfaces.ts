@@ -52,3 +52,7 @@ export interface IUserCourseData {
 export interface IToggleCourseFavoriteResponse {
     favorite?: boolean;
 }
+
+export interface ICourseCheckoutResponse {
+    url?: string;
+}

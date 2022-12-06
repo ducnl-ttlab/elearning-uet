@@ -53,7 +53,7 @@
                 <img :src="coursePreviewInformation?.image" alt="" />
             </div>
             <div class="course-p-action d-flex flex-row">
-                <div v-if="actionKey === 0" style="width: 100%">
+                <div @click="courseCheckout" v-if="actionKey === 0" style="width: 100%">
                     <div
                         v-if="coursePreviewInformation?.price"
                         :style="{
@@ -72,7 +72,11 @@
                         {{ $t('course.course.free') }}
                     </div>
                 </div>
-                <div class="course-p-action d-flex flex-row" v-else>
+                <div
+                    @click="courseCheckout"
+                    class="course-p-action d-flex flex-row"
+                    v-else
+                >
                     <div
                         style="width: 100%"
                         :style="[
@@ -115,7 +119,7 @@ import { commonModule } from '@/modules/common/store/common.store';
 import { Options, Vue } from 'vue-class-component';
 import { UserCourseStatus } from '../../constants/course.constants';
 import { getPriceBackgroundColor } from '../../helpers/commonFunctions';
-import { toggleCourseFavorite } from '../../services/user-course';
+import { courseCheckout, toggleCourseFavorite } from '../../services/user-course';
 import { courseModule } from '../../store/course.store';
 import { userCourseModule } from '../../store/user-course.store';
 
@@ -182,8 +186,31 @@ export default class CoursePreviewTopic extends Vue {
         return '#000000';
     }
 
-    handleAction() {
-        console.log(1);
+    async courseCheckout() {
+        commonModule.setLoadingIndicator(true);
+        const id: number = parseInt(this.$route.params.courseId as string);
+        const response = await courseCheckout(id);
+        if (response.success) {
+            if (response.data?.url) {
+                window.location.href = `${response.data?.url}`;
+                showSuccessNotificationFunction(
+                    this.$t('course.success.courseCheckout.paidCourse'),
+                );
+            } else {
+                this.$emit('reload-course-status');
+                showSuccessNotificationFunction(
+                    this.$t('course.success.courseCheckout.freeCourse'),
+                );
+            }
+        } else {
+            let res = response?.errors || [
+                {
+                    message: this.$t('landing.categories.errors.getCategoryListError'),
+                },
+            ];
+            userCourseModule.setFavoriteCourse(this.userCourseData?.favorite || false);
+            showErrorNotificationFunction(res[0].message);
+        }
     }
 
     getPriceBackgroundColor(price: number) {

@@ -1,6 +1,6 @@
 <template>
     <div class="d-flex flex-column w-100">
-        <CoursePreviewInformation />
+        <CoursePreviewInformation @reload-course-status="getUserCourseData" />
         <CoursePreviewTopic />
     </div>
 </template>

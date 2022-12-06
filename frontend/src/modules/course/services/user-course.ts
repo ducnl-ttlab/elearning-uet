@@ -3,6 +3,7 @@ import { loginModule } from '@/modules/auth/store/login.store';
 import axios from 'axios';
 import {
     IToggleCourseFavoriteResponse,
+    ICourseCheckoutResponse,
     IUserCourseData,
 } from '../constants/course.interfaces';
 
@@ -32,6 +33,27 @@ export async function toggleCourseFavorite(
     return axios
         .post(
             `${BE_URL}/favorite/${courseId}`,
+            {},
+            {
+                headers: {
+                    Authorization: 'Bearer ' + loginModule.accessToken,
+                },
+            },
+        )
+        .then((res) => {
+            return res.data;
+        })
+        .catch((error) => {
+            return error.response.data;
+        });
+}
+
+export async function courseCheckout(
+    courseId: number,
+): Promise<IAxiosDefaultResponse<ICourseCheckoutResponse>> {
+    return axios
+        .post(
+            `${BE_URL}/user-course/create-course-checkout/${courseId}`,
             {},
             {
                 headers: {
