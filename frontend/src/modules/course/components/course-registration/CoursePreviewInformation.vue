@@ -53,7 +53,7 @@
                 <img :src="coursePreviewInformation?.image" alt="" />
             </div>
             <div class="course-p-action d-flex flex-row">
-                <div v-if="actionButton === 0" style="width: 80%">
+                <div v-if="actionKey === 0" style="width: 100%">
                     <div
                         v-if="coursePreviewInformation?.price"
                         :style="{
@@ -72,34 +72,26 @@
                         {{ $t('course.course.free') }}
                     </div>
                 </div>
-                <div v-if="actionButton === 1" style="width: 80%">
-                    <div style="background-color: #3bb143">
-                        {{ $t('course.course.goToCourse') }}
-                    </div>
-                </div>
-                <div v-if="actionButton === 2" style="width: 80%">
-                    <div style="background-color: #f9f9f9">
-                        {{ $t('course.course.notOwnedCourse') }}
-                    </div>
-                </div>
-                <div v-if="actionButton === 3" style="width: 80%">
-                    <div style="background-color: #f9f9f9">
-                        {{ $t('course.course.rejectedCourse') }}
-                    </div>
-                </div>
-                <div v-if="actionButton === 4" style="width: 80%">
-                    <div style="background-color: #f9f9f9">
-                        {{ $t('course.course.pendingCourse') }}
-                    </div>
-                </div>
-                <div v-if="actionButton === 5" style="width: 80%">
-                    <div style="background-color: #3bb143">
-                        {{ $t('course.course.expiredCourse') }}
+                <div class="course-p-action d-flex flex-row" v-else>
+                    <div
+                        style="width: 100%"
+                        :style="[
+                            { 'background-color': getActionBackgroundColor(actionKey) },
+                            { color: getActionTextColor(actionKey) },
+                            {
+                                cursor:
+                                    actionKey === 0 || actionKey === 1
+                                        ? 'pointer'
+                                        : 'not-allowed',
+                            },
+                        ]"
+                    >
+                        {{ getActionText(actionKey) }}
                     </div>
                 </div>
                 <div
                     class="course-p-favorite"
-                    style="width: 20%; background-color: #fff"
+                    style="width: 25%; background-color: #fff"
                     @click="handleToggleFavorite"
                 >
                     <img src="@/assets/course/icons/heart.svg" width="25" alt="" />
@@ -125,6 +117,7 @@ import { userCourseModule } from '../../store/user-course.store';
     components: {},
 })
 export default class CoursePreviewTopic extends Vue {
+    UserCourseStatus = UserCourseStatus;
     get coursePreviewInformation() {
         return courseModule.coursePreviewData?.course;
     }
@@ -137,7 +130,7 @@ export default class CoursePreviewTopic extends Vue {
         return false;
     }
 
-    get actionButton() {
+    get actionKey() {
         switch (userCourseModule.userCourseData.status) {
             case UserCourseStatus.STUDENT:
             case UserCourseStatus.GUEST:
@@ -158,6 +151,25 @@ export default class CoursePreviewTopic extends Vue {
             default:
                 return 0;
         }
+    }
+
+    getActionText(action: number) {
+        if (action === 1) return this.$t('course.course.actionList.goToCourse');
+        if (action === 2) return this.$t('course.course.actionList.notOwnedCourse');
+        if (action === 3) return this.$t('course.course.actionList.rejectedCourse');
+        if (action === 4) return this.$t('course.course.actionList.pendingCourse');
+        if (action === 5) return this.$t('course.course.actionList.expiredCourse');
+    }
+
+    getActionBackgroundColor(action: number) {
+        if (action === 1) return '#3bb143';
+        if (action === 3) return '#ff647c';
+        return '#8f919f';
+    }
+
+    getActionTextColor(action: number) {
+        if (action === 1) return '#ffffff';
+        return '#000000';
     }
 
     handleAction() {
@@ -196,6 +208,10 @@ export default class CoursePreviewTopic extends Vue {
             }
             commonModule.setLoadingIndicator(false);
         }
+    }
+
+    created() {
+        console.log(this.actionKey);
     }
 }
 </script>
