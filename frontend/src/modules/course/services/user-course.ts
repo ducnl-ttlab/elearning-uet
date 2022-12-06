@@ -30,11 +30,15 @@ export async function toggleCourseFavorite(
     courseId: number,
 ): Promise<IAxiosDefaultResponse<IToggleCourseFavoriteResponse>> {
     return axios
-        .post(`${BE_URL}/favorite/${courseId}`, {
-            headers: {
-                Authorization: 'Bearer ' + loginModule.accessToken,
+        .post(
+            `${BE_URL}/favorite/${courseId}`,
+            {},
+            {
+                headers: {
+                    Authorization: 'Bearer ' + loginModule.accessToken,
+                },
             },
-        })
+        )
         .then((res) => {
             return res.data;
         })

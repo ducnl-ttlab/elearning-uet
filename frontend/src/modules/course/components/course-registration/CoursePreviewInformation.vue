@@ -91,7 +91,10 @@
                 </div>
                 <div
                     class="course-p-favorite"
-                    style="width: 25%; background-color: #fff"
+                    style="width: 25%"
+                    :style="{
+                        'background-color': isFavoriteCourse ? '#ff647c99' : '#fff',
+                    }"
                     @click="handleToggleFavorite"
                 >
                     <img src="@/assets/course/icons/heart.svg" width="25" alt="" />
@@ -103,7 +106,10 @@
 
 <script lang="ts">
 import { PageName } from '@/common/constants';
-import { showErrorNotificationFunction } from '@/common/helpers';
+import {
+    showErrorNotificationFunction,
+    showSuccessNotificationFunction,
+} from '@/common/helpers';
 import { loginModule } from '@/modules/auth/store/login.store';
 import { commonModule } from '@/modules/common/store/common.store';
 import { Options, Vue } from 'vue-class-component';
@@ -128,6 +134,10 @@ export default class CoursePreviewTopic extends Vue {
 
     get isCourseOwner() {
         return false;
+    }
+
+    get isFavoriteCourse() {
+        return userCourseModule.favoriteCourse;
     }
 
     get actionKey() {
@@ -193,6 +203,14 @@ export default class CoursePreviewTopic extends Vue {
             const response = await toggleCourseFavorite(id);
             if (response.success) {
                 userCourseModule.setFavoriteCourse(response?.data?.favorite || false);
+                if (response.data?.favorite)
+                    showSuccessNotificationFunction(
+                        this.$t('course.success.favoriteCourse.add'),
+                    );
+                else
+                    showSuccessNotificationFunction(
+                        this.$t('course.success.favoriteCourse.remove'),
+                    );
             } else {
                 let res = response?.errors || [
                     {

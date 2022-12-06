@@ -62,4 +62,11 @@ export const course = {
         emptyTopicList: 'Không tìm thấy chủ đề nào.',
         courseRejected: 'Bạn đã bị giảng viên chặn khỏi khóa học.',
     },
+
+    success: {
+        favoriteCourse: {
+            add: 'Bạn đã thêm khóa học này vào danh sách yêu thích',
+            remove: 'Bạn đã xóa khóa học này khỏi danh sách yêu thích.',
+        },
+    },
 };

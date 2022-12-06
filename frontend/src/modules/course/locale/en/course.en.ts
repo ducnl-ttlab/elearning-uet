@@ -62,4 +62,10 @@ export const course = {
         emptyTopicList: 'Cannot find any topic.',
         courseRejected: 'You have been blocked by the instructor.',
     },
+    success: {
+        favoriteCourse: {
+            add: 'Successfully added this course to your favorite list.',
+            remove: 'Successfully removed this course from your favorite list.',
+        },
+    },
 };
