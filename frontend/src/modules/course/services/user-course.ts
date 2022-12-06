@@ -1,4 +1,5 @@
 import { IAxiosDefaultResponse } from '@/common/interfaces';
+import localStorageTokenService from '@/common/tokenService';
 import { loginModule } from '@/modules/auth/store/login.store';
 import axios from 'axios';
 import {
@@ -16,7 +17,7 @@ export async function getUserCourseData(
     return axios
         .get(`${BE_URL}/user-course/check/${courseId}`, {
             headers: {
-                Authorization: 'Bearer ' + loginModule.accessToken,
+                Authorization: 'Bearer ' + localStorageTokenService.getAccessToken(),
             },
         })
         .then((res) => {
@@ -36,7 +37,7 @@ export async function toggleCourseFavorite(
             {},
             {
                 headers: {
-                    Authorization: 'Bearer ' + loginModule.accessToken,
+                    Authorization: 'Bearer ' + localStorageTokenService.getAccessToken(),
                 },
             },
         )
@@ -57,7 +58,7 @@ export async function courseCheckout(
             {},
             {
                 headers: {
-                    Authorization: 'Bearer ' + loginModule.accessToken,
+                    Authorization: 'Bearer ' + localStorageTokenService.getAccessToken(),
                 },
             },
         )
@@ -74,7 +75,15 @@ export async function courseCheckoutVerify(
     code: string,
 ): Promise<IAxiosDefaultResponse<Record<string, never>>> {
     return axios
-        .post(`${BE_URL}/user-course/join-course/${courseId}/${code}`)
+        .post(
+            `${BE_URL}/user-course/join-course/${courseId}/${code}`,
+            {},
+            {
+                headers: {
+                    Authorization: 'Bearer ' + localStorageTokenService.getAccessToken(),
+                },
+            },
+        )
         .then((res) => {
             return res.data;
         })

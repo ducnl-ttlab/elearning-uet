@@ -38,7 +38,7 @@ export default class CreatePasswordPage extends Vue {
                     name: PageName.COURSE_DETAIL_PAGE,
                     params: { courseId: courseId },
                 }),
-            3000,
+            2000,
         );
     }
 }
