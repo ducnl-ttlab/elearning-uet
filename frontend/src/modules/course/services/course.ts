@@ -6,7 +6,6 @@ import {
     ICourseListParams,
     ICoursePreviewData,
 } from '../constants/course.interfaces';
-import { course } from '../locale/en/course.en';
 
 const FE_URL = process.env.VUE_APP_FE_BASE_URL;
 const BE_URL = process.env.VUE_APP_API_URL;

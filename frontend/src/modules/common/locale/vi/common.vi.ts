@@ -17,7 +17,7 @@ export const common = {
             vi: 'Tiếng Việt',
             en: 'Tiếng Anh',
         },
-        appName: 'Academix',
+        appName: 'Sorademic',
         loginButton: 'Đăng nhập',
         registerButton: 'Đăng ký',
         courses: 'Khóa học của tôi',

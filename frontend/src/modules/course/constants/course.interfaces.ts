@@ -1,3 +1,5 @@
+import { UserCourseStatus } from './course.constants';
+
 export interface ICourseData {
     id: number;
     categoryId: number;
@@ -40,4 +42,13 @@ export interface ICoursePreviewTopic {
 export interface ICoursePreviewData {
     topics?: Array<ICoursePreviewTopic>;
     course?: ICourseData;
+}
+
+export interface IUserCourseData {
+    status?: UserCourseStatus;
+    favorite?: boolean;
+}
+
+export interface IToggleCourseFavoriteResponse {
+    favorite?: boolean;
 }

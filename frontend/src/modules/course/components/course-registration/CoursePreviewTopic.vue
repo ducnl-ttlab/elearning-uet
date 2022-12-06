@@ -1,5 +1,5 @@
 <template>
-    <div class="pb-4">
+    <div class="pb-4 course-p-topic-wrapper">
         <div class="course-p-title">{{ $t('course.preview.content') }}</div>
         <div class="course-p-topic d-flex flex-column">
             <div
@@ -19,19 +19,33 @@
             v-if="coursePreviewTopicList?.length === 0"
             :message="$t('course.errors.emptyTopicList')"
         />
+        <BaseNoResult
+            v-if="
+                coursePreviewTopicList?.length > 0 &&
+                userCourseData?.status === UserCourseStatus.REJECTED
+            "
+            :message="$t('course.errors.courseRejected')"
+        />
     </div>
 </template>
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
+import { UserCourseStatus } from '../../constants/course.constants';
 import { courseModule } from '../../store/course.store';
+import { userCourseModule } from '../../store/user-course.store';
 
 @Options({
     components: {},
 })
 export default class CoursePreviewTopic extends Vue {
+    UserCourseStatus = UserCourseStatus;
     get coursePreviewTopicList() {
-        return courseModule.coursePreviewData.topics;
+        return courseModule.coursePreviewData?.topics;
+    }
+
+    get userCourseData() {
+        return userCourseModule.userCourseData;
     }
 }
 </script>
@@ -44,6 +58,9 @@ export default class CoursePreviewTopic extends Vue {
 
 .course-p-topic {
     padding-top: 30px;
+    &-wrapper {
+        padding: 0 4vw;
+    }
 
     &-detail {
         background-color: $color-violet-new-1-filter;

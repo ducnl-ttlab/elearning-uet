@@ -17,7 +17,7 @@ export const common = {
             vi: 'Vietnamese',
             en: 'English',
         },
-        appName: 'Academix',
+        appName: 'Sorademic',
         loginButton: 'Login',
         registerButton: 'Register',
         courses: 'My Courses',
@@ -27,7 +27,7 @@ export const common = {
         dropdownCart: 'Your purchases',
     },
     footer: {
-        appName: 'Academix',
+        appName: 'Sorademic',
         address: '144 Xuan Thuy, Dich Vong Hau, Cau Giay, Hanoi, Vietnam',
         email: "syntaxerror{'@'}vnu.edu.vn",
         contact: {

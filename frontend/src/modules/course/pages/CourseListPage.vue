@@ -22,7 +22,7 @@
     <SortTable />
     <CourseListTable v-if="courseListDisplayMode === CourseListDisplayMode.LIST" />
     <BaseNoResult
-        v-if="courseList.length === 0"
+        v-if="courseList?.length === 0"
         :message="$t('course.errors.emptyCourseList')"
     />
     <div class="course-list-page-wrapper">
@@ -82,6 +82,7 @@ export default class CourseListPage extends Vue {
 
     async getCourseList() {
         commonModule.setLoadingIndicator(true);
+        courseModule.setCourseListDisplayMode(CourseListDisplayMode.GRID);
         const id: number = parseInt(this.$route.params.id as string);
         const response = await getCourseList({
             pageSize: MAX_COURSE_GRID_ITEMS,

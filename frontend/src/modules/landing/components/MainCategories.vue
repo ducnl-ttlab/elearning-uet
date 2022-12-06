@@ -63,6 +63,12 @@ export default class MainCategories extends Vue {
     align-content: flex-start;
 }
 
+@media only screen and (max-width: map-get($map: $grid-breakpoints, $key: xl)) {
+    .categories-wrapper {
+        justify-content: space-around !important;
+    }
+}
+
 @media only screen and (max-width: map-get($map: $grid-breakpoints, $key: md)) {
     .form {
         margin: 40px auto 51px !important;

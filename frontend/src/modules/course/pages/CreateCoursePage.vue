@@ -131,7 +131,7 @@ import { commonModule } from '@/modules/common/store/common.store';
 import { getCategoryList } from '@/modules/landing/services/landing';
 import { landingModule } from '@/modules/landing/store/landing.store';
 import { Options, Vue } from 'vue-class-component';
-import CategoryDropDown from '../components/CategoyDropDown.vue';
+import CategoryDropDown from '../components/CategoryDropDown.vue';
 import { yyyymmddFormat } from '@/common/commonFunctions';
 import { IMAGE_EXTENSION_LIST } from '@/common/constants';
 import { ICourseCreation } from '../constants/course.interfaces';

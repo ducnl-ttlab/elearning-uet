@@ -52,37 +52,52 @@
             <div class="course-p-image">
                 <img :src="coursePreviewInformation?.image" alt="" />
             </div>
-            <div class="course-p-price d-flex flex-row">
+            <div class="course-p-action d-flex flex-row">
+                <div v-if="actionKey === 0" style="width: 100%">
+                    <div
+                        v-if="coursePreviewInformation?.price"
+                        :style="{
+                            'background-color': getPriceBackgroundColor(
+                                coursePreviewInformation?.price,
+                            ),
+                        }"
+                    >
+                        {{
+                            $t('course.course.price', {
+                                price: coursePreviewInformation?.price,
+                            })
+                        }}
+                    </div>
+                    <div v-else style="background-color: #3bb143">
+                        {{ $t('course.course.free') }}
+                    </div>
+                </div>
+                <div class="course-p-action d-flex flex-row" v-else>
+                    <div
+                        style="width: 100%"
+                        :style="[
+                            { 'background-color': getActionBackgroundColor(actionKey) },
+                            { color: getActionTextColor(actionKey) },
+                            {
+                                cursor:
+                                    actionKey === 0 || actionKey === 1
+                                        ? 'pointer'
+                                        : 'not-allowed',
+                            },
+                        ]"
+                    >
+                        {{ getActionText(actionKey) }}
+                    </div>
+                </div>
                 <div
-                    v-if="coursePreviewInformation?.price"
-                    style="width: 80%"
+                    class="course-p-favorite"
+                    style="width: 25%"
                     :style="{
-                        'background-color': getPriceBackgroundColor(
-                            coursePreviewInformation?.price,
-                        ),
-                        width: coursePreviewInformation?.price ? '80%' : '100%',
+                        'background-color': isFavoriteCourse ? '#ff647c99' : '#fff',
                     }"
+                    @click="handleToggleFavorite"
                 >
-                    {{
-                        $t('course.course.price', {
-                            price: coursePreviewInformation?.price,
-                        })
-                    }}
-                </div>
-                <div v-else style="background-color: #3bb143; width: 100%">
-                    {{ $t('course.course.free') }}
-                </div>
-                <div
-                    v-if="coursePreviewInformation?.price"
-                    class="course-p-cart"
-                    style="width: 20%; background-color: #ffae42"
-                    @click="handleAddToCart"
-                >
-                    <img
-                        src="@/assets/common/icons/header/header-cart.svg"
-                        width="25"
-                        alt=""
-                    />
+                    <img src="@/assets/course/icons/heart.svg" width="25" alt="" />
                 </div>
             </div>
         </div>
@@ -90,16 +105,85 @@
 </template>
 
 <script lang="ts">
+import { PageName } from '@/common/constants';
+import {
+    showErrorNotificationFunction,
+    showSuccessNotificationFunction,
+} from '@/common/helpers';
+import { loginModule } from '@/modules/auth/store/login.store';
+import { commonModule } from '@/modules/common/store/common.store';
 import { Options, Vue } from 'vue-class-component';
+import { UserCourseStatus } from '../../constants/course.constants';
 import { getPriceBackgroundColor } from '../../helpers/commonFunctions';
+import { toggleCourseFavorite } from '../../services/user-course';
 import { courseModule } from '../../store/course.store';
+import { userCourseModule } from '../../store/user-course.store';
 
 @Options({
     components: {},
 })
 export default class CoursePreviewTopic extends Vue {
+    UserCourseStatus = UserCourseStatus;
     get coursePreviewInformation() {
-        return courseModule.coursePreviewData.course;
+        return courseModule.coursePreviewData?.course;
+    }
+
+    get userCourseData() {
+        return userCourseModule.userCourseData;
+    }
+
+    get isCourseOwner() {
+        return false;
+    }
+
+    get isFavoriteCourse() {
+        return userCourseModule.favoriteCourse;
+    }
+
+    get actionKey() {
+        switch (userCourseModule.userCourseData.status) {
+            case UserCourseStatus.STUDENT:
+            case UserCourseStatus.GUEST:
+                return 0;
+            case UserCourseStatus.ADMIN:
+            case UserCourseStatus.ACCEPTED:
+            case UserCourseStatus.COMMENT_BLOCKED:
+                return 1;
+            case UserCourseStatus.INSTRUCTOR:
+                if (this.isCourseOwner) return 1;
+                else return 2;
+            case UserCourseStatus.REJECTED:
+                return 3;
+            case UserCourseStatus.EXPIRED:
+                return 4;
+            case UserCourseStatus.PENDING:
+                return 5;
+            default:
+                return 0;
+        }
+    }
+
+    getActionText(action: number) {
+        if (action === 1) return this.$t('course.course.actionList.goToCourse');
+        if (action === 2) return this.$t('course.course.actionList.notOwnedCourse');
+        if (action === 3) return this.$t('course.course.actionList.rejectedCourse');
+        if (action === 4) return this.$t('course.course.actionList.pendingCourse');
+        if (action === 5) return this.$t('course.course.actionList.expiredCourse');
+    }
+
+    getActionBackgroundColor(action: number) {
+        if (action === 1) return '#3bb143';
+        if (action === 3) return '#ff647c';
+        return '#8f919f';
+    }
+
+    getActionTextColor(action: number) {
+        if (action === 1) return '#ffffff';
+        return '#000000';
+    }
+
+    handleAction() {
+        console.log(1);
     }
 
     getPriceBackgroundColor(price: number) {
@@ -110,8 +194,42 @@ export default class CoursePreviewTopic extends Vue {
         //call API accessCourse
     }
 
-    handleAddToCart() {
-        //call API AddToCart
+    async handleToggleFavorite() {
+        if (!loginModule.accessToken) {
+            this.$router.push({ name: PageName.LOGIN_PAGE });
+        } else {
+            commonModule.setLoadingIndicator(true);
+            const id: number = parseInt(this.$route.params.courseId as string);
+            const response = await toggleCourseFavorite(id);
+            if (response.success) {
+                userCourseModule.setFavoriteCourse(response?.data?.favorite || false);
+                if (response.data?.favorite)
+                    showSuccessNotificationFunction(
+                        this.$t('course.success.favoriteCourse.add'),
+                    );
+                else
+                    showSuccessNotificationFunction(
+                        this.$t('course.success.favoriteCourse.remove'),
+                    );
+            } else {
+                let res = response?.errors || [
+                    {
+                        message: this.$t(
+                            'landing.categories.errors.getCategoryListError',
+                        ),
+                    },
+                ];
+                userCourseModule.setFavoriteCourse(
+                    this.userCourseData?.favorite || false,
+                );
+                showErrorNotificationFunction(res[0].message);
+            }
+            commonModule.setLoadingIndicator(false);
+        }
+    }
+
+    created() {
+        console.log(this.actionKey);
     }
 }
 </script>
@@ -148,7 +266,7 @@ export default class CoursePreviewTopic extends Vue {
     &-infos {
         width: 80%;
     }
-    &-price {
+    &-action {
         text-align: center;
         width: 100%;
         line-height: 40px;

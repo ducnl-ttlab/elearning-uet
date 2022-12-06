@@ -11,9 +11,10 @@ import { commonModule } from '@/modules/common/store/common.store';
 import { Options, Vue } from 'vue-class-component';
 import { getCoursePreviewData } from '../../services/course';
 import { courseModule } from '../../store/course.store';
+import { userCourseModule } from '../../store/user-course.store';
+import { getUserCourseData } from '../../services/user-course';
 import CoursePreviewInformation from './CoursePreviewInformation.vue';
 import CoursePreviewTopic from './CoursePreviewTopic.vue';
-import { getPriceBackgroundColor } from '../../helpers/commonFunctions';
 
 @Options({
     components: { CoursePreviewInformation, CoursePreviewTopic },
@@ -26,8 +27,6 @@ export default class CourseRegistration extends Vue {
         console.log(response);
         if (response.success) {
             courseModule.setCoursePreviewData(response?.data || {});
-            console.log(courseModule.coursePreviewData);
-            console.log('hihihii');
         } else {
             let res = response?.errors || [
                 { message: this.$t('landing.categories.errors.getCategoryListError') },
@@ -38,8 +37,25 @@ export default class CourseRegistration extends Vue {
         commonModule.setLoadingIndicator(false);
     }
 
-    created() {
-        this.initCourseRegistration();
+    async getUserCourseData() {
+        commonModule.setLoadingIndicator(true);
+        const id: number = parseInt(this.$route.params.courseId as string);
+        const response = await getUserCourseData(id);
+        if (response.success) {
+            userCourseModule.setUserCourseData(response?.data || {});
+        } else {
+            let res = response?.errors || [
+                { message: this.$t('landing.categories.errors.getCategoryListError') },
+            ];
+            userCourseModule.setUserCourseData({});
+            showErrorNotificationFunction(res[0].message);
+        }
+        commonModule.setLoadingIndicator(false);
+    }
+
+    async created() {
+        await this.initCourseRegistration();
+        await this.getUserCourseData();
     }
 }
 </script>
