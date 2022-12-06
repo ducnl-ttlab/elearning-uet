@@ -68,3 +68,17 @@ export async function courseCheckout(
             return error.response.data;
         });
 }
+
+export async function courseCheckoutVerify(
+    courseId: string,
+    code: string,
+): Promise<IAxiosDefaultResponse<Record<string, never>>> {
+    return axios
+        .post(`${BE_URL}/user-course/join-course/${courseId}/${code}`)
+        .then((res) => {
+            return res.data;
+        })
+        .catch((error) => {
+            return error.response.data;
+        });
+}

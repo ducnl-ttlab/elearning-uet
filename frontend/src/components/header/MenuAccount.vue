@@ -112,6 +112,8 @@ import {
     getFirstLetterOfName,
 } from '@/common/commonFunctions';
 import { userModule } from '@/modules/user/store/user.store';
+import localStorageTokenService from '@/common/tokenService';
+import { getUserData } from '@/modules/user/services/user';
 
 @Options({
     components: {},
@@ -138,16 +140,20 @@ export default class HeaderMenuAccount extends Vue {
         return getFirstLetterOfName(this.userData?.username || '').trim();
     }
 
+    async created() {
+        userModule.setUserData(localStorageTokenService.getLoginUser() || {});
+        loginModule.setAccessToken(localStorageTokenService.getAccessToken());
+    }
+
     async handleLogout() {
         commonModule.setLoadingIndicator(true);
         userModule.setUserData({});
         loginModule.setAccessToken('');
         loginModule.setLoginState(false);
-
+        localStorageTokenService.resetAll();
         this.$router.push({
             name: PageName.LOGIN_PAGE,
         });
-
         commonModule.setLoadingIndicator(false);
     }
 }

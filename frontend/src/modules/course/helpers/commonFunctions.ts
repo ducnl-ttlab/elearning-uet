@@ -8,7 +8,7 @@ export function getPriceBackgroundColor(price: number) {
     if (price > 20) {
         return '#6D79E8';
     }
-    if (price > 10) {
+    if (price > 1) {
         return '#A7AEF1';
     }
 }

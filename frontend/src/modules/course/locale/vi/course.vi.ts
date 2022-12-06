@@ -61,6 +61,7 @@ export const course = {
         emptyCourseList: 'Không tìm thấy khóa học nào theo bộ lọc.',
         emptyTopicList: 'Không tìm thấy chủ đề nào.',
         courseRejected: 'Bạn đã bị giảng viên chặn khỏi khóa học.',
+        declinedPayment: 'Thanh toán thất bại, xin vui lòng thử lại',
     },
 
     success: {
@@ -72,6 +73,7 @@ export const course = {
             freeCourse:
                 'Đã gửi yêu cầu tham gia khóa học tới giảng viên. Xin hãy chờ phê duyệt',
             paidCourse: 'Vui lòng tiến hành thanh toán',
+            successPayment: 'Bạn đã thanh toán thành công, vui lòng trở lại khóa học',
         },
     },
 };

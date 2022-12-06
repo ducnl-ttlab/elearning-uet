@@ -18,7 +18,7 @@ import { Vue, Options } from 'vue-class-component';
 @Options({})
 export default class MenuNotification extends Vue {
     get getUnreadNotification() {
-        return userModule.userData.unreadNotification || 0;
+        return userModule?.userData?.unreadNotification || 0;
     }
 }
 </script>

@@ -31,6 +31,7 @@
 </template>
 <script lang="ts">
 import {
+    setLoginUser,
     showErrorNotificationFunction,
     showSuccessNotificationFunction,
 } from '@/common/helpers';
@@ -40,6 +41,7 @@ import { commonModule } from '@/modules/common/store/common.store';
 import { loginModule } from '../../store/login.store';
 import { PageName, SystemRole } from '@/common/constants';
 import { userModule } from '@/modules/user/store/user.store';
+import localStorageTokenService from '@/common/tokenService';
 
 @Options({
     components: {},
@@ -69,6 +71,7 @@ export default class InputCredentialForm extends Vue {
             userModule.setUserData(response?.data?.user || {});
             loginModule.setAccessToken(response?.data?.accessToken || '');
             loginModule.setLoginState(true);
+            setLoginUser(response?.data || { accessToken: '', user: {} });
 
             if (this.userData.role === SystemRole.GUEST) {
                 this.$router.push({

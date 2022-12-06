@@ -171,8 +171,8 @@ export default class CoursePreviewTopic extends Vue {
         if (action === 1) return this.$t('course.course.actionList.goToCourse');
         if (action === 2) return this.$t('course.course.actionList.notOwnedCourse');
         if (action === 3) return this.$t('course.course.actionList.rejectedCourse');
-        if (action === 4) return this.$t('course.course.actionList.pendingCourse');
-        if (action === 5) return this.$t('course.course.actionList.expiredCourse');
+        if (action === 4) return this.$t('course.course.actionList.expiredCourse');
+        if (action === 5) return this.$t('course.course.actionList.pendingCourse');
     }
 
     getActionBackgroundColor(action: number) {
@@ -192,10 +192,10 @@ export default class CoursePreviewTopic extends Vue {
         const response = await courseCheckout(id);
         if (response.success) {
             if (response.data?.url) {
-                window.location.href = `${response.data?.url}`;
                 showSuccessNotificationFunction(
                     this.$t('course.success.courseCheckout.paidCourse'),
                 );
+                setTimeout(() => (window.location.href = `${response.data?.url}`), 1000);
             } else {
                 this.$emit('reload-course-status');
                 showSuccessNotificationFunction(
