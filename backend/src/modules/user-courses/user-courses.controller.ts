@@ -206,13 +206,13 @@ export class UserCourseController {
                   instructor: instructor.username,
                 },
               },
-              unit_amount: parseInt(`${price}`),
+              unit_amount: parseInt(`${price * 100}`),
             },
             quantity: 1,
           },
         ],
-        success_url: `http://localhost:8081/${code}`,
-        cancel_url: `http://localhost:8081/cancel`,
+        success_url: `http://localhost:8080/course/${courseId}/${code}`,
+        cancel_url: `http://localhost:8080/course/${courseId}/cancel`,
       });
 
       // save token to db
