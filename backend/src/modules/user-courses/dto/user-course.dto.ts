@@ -70,3 +70,12 @@ export interface QueryListDto {
   pageSize: number;
 }
 export class CourseStudenListResponse extends CommonListResponse<CourseStudentList> {}
+
+export interface UserActionDto {
+  type: UserCourseStatus | 'kick';
+}
+
+export interface UserActionParam {
+  courseId: number;
+  studentId: string;
+}

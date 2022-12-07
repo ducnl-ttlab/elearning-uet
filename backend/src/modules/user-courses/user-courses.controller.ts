@@ -22,6 +22,8 @@ import {
   Headers,
   Req,
   Query,
+  Put,
+  BadRequestException,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Response, Request } from 'express';
@@ -44,6 +46,8 @@ import {
   CourseStudentList,
   CourseStudenListResponse,
   QueryListDto,
+  UserActionDto,
+  UserActionParam,
 } from './dto/user-course.dto';
 import { STRIPE_CLIENT } from 'src/common/constant';
 import Stripe from 'stripe';
@@ -316,10 +320,16 @@ export class UserCourseController {
 
   @Get('student-list/:courseId')
   @UsePipes(
-    ...userCourseValidation({
-      key: 'courseIdParamSchema',
-      type: 'param',
-    }),
+    ...userCourseValidation(
+      {
+        key: 'courseIdParamSchema',
+        type: 'param',
+      },
+      {
+        key: 'userCourseQueryListSchema',
+        type: 'query',
+      },
+    ),
   )
   @InstructorCourseAuth()
   async getStudentList(
@@ -360,5 +370,54 @@ export class UserCourseController {
       totalItems: studentList.length,
     };
     return res.status(HttpStatus.OK).json(new SuccessResponse(response));
+  }
+
+  @Put('action/:courseId/:studentId')
+  @UsePipes(
+    ...userCourseValidation(
+      {
+        key: 'userActiveSchema',
+        type: 'query',
+      },
+      {
+        key: 'userActionParamSchema',
+        type: 'param',
+      },
+    ),
+  )
+  @InstructorCourseAuth()
+  async studentManipulation(
+    @Instructor() instructor: Course,
+    @User() user: IUserJwt,
+    @Param() param: UserActionParam,
+    @Res() res: Response,
+    @Headers('host') host: Headers,
+    @Req() req: Request,
+    @Query() query: UserActionDto,
+  ) {
+    const { courseId, studentId } = param;
+    const { type } = query;
+
+    const userCourse = await this.userCourseService.existUserCourse(
+      +courseId,
+      studentId,
+    );
+    if (type === userCourse.status) {
+      throw new BadRequestException('Action is not accepted');
+    }
+
+    if (type === 'kick') {
+      await this.userCourseService.deleteUserCourse(userCourse.id);
+      return res
+        .status(HttpStatus.OK)
+        .json(new SuccessResponse('Kick user successfully'));
+    } else {
+      await this.userCourseService.updateUserCourse(userCourse.id, {
+        status: type,
+      });
+      return res
+        .status(HttpStatus.OK)
+        .json(new SuccessResponse('Updated successfully'));
+    }
   }
 }

@@ -24,6 +24,26 @@ export class UserCourseService {
     }
   }
 
+  async deleteUserCourse(id: number) {
+    try {
+      return this.usercourse.delete(id);
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  async updateUserCourse(id: number, properties: Partial<UserCourse>) {
+    try {
+      let result = await this.usercourse.save({
+        ...properties,
+        id,
+      });
+      return result;
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
   async findOneById(id: number): Promise<UserCourse> {
     try {
       return this.usercourse.findOne(id);
@@ -83,10 +103,10 @@ export class UserCourseService {
     }
   }
 
-  async existUserCourse(id: number): Promise<UserCourse> {
-    let existCourse = await this.findOneById(id);
+  async existUserCourse(courseId: number, userId: string): Promise<UserCourse> {
+    let existCourse = await this.findOneByUsercourse(userId, courseId);
     if (!existCourse) {
-      throw new NotFoundException('Not found course');
+      throw new NotFoundException('Not found student in this course');
     }
     return existCourse;
   }
