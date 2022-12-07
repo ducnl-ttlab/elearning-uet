@@ -9,6 +9,7 @@ import { ResultSetHeader } from 'mysql2/promise';
 import { getManager, Repository } from 'typeorm';
 import {
   CommentNotificationDto,
+  InvitedStudentJoinCourseDto,
   StudentJoinCourseDto,
 } from '../dto/notification.dto';
 import { NotificationCourse } from '../entity/notification.entity';
@@ -81,6 +82,26 @@ export class NotificationService {
     } catch (error) {
       throw new InternalServerErrorException(error);
     }
+  }
+
+  async invitedStudentJoinCourse({
+    instructorId,
+    studentId,
+    courseId,
+    courseName,
+    instructorName,
+  }: InvitedStudentJoinCourseDto) {
+    let newNotification = {
+      userId: studentId,
+      sourceId: instructorId,
+      parentId: courseId,
+      type: NotificationType.studentJoinCourse,
+      isRead: false,
+      title: 'Giảng viên mời vào khóa học',
+      description: `Giảng viên ${instructorName} đã mời bạn tham gia khóa học ${courseName}`,
+    };
+
+    return this.saveNotification(newNotification);
   }
 
   async readNotification(userId: string): Promise<ResultSetHeader> {

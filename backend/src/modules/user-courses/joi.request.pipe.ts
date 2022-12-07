@@ -1,3 +1,4 @@
+import { UserCourseStatus } from 'database/constant';
 import * as Joi from 'joi';
 import {
   IValidationKeyType,
@@ -25,6 +26,13 @@ const categoryParamSchema = Joi.object().keys({
     .message('categoryId should be a number'),
 });
 
+const userActionParamSchema = Joi.object().keys({
+  courseId: Joi.string()
+    .pattern(/^[0-9]+$/)
+    .message('categoryId should be a number'),
+  studentId: Joi.string(),
+});
+
 const createCourseSchema = Joi.object().keys({
   name: Joi.string()
     .required()
@@ -50,12 +58,24 @@ const userCourseQueryListSchema = Joi.object().keys({
     .optional(),
 });
 
+const userActiveSchema = Joi.object().keys({
+  type: Joi.string().valid(
+    UserCourseStatus.reject,
+    UserCourseStatus.expired,
+    UserCourseStatus.commentBlocking,
+    UserCourseStatus.accepted,
+    'kick',
+  ),
+});
+
 const courseValidationSchemas = {
   courseIdParamSchema,
   categoryParamSchema,
   createCourseSchema,
   userCourseQueryListSchema,
   verifyCourseParamSchema,
+  userActiveSchema,
+  userActionParamSchema,
 };
 
 type CourseValidationKeyType = keyof typeof courseValidationSchemas;

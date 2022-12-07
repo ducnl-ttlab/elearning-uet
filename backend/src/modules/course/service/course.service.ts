@@ -11,6 +11,7 @@ import { DeleteResult, Repository } from 'typeorm';
 import { Course } from '../entity/course.entity';
 import { TableName } from 'database/constant';
 import { CourseSearch } from '../dto/course.dto';
+import { CourseStudentList } from 'src/modules/user-courses/dto/user-course.dto';
 
 @Injectable()
 export class CourseService {

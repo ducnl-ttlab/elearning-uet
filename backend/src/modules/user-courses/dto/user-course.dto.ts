@@ -41,7 +41,7 @@ export interface StudentCourseDto {
   rating: number;
 
   courseId: number;
-  courseName: string;
+  name: string;
   instructorName: string;
   beginCourseTime: Date;
   endCourseTime: Date;
@@ -53,4 +53,36 @@ export class StudenCourseListResponse extends CommonListResponse<StudentCourseDt
 
 export interface CheckRegisterDto {
   status: UserCourseStatus | Role | 'guest';
+}
+
+export interface CourseStudentList {
+  userId: string;
+  avatar: string;
+  username: string;
+  email: string;
+  status: string;
+  startCourseTime: string | Date;
+}
+
+export interface StudentOutSideCourse {
+  userId: string;
+  avatar: string;
+  username: string;
+}
+
+export interface QueryListDto {
+  keyword: string;
+  page: number;
+  pageSize: number;
+}
+export class CourseStudenListResponse extends CommonListResponse<CourseStudentList> {}
+export class OutSideCourseStudenListResponse extends CommonListResponse<StudentOutSideCourse> {}
+
+export interface UserActionDto {
+  type: UserCourseStatus | 'kick' | 'add';
+}
+
+export interface UserActionParam {
+  courseId: number;
+  studentId: string;
 }

@@ -1,4 +1,8 @@
 import {
+  CourseStudentList,
+  StudentOutSideCourse,
+} from './../dto/user-course.dto';
+import {
   Injectable,
   InternalServerErrorException,
   NotFoundException,
@@ -23,9 +27,64 @@ export class UserCourseService {
     }
   }
 
+  async deleteUserCourse(id: number) {
+    try {
+      return this.usercourse.delete(id);
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  async updateUserCourse(id: number, properties: Partial<UserCourse>) {
+    try {
+      let result = await this.usercourse.save({
+        ...properties,
+        id,
+      });
+      return result;
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
   async findOneById(id: number): Promise<UserCourse> {
     try {
       return this.usercourse.findOne(id);
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  async getStudentList(courseId: number): Promise<CourseStudentList[]> {
+    try {
+      let query = `
+      SELECT uc.userId, u.username, u.email, u.avatar, uc.startCourseTime, uc.status
+      FROM user_courses uc
+      JOIN users u 
+      ON u.id = uc.userId
+      WHERE uc.courseId = ?
+       `;
+
+      return this.usercourse.query(query, [courseId]);
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  async findUserOutsideCourse(
+    courseId: number,
+  ): Promise<StudentOutSideCourse[]> {
+    try {
+      let query = `
+    SELECT u.id as userId, u.avatar, u.username
+    FROM users u
+    WHERE u.id not in  
+      ( SELECT uc.userId
+      FROM user_courses uc
+      WHERE uc.courseId = ? )
+       `;
+
+      return this.usercourse.query(query, [courseId]);
     } catch (error) {
       throw new InternalServerErrorException(error);
     }
@@ -37,7 +96,7 @@ export class UserCourseService {
       SELECT uc.id, uc.status, uc.startCourseTime, uc.blockDuration, r.rating, c.*
       FROM user_courses uc 
       LEFT JOIN (
-          SELECT c.id as courseId, c.name as courseName, u.username as instructorName, c.price, c.image, c.startCourseTime as beginCourseTime, c.endCourseTime
+          SELECT c.id as courseId, c.name as name, u.username as instructorName, c.price, c.image, c.startCourseTime as beginCourseTime, c.endCourseTime
           FROM courses c
           JOIN users u ON u.id = c.instructorId
       ) as c on c.courseId = uc.courseId
@@ -66,10 +125,10 @@ export class UserCourseService {
     }
   }
 
-  async existUserCourse(id: number): Promise<UserCourse> {
-    let existCourse = await this.findOneById(id);
+  async existUserCourse(courseId: number, userId: string): Promise<UserCourse> {
+    let existCourse = await this.findOneByUsercourse(userId, courseId);
     if (!existCourse) {
-      throw new NotFoundException('Not found course');
+      throw new NotFoundException('Not found student in this course');
     }
     return existCourse;
   }

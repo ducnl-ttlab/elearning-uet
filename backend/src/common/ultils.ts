@@ -43,7 +43,7 @@ export const coursePeriod = (startTime: string, endTime: string) => {
   };
 };
 
-export const mysqlTime = (time: Date) => {
+export const mysqlTime = (time: Date | string) => {
   return (
     (time && (moment(time).utc().format('YYYY-MM-DD') as unknown as Date)) ||
     ('' as unknown as Date)

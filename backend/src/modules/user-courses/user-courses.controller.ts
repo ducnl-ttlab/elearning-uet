@@ -1,3 +1,5 @@
+import { Course } from 'src/modules/course/entity/course.entity';
+import { Instructor } from './../../common/decorator/custom.decorator';
 import { FavoriteService } from './../favorite/service/favorite.service';
 import {
   getPaginatedItems,
@@ -17,29 +19,49 @@ import {
   UsePipes,
   Inject,
   UseGuards,
+  Headers,
+  Req,
   Query,
+  Put,
+  BadRequestException,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { Response } from 'express';
+import { Response, Request } from 'express';
 import { UserCourseService } from './service/user-course.service';
 import { IUserJwt } from 'src/common/interfaces';
 import { User } from 'src/common/decorator/custom.decorator';
-import { Auth, JoinCourseAuth } from 'src/common/decorator/auth.decorator';
+import {
+  Auth,
+  InstructorCourseAuth,
+  JoinCourseAuth,
+} from 'src/common/decorator/auth.decorator';
 import { userCourseValidation } from './joi.request.pipe';
-import { SuccessResponse } from 'src/common/helpers/api.response';
+import {
+  ErrorResponse,
+  SuccessResponse,
+} from 'src/common/helpers/api.response';
 import {
   CheckoutCourseDto,
   JoinCourseDto,
   StudenCourseListResponse,
   StudentCourseDto,
   CheckRegisterDto,
+  CourseStudentList,
+  CourseStudenListResponse,
+  QueryListDto,
+  UserActionDto,
+  UserActionParam,
+  OutSideCourseStudenListResponse,
 } from './dto/user-course.dto';
 import { STRIPE_CLIENT } from 'src/common/constant';
 import Stripe from 'stripe';
 import { CourseService } from '../course/service/course.service';
 import { AuthService } from '../auth/service/auth.service';
 import { UserCourse } from './entity/user-course.entity';
-import { StudentJoinCourseDto } from '../notification/dto/notification.dto';
+import {
+  InvitedStudentJoinCourseDto,
+  StudentJoinCourseDto,
+} from '../notification/dto/notification.dto';
 import { RedisCacheService } from '../cache/redis-cache.service';
 import { JWTAuthGuard } from '../auth/guard/jwt-auth.guard';
 
@@ -122,7 +144,7 @@ export class UserCourseController {
     if (keyword) {
       userCourses = [
         ...userCourses.filter((item) => {
-          return item.courseName.includes(keyword);
+          return item.name.includes(keyword);
         }),
       ];
     }
@@ -301,5 +323,185 @@ export class UserCourseController {
     return res
       .status(HttpStatus.OK)
       .json(new SuccessResponse({ status, favorite: !!favorite }));
+  }
+
+  @Get('student-list/:courseId')
+  @UsePipes(
+    ...userCourseValidation(
+      {
+        key: 'courseIdParamSchema',
+        type: 'param',
+      },
+      {
+        key: 'userCourseQueryListSchema',
+        type: 'query',
+      },
+    ),
+  )
+  @InstructorCourseAuth()
+  async getStudentList(
+    @Instructor() instructor: Course,
+    @User() user: IUserJwt,
+    @Param() param: CheckoutCourseDto,
+    @Res() res: Response,
+    @Headers('host') host: Headers,
+    @Req() req: Request,
+    @Query() query: QueryListDto,
+  ) {
+    const { courseId } = param;
+    const { keyword, page = 1, pageSize = 8 } = query;
+    let studentList: CourseStudentList[] =
+      await this.userCourseService.getStudentList(courseId);
+
+    studentList = studentList.map((item) => {
+      const { avatar, startCourseTime } = item;
+      return {
+        ...item,
+        avatar: avatar.startsWith('http')
+          ? avatar
+          : `${req.protocol}://${host}/user/image/${avatar}`,
+        startCourseTime: mysqlTime(startCourseTime),
+      };
+    });
+
+    if (keyword) {
+      studentList = [
+        ...studentList.filter((item) => {
+          return item.username.includes(keyword);
+        }),
+      ];
+    }
+
+    let response: CourseStudenListResponse = {
+      ...getPaginatedItems(studentList, +page, +pageSize),
+      totalItems: studentList.length,
+    };
+    return res.status(HttpStatus.OK).json(new SuccessResponse(response));
+  }
+
+  @Get('outside-course-students/:courseId')
+  @UsePipes(
+    ...userCourseValidation({
+      key: 'courseIdParamSchema',
+      type: 'param',
+    }),
+  )
+  @InstructorCourseAuth()
+  async getOutsideCourseStudent(
+    @Instructor() instructor: Course,
+    @User() user: IUserJwt,
+    @Param() param: CheckoutCourseDto,
+    @Res() res: Response,
+    @Headers('host') host: Headers,
+    @Req() req: Request,
+    @Query() query: QueryListDto,
+  ) {
+    const { courseId } = param;
+    const { keyword } = query;
+
+    let student = await this.userCourseService.findUserOutsideCourse(courseId);
+
+    if (keyword) {
+      student = [
+        ...student.filter((item) => {
+          return item.username.includes(keyword);
+        }),
+      ];
+    }
+
+    const response: OutSideCourseStudenListResponse = {
+      items: student,
+      totalItems: student.length,
+    };
+
+    return res.status(HttpStatus.OK).json(new SuccessResponse(response));
+  }
+
+  @Put('action/:courseId/:studentId')
+  @UsePipes(
+    ...userCourseValidation(
+      {
+        key: 'userActiveSchema',
+        type: 'query',
+      },
+      {
+        key: 'userActionParamSchema',
+        type: 'param',
+      },
+    ),
+  )
+  @InstructorCourseAuth()
+  async studentManipulation(
+    @Instructor() instructor: Course,
+    @User() user: IUserJwt,
+    @Param() param: UserActionParam,
+    @Res() res: Response,
+    @Headers('host') host: Headers,
+    @Req() req: Request,
+    @Query() query: UserActionDto,
+  ) {
+    const { courseId, studentId } = param;
+    const { type } = query;
+
+    const userCourse = await this.userCourseService.findOneByUsercourse(
+      studentId,
+      +courseId,
+    );
+
+    if (type === 'add') {
+      if (!userCourse) {
+        let newUserCourse: Partial<UserCourse> = {
+          courseId,
+          userId: studentId,
+          status: UserCourseStatus.accepted,
+          startCourseTime: new Date(),
+        };
+
+        //send notification to instructor
+        let newNotification: InvitedStudentJoinCourseDto = {
+          instructorId: instructor.instructorId,
+          studentId: studentId,
+          courseId: courseId,
+          courseName: instructor.name,
+          instructorName: user.username,
+        };
+
+        await Promise.all([
+          await this.userCourseService.saveUserCourse(newUserCourse),
+          await this.notification.invitedStudentJoinCourse(newNotification),
+        ]);
+        return res
+          .status(HttpStatus.OK)
+          .json(new SuccessResponse('Add student successfully'));
+      } else {
+        return res
+          .status(HttpStatus.BAD_REQUEST)
+          .json(
+            new ErrorResponse(HttpStatus.BAD_REQUEST, 'cannot add student', []),
+          );
+      }
+    }
+
+    if (!userCourse) {
+      throw new NotFoundException('Not found student in this course');
+    }
+
+    if (type === userCourse.status) {
+      throw new BadRequestException('Action is not accepted');
+    }
+
+    if (type === 'kick') {
+      await this.userCourseService.deleteUserCourse(userCourse.id);
+      return res
+        .status(HttpStatus.OK)
+        .json(new SuccessResponse('Kick user successfully'));
+    } else {
+      await this.userCourseService.updateUserCourse(userCourse.id, {
+        status: type,
+      });
+      return res
+        .status(HttpStatus.OK)
+        .json(new SuccessResponse('Updated successfully'));
+    }
   }
 }
