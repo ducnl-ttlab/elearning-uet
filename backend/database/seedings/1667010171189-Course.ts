@@ -108,7 +108,7 @@ export class Course1667010171189 implements MigrationInterface {
         categoryId: 6,
         instructorId: '19020226',
         image:
-          'https://res.cloudinary.com/subarashis/image/upload/v1639401653/courses/vfuqnre7khxsxk4k43y7.jpg',
+          'https://i.pinimg.com/564x/0c/d8/01/0cd80130a1755f5c99d6e866f19db0aa.jpg',
         isPublished: 1,
         price: 55,
       },

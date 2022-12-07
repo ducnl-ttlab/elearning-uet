@@ -1,3 +1,4 @@
+import { UserService } from 'src/modules/user/service/user.service';
 import {
   Controller,
   Get,
@@ -6,10 +7,12 @@ import {
   Res,
   UseGuards,
   Query,
+  Headers,
   Patch,
+  Req,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { Response } from 'express';
+import { Response, Request } from 'express';
 import { NotificationService } from './service/notification.service';
 import { IUserJwt } from 'src/common/interfaces';
 import { User } from 'src/common/decorator/custom.decorator';
@@ -25,7 +28,10 @@ import { NotificationType } from 'database/constant';
 @ApiTags('Notification')
 @Controller('notification')
 export class NotificationController {
-  constructor(private readonly notification: NotificationService) {}
+  constructor(
+    private readonly notification: NotificationService,
+    private readonly userService: UserService,
+  ) {}
 
   @Post('send')
   @UseGuards(JWTAuthGuard)
@@ -47,18 +53,35 @@ export class NotificationController {
   @Get()
   @UseGuards(JWTAuthGuard)
   async getNotification(
+    @Req() req: Request,
     @Res() res: Response,
     @User() user: IUserJwt,
     @Query() query: QueryNotificationDto,
+    @Headers('host') host: Headers,
   ) {
     let { page, pageSize } = query;
     let notification = await this.notification.getNotificationsByUserId(
       user.id,
     );
-    let items = notification[0].map((item) => {
-      let { created_at, updated_at } = item;
+    let data = await Promise.all(
+      notification[0].map(async (item) => {
+        let avatar = '';
+        if (item?.sourceId) {
+          avatar = (await this.userService.findOneById(item.sourceId))?.avatar;
+        }
+
+        return { ...item, avatar: (avatar && avatar) || undefined };
+      }),
+    );
+
+    let items = data.map((item: any) => {
+      let { created_at, updated_at, avatar } = item || {};
+
       return {
         ...item,
+        avatar: avatar?.startsWith('http')
+          ? avatar
+          : `${req.protocol}://${host}/user/image/${avatar}` || '',
         ...defaultResponseTime(created_at, updated_at),
       };
     });
