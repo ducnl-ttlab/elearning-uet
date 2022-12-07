@@ -62,6 +62,7 @@ export const course = {
         emptyTopicList: 'Không tìm thấy chủ đề nào.',
         courseRejected: 'Bạn đã bị giảng viên chặn khỏi khóa học.',
         declinedPayment: 'Thanh toán thất bại, xin vui lòng thử lại',
+        notLoggedIn: 'Vui lòng đăng nhập trước',
     },
 
     success: {

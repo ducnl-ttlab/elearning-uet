@@ -6,6 +6,8 @@ import {
     IToggleCourseFavoriteResponse,
     ICourseCheckoutResponse,
     IUserCourseData,
+    ICourseListParams,
+    IStudentCourseData,
 } from '../constants/course.interfaces';
 
 const FE_URL = process.env.VUE_APP_FE_BASE_URL;
@@ -84,6 +86,24 @@ export async function courseCheckoutVerify(
                 },
             },
         )
+        .then((res) => {
+            return res.data;
+        })
+        .catch((error) => {
+            return error.response.data;
+        });
+}
+
+export async function getStudentCourseList(
+    params: ICourseListParams,
+): Promise<IAxiosDefaultResponse<Array<IStudentCourseData>>> {
+    return axios
+        .get(`${BE_URL}/user-course`, {
+            params: { ...params },
+            headers: {
+                Authorization: 'Bearer ' + localStorageTokenService.getAccessToken(),
+            },
+        })
         .then((res) => {
             return res.data;
         })

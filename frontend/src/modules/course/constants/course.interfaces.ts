@@ -21,6 +21,7 @@ export interface ICourseListParams {
     rating?: string;
     categoryId?: number;
     instructorIds?: string;
+    userId?: string;
 }
 
 export interface ICourseCreation {
@@ -55,4 +56,20 @@ export interface IToggleCourseFavoriteResponse {
 
 export interface ICourseCheckoutResponse {
     url?: string;
+}
+
+export interface IStudentCourseData {
+    id?: number;
+    status?: string;
+    startCourseTime?: string;
+    blockDuration?: string | null;
+    rating?: string;
+    courseId?: number;
+    name?: string;
+    instructorName: string;
+    price: number;
+    image: string;
+    beginCourseTime: string;
+    endCourseTime: string;
+    startBlockTime: string;
 }

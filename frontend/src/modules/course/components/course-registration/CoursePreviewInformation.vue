@@ -45,15 +45,16 @@
                 </div>
             </div>
         </div>
-        <div
-            class="course-p-information-right d-flex flex-column align-items-center"
-            @click="handleAccessCourse"
-        >
+        <div class="course-p-information-right d-flex flex-column align-items-center">
             <div class="course-p-image">
                 <img :src="coursePreviewInformation?.image" alt="" />
             </div>
             <div class="course-p-action d-flex flex-row">
-                <div @click="courseCheckout" v-if="actionKey === 0" style="width: 100%">
+                <div
+                    @click="handleAccessCourse(actionKey)"
+                    v-if="actionKey === 0"
+                    style="width: 100%"
+                >
                     <div
                         v-if="coursePreviewInformation?.price"
                         :style="{
@@ -73,7 +74,7 @@
                     </div>
                 </div>
                 <div
-                    @click="courseCheckout"
+                    @click="handleAccessCourse(actionKey)"
                     class="course-p-action d-flex flex-row"
                     v-else
                 >
@@ -217,8 +218,21 @@ export default class CoursePreviewTopic extends Vue {
         return getPriceBackgroundColor(price);
     }
 
-    handleAccessCourse() {
-        //call API accessCourse
+    async handleAccessCourse(actionKey: number) {
+        console.log(actionKey, 'actionKey');
+        console.log(userCourseModule.userCourseData.status);
+        if (actionKey === 0) {
+            if (loginModule.isLoggedIn === false) {
+                showErrorNotificationFunction(this.$t('course.errors.notLoggedIn'));
+                setTimeout(() => this.$router.push({ name: PageName.LOGIN_PAGE }), 2000);
+            } else {
+                await this.courseCheckout();
+            }
+        }
+        if (actionKey === 1) {
+            const id = this.$route.params.id;
+            this.$router.push({ name: PageName.COURSE_DETAIL_PAGE, params: { id } });
+        }
     }
 
     async handleToggleFavorite() {
