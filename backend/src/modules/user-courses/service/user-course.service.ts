@@ -1,3 +1,4 @@
+import { CourseStudentList } from './../dto/user-course.dto';
 import {
   Injectable,
   InternalServerErrorException,
@@ -26,6 +27,22 @@ export class UserCourseService {
   async findOneById(id: number): Promise<UserCourse> {
     try {
       return this.usercourse.findOne(id);
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  async getStudentList(courseId: number): Promise<CourseStudentList[]> {
+    try {
+      let query = `
+      SELECT uc.userId, u.username, u.email, u.avatar, uc.startCourseTime, uc.status
+      FROM user_courses uc
+      JOIN users u 
+      ON u.id = uc.userId
+      WHERE uc.courseId = ?
+       `;
+
+      return this.usercourse.query(query, [courseId]);
     } catch (error) {
       throw new InternalServerErrorException(error);
     }

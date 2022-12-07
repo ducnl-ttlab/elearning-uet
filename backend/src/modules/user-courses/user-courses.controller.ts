@@ -1,3 +1,5 @@
+import { Course } from 'src/modules/course/entity/course.entity';
+import { Instructor } from './../../common/decorator/custom.decorator';
 import { FavoriteService } from './../favorite/service/favorite.service';
 import {
   getPaginatedItems,
@@ -17,14 +19,20 @@ import {
   UsePipes,
   Inject,
   UseGuards,
+  Headers,
+  Req,
   Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { Response } from 'express';
+import { Response, Request } from 'express';
 import { UserCourseService } from './service/user-course.service';
 import { IUserJwt } from 'src/common/interfaces';
 import { User } from 'src/common/decorator/custom.decorator';
-import { Auth, JoinCourseAuth } from 'src/common/decorator/auth.decorator';
+import {
+  Auth,
+  InstructorCourseAuth,
+  JoinCourseAuth,
+} from 'src/common/decorator/auth.decorator';
 import { userCourseValidation } from './joi.request.pipe';
 import { SuccessResponse } from 'src/common/helpers/api.response';
 import {
@@ -33,6 +41,9 @@ import {
   StudenCourseListResponse,
   StudentCourseDto,
   CheckRegisterDto,
+  CourseStudentList,
+  CourseStudenListResponse,
+  QueryListDto,
 } from './dto/user-course.dto';
 import { STRIPE_CLIENT } from 'src/common/constant';
 import Stripe from 'stripe';
@@ -301,5 +312,53 @@ export class UserCourseController {
     return res
       .status(HttpStatus.OK)
       .json(new SuccessResponse({ status, favorite: !!favorite }));
+  }
+
+  @Get('student-list/:courseId')
+  @UsePipes(
+    ...userCourseValidation({
+      key: 'courseIdParamSchema',
+      type: 'param',
+    }),
+  )
+  @InstructorCourseAuth()
+  async getStudentList(
+    @Instructor() instructor: Course,
+    @User() user: IUserJwt,
+    @Param() param: CheckoutCourseDto,
+    @Res() res: Response,
+    @Headers('host') host: Headers,
+    @Req() req: Request,
+    @Query() query: QueryListDto,
+  ) {
+    const { courseId } = param;
+    const { keyword, page = 1, pageSize = 8 } = query;
+    let studentList: CourseStudentList[] =
+      await this.userCourseService.getStudentList(courseId);
+
+    studentList = studentList.map((item) => {
+      const { avatar, startCourseTime } = item;
+      return {
+        ...item,
+        avatar: avatar.startsWith('http')
+          ? avatar
+          : `${req.protocol}://${host}/user/image/${avatar}`,
+        startCourseTime: mysqlTime(startCourseTime),
+      };
+    });
+
+    if (keyword) {
+      studentList = [
+        ...studentList.filter((item) => {
+          return item.username.includes(keyword);
+        }),
+      ];
+    }
+
+    let response: CourseStudenListResponse = {
+      ...getPaginatedItems(studentList, +page, +pageSize),
+      totalItems: studentList.length,
+    };
+    return res.status(HttpStatus.OK).json(new SuccessResponse(response));
   }
 }

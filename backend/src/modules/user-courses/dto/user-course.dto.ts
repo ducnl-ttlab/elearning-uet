@@ -54,3 +54,19 @@ export class StudenCourseListResponse extends CommonListResponse<StudentCourseDt
 export interface CheckRegisterDto {
   status: UserCourseStatus | Role | 'guest';
 }
+
+export interface CourseStudentList {
+  userId: string;
+  avatar: string;
+  username: string;
+  email: string;
+  status: string;
+  startCourseTime: string | Date;
+}
+
+export interface QueryListDto {
+  keyword: string;
+  page: number;
+  pageSize: number;
+}
+export class CourseStudenListResponse extends CommonListResponse<CourseStudentList> {}

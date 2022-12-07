@@ -46,7 +46,15 @@ JOIN (
 WHERE uc.userId = '123456abf';
 
 
-id, userId, courseId, time
+userId, username, email, image, startCourseTime, status, 
+
+SELECT uc.userId, u.username, u.email, u.avatar, uc.startCourseTime, uc.status
+FROM user_courses uc
+JOIN users u 
+ON u.id = uc.userId
+WHERE uc.courseId = 1
+
+
 
 DB_3stephandshake
 DB_HOST=ban9dqrtopa9assok3uy-mysql.services.clever-cloud.com

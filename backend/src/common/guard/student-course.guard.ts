@@ -53,7 +53,7 @@ export class CourseGuard implements CanActivate {
 
       return isStudentInCourse;
     } else if (user.role === Role.instructor) {
-      let courseInstructor = await this.course.findOneById(courseId);
+      let courseInstructor = await this.course.existCourse(courseId);
       let isInstructorCourse = courseInstructor.instructorId === user.id;
 
       request.instructorCourse = courseInstructor;
@@ -81,5 +81,24 @@ export class StudentCourseGuard implements CanActivate {
     let checkStudentInCourse = !studentAccepted.includes(studentCourse?.status);
     request.userCourse = studentCourse;
     return checkStudentInCourse;
+  }
+}
+
+@Injectable()
+export class InstructorCourseGuard implements CanActivate {
+  constructor(private readonly courseService: CourseService) {}
+  async canActivate(context: ExecutionContext): Promise<boolean> {
+    const request = context.switchToHttp().getRequest();
+    const {
+      user,
+      params: { courseId },
+    } = request;
+    if (user.role !== Role.instructor) return false;
+
+    let courseInstructor = await this.courseService.existCourse(courseId);
+    let isInstructorCourse = courseInstructor.instructorId === user.id;
+
+    request.instructorCourse = courseInstructor;
+    return isInstructorCourse;
   }
 }
