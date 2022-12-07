@@ -41,7 +41,7 @@ export interface StudentCourseDto {
   rating: number;
 
   courseId: number;
-  courseName: string;
+  name: string;
   instructorName: string;
   beginCourseTime: Date;
   endCourseTime: Date;
@@ -79,7 +79,7 @@ export class CourseStudenListResponse extends CommonListResponse<CourseStudentLi
 export class OutSideCourseStudenListResponse extends CommonListResponse<StudentOutSideCourse> {}
 
 export interface UserActionDto {
-  type: UserCourseStatus | 'kick';
+  type: UserCourseStatus | 'kick' | 'add';
 }
 
 export interface UserActionParam {

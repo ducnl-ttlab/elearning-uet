@@ -36,7 +36,10 @@ import {
   JoinCourseAuth,
 } from 'src/common/decorator/auth.decorator';
 import { userCourseValidation } from './joi.request.pipe';
-import { SuccessResponse } from 'src/common/helpers/api.response';
+import {
+  ErrorResponse,
+  SuccessResponse,
+} from 'src/common/helpers/api.response';
 import {
   CheckoutCourseDto,
   JoinCourseDto,
@@ -55,7 +58,10 @@ import Stripe from 'stripe';
 import { CourseService } from '../course/service/course.service';
 import { AuthService } from '../auth/service/auth.service';
 import { UserCourse } from './entity/user-course.entity';
-import { StudentJoinCourseDto } from '../notification/dto/notification.dto';
+import {
+  InvitedStudentJoinCourseDto,
+  StudentJoinCourseDto,
+} from '../notification/dto/notification.dto';
 import { RedisCacheService } from '../cache/redis-cache.service';
 import { JWTAuthGuard } from '../auth/guard/jwt-auth.guard';
 
@@ -138,7 +144,7 @@ export class UserCourseController {
     if (keyword) {
       userCourses = [
         ...userCourses.filter((item) => {
-          return item.courseName.includes(keyword);
+          return item.name.includes(keyword);
         }),
       ];
     }
@@ -437,10 +443,49 @@ export class UserCourseController {
     const { courseId, studentId } = param;
     const { type } = query;
 
-    const userCourse = await this.userCourseService.existUserCourse(
-      +courseId,
+    const userCourse = await this.userCourseService.findOneByUsercourse(
       studentId,
+      +courseId,
     );
+
+    if (type === 'add') {
+      if (!userCourse) {
+        let newUserCourse: Partial<UserCourse> = {
+          courseId,
+          userId: studentId,
+          status: UserCourseStatus.accepted,
+          startCourseTime: new Date(),
+        };
+
+        //send notification to instructor
+        let newNotification: InvitedStudentJoinCourseDto = {
+          instructorId: instructor.instructorId,
+          studentId: studentId,
+          courseId: courseId,
+          courseName: instructor.name,
+          instructorName: user.username,
+        };
+
+        await Promise.all([
+          await this.userCourseService.saveUserCourse(newUserCourse),
+          await this.notification.invitedStudentJoinCourse(newNotification),
+        ]);
+        return res
+          .status(HttpStatus.OK)
+          .json(new SuccessResponse('Add student successfully'));
+      } else {
+        return res
+          .status(HttpStatus.BAD_REQUEST)
+          .json(
+            new ErrorResponse(HttpStatus.BAD_REQUEST, 'cannot add student', []),
+          );
+      }
+    }
+
+    if (!userCourse) {
+      throw new NotFoundException('Not found student in this course');
+    }
+
     if (type === userCourse.status) {
       throw new BadRequestException('Action is not accepted');
     }

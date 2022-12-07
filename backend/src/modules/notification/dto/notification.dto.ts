@@ -41,3 +41,11 @@ export interface StudentJoinCourseDto {
   studentName: string;
   courseName: string;
 }
+
+export interface InvitedStudentJoinCourseDto {
+  instructorId: string;
+  studentId: string;
+  courseId: number;
+  courseName: string;
+  instructorName: string;
+}

@@ -96,7 +96,7 @@ export class UserCourseService {
       SELECT uc.id, uc.status, uc.startCourseTime, uc.blockDuration, r.rating, c.*
       FROM user_courses uc 
       LEFT JOIN (
-          SELECT c.id as courseId, c.name as courseName, u.username as instructorName, c.price, c.image, c.startCourseTime as beginCourseTime, c.endCourseTime
+          SELECT c.id as courseId, c.name as name, u.username as instructorName, c.price, c.image, c.startCourseTime as beginCourseTime, c.endCourseTime
           FROM courses c
           JOIN users u ON u.id = c.instructorId
       ) as c on c.courseId = uc.courseId
