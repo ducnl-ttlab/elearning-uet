@@ -1,4 +1,5 @@
 import { IAxiosDefaultResponse } from '@/common/interfaces';
+import localStorageTokenService from '@/common/tokenService';
 import { loginModule } from '@/modules/auth/store/login.store';
 import axios from 'axios';
 import {
@@ -34,7 +35,7 @@ export async function createCourse(
 ): Promise<IAxiosDefaultResponse<Record<string, unknown>>> {
     return axios.post(`${BE_URL}/course`, params, {
         headers: {
-            Authorization: 'Bearer ' + loginModule.accessToken,
+            Authorization: 'Bearer ' + localStorageTokenService.getAccessToken(),
             'Content-Type': 'multipart/form-data',
         },
     });

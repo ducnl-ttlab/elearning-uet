@@ -6,7 +6,7 @@ const FE_URL = process.env.VUE_APP_FE_BASE_URL;
 const BE_URL = process.env.VUE_APP_API_URL;
 
 export interface ILoginData {
-    accessToken?: string;
+    accessToken: string;
     user: IUserData;
 }
 

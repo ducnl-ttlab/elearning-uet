@@ -1,4 +1,5 @@
 import { DEFAULT_LANGUAGE, SupportLanguage } from '@/common/constants';
+import { IUserData } from './interfaces';
 import { storage } from './localStorage';
 
 export interface IUser {
@@ -72,10 +73,11 @@ class LocalStorageTokenService {
     }
 
     // LOGIN USER
-    setLoginUser(user: IUser): void {
+    setLoginUser(user: IUserData): void {
+        console.log('user tokenservice', user);
         storage.setLocalStorage(AUTH_SERVICE_KEY.LOGIN_USER, JSON.stringify(user || ''));
     }
-    getLoginUser(): IUser | null {
+    getLoginUser(): IUserData | null {
         return storage.getLocalStorage(AUTH_SERVICE_KEY.LOGIN_USER)
             ? JSON.parse(storage.getLocalStorage(AUTH_SERVICE_KEY.LOGIN_USER))
             : null;

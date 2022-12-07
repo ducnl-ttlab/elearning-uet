@@ -45,15 +45,16 @@
                 </div>
             </div>
         </div>
-        <div
-            class="course-p-information-right d-flex flex-column align-items-center"
-            @click="handleAccessCourse"
-        >
+        <div class="course-p-information-right d-flex flex-column align-items-center">
             <div class="course-p-image">
                 <img :src="coursePreviewInformation?.image" alt="" />
             </div>
             <div class="course-p-action d-flex flex-row">
-                <div v-if="actionKey === 0" style="width: 100%">
+                <div
+                    @click="handleAccessCourse(actionKey)"
+                    v-if="actionKey === 0"
+                    style="width: 100%"
+                >
                     <div
                         v-if="coursePreviewInformation?.price"
                         :style="{
@@ -72,7 +73,11 @@
                         {{ $t('course.course.free') }}
                     </div>
                 </div>
-                <div class="course-p-action d-flex flex-row" v-else>
+                <div
+                    @click="handleAccessCourse(actionKey)"
+                    class="course-p-action d-flex flex-row"
+                    v-else
+                >
                     <div
                         style="width: 100%"
                         :style="[
@@ -115,7 +120,7 @@ import { commonModule } from '@/modules/common/store/common.store';
 import { Options, Vue } from 'vue-class-component';
 import { UserCourseStatus } from '../../constants/course.constants';
 import { getPriceBackgroundColor } from '../../helpers/commonFunctions';
-import { toggleCourseFavorite } from '../../services/user-course';
+import { courseCheckout, toggleCourseFavorite } from '../../services/user-course';
 import { courseModule } from '../../store/course.store';
 import { userCourseModule } from '../../store/user-course.store';
 
@@ -167,8 +172,8 @@ export default class CoursePreviewTopic extends Vue {
         if (action === 1) return this.$t('course.course.actionList.goToCourse');
         if (action === 2) return this.$t('course.course.actionList.notOwnedCourse');
         if (action === 3) return this.$t('course.course.actionList.rejectedCourse');
-        if (action === 4) return this.$t('course.course.actionList.pendingCourse');
-        if (action === 5) return this.$t('course.course.actionList.expiredCourse');
+        if (action === 4) return this.$t('course.course.actionList.expiredCourse');
+        if (action === 5) return this.$t('course.course.actionList.pendingCourse');
     }
 
     getActionBackgroundColor(action: number) {
@@ -182,16 +187,52 @@ export default class CoursePreviewTopic extends Vue {
         return '#000000';
     }
 
-    handleAction() {
-        console.log(1);
+    async courseCheckout() {
+        commonModule.setLoadingIndicator(true);
+        const id: number = parseInt(this.$route.params.courseId as string);
+        const response = await courseCheckout(id);
+        if (response.success) {
+            if (response.data?.url) {
+                showSuccessNotificationFunction(
+                    this.$t('course.success.courseCheckout.paidCourse'),
+                );
+                setTimeout(() => (window.location.href = `${response.data?.url}`), 1000);
+            } else {
+                this.$emit('reload-course-status');
+                showSuccessNotificationFunction(
+                    this.$t('course.success.courseCheckout.freeCourse'),
+                );
+            }
+        } else {
+            let res = response?.errors || [
+                {
+                    message: this.$t('landing.categories.errors.getCategoryListError'),
+                },
+            ];
+            userCourseModule.setFavoriteCourse(this.userCourseData?.favorite || false);
+            showErrorNotificationFunction(res[0].message);
+        }
     }
 
     getPriceBackgroundColor(price: number) {
         return getPriceBackgroundColor(price);
     }
 
-    handleAccessCourse() {
-        //call API accessCourse
+    async handleAccessCourse(actionKey: number) {
+        console.log(actionKey, 'actionKey');
+        console.log(userCourseModule.userCourseData.status);
+        if (actionKey === 0) {
+            if (loginModule.isLoggedIn === false) {
+                showErrorNotificationFunction(this.$t('course.errors.notLoggedIn'));
+                setTimeout(() => this.$router.push({ name: PageName.LOGIN_PAGE }), 2000);
+            } else {
+                await this.courseCheckout();
+            }
+        }
+        if (actionKey === 1) {
+            const id = this.$route.params.id;
+            this.$router.push({ name: PageName.COURSE_DETAIL_PAGE, params: { id } });
+        }
     }
 
     async handleToggleFavorite() {

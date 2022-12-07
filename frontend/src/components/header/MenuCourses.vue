@@ -1,6 +1,9 @@
 <template>
     <div>
-        <router-link class="text-decoration-none" :to="{ name: PageName.REGISTER_PAGE }">
+        <router-link
+            class="text-decoration-none"
+            :to="{ name: PageName.USER_COURSE_LIST_PAGE }"
+        >
             <div
                 class="courses-button d-flex flex-row align-items-center"
                 style="gap: 8px"
