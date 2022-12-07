@@ -11,6 +11,16 @@ class UserModule extends VuexModule {
         this.SET_USER_DATA(userData || {});
     }
 
+    @Action
+    setReadNotification() {
+        this.SET_USER_DATA(
+            {
+                ...this.userData,
+                unreadNotification: 0,
+            } || {},
+        );
+    }
+
     @Mutation
     SET_USER_DATA(userData: IUserData) {
         this.userData = userData;
