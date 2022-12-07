@@ -48,6 +48,7 @@ import {
   QueryListDto,
   UserActionDto,
   UserActionParam,
+  OutSideCourseStudenListResponse,
 } from './dto/user-course.dto';
 import { STRIPE_CLIENT } from 'src/common/constant';
 import Stripe from 'stripe';
@@ -369,6 +370,44 @@ export class UserCourseController {
       ...getPaginatedItems(studentList, +page, +pageSize),
       totalItems: studentList.length,
     };
+    return res.status(HttpStatus.OK).json(new SuccessResponse(response));
+  }
+
+  @Get('outside-course-students/:courseId')
+  @UsePipes(
+    ...userCourseValidation({
+      key: 'courseIdParamSchema',
+      type: 'param',
+    }),
+  )
+  @InstructorCourseAuth()
+  async getOutsideCourseStudent(
+    @Instructor() instructor: Course,
+    @User() user: IUserJwt,
+    @Param() param: CheckoutCourseDto,
+    @Res() res: Response,
+    @Headers('host') host: Headers,
+    @Req() req: Request,
+    @Query() query: QueryListDto,
+  ) {
+    const { courseId } = param;
+    const { keyword } = query;
+
+    let student = await this.userCourseService.findUserOutsideCourse(courseId);
+
+    if (keyword) {
+      student = [
+        ...student.filter((item) => {
+          return item.username.includes(keyword);
+        }),
+      ];
+    }
+
+    const response: OutSideCourseStudenListResponse = {
+      items: student,
+      totalItems: student.length,
+    };
+
     return res.status(HttpStatus.OK).json(new SuccessResponse(response));
   }
 

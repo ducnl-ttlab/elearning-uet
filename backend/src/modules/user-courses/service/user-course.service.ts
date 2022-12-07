@@ -1,4 +1,7 @@
-import { CourseStudentList } from './../dto/user-course.dto';
+import {
+  CourseStudentList,
+  StudentOutSideCourse,
+} from './../dto/user-course.dto';
 import {
   Injectable,
   InternalServerErrorException,
@@ -60,6 +63,25 @@ export class UserCourseService {
       JOIN users u 
       ON u.id = uc.userId
       WHERE uc.courseId = ?
+       `;
+
+      return this.usercourse.query(query, [courseId]);
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  async findUserOutsideCourse(
+    courseId: number,
+  ): Promise<StudentOutSideCourse[]> {
+    try {
+      let query = `
+    SELECT u.id as userId, u.avatar, u.username
+    FROM users u
+    WHERE u.id not in  
+      ( SELECT uc.userId
+      FROM user_courses uc
+      WHERE uc.courseId = ? )
        `;
 
       return this.usercourse.query(query, [courseId]);

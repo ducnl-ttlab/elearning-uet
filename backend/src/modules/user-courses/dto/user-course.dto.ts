@@ -64,12 +64,19 @@ export interface CourseStudentList {
   startCourseTime: string | Date;
 }
 
+export interface StudentOutSideCourse {
+  userId: string;
+  avatar: string;
+  username: string;
+}
+
 export interface QueryListDto {
   keyword: string;
   page: number;
   pageSize: number;
 }
 export class CourseStudenListResponse extends CommonListResponse<CourseStudentList> {}
+export class OutSideCourseStudenListResponse extends CommonListResponse<StudentOutSideCourse> {}
 
 export interface UserActionDto {
   type: UserCourseStatus | 'kick';
