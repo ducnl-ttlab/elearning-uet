@@ -3,6 +3,10 @@
 </template>
 
 <script lang="ts">
+import { PageName } from '@/common/constants';
+import { showErrorNotificationFunction } from '@/common/helpers';
+import localStorageTokenService from '@/common/tokenService';
+import { commonModule } from '@/modules/common/store/common.store';
 import { Options, Vue } from 'vue-class-component';
 
 @Options({
@@ -14,7 +18,11 @@ export default class CourseDetail extends Vue {
     }
 
     async created() {
-        await this.initCourseDetail();
+        if (!localStorageTokenService.getAccessToken()) {
+            this.$router.push({ name: PageName.LOGIN_PAGE });
+        } else {
+            this.initCourseDetail();
+        }
     }
 }
 </script>

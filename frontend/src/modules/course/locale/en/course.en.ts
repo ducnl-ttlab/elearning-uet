@@ -61,11 +61,19 @@ export const course = {
         emptyCourseList: 'Cannot find any course.',
         emptyTopicList: 'Cannot find any topic.',
         courseRejected: 'You have been blocked by the instructor.',
+        declinedPayment: 'Payment declined. Please try again later.',
     },
     success: {
         favoriteCourse: {
             add: 'Successfully added this course to your favorite list.',
             remove: 'Successfully removed this course from your favorite list.',
+        },
+        courseCheckout: {
+            freeCourse:
+                'You have sent a request to join the course.Please kindly wait for the instructor to approve',
+            paidCourse: 'Please complete the checkout',
+            successPayment:
+                'You have successfully bought this course. Please go back to the course page',
         },
     },
 };

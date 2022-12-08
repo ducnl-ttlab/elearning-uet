@@ -1,5 +1,11 @@
+import { ILoginData } from '@/modules/auth/services/login';
+import { loginModule } from '@/modules/auth/store/login.store';
+import { userModule } from '@/modules/user/store/user.store';
 import i18n from '@/plugins/vue-i18n';
+import router from '@/plugins/vue-router';
 import { ElNotification } from 'element-plus';
+import { PageName } from './constants';
+import localStorageTokenService from './tokenService';
 export function translateYupError(
     yupError:
         | {
@@ -37,3 +43,14 @@ export function showErrorNotificationFunction(message?: string, title?: string):
         message,
     });
 }
+
+export const setLoginUser = (data: ILoginData) => {
+    localStorageTokenService.setAccessToken(data.accessToken);
+    localStorageTokenService.setLoginUser(data.user);
+    userModule.setUserData(data.user);
+    loginModule.setAccessToken(data.accessToken);
+    loginModule.setLoginState(true);
+    router.push({
+        name: PageName.LANDING_PAGE,
+    });
+};
