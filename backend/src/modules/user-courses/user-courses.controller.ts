@@ -501,7 +501,6 @@ export class UserCourseController {
     if (type === userCourse.status) {
       throw new BadRequestException('Action is not accepted');
     }
-    console.log('notificationId', notificationId, type);
     if (type === 'kick') {
       await this.userCourseService.deleteUserCourse(userCourse.id);
       return res
