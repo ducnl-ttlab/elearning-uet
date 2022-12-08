@@ -193,6 +193,7 @@ export default class HeaderMenuAccount extends Vue {
     font-weight: 400;
     line-height: 22.5px;
     color: $color-gray-02;
+    word-wrap: break-word;
 }
 
 .dropdown-item:hover {
