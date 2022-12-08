@@ -361,6 +361,7 @@ export class UserCourseController {
           ? avatar
           : `${req.protocol}://${host}/user/image/${avatar}`,
         startCourseTime: mysqlTime(startCourseTime),
+        score: Math.floor(Math.random() * 100),
       };
     });
 
