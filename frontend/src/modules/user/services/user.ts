@@ -1,4 +1,5 @@
 import { IAxiosDefaultResponse, IUserData } from '@/common/interfaces';
+import localStorageTokenService from '@/common/tokenService';
 import { loginModule } from '@/modules/auth/store/login.store';
 import axios from 'axios';
 import { IUpdateUserData } from '../constants/user.interfaces';
@@ -10,7 +11,7 @@ export async function getUserData(): Promise<IAxiosDefaultResponse<IUserData>> {
     return axios
         .get(`${BE_URL}/user/profile`, {
             headers: {
-                Authorization: 'Bearer ' + loginModule.accessToken,
+                Authorization: 'Bearer ' + localStorageTokenService.getAccessToken(),
             },
         })
         .then((res) => {
@@ -32,7 +33,7 @@ export async function updateUserData(
 
             {
                 headers: {
-                    Authorization: 'Bearer ' + loginModule.accessToken,
+                    Authorization: 'Bearer ' + localStorageTokenService.getAccessToken(),
                     'Content-Type': 'multipart/form-data',
                 },
             },

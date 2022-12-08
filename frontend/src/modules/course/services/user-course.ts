@@ -1,9 +1,13 @@
 import { IAxiosDefaultResponse } from '@/common/interfaces';
+import localStorageTokenService from '@/common/tokenService';
 import { loginModule } from '@/modules/auth/store/login.store';
 import axios from 'axios';
 import {
     IToggleCourseFavoriteResponse,
+    ICourseCheckoutResponse,
     IUserCourseData,
+    ICourseListParams,
+    IStudentCourseData,
 } from '../constants/course.interfaces';
 
 const FE_URL = process.env.VUE_APP_FE_BASE_URL;
@@ -15,7 +19,7 @@ export async function getUserCourseData(
     return axios
         .get(`${BE_URL}/user-course/check/${courseId}`, {
             headers: {
-                Authorization: 'Bearer ' + loginModule.accessToken,
+                Authorization: 'Bearer ' + localStorageTokenService.getAccessToken(),
             },
         })
         .then((res) => {
@@ -35,10 +39,71 @@ export async function toggleCourseFavorite(
             {},
             {
                 headers: {
-                    Authorization: 'Bearer ' + loginModule.accessToken,
+                    Authorization: 'Bearer ' + localStorageTokenService.getAccessToken(),
                 },
             },
         )
+        .then((res) => {
+            return res.data;
+        })
+        .catch((error) => {
+            return error.response.data;
+        });
+}
+
+export async function courseCheckout(
+    courseId: number,
+): Promise<IAxiosDefaultResponse<ICourseCheckoutResponse>> {
+    return axios
+        .post(
+            `${BE_URL}/user-course/create-course-checkout/${courseId}`,
+            {},
+            {
+                headers: {
+                    Authorization: 'Bearer ' + localStorageTokenService.getAccessToken(),
+                },
+            },
+        )
+        .then((res) => {
+            return res.data;
+        })
+        .catch((error) => {
+            return error.response.data;
+        });
+}
+
+export async function courseCheckoutVerify(
+    courseId: string,
+    code: string,
+): Promise<IAxiosDefaultResponse<Record<string, never>>> {
+    return axios
+        .post(
+            `${BE_URL}/user-course/join-course/${courseId}/${code}`,
+            {},
+            {
+                headers: {
+                    Authorization: 'Bearer ' + localStorageTokenService.getAccessToken(),
+                },
+            },
+        )
+        .then((res) => {
+            return res.data;
+        })
+        .catch((error) => {
+            return error.response.data;
+        });
+}
+
+export async function getStudentCourseList(
+    params: ICourseListParams,
+): Promise<IAxiosDefaultResponse<Array<IStudentCourseData>>> {
+    return axios
+        .get(`${BE_URL}/user-course`, {
+            params: { ...params },
+            headers: {
+                Authorization: 'Bearer ' + localStorageTokenService.getAccessToken(),
+            },
+        })
         .then((res) => {
             return res.data;
         })

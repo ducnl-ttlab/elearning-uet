@@ -61,12 +61,20 @@ export const course = {
         emptyCourseList: 'Không tìm thấy khóa học nào theo bộ lọc.',
         emptyTopicList: 'Không tìm thấy chủ đề nào.',
         courseRejected: 'Bạn đã bị giảng viên chặn khỏi khóa học.',
+        declinedPayment: 'Thanh toán thất bại, xin vui lòng thử lại',
+        notLoggedIn: 'Vui lòng đăng nhập trước',
     },
 
     success: {
         favoriteCourse: {
             add: 'Bạn đã thêm khóa học này vào danh sách yêu thích',
             remove: 'Bạn đã xóa khóa học này khỏi danh sách yêu thích.',
+        },
+        courseCheckout: {
+            freeCourse:
+                'Đã gửi yêu cầu tham gia khóa học tới giảng viên. Xin hãy chờ phê duyệt',
+            paidCourse: 'Vui lòng tiến hành thanh toán',
+            successPayment: 'Bạn đã thanh toán thành công, vui lòng trở lại khóa học',
         },
     },
 };

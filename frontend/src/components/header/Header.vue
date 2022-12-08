@@ -7,7 +7,7 @@
                     <HeaderTitle />
                 </div>
                 <div
-                    v-if="isLoggedIn"
+                    v-if="getLoggedIn"
                     class="d-flex align-items-center"
                     style="gap: 24px"
                 >
@@ -35,6 +35,8 @@ import Logo from './Logo.vue';
 import MenuLanguage from './MenuLanguage.vue';
 import MenuCourses from './MenuCourses.vue';
 import { loginModule } from '@/modules/auth/store/login.store';
+import localStorageTokenService from '@/common/tokenService';
+import { userModule } from '@/modules/user/store/user.store';
 
 @Options({
     components: {
@@ -49,7 +51,7 @@ import { loginModule } from '@/modules/auth/store/login.store';
     },
 })
 export default class Header extends Vue {
-    get isLoggedIn() {
+    getLoggedIn() {
         return loginModule.isLoggedIn;
     }
 }
