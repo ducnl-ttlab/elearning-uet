@@ -80,9 +80,11 @@ export class OutSideCourseStudenListResponse extends CommonListResponse<StudentO
 
 export interface UserActionDto {
   type: UserCourseStatus | 'kick' | 'add';
+  notificationId?: number;
 }
 
 export interface UserActionParam {
   courseId: number;
   studentId: string;
+  notificationId?: number;
 }

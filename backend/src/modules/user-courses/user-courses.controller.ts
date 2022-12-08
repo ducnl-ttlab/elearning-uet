@@ -442,7 +442,7 @@ export class UserCourseController {
     @Query() query: UserActionDto,
   ) {
     const { courseId, studentId } = param;
-    const { type } = query;
+    const { type, notificationId } = query;
 
     const userCourse = await this.userCourseService.findOneByUsercourse(
       studentId,
@@ -468,9 +468,20 @@ export class UserCourseController {
         };
 
         await Promise.all([
-          await this.userCourseService.saveUserCourse(newUserCourse),
-          await this.notification.invitedStudentJoinCourse(newNotification),
+          this.userCourseService.saveUserCourse(newUserCourse),
+          this.notification.invitedStudentJoinCourse(newNotification),
+          notificationId &&
+            this.notification.updateStudentJoinCourse(notificationId),
         ]);
+        return res
+          .status(HttpStatus.OK)
+          .json(new SuccessResponse('Add student successfully'));
+      } else if (userCourse.status === UserCourseStatus.pending) {
+        await this.userCourseService.updateUserCourse(userCourse.id, {
+          status: UserCourseStatus.accepted,
+        });
+        notificationId &&
+          (await this.notification.updateStudentJoinCourse(notificationId));
         return res
           .status(HttpStatus.OK)
           .json(new SuccessResponse('Add student successfully'));
@@ -490,19 +501,29 @@ export class UserCourseController {
     if (type === userCourse.status) {
       throw new BadRequestException('Action is not accepted');
     }
-
     if (type === 'kick') {
       await this.userCourseService.deleteUserCourse(userCourse.id);
       return res
         .status(HttpStatus.OK)
         .json(new SuccessResponse('Kick user successfully'));
     } else {
-      await this.userCourseService.updateUserCourse(userCourse.id, {
-        status: type,
-      });
+      await Promise.all([
+        this.userCourseService.updateUserCourse(userCourse.id, {
+          status: type,
+        }),
+        type === UserCourseStatus.reject &&
+          notificationId &&
+          this.notification.updateStudentJoinCourse(notificationId),
+      ]);
       return res
         .status(HttpStatus.OK)
         .json(new SuccessResponse('Updated successfully'));
     }
   }
+
+  // @Get('update-noti')
+  // async update(@Res() res: Response) {
+  //   let a = await this.notification.updateStudentJoinCourse(3);
+  //   return res.status(HttpStatus.OK).json(new SuccessResponse(a));
+  // }
 }

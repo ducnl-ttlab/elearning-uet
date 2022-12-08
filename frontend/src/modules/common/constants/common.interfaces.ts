@@ -56,3 +56,7 @@ export interface INotificationData {
     updated_at: string;
     avatar?: string;
 }
+
+export interface UserActionDto {
+    type: UserCourseStatus | 'kick' | 'add';
+}

@@ -1,6 +1,10 @@
 import { Module, VuexModule, Action, Mutation, getModule } from 'vuex-module-decorators';
 import store from '@/plugins/vuex/index';
-import { IInstructorData, INotificationData } from '../constants/common.interfaces';
+import {
+    IInstructorData,
+    INotificationData,
+    NotificationType,
+} from '../constants/common.interfaces';
 
 @Module({ dynamic: true, namespaced: true, store, name: 'authLogin' })
 class CommonModule extends VuexModule {
@@ -21,6 +25,18 @@ class CommonModule extends VuexModule {
     @Action
     setNotificationList(notificationList: Array<INotificationData>) {
         this.SET_NOTIFICATION_LIST(notificationList || []);
+    }
+
+    @Action
+    setJoinCourseNotification(notificationId: number) {
+        const notifications = this.notificationList.map((item) => {
+            const { type, id } = item;
+            return {
+                ...item,
+                type: notificationId === id ? NotificationType.studentJoinCourse : type,
+            };
+        });
+        this.SET_NOTIFICATION_LIST(notifications || []);
     }
 
     @Mutation

@@ -1,5 +1,10 @@
 import { NotificationType, TableName } from 'database/constant';
-import { MigrationInterface, QueryRunner, Table, TableForeignKey } from 'typeorm';
+import {
+  MigrationInterface,
+  QueryRunner,
+  Table,
+  TableForeignKey,
+} from 'typeorm';
 
 export class Notifications1667388280824 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -69,14 +74,14 @@ export class Notifications1667388280824 implements MigrationInterface {
       }),
     );
     await queryRunner.createForeignKey(
-        TableName.notification,
-        new TableForeignKey({
-          columnNames: ['userId'],
-          referencedColumnNames: ['id'],
-          referencedTableName: TableName.user,
-          onDelete: 'CASCADE',
-        }),
-      );
+      TableName.notification,
+      new TableForeignKey({
+        columnNames: ['userId'],
+        referencedColumnNames: ['id'],
+        referencedTableName: TableName.user,
+        onDelete: 'CASCADE',
+      }),
+    );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
