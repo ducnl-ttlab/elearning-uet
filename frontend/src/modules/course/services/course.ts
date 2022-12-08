@@ -1,5 +1,6 @@
 import { IAxiosDefaultResponse } from '@/common/interfaces';
 import { loginModule } from '@/modules/auth/store/login.store';
+import { UserActionDto } from '@/modules/common/constants/common.interfaces';
 import axios from 'axios';
 import {
     ICourseData,
@@ -45,6 +46,32 @@ export async function getCoursePreviewData(
 ): Promise<IAxiosDefaultResponse<ICoursePreviewData>> {
     return axios
         .get(`${BE_URL}/topic/short/${courseId}`)
+        .then((res) => {
+            return res.data;
+        })
+        .catch((error) => {
+            return error.response.data;
+        });
+}
+
+export async function studentAction(
+    type: UserActionDto['type'],
+    courseId: number,
+    studentId: string,
+    notificationId?: number,
+): Promise<IAxiosDefaultResponse<Record<string, never>>> {
+    const notificationQuery =
+        (notificationId && `&notificationId=${notificationId}`) || '';
+    return axios
+        .put(
+            `${BE_URL}/user-course/action/${courseId}/${studentId}?type=${type}${notificationQuery}`,
+            {},
+            {
+                headers: {
+                    Authorization: 'Bearer ' + loginModule.accessToken,
+                },
+            },
+        )
         .then((res) => {
             return res.data;
         })

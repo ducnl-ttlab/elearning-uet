@@ -2,6 +2,7 @@ export const common = {
     notification: 'Thông báo',
     error: {
         systemError: 'Có lỗi xảy ra, vui lòng thử lại sau ít phút',
+        emptyNotificationList: 'Không tìm thấy thông báo nào',
     },
     gender: {
         male: 'Nam',
@@ -17,6 +18,8 @@ export const common = {
             vi: 'Tiếng Việt',
             en: 'Tiếng Anh',
         },
+        accept: 'Chấp nhận',
+        reject: 'Từ chối',
         appName: 'Sorademic',
         loginButton: 'Đăng nhập',
         registerButton: 'Đăng ký',
