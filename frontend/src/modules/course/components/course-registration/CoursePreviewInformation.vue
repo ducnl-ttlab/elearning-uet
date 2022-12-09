@@ -222,7 +222,7 @@ export default class CoursePreviewTopic extends Vue {
         console.log(actionKey, 'actionKey');
         console.log(userCourseModule.userCourseData.status);
         if (actionKey === 0) {
-            if (loginModule.isLoggedIn === false) {
+            if (loginModule.accessToken == '') {
                 showErrorNotificationFunction(this.$t('course.errors.notLoggedIn'));
                 setTimeout(() => this.$router.push({ name: PageName.LOGIN_PAGE }), 2000);
             } else {
