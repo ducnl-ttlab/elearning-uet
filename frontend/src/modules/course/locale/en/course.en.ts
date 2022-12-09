@@ -78,8 +78,14 @@ export const course = {
                 'You have successfully bought this course. Please go back to the course page',
         },
     },
-    courseDetail: {
+    coursePopup: {
         showStudentList: 'Student List',
         showOutsideStudentList: 'Student List (not in course)',
+    },
+
+    studentListMode: {
+        inside: 'Trong khóa học',
+        outside: 'Ngoài khóa học',
+        invite: 'Invite',
     },
 };

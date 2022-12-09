@@ -1,4 +1,8 @@
-import { IAxiosDefaultResponse, IGetListDefaultParams } from '@/common/interfaces';
+import {
+    IAxiosDefaultResponse,
+    IAxiosListDefaultResponse,
+    IGetListDefaultParams,
+} from '@/common/interfaces';
 import localStorageTokenService from '@/common/tokenService';
 import { loginModule } from '@/modules/auth/store/login.store';
 import axios from 'axios';
@@ -125,7 +129,7 @@ export async function getStudentCourseList(
 export async function getCourseStudentList(
     params: IGetListDefaultParams,
     courseId: string,
-): Promise<IAxiosDefaultResponse<IGetCourseStudentListResponse>> {
+): Promise<IAxiosListDefaultResponse<IStudentCourseShortData>> {
     return axios
         .get(`${BE_URL}/user-course/student-list/${courseId}`, {
             headers: {
@@ -144,7 +148,7 @@ export async function getCourseStudentList(
 export async function getOutsideCourseStudentList(
     params: IGetListDefaultParams,
     courseId: string,
-): Promise<IAxiosDefaultResponse<IOutsideStudentCourseData>> {
+): Promise<IAxiosListDefaultResponse<IOutsideStudentCourseData>> {
     return axios
         .get(`${BE_URL}/user-course/outside-course-students/${courseId}`, {
             headers: {

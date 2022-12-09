@@ -31,10 +31,10 @@
             </div>
             <span class="student username">{{ student.username }}</span>
             <span class="student email">{{ student.email }}</span>
-            <span class="student score" style="width: 30px">
+            <span class="student score" style="width: 8%">
                 {{ student.score }}
             </span>
-            <span class="student start-time" style="width: 150px">{{
+            <span class="student start-time" style="width: 22%">{{
                 student.startCourseTime
             }}</span>
             <div class="actions d-flex flex-row" style="gap: 5px; justify-self: flex-end">
@@ -96,7 +96,7 @@ import { userCourseModule } from '../../store/user-course.store';
 @Options({
     components: {},
 })
-export default class CourseStudentListPopup extends Vue {
+export default class CourseStudentList extends Vue {
     UserCourseStatus = UserCourseStatus;
     keyword = '';
     get courseStudentList() {
@@ -116,7 +116,7 @@ export default class CourseStudentListPopup extends Vue {
             userCourseModule.setCourseStudentList(response?.data?.items || []);
         } else {
             let res = response?.errors || [
-                { message: this.$t('landing.categories.errors.getCategoryListError') },
+                { message: this.$t('course.errors.getStudentListError') },
             ];
             userCourseModule.setCourseStudentList([]);
             showErrorNotificationFunction(res[0].message);

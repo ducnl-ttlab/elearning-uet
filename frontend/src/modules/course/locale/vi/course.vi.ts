@@ -89,5 +89,6 @@ export const course = {
     studentListMode: {
         inside: 'Trong khóa học',
         outside: 'Ngoài khóa học',
+        invite: 'Mời',
     },
 };

@@ -17,13 +17,9 @@
             :message="$t('course.errors.emptyStudentList')"
         />
         <div
-            class="student-card d-flex flex-row align-items-center gap-3 w-100"
+            class="student-card d-flex flex-row align-items-center justify-content-between w-100"
             v-for="(student, index) in outsideCourseStudentList"
             :key="student.id"
-            :class="{
-                'rejected-student':
-                    student.status === UserCourseStatus.reject ? true : false,
-            }"
         >
             <span class="student counter" style="width: 30px">{{ index + 1 }}</span>
             <div class="student avatar">
@@ -31,43 +27,12 @@
             </div>
             <span class="student username">{{ student.username }}</span>
             <span class="student email">{{ student.email }}</span>
-            <span class="student score" style="width: 30px">
-                {{ student.score }}
-            </span>
-            <span class="student start-time" style="width: 150px">{{
-                student.startCourseTime
-            }}</span>
-            <div class="actions d-flex flex-row" style="gap: 5px; justify-self: flex-end">
-                <div
-                    class="action"
-                    @click="
-                        handleStudentAction(
-                            UserCourseStatus.commentBlocking,
-                            student.userId,
-                        )
-                    "
-                >
-                    <img src="@/assets/course/icons/mute.png" width="20" alt="" />
-                </div>
-                <div class="action" @click="handleStudentAction('kick', student.userId)">
-                    <img src="@/assets/course/icons/door.png" width="20" alt="" />
-                </div>
-                <div
-                    class="action"
-                    v-if="student.status !== UserCourseStatus.reject"
-                    @click="handleStudentAction(UserCourseStatus.reject, student.userId)"
-                >
-                    <img src="@/assets/course/icons/block.png" width="20" alt="" />
-                </div>
-                <div
-                    class="action"
-                    v-if="student.status === UserCourseStatus.reject"
-                    @click="
-                        handleStudentAction(UserCourseStatus.accepted, student.userId)
-                    "
-                >
-                    <img src="@/assets/course/icons/check.svg" width="20" alt="" />
-                </div>
+
+            <div
+                class="invite-button"
+                @click="handleStudentAction('add', student.userId)"
+            >
+                {{ $t('course.studentListMode.invite') }}
             </div>
         </div>
     </div>
@@ -90,20 +55,20 @@ import {
     DEFAULT_STUDENT_COUNT_PER_PAGE,
 } from '../../constants/course.constants';
 import { studentAction } from '../../services/course';
-import { getCourseStudentList } from '../../services/user-course';
+import { getOutsideCourseStudentList } from '../../services/user-course';
 import { userCourseModule } from '../../store/user-course.store';
 
 @Options({
     components: {},
 })
-export default class CourseStudentListPopup extends Vue {
+export default class CourseOutsideStudentList extends Vue {
     UserCourseStatus = UserCourseStatus;
     keyword = '';
     get outsideCourseStudentList() {
         return userCourseModule.outsideCourseStudentList;
     }
 
-    async initCourseStudentList() {
+    async initOutsideCourseStudentList() {
         const courseId = this.$route.params.courseId as string;
         commonModule.setLoadingIndicator(true);
         const params: IGetListDefaultParams = {
@@ -111,14 +76,14 @@ export default class CourseStudentListPopup extends Vue {
             page: DEFAULT_SELECTED_PAGE,
             pageSize: DEFAULT_STUDENT_COUNT_PER_PAGE,
         };
-        const response = await getCourseStudentList(params, courseId);
+        const response = await getOutsideCourseStudentList(params, courseId);
         if (response?.success) {
-            userCourseModule.setCourseStudentList(response?.data?.items || []);
+            userCourseModule.setOutsideCourseStudentList(response?.data?.items || []);
         } else {
             let res = response?.errors || [
-                { message: this.$t('landing.categories.errors.getCategoryListError') },
+                { message: this.$t('course.errors.getStudentListError') },
             ];
-            userCourseModule.setCourseStudentList([]);
+            userCourseModule.setOutsideCourseStudentList([]);
             showErrorNotificationFunction(res[0].message);
         }
         commonModule.setLoadingIndicator(false);
@@ -132,7 +97,7 @@ export default class CourseStudentListPopup extends Vue {
         if (response.success) {
             showSuccessNotificationFunction('Success');
 
-            await this.initCourseStudentList();
+            await this.initOutsideCourseStudentList();
         } else {
             let res = response?.errors || [
                 { message: this.$t('common.error.systemError') },
@@ -143,30 +108,15 @@ export default class CourseStudentListPopup extends Vue {
     }
 
     async handleApplyFilter() {
-        this.initCourseStudentList();
+        this.initOutsideCourseStudentList();
     }
 
     async created() {
-        await this.initCourseStudentList();
+        await this.initOutsideCourseStudentList();
     }
 }
 </script>
 <style lang="scss" scoped>
-.student-list-button {
-    font-size: 17px !important;
-    font-weight: 600 !important;
-    line-height: 24px !important;
-    border-radius: 8px;
-    white-space: nowrap;
-    padding: 12px 24px;
-    transition: all 0.44s ease 0s;
-    &:hover {
-        color: $color-white;
-        background-color: $color-violet-new-opacity-50;
-        border: 1px solid $color-violet-new-opacity-50;
-    }
-}
-
 .student-list-wrapper {
     gap: 12px;
 }
@@ -174,11 +124,7 @@ export default class CourseStudentListPopup extends Vue {
 .student-card {
     padding: 12px 18px;
     border-radius: 6px;
-    border: 1px solid red;
-}
-.action {
-    cursor: pointer;
-    color: red;
+    border: 1px solid $color-violet-new-opacity-50;
 }
 
 .username {
@@ -193,11 +139,6 @@ export default class CourseStudentListPopup extends Vue {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-}
-
-.rejected-student {
-    text-decoration: line-through;
-    background-color: #ff9a9a;
 }
 
 .sort-button {
@@ -216,6 +157,23 @@ export default class CourseStudentListPopup extends Vue {
         color: $color-white;
         background-color: $color-violet-new-opacity-50;
         border: 1px solid $color-violet-new-opacity-50;
+    }
+}
+
+.invite-button {
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    line-height: 18px !important;
+    border-radius: 6px;
+    white-space: nowrap;
+    padding: 4px 16px;
+    transition: all 0.44s ease 0s;
+    background-color: $color-violet-new-opacity-50;
+    color: $color-white;
+    cursor: pointer;
+    &:hover {
+        color: $color-white;
+        background-color: $color-violet-new-1;
     }
 }
 </style>

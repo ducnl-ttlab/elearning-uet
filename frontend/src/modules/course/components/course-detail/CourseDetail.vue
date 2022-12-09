@@ -63,10 +63,12 @@ export default class CourseDetail extends Vue {
     white-space: nowrap;
     padding: 12px 24px;
     transition: all 0.44s ease 0s;
+    background-color: $color-white;
+    cursor: pointer;
+    background-color: $color-violet-new-opacity-50;
+    color: $color-white;
     &:hover {
-        color: $color-white;
-        background-color: $color-violet-new-opacity-50;
-        border: 1px solid $color-violet-new-opacity-50;
+        background-color: $color-violet-new-1;
     }
 }
 </style>

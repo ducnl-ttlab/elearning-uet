@@ -19,6 +19,20 @@ export interface IAxiosDefaultResponse<T> {
     errors?: Array<IErrorMessage>;
 }
 
+export interface IAxiosListDefaultResponse<T> {
+    data?: {
+        items?: Array<T>;
+        page?: number;
+        pageSize?: number;
+        total_pages: number;
+        totalItems?: number;
+    };
+    code?: IHTTPResponse;
+    message?: string;
+    success?: boolean;
+    errors?: Array<IErrorMessage>;
+}
+
 export interface IUserData {
     id?: string;
     username?: string;

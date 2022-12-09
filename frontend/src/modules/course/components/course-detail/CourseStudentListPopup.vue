@@ -1,8 +1,9 @@
 <template>
-    <div class="">
+    <div>
         <el-dialog
+            :width="'70%'"
             v-model="isShowStudentListPopup"
-            :before-close="closeStudentListPopup"
+            @close="closeStudentListPopup"
             :title="
                 studentListMode === StudentListMode.INSIDE
                     ? $t('course.courseDetail.showStudentList')
@@ -22,7 +23,11 @@
                 </div>
                 <div
                     class="option-button"
-                    @click="handleChangeStudentListMode(StudentListMode.INSIDE)"
+                    :class="{
+                        'option-button-active':
+                            studentListMode === StudentListMode.OUTSIDE ? true : false,
+                    }"
+                    @click="handleChangeStudentListMode(StudentListMode.OUTSIDE)"
                 >
                     {{ $t('course.studentListMode.outside') }}
                 </div>
@@ -37,6 +42,7 @@
 
 <script lang="ts">
 import { commonModule } from '@/modules/common/store/common.store';
+import { user } from '@/modules/user/locale/en/user.en';
 import { Options, Vue } from 'vue-class-component';
 import { StudentListMode } from '../../constants/course.constants';
 import { userCourseModule } from '../../store/user-course.store';
@@ -59,57 +65,13 @@ export default class CourseStudentListPopup extends Vue {
     handleChangeStudentListMode(mode: string) {
         userCourseModule.setStudentListMode(mode);
     }
+
+    closeStudentListPopup() {
+        commonModule.toggleShowStudentListPopup(false);
+    }
 }
 </script>
 <style lang="scss" scoped>
-.student-list-button {
-    font-size: 17px !important;
-    font-weight: 600 !important;
-    line-height: 24px !important;
-    border-radius: 8px;
-    white-space: nowrap;
-    padding: 12px 24px;
-    transition: all 0.44s ease 0s;
-    &:hover {
-        color: $color-white;
-        background-color: $color-violet-new-opacity-50;
-        border: 1px solid $color-violet-new-opacity-50;
-    }
-}
-
-.student-list-wrapper {
-    gap: 12px;
-}
-
-.student-card {
-    padding: 12px 18px;
-    border-radius: 6px;
-    border: 1px solid red;
-}
-.action {
-    cursor: pointer;
-    color: red;
-}
-
-.username {
-    width: 25%;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.email {
-    width: 30%;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.rejected-student {
-    text-decoration: line-through;
-    background-color: #ff9a9a;
-}
-
 .option-button {
     font-size: 17px !important;
     font-weight: 600 !important;
@@ -119,13 +81,16 @@ export default class CourseStudentListPopup extends Vue {
     padding: 8px 20px;
     transition: all 0.44s ease 0s;
     background-color: $color-white;
-    border: 1px solid transparent;
     color: #000;
     cursor: pointer;
     &-active {
         color: $color-white;
         background-color: $color-violet-new-opacity-50;
-        border: 1px solid $color-violet-new-opacity-50;
     }
+}
+
+:deep(.el-dialog) {
+    height: 70vh;
+    overflow-y: auto !important;
 }
 </style>
