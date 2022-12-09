@@ -10,8 +10,15 @@ const courseIdParamSchema = Joi.object().keys({
     .message('courseId should be a number'),
 });
 
+const createTopicSchema = Joi.object().keys({
+  name: Joi.string().min(1).required(),
+  description: Joi.string().min(1).required(),
+  content: Joi.string().min(1).required(),
+});
+
 const validationSchemas = {
   courseIdParamSchema,
+  createTopicSchema,
 };
 
 type validationKeyType = keyof typeof validationSchemas;

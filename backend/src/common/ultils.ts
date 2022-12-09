@@ -99,3 +99,10 @@ export function removeImageFile(image: string, folder: Folder) {
     fs.unlinkSync(path);
   }
 }
+
+export function hasFile(path: string) {
+  if (fs.existsSync(path)) {
+    return true;
+  }
+  return false;
+}

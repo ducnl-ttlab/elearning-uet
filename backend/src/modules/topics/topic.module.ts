@@ -1,4 +1,5 @@
-import { AuthModule } from '../auth/auth.module'
+import { ConfigModule } from '@nestjs/config';
+import { AuthModule } from '../auth/auth.module';
 import { Module } from '@nestjs/common';
 import { TopicController } from './topic.controller';
 import { TopicService } from './service/topic.service';
@@ -7,6 +8,7 @@ import { Topic } from './entity/topic.entity';
 import { CategoryModule } from '../category/category.module';
 import { CourseModule } from '../course/course.module';
 import { UserModule } from '../user/user.module';
+import { UserCourseModule } from '../user-courses/user-courses.module';
 
 @Module({
   imports: [
@@ -14,7 +16,9 @@ import { UserModule } from '../user/user.module';
     CategoryModule,
     CourseModule,
     UserModule,
-    AuthModule
+    AuthModule,
+    ConfigModule,
+    UserCourseModule,
   ],
   controllers: [TopicController],
   providers: [TopicService],

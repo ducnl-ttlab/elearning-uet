@@ -22,6 +22,16 @@ export class TopicService {
     }
   }
 
+  async getTopicsByCourseId(courseId: number) {
+    try {
+      return this.topic.findAndCount({
+        where: { courseId: courseId },
+      });
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
   async findShortCourseTopicList(courseId: number): Promise<Topic[]> {
     try {
       return this.topic.find({

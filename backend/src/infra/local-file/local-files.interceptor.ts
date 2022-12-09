@@ -43,7 +43,7 @@ export const videoParams = {
     callback(null, true);
   },
   limits: {
-    fileSize: Math.pow(1024, 2) * 4, // 4MB
+    fileSize: Math.pow(1024, 2) * 100, // 4MB
   },
 };
 
