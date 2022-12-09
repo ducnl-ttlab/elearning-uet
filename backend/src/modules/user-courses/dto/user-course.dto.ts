@@ -68,6 +68,7 @@ export interface StudentOutSideCourse {
   userId: string;
   avatar: string;
   username: string;
+  email: string;
 }
 
 export interface QueryListDto {
