@@ -76,7 +76,7 @@ export class UserCourseService {
   ): Promise<StudentOutSideCourse[]> {
     try {
       let query = `
-    SELECT u.id as userId, u.avatar, u.username
+    SELECT u.id as userId, u.avatar, u.username, u.email
     FROM users u
     WHERE u.id not in  
       ( SELECT uc.userId
