@@ -65,7 +65,12 @@ const userActiveSchema = Joi.object().keys({
     UserCourseStatus.commentBlocking,
     UserCourseStatus.accepted,
     'kick',
+    'add',
   ),
+  notificationId: Joi.string()
+    .pattern(/^[0-9]+$/)
+    .message('notificationId should be a number')
+    .optional(),
 });
 
 const courseValidationSchemas = {

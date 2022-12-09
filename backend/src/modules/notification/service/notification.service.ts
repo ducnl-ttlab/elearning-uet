@@ -53,6 +53,16 @@ export class NotificationService {
     this.saveNotification(newNotification);
   }
 
+  async updateStudentJoinCourse(notificationId: number) {
+    try {
+      return this.notification.update(notificationId, {
+        type: NotificationType.studentJoinCourse,
+      });
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
   async studentJoinCourse({
     instructorId,
     type,

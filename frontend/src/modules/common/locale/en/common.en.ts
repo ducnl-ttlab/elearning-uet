@@ -2,6 +2,7 @@ export const common = {
     notification: 'Notification',
     error: {
         systemError: 'We are experiencing some issues. Please try again later!',
+        emptyNotificationList: 'Cannot find any notifications.',
     },
     gender: {
         male: 'Male',
@@ -17,6 +18,8 @@ export const common = {
             vi: 'Vietnamese',
             en: 'English',
         },
+        accept: 'accept',
+        reject: 'reject',
         appName: 'Sorademic',
         loginButton: 'Login',
         registerButton: 'Register',
