@@ -28,7 +28,7 @@ export default class LoadingIndicator extends Vue {
 <style scoped lang="scss">
 .bg-loader:before {
     content: '';
-    z-index: 1000;
+    z-index: 100000;
     background: #000;
     height: 100%;
     position: absolute;

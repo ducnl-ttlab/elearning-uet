@@ -8,7 +8,7 @@
         >
             {{ $t('course.courseDetail.showStudentList') }}
         </span>
-        <CourseStudentList v-if="isShowStudentListPopup" />
+        <CourseStudentListPopup v-if="isShowStudentListPopup" />
     </div>
 </template>
 
@@ -20,10 +20,10 @@ import { commonModule } from '@/modules/common/store/common.store';
 import { userModule } from '@/modules/user/store/user.store';
 import { Options, Vue } from 'vue-class-component';
 import { userCourseModule } from '../../store/user-course.store';
-import CourseStudentList from './CourseStudentList.vue';
+import CourseStudentListPopup from './CourseStudentListPopup.vue';
 
 @Options({
-    components: { CourseStudentList },
+    components: { CourseStudentListPopup },
 })
 export default class CourseDetail extends Vue {
     SystemRole = SystemRole;

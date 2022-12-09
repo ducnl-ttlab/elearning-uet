@@ -63,6 +63,7 @@ export const course = {
         courseRejected: 'You have been blocked by the instructor.',
         declinedPayment: 'Payment declined. Please try again later.',
         getStudentListError: 'Get student list failed. Please try again later.',
+        emptyStudentList: 'Cannot find any student.',
     },
     success: {
         favoriteCourse: {
@@ -79,5 +80,6 @@ export const course = {
     },
     courseDetail: {
         showStudentList: 'Student List',
+        showOutsideStudentList: 'Student List (not in course)',
     },
 };

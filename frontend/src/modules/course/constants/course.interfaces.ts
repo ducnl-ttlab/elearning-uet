@@ -1,5 +1,5 @@
 import { UserCourseStatus } from './course.constants';
-
+import { UserCourseStatus as UC } from '@/modules/common/constants/common.interfaces';
 export interface ICourseData {
     id: number;
     categoryId: number;
@@ -80,5 +80,13 @@ export interface IStudentCourseShortData {
     email: string;
     avatar: string;
     startCourseTime: string;
-    status: UserCourseStatus;
+    status: UC;
+    score: number;
+}
+
+export interface IOutsideStudentCourseData {
+    userId: string;
+    username: string;
+    email: string;
+    avatar: string;
 }

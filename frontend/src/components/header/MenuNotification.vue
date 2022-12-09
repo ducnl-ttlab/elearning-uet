@@ -305,4 +305,8 @@ export default class MenuNotification extends Vue {
     --el-dropdown-menuItem-hover-fill: none;
     --el-dropdown-menuItem-hover-color: var(--el-color-primary);
 }
+
+:deep(.el-dropdown-menu__item:hover) {
+    background: transparent !important;
+}
 </style>

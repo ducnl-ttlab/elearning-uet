@@ -13,12 +13,12 @@
     </div>
     <div class="student-list-wrapper d-flex flex-column pt-3">
         <BaseNoResult
-            v-if="courseStudentList.length === 0"
+            v-if="outsideCourseStudentList.length === 0"
             :message="$t('course.errors.emptyStudentList')"
         />
         <div
             class="student-card d-flex flex-row align-items-center gap-3 w-100"
-            v-for="(student, index) in courseStudentList"
+            v-for="(student, index) in outsideCourseStudentList"
             :key="student.id"
             :class="{
                 'rejected-student':
@@ -99,8 +99,8 @@ import { userCourseModule } from '../../store/user-course.store';
 export default class CourseStudentListPopup extends Vue {
     UserCourseStatus = UserCourseStatus;
     keyword = '';
-    get courseStudentList() {
-        return userCourseModule.courseStudentList;
+    get outsideCourseStudentList() {
+        return userCourseModule.outsideCourseStudentList;
     }
 
     async initCourseStudentList() {
