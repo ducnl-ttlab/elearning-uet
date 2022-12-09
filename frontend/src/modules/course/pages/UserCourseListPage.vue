@@ -83,16 +83,16 @@ export default class UserCourseListPage extends Vue {
 
     SystemRole = SystemRole;
 
+    get userRole() {
+        return userModule.userData.role;
+    }
+
     get instructorCourseList() {
         return userCourseModule.instructorCourseList;
     }
 
     get studentCourseList() {
         return userCourseModule.studentCourseList;
-    }
-
-    get userRole() {
-        return userModule.userData.role;
     }
 
     get userData() {

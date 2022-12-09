@@ -4,12 +4,17 @@
         @click="handleCourseClick(course.id)"
     >
         <div class="d-flex flex-row justify-content-between">
-            <div class="course-grid-item-instructor" style="font-weight: bold">
+            <div
+                class="course-grid-item-instructor"
+                style="font-weight: bold"
+                v-if="userRole === SystemRole.STUDENT"
+            >
                 <img src="@/assets/landing/icons/student.svg" width="16" alt="" />
                 <span>
                     {{ course.instructorName }}
                 </span>
             </div>
+            <div v-else></div>
             <div class="course-grid-item-rating d-flex flex-row align-items-center">
                 <div v-if="course.avgRating">{{ $t('course.course.rating') }}</div>
                 <div>
@@ -49,24 +54,27 @@
                 </span>
                 <img src="@/assets/landing/icons/student.svg" width="16" alt="" />
             </div>
-            <div
-                class="price-tag"
-                v-if="course.price"
-                :style="{
-                    'background-color': getPriceBackgroundColor(course.price),
-                }"
-            >
-                {{ $t('course.course.price', { price: course.price }) }}
-            </div>
-            <div v-else class="price-tag" style="background-color: #3bb143">
-                {{ $t('course.course.free') }}
+            <div v-if="userRole === SystemRole.INSTRUCTOR">
+                <div
+                    class="price-tag"
+                    v-if="course.price"
+                    :style="{
+                        'background-color': getPriceBackgroundColor(course.price),
+                    }"
+                >
+                    {{ $t('course.course.price', { price: course.price }) }}
+                </div>
+                <div v-else class="price-tag" style="background-color: #3bb143">
+                    {{ $t('course.course.free') }}
+                </div>
             </div>
         </div>
     </div>
 </template>
 
 <script lang="ts">
-import { PageName } from '@/common/constants';
+import { PageName, SystemRole } from '@/common/constants';
+import { userModule } from '@/modules/user/store/user.store';
 import { Options, Vue } from 'vue-class-component';
 import { Prop } from 'vue-property-decorator';
 import { ICourseData } from '../../constants/course.interfaces';
@@ -76,6 +84,10 @@ import { getPriceBackgroundColor } from '../../helpers/commonFunctions';
     components: {},
 })
 export default class UserCourseGridItem extends Vue {
+    SystemRole = SystemRole;
+    get userRole() {
+        return userModule.userData.role;
+    }
     @Prop({ default: '' }) readonly course!: ICourseData;
     getPriceBackgroundColor(price: number) {
         return getPriceBackgroundColor(price);

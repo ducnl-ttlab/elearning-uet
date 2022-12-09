@@ -63,6 +63,9 @@ export const course = {
         courseRejected: 'Bạn đã bị giảng viên chặn khỏi khóa học.',
         declinedPayment: 'Thanh toán thất bại, xin vui lòng thử lại',
         notLoggedIn: 'Vui lòng đăng nhập trước',
+        getStudentListError:
+            'Xảy ra lỗi khi lấy danh sách học viên. Xin vui lòng thử lại sau',
+        emptyStudentList: 'Không tìm thấy học viên nào',
     },
 
     success: {
@@ -76,5 +79,16 @@ export const course = {
             paidCourse: 'Vui lòng tiến hành thanh toán',
             successPayment: 'Bạn đã thanh toán thành công, vui lòng trở lại khóa học',
         },
+    },
+
+    courseDetail: {
+        showStudentList: 'Danh sách học viên',
+        showOutsideStudentList: 'Danh sách học viên ngoài khóa học',
+    },
+
+    studentListMode: {
+        inside: 'Trong khóa học',
+        outside: 'Ngoài khóa học',
+        invite: 'Mời',
     },
 };

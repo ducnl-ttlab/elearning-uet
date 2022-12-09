@@ -2,9 +2,9 @@
     <div class="categories-wrapper w-100 d-flex justify-content-between">
         <CategoryCard
             v-for="category in categoryList"
-            :key="category.id"
+            :key="category?.id"
             :category="category"
-            @click="handleCategoryClick(category.id)"
+            @click="handleCategoryClick(category?.id)"
         />
         <div style="width: 348px"></div>
     </div>

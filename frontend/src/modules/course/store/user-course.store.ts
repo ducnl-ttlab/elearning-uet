@@ -2,10 +2,13 @@ import { Module, VuexModule, Action, Mutation, getModule } from 'vuex-module-dec
 import store from '@/plugins/vuex/index';
 import {
     ICourseData,
+    IOutsideStudentCourseData,
     IStudentCourseData,
+    IStudentCourseShortData,
     IUserCourseData,
 } from '../constants/course.interfaces';
-import { CourseListDisplayMode } from '../constants/course.constants';
+import { CourseListDisplayMode, StudentListMode } from '../constants/course.constants';
+import { UserCourseStatus } from '@/modules/common/constants/common.interfaces';
 
 @Module({ dynamic: true, namespaced: true, store, name: 'course' })
 class UserCourseModule extends VuexModule {
@@ -14,6 +17,9 @@ class UserCourseModule extends VuexModule {
     userCourseListDisplayMode = CourseListDisplayMode.GRID;
     instructorCourseList: Array<ICourseData> = [];
     studentCourseList: Array<IStudentCourseData> = [];
+    courseStudentList: Array<IStudentCourseShortData> = [];
+    outsideCourseStudentList: Array<IOutsideStudentCourseData> = [];
+    studentListMode: string = StudentListMode.INSIDE;
 
     @Action
     setUserCourseData(userCourseData: IUserCourseData) {
@@ -63,6 +69,40 @@ class UserCourseModule extends VuexModule {
     @Mutation
     SET_STUDENT_COURSE_LIST(studentCourseList: Array<IStudentCourseData>) {
         this.studentCourseList = studentCourseList;
+    }
+
+    @Action
+    setCourseStudentList(courseStudentList: Array<IStudentCourseShortData>) {
+        this.SET_COURSE_STUDENT_LIST(courseStudentList || []);
+    }
+
+    @Mutation
+    SET_COURSE_STUDENT_LIST(courseStudentList: Array<IStudentCourseShortData>) {
+        this.courseStudentList = courseStudentList;
+    }
+
+    @Action
+    setOutsideCourseStudentList(
+        outsideCourseStudentList: Array<IOutsideStudentCourseData>,
+    ) {
+        this.SET_OUTSIDE_COURSE_STUDENT_LIST(outsideCourseStudentList || []);
+    }
+
+    @Mutation
+    SET_OUTSIDE_COURSE_STUDENT_LIST(
+        outsideCourseStudentList: Array<IOutsideStudentCourseData>,
+    ) {
+        this.outsideCourseStudentList = outsideCourseStudentList;
+    }
+
+    @Action
+    setStudentListMode(mode: string) {
+        this.SET_STUDENT_LIST_MODE(mode);
+    }
+
+    @Mutation
+    SET_STUDENT_LIST_MODE(mode: string) {
+        this.studentListMode = mode;
     }
 }
 export const userCourseModule = getModule(UserCourseModule);
