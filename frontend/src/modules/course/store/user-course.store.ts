@@ -3,6 +3,7 @@ import store from '@/plugins/vuex/index';
 import {
     ICourseData,
     IStudentCourseData,
+    IStudentCourseShortData,
     IUserCourseData,
 } from '../constants/course.interfaces';
 import { CourseListDisplayMode } from '../constants/course.constants';
@@ -14,6 +15,7 @@ class UserCourseModule extends VuexModule {
     userCourseListDisplayMode = CourseListDisplayMode.GRID;
     instructorCourseList: Array<ICourseData> = [];
     studentCourseList: Array<IStudentCourseData> = [];
+    courseStudentList: Array<IStudentCourseShortData> = [];
 
     @Action
     setUserCourseData(userCourseData: IUserCourseData) {
@@ -63,6 +65,16 @@ class UserCourseModule extends VuexModule {
     @Mutation
     SET_STUDENT_COURSE_LIST(studentCourseList: Array<IStudentCourseData>) {
         this.studentCourseList = studentCourseList;
+    }
+
+    @Action
+    setCourseStudentList(courseStudentList: Array<IStudentCourseShortData>) {
+        this.SET_COURSE_STUDENT_LIST(courseStudentList || []);
+    }
+
+    @Mutation
+    SET_COURSE_STUDENT_LIST(courseStudentList: Array<IStudentCourseShortData>) {
+        this.courseStudentList = courseStudentList;
     }
 }
 export const userCourseModule = getModule(UserCourseModule);

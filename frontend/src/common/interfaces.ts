@@ -33,3 +33,9 @@ export interface IUserData {
     updated_at?: string;
     unreadNotification?: number;
 }
+
+export interface IGetListDefaultParams {
+    keyword?: string;
+    page?: number;
+    pageSize?: number;
+}

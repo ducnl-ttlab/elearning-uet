@@ -3,7 +3,10 @@
         class="course-list-item-wrapper d-flex w-100 flex-row align-items-center"
         @click="handleCourseClick(course.id)"
     >
-        <div class="d-flex w-100 flex-row align-items-center" style="gap: 2.5vw">
+        <div
+            class="d-flex w-100 flex-row align-items-center"
+            :style="{ gap: userRole === SystemRole.STUDENT ? '2.5vw' : '5vw' }"
+        >
             <div class="course-list-item-title text">
                 {{ course.name }}
             </div>
@@ -26,7 +29,10 @@
                     class="mx-1"
                 />
             </div>
-            <div class="course-list-item-instructor">
+            <div
+                class="course-list-item-instructor"
+                v-if="userRole === SystemRole.STUDENT"
+            >
                 {{ course.instructorName }}
             </div>
             <div class="d-flex flex-row course-grid-item-infos">
@@ -52,7 +58,8 @@
 </template>
 
 <script lang="ts">
-import { PageName } from '@/common/constants';
+import { PageName, SystemRole } from '@/common/constants';
+import { userModule } from '@/modules/user/store/user.store';
 import { Options, Vue } from 'vue-class-component';
 import { Prop } from 'vue-property-decorator';
 import { ICourseData } from '../../constants/course.interfaces';
@@ -63,6 +70,12 @@ import { getPriceBackgroundColor } from '../../helpers/commonFunctions';
 })
 export default class UserCourseListItem extends Vue {
     @Prop({ default: '' }) readonly course!: ICourseData;
+
+    SystemRole = SystemRole;
+
+    get userRole() {
+        return userModule.userData.role;
+    }
     getPriceBackgroundColor(price: number) {
         return getPriceBackgroundColor(price);
     }

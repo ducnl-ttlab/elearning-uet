@@ -1,6 +1,9 @@
 <template>
     <div class="course-list-table-wrapper d-flex w-100 flex-row align-items-center mb-2">
-        <div class="d-flex w-100 flex-row align-items-center" style="gap: 2.5vw">
+        <div
+            class="d-flex w-100 flex-row align-items-center"
+            :style="{ gap: userRole === SystemRole.STUDENT ? '2.5vw' : '5vw' }"
+        >
             <div
                 class="course-list-table-title text"
                 @click="sortInstructorTable('name')"
@@ -22,6 +25,8 @@
             </div>
             <div
                 class="course-list-table-instructor"
+                :style="{ width: userRole === SystemRole.STUDENT ? '140px' : '0' }"
+                v-if="userRole === SystemRole.STUDENT"
                 @click="sortInstructorTable('instructorName')"
             >
                 {{ $t('course.table.instructor') }}
@@ -64,6 +69,12 @@ export default class CourseListItem extends Vue {
     }
 
     sortDesc = true;
+
+    SystemRole = SystemRole;
+
+    get userRole() {
+        return userModule.userData.role;
+    }
 
     get userData() {
         return userModule.userData;
@@ -160,7 +171,6 @@ export default class CourseListItem extends Vue {
     }
 
     &-instructor {
-        width: 170px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;

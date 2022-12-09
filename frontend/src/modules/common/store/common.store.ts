@@ -6,6 +6,17 @@ import { IInstructorData } from '../constants/common.interfaces';
 class CommonModule extends VuexModule {
     instructorList: Array<IInstructorData> = [];
     showLoadingIndicator = false;
+    isShowStudentListPopup = false;
+
+    @Action
+    toggleShowStudentListPopup(isShowStudentListPopup: boolean) {
+        this.TOGGLE_SHOW_STUDENT_LIST_POPUP(isShowStudentListPopup);
+    }
+
+    @Mutation
+    TOGGLE_SHOW_STUDENT_LIST_POPUP(isShowStudentListPopup: boolean) {
+        this.isShowStudentListPopup = isShowStudentListPopup;
+    }
 
     @Action
     setInstructorList(instructorList: Array<IInstructorData>) {

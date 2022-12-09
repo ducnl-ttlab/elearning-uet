@@ -60,7 +60,7 @@ export interface ICourseCheckoutResponse {
 
 export interface IStudentCourseData {
     id?: number;
-    status?: string;
+    status?: UserCourseStatus;
     startCourseTime?: string;
     blockDuration?: string | null;
     rating?: string;
@@ -72,4 +72,13 @@ export interface IStudentCourseData {
     beginCourseTime: string;
     endCourseTime: string;
     startBlockTime: string;
+}
+
+export interface IStudentCourseShortData {
+    userId: string;
+    username: string;
+    email: string;
+    avatar: string;
+    startCourseTime: string;
+    status: UserCourseStatus;
 }

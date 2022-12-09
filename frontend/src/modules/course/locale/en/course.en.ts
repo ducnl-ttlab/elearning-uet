@@ -62,6 +62,7 @@ export const course = {
         emptyTopicList: 'Cannot find any topic.',
         courseRejected: 'You have been blocked by the instructor.',
         declinedPayment: 'Payment declined. Please try again later.',
+        getStudentListError: 'Get student list failed. Please try again later.',
     },
     success: {
         favoriteCourse: {
@@ -75,5 +76,8 @@ export const course = {
             successPayment:
                 'You have successfully bought this course. Please go back to the course page',
         },
+    },
+    courseDetail: {
+        showStudentList: 'Student List',
     },
 };
