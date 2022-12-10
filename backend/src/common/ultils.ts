@@ -29,7 +29,7 @@ export const generateDigits = (numberRandom: number = 6) => {
 };
 
 export const removeExtention = (fileName: string) => {
-  return fileName.split('.').slice(0, -1).join('.');
+  return (fileName && fileName?.split('.').slice(0, -1).join('.')) || '';
 };
 
 export const stringToMysqlTimeStamp = (yyyymmdd: string) => {

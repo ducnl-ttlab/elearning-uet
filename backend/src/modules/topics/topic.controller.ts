@@ -129,16 +129,19 @@ export class TopicController {
     let topics = await this.topicService.getTopicsByCourseId(courseId);
     let res: TopicListResponse = {
       items: topics[0].map((item) => {
-        const { video } = item;
+        let { video } = item;
+        if (video) {
+          let videoName = removeExtention(video);
+          video = video.startsWith('http')
+            ? video
+            : (videoName &&
+                `${req.protocol}://${host}/chunk/${videoName}/video.m3u8`) ||
+              '';
+        }
 
         return {
           ...item,
-          video:
-            video && video.startsWith('http')
-              ? video
-              : `${req.protocol}://${host}/chunk/${removeExtention(
-                  video,
-                )}/video.m3u8` || '',
+          video: video || '',
         };
       }),
       totalItems: topics[1],
