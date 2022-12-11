@@ -16,6 +16,9 @@ import en from './plugins/element-ui/locale/en';
 
 import { DEFAULT_LANGUAGE, SupportLanguage } from './common/constants';
 import tokenService from './common/tokenService';
+import { locale } from 'dayjs';
+import { RouterView } from 'vue-router';
+import { getUserData } from './modules/user/services/user';
 @Options({
     components: {
         ElConfigProvider,
@@ -26,6 +29,9 @@ export default class App extends Vue {
     get locale(): Record<string, unknown> {
         const i18nLocale = tokenService.getLanguage() || SupportLanguage.VI;
         return en;
+    }
+    async created() {
+        await getUserData();
     }
 }
 </script>
