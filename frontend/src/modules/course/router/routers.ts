@@ -8,6 +8,7 @@ import AcceptedPaymentPage from '@/modules/course/pages/AcceptedPaymentPage.vue'
 import DeclinedPaymentPage from '@/modules/course/pages/DeclinedPaymentPage.vue';
 import UserCourseListPage from '@/modules/course/pages/UserCourseListPage.vue';
 import MainLayout from '@/modules/landing/components/layouts/MainLayout.vue';
+import NoStyleLayout from '@/modules/landing/components/layouts/NoStyleLayout.vue';
 
 const courseRouters: Array<RouteRecordRaw> = [
     {
@@ -55,7 +56,7 @@ const courseRouters: Array<RouteRecordRaw> = [
     },
     {
         path: '/course-detail',
-        component: MainLayout,
+        component: NoStyleLayout,
         meta: {
             isPublic: true,
         },

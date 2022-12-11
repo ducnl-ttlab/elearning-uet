@@ -222,7 +222,7 @@ export default class CoursePreviewTopic extends Vue {
         console.log(actionKey, 'actionKey');
         console.log(userCourseModule.userCourseData.status);
         if (actionKey === 0) {
-            if (loginModule.isLoggedIn === false) {
+            if (loginModule.accessToken == '') {
                 showErrorNotificationFunction(this.$t('course.errors.notLoggedIn'));
                 setTimeout(() => this.$router.push({ name: PageName.LOGIN_PAGE }), 2000);
             } else {
@@ -278,7 +278,6 @@ export default class CoursePreviewTopic extends Vue {
 .course-p-information {
     padding: 5vh 5vw;
     gap: 5vw;
-    border: 1px solid red;
     border-radius: 12px;
     justify-content: space-between;
     background-color: #1b2838;
