@@ -104,5 +104,10 @@ export const course = {
     topic: {
         showVideo: 'Click here to show the video',
         hideVideo: 'Click here to hide the video',
+        action: {
+            createTitle: 'Create Topic',
+            editTitle: 'Edit Topic',
+            edit: 'Edit this Topic',
+        },
     },
 };

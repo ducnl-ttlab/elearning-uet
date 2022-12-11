@@ -47,6 +47,7 @@
                 </template>
             </el-dropdown>
         </div>
+
         <Categories />
     </div>
 </template>

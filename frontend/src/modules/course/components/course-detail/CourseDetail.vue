@@ -9,6 +9,7 @@
             </div>
         </div>
         <CourseStudentListPopup v-if="isShowStudentListPopup" />
+        <TopicFormPopup v-if="isShowTopicFormPopup" />
     </div>
 </template>
 
@@ -18,14 +19,16 @@ import { PageName, SystemRole } from '@/common/constants';
 import { commonModule } from '@/modules/common/store/common.store';
 import { userModule } from '@/modules/user/store/user.store';
 import { Options, Vue } from 'vue-class-component';
+import { courseModule } from '../../store/course.store';
+import { getCoursePreviewData, getTopicList } from '../../services/course';
+import { showErrorNotificationFunction } from '@/common/helpers';
+
 import CourseStudentListPopup from './CourseStudentListPopup.vue';
 import CourseSidebar from './CourseSidebar.vue';
 import TopicSidebar from './TopicSidebar.vue';
 import TopicDetail from './TopicDetail.vue';
 import CourseGeneralInfo from './CourseGeneralInfo.vue';
-import { courseModule } from '../../store/course.store';
-import { getCoursePreviewData, getTopicList } from '../../services/course';
-import { showErrorNotificationFunction } from '@/common/helpers';
+import TopicFormPopup from './TopicFormPopup.vue';
 
 @Options({
     components: {
@@ -34,6 +37,7 @@ import { showErrorNotificationFunction } from '@/common/helpers';
         TopicSidebar,
         TopicDetail,
         CourseGeneralInfo,
+        TopicFormPopup,
     },
 })
 export default class CourseDetail extends Vue {
@@ -43,13 +47,12 @@ export default class CourseDetail extends Vue {
         return commonModule.isShowStudentListPopup;
     }
 
-    get userRole() {
-        return userModule.userData.role;
+    get isShowTopicFormPopup() {
+        return courseModule.isShowTopicFormPopup;
     }
 
-    showStudentListPopup() {
-        commonModule.toggleShowStudentListPopup(true);
-        console.log(this.isShowStudentListPopup);
+    get userRole() {
+        return userModule.userData.role;
     }
 
     async getCourseGeneralInfo() {

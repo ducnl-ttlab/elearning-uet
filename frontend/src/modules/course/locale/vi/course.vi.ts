@@ -109,7 +109,9 @@ export const course = {
         showVideo: 'Nhấn vào đây để xem video',
         hideVideo: 'Nhấn vào đây để ẩn video',
         action: {
-            edit: 'Sửa nội dung',
+            edit: 'Sửa chủ đề',
+            createTitle: 'Thêm chủ đề mới',
+            editTitle: 'Sửa chủ đề',
         },
     },
 };

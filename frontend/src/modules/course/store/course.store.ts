@@ -15,7 +15,7 @@ class CourseModule extends VuexModule {
     topicList: Array<ITopicData> = [];
     selectedTopic: ITopicData = this.topicList.length > 0 ? this.topicList[0] : {};
     topicSidebarMode = TopicSidebarMode.EXPANDED;
-    isShowTopicVideo = false;
+    isShowTopicVideo = true;
     isShowTopicFormPopup = false;
 
     @Action

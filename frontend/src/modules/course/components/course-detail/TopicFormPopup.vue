@@ -2,40 +2,14 @@
     <div>
         <el-dialog
             :width="'70%'"
-            v-model="isShowStudentListPopup"
-            @close="closeStudentListPopup"
+            v-model="isShowTopicFormPopup"
+            @close="closeTopicFormPopup"
             :title="
-                studentListMode === StudentListMode.INSIDE
-                    ? $t('course.courseDetail.showStudentList')
-                    : $t('course.courseDetail.showOutsideStudentList')
+                isCreate
+                    ? $t('course.topic.action.createTitle')
+                    : $t('course.topic.action.editTitle')
             "
         >
-            <div class="d-flex flex-row pb-4">
-                <div
-                    class="option-button"
-                    :class="{
-                        'option-button-active':
-                            studentListMode === StudentListMode.INSIDE ? true : false,
-                    }"
-                    @click="handleChangeStudentListMode(StudentListMode.INSIDE)"
-                >
-                    {{ $t('course.studentListMode.inside') }}
-                </div>
-                <div
-                    class="option-button"
-                    :class="{
-                        'option-button-active':
-                            studentListMode === StudentListMode.OUTSIDE ? true : false,
-                    }"
-                    @click="handleChangeStudentListMode(StudentListMode.OUTSIDE)"
-                >
-                    {{ $t('course.studentListMode.outside') }}
-                </div>
-            </div>
-            <CourseStudentList v-if="studentListMode === StudentListMode.INSIDE" />
-            <OutsideCourseStudentList
-                v-if="studentListMode === StudentListMode.OUTSIDE"
-            />
         </el-dialog>
     </div>
 </template>
@@ -51,6 +25,8 @@ export default class TopicFormPopup extends Vue {
     get isShowTopicFormPopup() {
         return courseModule.isShowTopicFormPopup;
     }
+
+    isCreate = false;
 
     closeTopicFormPopup() {
         courseModule.toggleShowTopicFormPopup(false);

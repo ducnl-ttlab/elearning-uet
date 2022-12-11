@@ -117,6 +117,7 @@ import {
 } from '@/common/helpers';
 import { loginModule } from '@/modules/auth/store/login.store';
 import { commonModule } from '@/modules/common/store/common.store';
+import { userModule } from '@/modules/user/store/user.store';
 import { Options, Vue } from 'vue-class-component';
 import { UserCourseStatus } from '../../constants/course.constants';
 import { getPriceBackgroundColor } from '../../helpers/commonFunctions';
@@ -137,8 +138,12 @@ export default class CoursePreviewTopic extends Vue {
         return userCourseModule.userCourseData;
     }
 
+    get userData() {
+        return userModule.userData;
+    }
+
     get isCourseOwner() {
-        return false;
+        return this.coursePreviewInformation?.instructorId == this.userData.id;
     }
 
     get isFavoriteCourse() {

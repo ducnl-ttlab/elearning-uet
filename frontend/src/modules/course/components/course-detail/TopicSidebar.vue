@@ -1,7 +1,7 @@
 <template>
     <div class="topic-sidebar-wrapper d-flex flex-column">
         <div
-            @click="handleToggleSidebar"
+            @click.self="handleToggleSidebar"
             class="button topic-title d-flex justify-content-between"
             :class="{ collapsed: isCollapsed }"
             style="cursor: pointer"
@@ -19,13 +19,13 @@
             />
         </div>
         <div
-            v-for="topic in topicList"
+            v-for="(topic, index) in topicList"
             :key="topic.id"
             @click="handleClickTopic(topic?.id)"
             class="button sidebar d-flex"
             :class="{ collapsed: isCollapsed }"
         >
-            <div>{{ topic?.id }}</div>
+            <div>{{ index + 1 }}</div>
             <div v-if="!isCollapsed" class="text-ellipsis">
                 {{ '.\xa0' }}
                 {{ topic?.name }}
@@ -80,16 +80,15 @@ export default class CourseSidebar extends Vue {
         } else {
             courseModule.setTopicSidebarMode(TopicSidebarMode.EXPANDED);
         }
-        console.log(this.topicSidebarMode);
     }
 
     handleClickTopic(id: number) {
         courseModule.setSelectedTopic(id);
-        courseModule.toggleShowTopicVideo(false);
+        courseModule.toggleShowTopicVideo(true);
     }
 
     handleAddTopic() {
-        console.log('emiited');
+        courseModule.toggleShowTopicFormPopup(true);
     }
 
     created(): void {

@@ -98,3 +98,15 @@ export async function getTopicList(
             return error.response.data;
         });
 }
+
+export async function createTopic(
+    params: FormData,
+    courseId: number,
+): Promise<IAxiosDefaultResponse<ITopicData>> {
+    return axios.post(`${BE_URL}/topic/${courseId}`, params, {
+        headers: {
+            Authorization: 'Bearer ' + localStorageTokenService.getAccessToken(),
+            'Content-Type': 'multipart/form-data',
+        },
+    });
+}

@@ -4,7 +4,11 @@
             class="title-wrapper d-flex flex-row align-items-center justify-content-between"
         >
             <div class="topic-detail-title">{{ selectedTopic?.name }}</div>
-            <div class="edit-topic-button" v-if="userRole === SystemRole.INSTRUCTOR">
+            <div
+                class="edit-topic-button"
+                @click="handleEditTopic"
+                v-if="userRole === SystemRole.INSTRUCTOR"
+            >
                 {{ $t('course.topic.action.edit') }}
             </div>
         </div>
@@ -33,9 +37,9 @@
         <BaseNoResult
             v-if="selectedTopic && !selectedTopic.id"
             :message="
-                userRole === SystemRole.INSTRUCTOR
-                    ? $t('course.errors.instructorGetTopicError')
-                    : $t('course.errors.studentGetTopicError')
+                userRole === SystemRole.STUDENT
+                    ? $t('course.errors.studentGetTopicError')
+                    : $t('course.errors.instructorGetTopicError')
             "
         />
     </div>
@@ -45,7 +49,6 @@
 import { SystemRole } from '@/common/constants';
 import { userModule } from '@/modules/user/store/user.store';
 import { Options, Vue } from 'vue-class-component';
-import { TopicSidebarMode } from '../../constants/course.constants';
 import { courseModule } from '../../store/course.store';
 
 @Options({
@@ -70,6 +73,14 @@ export default class TopicDetail extends Vue {
     }
     hideTopicVideo() {
         courseModule.toggleShowTopicVideo(false);
+    }
+
+    handleEditTopic() {
+        courseModule.toggleShowTopicFormPopup(true);
+    }
+
+    created() {
+        this.showTopicVideo();
     }
 }
 </script>
