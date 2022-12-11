@@ -278,7 +278,6 @@ export default class CoursePreviewTopic extends Vue {
 .course-p-information {
     padding: 5vh 5vw;
     gap: 5vw;
-    border: 1px solid red;
     border-radius: 12px;
     justify-content: space-between;
     background-color: #1b2838;

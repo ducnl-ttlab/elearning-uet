@@ -1,4 +1,4 @@
-import { IAxiosDefaultResponse } from '@/common/interfaces';
+import { IAxiosDefaultResponse, IAxiosListDefaultResponse } from '@/common/interfaces';
 import localStorageTokenService from '@/common/tokenService';
 import { loginModule } from '@/modules/auth/store/login.store';
 import { UserActionDto } from '@/modules/common/constants/common.interfaces';
@@ -7,6 +7,7 @@ import {
     ICourseData,
     ICourseListParams,
     ICoursePreviewData,
+    ITopicData,
 } from '../constants/course.interfaces';
 
 const FE_URL = process.env.VUE_APP_FE_BASE_URL;
@@ -73,6 +74,23 @@ export async function studentAction(
                 },
             },
         )
+        .then((res) => {
+            return res.data;
+        })
+        .catch((error) => {
+            return error.response.data;
+        });
+}
+
+export async function getTopicList(
+    courseId: number,
+): Promise<IAxiosListDefaultResponse<ITopicData>> {
+    return axios
+        .get(`${BE_URL}/topic/${courseId}`, {
+            headers: {
+                Authorization: 'Bearer ' + loginModule.accessToken,
+            },
+        })
         .then((res) => {
             return res.data;
         })
