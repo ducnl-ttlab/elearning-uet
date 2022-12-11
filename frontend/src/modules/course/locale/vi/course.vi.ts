@@ -66,6 +66,7 @@ export const course = {
         getStudentListError:
             'Xảy ra lỗi khi lấy danh sách học viên. Xin vui lòng thử lại sau',
         emptyStudentList: 'Không tìm thấy học viên nào',
+        getTopicListError: 'Không tìm thấy chủ đề nào',
     },
 
     success: {
@@ -90,5 +91,16 @@ export const course = {
         inside: 'Trong khóa học',
         outside: 'Ngoài khóa học',
         invite: 'Mời',
+    },
+
+    courseSidebar: {
+        courseDetail: 'Nội dung khóa học',
+        quiz: 'Bài tập',
+        studentList: 'Danh sách học viên',
+    },
+
+    topicSidebar: {
+        title: 'Danh mục',
+        addTopic: 'Thêm chủ đề',
     },
 };

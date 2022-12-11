@@ -24,3 +24,8 @@ export enum UserCourseStatus {
     PENDING = 'pending',
     COMMENT_BLOCKED = 'comment_blocking',
 }
+
+export const TopicSidebarMode = {
+    EXPANDED: 'EXPANDED',
+    COLLAPSED: 'COLLAPSED',
+};

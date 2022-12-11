@@ -90,3 +90,12 @@ export interface IOutsideStudentCourseData {
     email: string;
     avatar: string;
 }
+
+export interface ITopicData {
+    id?: number;
+    courseId?: number;
+    name?: string;
+    description?: string;
+    content?: string;
+    video?: string;
+}

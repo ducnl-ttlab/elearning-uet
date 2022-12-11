@@ -52,7 +52,7 @@ import { userModule } from '@/modules/user/store/user.store';
 })
 export default class Header extends Vue {
     getLoggedIn() {
-        return loginModule.isLoggedIn;
+        return !(loginModule.accessToken == '');
     }
 }
 </script>

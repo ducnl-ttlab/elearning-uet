@@ -64,6 +64,7 @@ export const course = {
         declinedPayment: 'Payment declined. Please try again later.',
         getStudentListError: 'Get student list failed. Please try again later.',
         emptyStudentList: 'Cannot find any student.',
+        getTopicListError: 'Cannot find any topic',
     },
     success: {
         favoriteCourse: {
@@ -87,5 +88,16 @@ export const course = {
         inside: 'Trong khóa học',
         outside: 'Ngoài khóa học',
         invite: 'Invite',
+    },
+
+    courseSidebar: {
+        courseDetail: 'Course Details',
+        quiz: 'Quizzes',
+        studentList: 'Student List',
+    },
+
+    topicSidebar: {
+        title: 'Topic List',
+        addTopic: 'Add new topic',
     },
 };

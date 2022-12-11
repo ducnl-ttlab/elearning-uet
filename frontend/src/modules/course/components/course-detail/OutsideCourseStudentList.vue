@@ -132,6 +132,7 @@ export default class CourseOutsideStudentList extends Vue {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    font-weight: 600;
 }
 
 .email {
