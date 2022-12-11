@@ -113,6 +113,7 @@ import {
 } from '@/common/commonFunctions';
 import { userModule } from '@/modules/user/store/user.store';
 import localStorageTokenService from '@/common/tokenService';
+import socketInstance from '@/plugins/socket';
 
 @Options({
     components: {},
@@ -151,6 +152,7 @@ export default class HeaderMenuAccount extends Vue {
         loginModule.setLoginState(false);
         localStorageTokenService.resetAll();
         localStorageTokenService.setLoginUser({});
+        socketInstance.disconnect();
         this.$router.push({
             name: PageName.LOGIN_PAGE,
         });

@@ -8,11 +8,11 @@ import forEach from 'lodash/forEach';
 import { getGlobalComponents } from './common/loadGlobalComponents';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './assets/styles/global.scss';
+
 const app = createApp(App)
     .use(store)
     .use(router)
     .use(plugins.i18n)
-
     .use(plugins.ElementUI, {
         i18n: (key: string) => {
             return plugins.i18n.global.t(key);

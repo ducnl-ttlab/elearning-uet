@@ -9,6 +9,7 @@
 import { Options, Vue } from 'vue-class-component';
 import { ElConfigProvider } from 'element-plus';
 import LoadingIndicator from '@/components/common/LoadingIndicator.vue';
+import './plugins/socket';
 
 import vi from './plugins/element-ui/locale/vi';
 import en from './plugins/element-ui/locale/en';

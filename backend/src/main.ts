@@ -11,9 +11,7 @@ import { SocketIOAdapter } from './socket-io-adapter';
 
 async function bootstrap() {
   const logger = new Logger('Main (main.ts)');
-  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
-    cors: true,
-  });
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
   const configService = app.get(ConfigService);
   const whitelist = configService.get('FRONTEND_URL').split(',');
@@ -44,8 +42,8 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, document);
   await generateChunkFiles();
-  app.useWebSocketAdapter(new SocketIOAdapter(app, configService));
-  
+  app.useWebSocketAdapter(new SocketIOAdapter(app));
+
   await app.listen(port);
   logger.log(`Server running on port ${port}`);
 }
