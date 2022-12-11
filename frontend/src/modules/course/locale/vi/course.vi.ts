@@ -69,6 +69,11 @@ export const course = {
         getTopicListError: 'Không tìm thấy chủ đề nào',
         instructorGetTopicError: 'Chưa có chủ đề, vui lòng tạo mới',
         studentGetTopicError: 'Chưa có chủ đề',
+        topic: {
+            updateTopic: 'Sửa topic thất bại, vui lòng thử lại sau',
+            createTopic: 'Thêm topic thất bại, vui lòng thử lại sau!',
+            deleteTopic: 'Xóa topic thất bại, vui lòng thử lại sau!',
+        },
     },
 
     success: {
@@ -81,6 +86,11 @@ export const course = {
                 'Đã gửi yêu cầu tham gia khóa học tới giảng viên. Xin hãy chờ phê duyệt',
             paidCourse: 'Vui lòng tiến hành thanh toán',
             successPayment: 'Bạn đã thanh toán thành công, vui lòng trở lại khóa học',
+        },
+        topic: {
+            updateTopic: 'Sửa chủ đề thành công!',
+            createTopic: 'Thêm chủ đề mới thành công!',
+            deleteTopic: 'Xóa chủ đề thành công!',
         },
     },
 
@@ -112,6 +122,11 @@ export const course = {
             edit: 'Sửa chủ đề',
             createTitle: 'Thêm chủ đề mới',
             editTitle: 'Sửa chủ đề',
+        },
+        form: {
+            title: 'Tên chủ đề',
+            description: 'Mô tả',
+            content: 'Nội dung',
         },
     },
 };
