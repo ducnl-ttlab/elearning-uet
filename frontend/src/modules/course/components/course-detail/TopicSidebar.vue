@@ -1,38 +1,14 @@
 <template>
-    <div
-        v-if="topicSidebarMode === TopicSidebarMode.EXPANDED"
-        class="topic-sidebar-expanded-wrapper d-flex flex-column"
-    >
+    <div class="topic-sidebar-wrapper d-flex flex-column">
         <div
             @click="handleToggleSidebar"
             class="button topic-title d-flex justify-content-between"
+            :class="{ collapsed: isCollapsed }"
             style="cursor: pointer"
         >
-            <span>{{ $t('course.topicSidebar.title') }}</span>
-            <img
-                v-if="userRole === SystemRole.INSTRUCTOR"
-                style="cursor: pointer"
-                src="@/assets/course/icons/plus.svg"
-                width="25"
-                alt=""
-                @click="handleAddTopic"
-            />
-        </div>
-        <div v-for="topic in topicList" :key="topic.id" class="button sidebar">
-            <div @click="handleClickTopic(topic?.id)">
-                <span>{{ topic?.id }}. </span>
-                <span>{{ topic?.name }}</span>
-            </div>
-        </div>
-        <div class="button d-flex no-topic" v-if="topicList?.length === 0">
-            {{ $t('course.errors.getTopicListError') }}
-        </div>
-    </div>
-    <div v-else class="topic-sidebar-collapsed-wrapper d-flex flex-column">
-        <div
-            @click="handleToggleSidebar"
-            class="button collapsed topic-title d-flex justify-content-center"
-        >
+            <span v-if="!isCollapsed" class="text-ellipsis">{{
+                $t('course.topicSidebar.title')
+            }}</span>
             <img
                 v-if="userRole === SystemRole.INSTRUCTOR"
                 style="cursor: pointer"
@@ -45,17 +21,20 @@
         <div
             v-for="topic in topicList"
             :key="topic.id"
-            class="button collapsed sidebar d-flex justify-content-center"
+            @click="handleClickTopic(topic?.id)"
+            class="button sidebar d-flex"
+            :class="{ collapsed: isCollapsed }"
         >
-            <div @click="handleClickTopic(topic.id)">
-                <span>{{ topic?.id }} </span>
+            <div>{{ topic?.id }}</div>
+            <div v-if="!isCollapsed" class="text-ellipsis">
+                {{ '.\xa0' }}
+                {{ topic?.name }}
             </div>
         </div>
         <div
-            v-if="
-                topicSidebarMode === TopicSidebarMode.EXPANDED && topicList?.length === 0
-            "
-            class="button collapsed d-flex no-topic"
+            class="button d-flex no-topic"
+            :class="{ collapsed: isCollapsed }"
+            v-if="topicList?.length === 0"
         >
             {{ $t('course.errors.getTopicListError') }}
         </div>
@@ -91,6 +70,10 @@ export default class CourseSidebar extends Vue {
         return courseModule.topicSidebarMode;
     }
 
+    get isCollapsed() {
+        return this.topicSidebarMode === TopicSidebarMode.COLLAPSED;
+    }
+
     handleToggleSidebar() {
         if (this.topicSidebarMode === TopicSidebarMode.EXPANDED) {
             courseModule.setTopicSidebarMode(TopicSidebarMode.COLLAPSED);
@@ -102,43 +85,50 @@ export default class CourseSidebar extends Vue {
 
     handleClickTopic(id: number) {
         courseModule.setSelectedTopic(id);
-        console.log(this.selectedTopic);
+        courseModule.toggleShowTopicVideo(false);
     }
 
     handleAddTopic() {
         console.log('emiited');
     }
+
+    created(): void {
+        window.addEventListener('resize', this.showFullScreenOnMobile);
+        this.showFullScreenOnMobile();
+    }
+    showFullScreenOnMobile() {
+        if (document.documentElement.clientWidth <= 1200) {
+            courseModule.setTopicSidebarMode(TopicSidebarMode.COLLAPSED);
+        } else {
+            courseModule.setTopicSidebarMode(TopicSidebarMode.EXPANDED);
+        }
+    }
 }
 </script>
 <style lang="scss" scoped>
-.topic-sidebar-expanded-wrapper {
-    cursor: pointer;
-}
-
-.course-sidebar-wrapper {
+.topic-sidebar-wrapper {
     min-height: 169px;
     height: 100%;
-    background-color: $color-violet-new;
+    cursor: pointer;
+    background-color: #f9f9f9;
 }
 
 .button {
     font-size: 17px !important;
     font-weight: 600 !important;
     line-height: 24px !important;
-    white-space: nowrap;
     padding: 12px 24px;
     transition: all 0.44s ease 0s;
     cursor: pointer;
     color: $color-white;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+
     width: 16vw;
 }
 
 .collapsed {
     width: 60px;
     padding: 12px 0;
+    justify-content: center !important;
 }
 .sidebar {
     background-color: $color-violet-new-1;
@@ -165,5 +155,15 @@ export default class CourseSidebar extends Vue {
 .topic-title {
     background-color: #e6e6f0;
     color: #000;
+}
+
+.j-center {
+    justify-content: center !important;
+}
+
+.text-ellipsis {
+    white-space: nowrap;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
 }
 </style>

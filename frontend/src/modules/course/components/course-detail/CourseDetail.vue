@@ -55,7 +55,7 @@ export default class CourseDetail extends Vue {
     async getCourseGeneralInfo() {
         const id: number = parseInt(this.$route.params.courseId as string);
         const response = await getCoursePreviewData(id);
-        if (response.success) {
+        if (response?.success) {
             courseModule.setCoursePreviewData(response?.data || {});
         } else {
             let res = response?.errors || [

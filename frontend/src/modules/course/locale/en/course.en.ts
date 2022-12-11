@@ -100,4 +100,9 @@ export const course = {
         title: 'Topic List',
         addTopic: 'Add new topic',
     },
+
+    topic: {
+        showVideo: 'Click here to show the video',
+        hideVideo: 'Click here to hide the video',
+    },
 };

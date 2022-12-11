@@ -67,6 +67,8 @@ export const course = {
             'Xảy ra lỗi khi lấy danh sách học viên. Xin vui lòng thử lại sau',
         emptyStudentList: 'Không tìm thấy học viên nào',
         getTopicListError: 'Không tìm thấy chủ đề nào',
+        instructorGetTopicError: 'Chưa có chủ đề, vui lòng tạo mới',
+        studentGetTopicError: 'Chưa có chủ đề',
     },
 
     success: {
@@ -102,5 +104,12 @@ export const course = {
     topicSidebar: {
         title: 'Danh mục',
         addTopic: 'Thêm chủ đề',
+    },
+    topic: {
+        showVideo: 'Nhấn vào đây để xem video',
+        hideVideo: 'Nhấn vào đây để ẩn video',
+        action: {
+            edit: 'Sửa nội dung',
+        },
     },
 };

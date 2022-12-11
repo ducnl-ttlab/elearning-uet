@@ -48,17 +48,6 @@
             </el-dropdown>
         </div>
         <Categories />
-        <video
-            class="video-js vjs-fluid vjs-default-skin"
-            controls
-            preload="auto"
-            data-setup="{}"
-        >
-            <source
-                src="http://localhost:5000/chunk/1670611447109-444608001/video.m3u8"
-                type="application/x-mpegURL"
-            />
-        </video>
     </div>
 </template>
 

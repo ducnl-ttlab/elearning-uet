@@ -9,6 +9,7 @@
                     src="@/assets/landing/icons/star.svg"
                     width="16"
                     alt=""
+                    class="mx-1 pb-1"
                 />
             </div>
         </div>
