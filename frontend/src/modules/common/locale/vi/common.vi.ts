@@ -1,8 +1,13 @@
 export const common = {
     notification: 'Thông báo',
+    online: 'Trực tuyến',
     error: {
         systemError: 'Có lỗi xảy ra, vui lòng thử lại sau ít phút',
         emptyNotificationList: 'Không tìm thấy thông báo nào',
+    },
+    role: {
+        instructor: 'Giảng viên',
+        student: 'Học sinh',
     },
     gender: {
         male: 'Nam',

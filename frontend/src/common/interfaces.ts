@@ -1,3 +1,4 @@
+import { Role } from '@/modules/common/constants/common.interfaces';
 import { SystemRole } from './constants';
 
 export interface IErrorMessage {
@@ -52,4 +53,13 @@ export interface IGetListDefaultParams {
     keyword?: string;
     page?: number;
     pageSize?: number;
+}
+
+export interface IUserOnlineList {
+    id: string;
+    userID: string;
+    email: string;
+    username: string;
+    role: Role;
+    count: 0;
 }

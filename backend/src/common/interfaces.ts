@@ -25,7 +25,7 @@ export interface UserResponse {
 }
 
 export interface IError {
-  success: boolean
+  success: boolean;
   code: HttpStatus;
   message: string;
   errors: any[];
@@ -37,7 +37,6 @@ export interface IUserReq<T> extends Request {
 
 export type IUserJwtReq = IUserReq<IUserJwt>;
 
-
 export interface IuserCourse extends IUserJwtReq {
   userCourse: UserCourse;
 }
@@ -45,7 +44,6 @@ export interface IuserCourse extends IUserJwtReq {
 export interface IinstructorCourse extends IUserJwtReq {
   instructorCourse: Course;
 }
-
 
 export interface SearchServiceInterface<T> {
   insertIndex(bulkData: T): Promise<T>;
@@ -58,8 +56,6 @@ export interface SearchServiceInterface<T> {
 
   deleteDocument(indexData: T): Promise<T>;
 }
-
-
 
 // service types
 export type CreatePollFields = {
@@ -111,7 +107,6 @@ export type AddParticipantData = {
   name: string;
 };
 
-
 export type AddParticipantRankingsData = {
   pollID: string;
   userID: string;
@@ -122,7 +117,14 @@ type AuthPayload = {
   userID: string;
   email: string;
   username: string;
-  role: Role
+  role: Role;
 };
+
+export interface ISocketUser extends AuthPayload {
+  id: string;
+  image?: string;
+  count?: number;
+}
+
 export type SocketWithAuth = Socket & AuthPayload;
 export type RequestWithAuth = Request & AuthPayload;

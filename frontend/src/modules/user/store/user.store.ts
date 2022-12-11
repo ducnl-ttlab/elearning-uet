@@ -1,14 +1,23 @@
 import { Module, VuexModule, Action, Mutation, getModule } from 'vuex-module-decorators';
 import store from '@/plugins/vuex/index';
-import { IUserData } from '@/common/interfaces';
+import { IUserData, IUserOnlineList } from '@/common/interfaces';
 
 @Module({ dynamic: true, namespaced: true, store, name: 'landing' })
 class UserModule extends VuexModule {
     userData: IUserData = {};
 
+    userOnlineList: IUserOnlineList[] = [];
+
     @Action
     setUserData(userData: IUserData) {
         this.SET_USER_DATA(userData || {});
+    }
+
+    @Action
+    setUserOnlineList(userOnlineList: IUserOnlineList[]) {
+        console.log('userOnlineList', userOnlineList);
+
+        this.SET_USER_ONLINE(userOnlineList || []);
     }
 
     @Action
@@ -21,9 +30,25 @@ class UserModule extends VuexModule {
         );
     }
 
+    @Action
+    setIncreaseNotification() {
+        console.log(this.userData.unreadNotification);
+        this.SET_USER_DATA(
+            {
+                ...this.userData,
+                unreadNotification: (this.userData.unreadNotification || 0) + 1,
+            } || {},
+        );
+    }
+
     @Mutation
     SET_USER_DATA(userData: IUserData) {
         this.userData = userData;
+    }
+
+    @Mutation
+    SET_USER_ONLINE(userOnlineList: IUserOnlineList[]) {
+        this.userOnlineList = userOnlineList;
     }
 }
 export const userModule = getModule(UserModule);

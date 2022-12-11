@@ -1,8 +1,13 @@
 export const common = {
     notification: 'Notification',
+    online: 'Online',
     error: {
         systemError: 'We are experiencing some issues. Please try again later!',
         emptyNotificationList: 'Cannot find any notifications.',
+    },
+    role: {
+        instructor: 'instructor',
+        student: 'student',
     },
     gender: {
         male: 'Male',
