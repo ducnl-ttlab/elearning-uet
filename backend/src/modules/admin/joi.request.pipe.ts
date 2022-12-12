@@ -1,4 +1,3 @@
-import { UserCourseStatus } from 'database/constant';
 import * as Joi from 'joi';
 import {
   IValidationKeyType,

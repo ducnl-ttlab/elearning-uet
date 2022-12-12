@@ -103,7 +103,6 @@ export class AdminController {
     const { courseId } = param;
 
     const { name, price, isPublished } = body;
-    console.log({ body });
     if (!name && !price && !isPublished) {
       throw new BadRequestException();
     }
@@ -119,7 +118,6 @@ export class AdminController {
       updateCourse.isPublished = isPublished;
     }
 
-    console.log({ updateCourse });
     let updateCoures = await this.courseService.updateCourse(
       +courseId,
       updateCourse,
