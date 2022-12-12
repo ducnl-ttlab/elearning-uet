@@ -21,9 +21,33 @@ const editCourseChema = Joi.object().keys({
     .optional(),
 });
 
+const editUserChema = Joi.object().keys({
+  username: Joi.string().min(1).optional(),
+  phone: Joi.string()
+    .pattern(/^[0-9]+$/)
+    .message('phone should be a number')
+    .optional(),
+  address: Joi.string().min(1).optional(),
+  password: Joi.string().min(1).optional(),
+});
+
+const userParamSchema = Joi.object().keys({
+  userId: Joi.string().required(),
+});
+
+const courseParamSchema = Joi.object().keys({
+  courseId: Joi.string()
+    .pattern(/^[0-9]+$/)
+    .message('phone should be a number')
+    .required(),
+});
+
 const validationSchemas = {
   loginSchema,
   editCourseChema,
+  editUserChema,
+  userParamSchema,
+  courseParamSchema,
 };
 
 type validationKeyType = keyof typeof validationSchemas;

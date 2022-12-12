@@ -34,7 +34,12 @@ import { IUserJwt, IUserReq } from 'src/common/interfaces';
 
 import { validation } from './joi.request.pipe';
 import { SuccessResponse } from 'src/common/helpers/api.response';
-import { courseParam, EditCourseDto } from './dto/admin.dto';
+import {
+  courseParam,
+  EditCourseDto,
+  EditUserDto,
+  userParam,
+} from './dto/admin.dto';
 import { STRIPE_CLIENT } from 'src/common/constant';
 import Stripe from 'stripe';
 import { CourseService } from '../course/service/course.service';
@@ -48,6 +53,7 @@ import { JWTAuthGuard } from '../auth/guard/jwt-auth.guard';
 import { LoginBody } from '../auth/dto/login-dto';
 import { validate } from 'class-validator';
 import { Auth } from 'src/common/decorator/auth.decorator';
+import { UserService } from '../user/service/user.service';
 
 @ApiTags('Admin')
 @Controller('admin')
@@ -59,6 +65,7 @@ export class AdminController {
     @Inject(STRIPE_CLIENT) private stripe: Stripe,
     private readonly cache: RedisCacheService,
     private readonly adminService: AdminService,
+    private readonly userService: UserService,
   ) {}
 
   @Get('users')
@@ -88,10 +95,16 @@ export class AdminController {
   @Put('courses/:courseId')
   @Auth('admin')
   @UsePipes(
-    ...validation({
-      key: 'editCourseChema',
-      type: 'body',
-    }),
+    ...validation(
+      {
+        key: 'editCourseChema',
+        type: 'body',
+      },
+      {
+        key: 'courseParamSchema',
+        type: 'param',
+      },
+    ),
   )
   async editCourses(
     @Body() body: EditCourseDto,
@@ -126,6 +139,59 @@ export class AdminController {
     return res.status(HttpStatus.OK).json(new SuccessResponse(updateCoures));
   }
 
+  @Put('users/:userId')
+  @Auth('admin')
+  @UsePipes(
+    ...validation(
+      {
+        key: 'editUserChema',
+        type: 'body',
+      },
+      {
+        key: 'userParamSchema',
+        type: 'param',
+      },
+    ),
+  )
+  async editUser(
+    @Body() body: EditUserDto,
+    @Res() res: Response,
+    @Req() req: IUserReq<IUserJwt>,
+    @Headers('host') host: Headers,
+    @Param() param: userParam,
+  ) {
+    const { userId } = param;
+
+    let existUser = await this.userService.findOneById(userId);
+
+    if (!existUser) {
+      throw new BadRequestException('user not found');
+    }
+    const { username, phone, address, password } = body;
+
+    if (!username && !phone && !password && !address) {
+      throw new BadRequestException();
+    }
+
+    let updateUser: any = {};
+    if (username) {
+      updateUser.username = username;
+    }
+    if (phone) {
+      updateUser.phone = phone;
+    }
+    if (address) {
+      updateUser.address = address;
+    }
+    if (password) {
+      const hashedPassword = await this.authService.hashPw(password);
+      updateUser.password = hashedPassword;
+    }
+
+    let updateCoures = await this.userService.updateUser(userId, updateUser);
+
+    return res.status(HttpStatus.OK).json(new SuccessResponse(updateCoures));
+  }
   @Post('login')
   @UsePipes(
     ...validation({

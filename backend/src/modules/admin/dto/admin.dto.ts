@@ -7,3 +7,13 @@ export interface EditCourseDto {
 export interface courseParam {
   courseId: number;
 }
+export interface userParam {
+  userId: string;
+}
+
+export interface EditUserDto {
+  username: string;
+  phone: string;
+  address: string;
+  password: string;
+}
