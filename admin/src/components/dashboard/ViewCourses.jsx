@@ -7,7 +7,7 @@ import styled from "styled-components";
 import Toast from "../common/toast.jsx";
 import showToast from "../common/toast.js";
 import { useSelector, useDispatch } from "react-redux";
-import { doGetCourseList } from "../../redux/actions";
+import { doGetCourseList, doEditCourseList } from "../../redux/actions";
 
 function ViewCourses() {
   const [getCourses, setCourses] = useState([
@@ -93,19 +93,31 @@ function ViewCourses() {
   }, []);
 
   useEffect(() => {
-    if (store.courseList.courses?.length > 0) {
+    if (store.courseList.courses?.length > 1) {
       setCourses(store.courseList.courses);
     }
   }, [store.courseList.courses]);
 
   const handleDeleteCourse = (data) => {
-    AdminService.deleteCourse(data.id)
-      .then((res) => {
-        setToastList([showToast("success", "thông báo!", "Xoá thành công!")]);
-      })
-      .catch((err) => {
-        console.log(err.response.data);
-      });
+    // AdminService.deleteCourse(data.id)
+    //   .then((res) => {
+    //     setToastList([showToast("success", "thông báo!", "Xoá thành công!")]);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err.response.data);
+    //   });
+  };
+
+  const handleEditRow = (newValue, oldValue, rowData, columnDef) => {
+    let body = {
+      [columnDef.field]: newValue,
+    };
+
+    return new Promise((resolve, reject) => {
+      dispatch(doEditCourseList(rowData.id, body));
+      dispatch(doGetCourseList());
+      setTimeout(resolve, 0);
+    });
   };
 
   return (
@@ -142,13 +154,7 @@ function ViewCourses() {
         }}
         cellEditable={{
           cellStyle: {},
-          onCellEditApproved: (newValue, oldValue, rowData, columnDef) => {
-            console.log({ rowData }, { columnDef });
-            return new Promise((resolve, reject) => {
-              console.log("newValue: " + newValue);
-              setTimeout(resolve, 100);
-            });
-          },
+          onCellEditApproved: handleEditRow,
         }}
       />
       <Toast toastList={toastList} />

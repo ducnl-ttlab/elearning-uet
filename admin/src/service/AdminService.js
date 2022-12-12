@@ -33,9 +33,13 @@ function getAdmin() {
   return http.get(`${apiEndpoint}/user/profile`);
 }
 
+function editCourse(courseId, body) {
+  return http.put(`${adminEndpoint}/courses/${courseId}`, body);
+}
 export function getJwt() {
   return localStorage.getItem("token");
 }
+
 function setUpAuth() {
   http.setJwt(getJwt());
 }
@@ -68,6 +72,7 @@ export default {
   setInstructor,
   deleteCourse,
   deleteUser,
+  editCourse,
   getAll,
   setUpAuth,
 };
