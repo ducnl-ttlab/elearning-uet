@@ -64,130 +64,135 @@ function ViewUsers() {
   };
 
   const handleDeleteUsers = (event, data) => {};
+
+  const columns = [
+    {
+      title: "Avatar",
+      field: "avatar",
+      render: (rowData) =>
+        rowData.avatar ? (
+          <img
+            src={rowData.avatar}
+            style={{ width: 50, height: 50, borderRadius: "50%" }}
+          />
+        ) : (
+          <AccountCircleIcon
+            style={{ width: 50, height: 50, borderRadius: "50%" }}
+          />
+        ),
+      cellStyle: { width: 1 },
+      editable: "never",
+      cellStyle: { width: "10%" },
+    },
+    {
+      title: "Họ tên",
+      field: "username",
+      cellStyle: { width: "12%" },
+    },
+    {
+      title: "Địa chỉ email",
+      field: "email",
+      editable: "never",
+      cellStyle: { width: "18%" },
+    },
+    {
+      title: "Số điện thoại",
+      field: "phone",
+
+      cellStyle: { width: "12%" },
+    },
+    {
+      title: "Mật khẩu",
+      field: "password",
+      render: (rowData) => <div> ********</div>,
+      cellStyle: { width: "12%" },
+    },
+    {
+      title: "Nơi ở hiện tại",
+      field: "address",
+      cellStyle: { width: "20%" },
+    },
+    {
+      title: "Vai trò",
+      field: "role",
+      lookup: {
+        instructor: "Giảng viên",
+        student: "Học viên",
+        pending: "Đang chờ xử lí",
+        guest: "Chưa chọn vai trò",
+      },
+      editable: "never",
+      cellStyle: { width: "20%" },
+    },
+  ];
+
+  const actions = [
+    (rowData) => {
+      return {
+        icon: "closeIcon",
+        tooltip: "Xóa tài khoản",
+        onClick: (event, rowData) => handleDeleteUsers(event, rowData),
+      };
+    },
+    (rowData) => {
+      switch (rowData.role) {
+        case "instructor": {
+          break;
+        }
+        case "student": {
+          break;
+        }
+        case "pending": {
+          return {
+            icon: "face3Icon",
+            tooltip: "Trở thành giảng viên",
+            onClick: (event, rowData) =>
+              handleUpdateUsers(event, rowData, "instructor"),
+          };
+        }
+        case "guest": {
+          return {
+            icon: "face3Icon",
+            tooltip: "Trở thành giảng viên",
+            onClick: (event, rowData) =>
+              handleUpdateUsers(event, rowData, "instructor"),
+          };
+        }
+      }
+      return null;
+    },
+    (rowData) => {
+      switch (rowData.role) {
+        case "instructor": {
+          break;
+        }
+        case "student": {
+          break;
+        }
+        case "pending": {
+          break;
+        }
+        case "guest": {
+          return {
+            icon: "schoolIcon",
+            tooltip: "Trở thành học sinh",
+            onClick: (event, rowData) =>
+              handleUpdateUsers(event, rowData, "student"),
+          };
+        }
+      }
+      return null;
+    },
+  ];
+
   return (
     <Wrap>
       <MaterialTable
         title={"Danh sách người dùng - " + getUsers.length + " người dùng"}
         style={{ padding: 10 }}
         data={getUsers}
-        columns={[
-          {
-            title: "Avatar",
-            field: "avatar",
-            render: (rowData) =>
-              rowData.avatar ? (
-                <img
-                  src={rowData.avatar}
-                  style={{ width: 50, height: 50, borderRadius: "50%" }}
-                />
-              ) : (
-                <AccountCircleIcon
-                  style={{ width: 50, height: 50, borderRadius: "50%" }}
-                />
-              ),
-            cellStyle: { width: 1 },
-            editable: "never",
-            cellStyle: { width: "10%" },
-          },
-          {
-            title: "Họ tên",
-            field: "username",
-            cellStyle: { width: "12%" },
-          },
-          {
-            title: "Địa chỉ email",
-            field: "email",
-            editable: "never",
-            cellStyle: { width: "18%" },
-          },
-          {
-            title: "Số điện thoại",
-            field: "phone",
-
-            cellStyle: { width: "12%" },
-          },
-          {
-            title: "Mật khẩu",
-            field: "password",
-            render: (rowData) => <div> ********</div>,
-            cellStyle: { width: "12%" },
-          },
-          {
-            title: "Nơi ở hiện tại",
-            field: "address",
-            cellStyle: { width: "20%" },
-          },
-          {
-            title: "Vai trò",
-            field: "role",
-            lookup: {
-              instructor: "Giảng viên",
-              student: "Học viên",
-              pending: "Đang chờ xử lí",
-              guest: "Chưa chọn vai trò",
-            },
-            editable: "never",
-            cellStyle: { width: "20%" },
-          },
-        ]}
-        actions={[
-          (rowData) => {
-            return {
-              icon: "closeIcon",
-              tooltip: "Xóa tài khoản",
-              onClick: (event, rowData) => handleDeleteUsers(event, rowData),
-            };
-          },
-          (rowData) => {
-            switch (rowData.role) {
-              case "instructor": {
-                break;
-              }
-              case "student": {
-                break;
-              }
-              case "pending": {
-                return {
-                  icon: "face3Icon",
-                  tooltip: "Trở thành giảng viên",
-                  onClick: (event, rowData) =>
-                    handleUpdateUsers(event, rowData, "instructor"),
-                };
-              }
-              case "guest": {
-                return {
-                  icon: "face3Icon",
-                  tooltip: "Trở thành giảng viên",
-                  onClick: (event, rowData) =>
-                    handleUpdateUsers(event, rowData, "instructor"),
-                };
-              }
-            }
-            return null;
-          },
-          (rowData) => {
-            switch (rowData.role) {
-              case "instructor": {
-                break;
-              }
-              case "student": {
-                break;
-              }
-              case "pending": {
-                break;
-              }
-              case "guest": {
-                return {
-                  icon: "schoolIcon",
-                  tooltip: "Trở thành học sinh",
-                  onClick: (event, rowData) =>
-                    handleUpdateUsers(event, rowData, "student"),
-                };
-              }
-            }
-            return null;
-          },
-        ]}
+        columns={columns}
+        actions={actions}
         cellEditable={{
           cellStyle: {},
           onCellEditApproved: handleEditRow,
