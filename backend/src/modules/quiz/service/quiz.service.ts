@@ -95,6 +95,40 @@ export class QuizService {
     }
   }
 
+  async getBulks(topicId: number) {
+    try {
+      let quiz: BulkQuizResponseDto[] = await this.quiz.find({
+        where: { topicId: topicId },
+      });
+      quiz = await Promise.all(
+        quiz.map(async (quizItem) => {
+          let questions: IQuestion[] = await this.question.find({
+            where: { quizId: quizItem.id },
+          });
+
+          let questionList = await Promise.all([
+            ...questions.map(async (questionItem) => {
+              let answers = await this.answer.find({
+                where: { questionId: questionItem.id },
+              });
+              return {
+                ...questionItem,
+                answerList: answers,
+              };
+            }),
+          ]);
+
+          quizItem.questionList = questionList;
+          return { ...quizItem };
+        }),
+      );
+
+      return quiz;
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
   async findOneById(id: number): Promise<Quiz> {
     try {
       return this.quiz.findOne(id);

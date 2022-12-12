@@ -71,24 +71,12 @@ export class QuizController {
   ) {
     const { courseId, topicId } = param;
 
-    let quizes = await this.quizService.getQuizsByTopicId(+topicId);
+    let quizes = await this.quizService.getBulks(+topicId);
     quizes = quizes.map((item) => {
       const { startTime } = item;
       return {
         ...item,
         startTime: mysqlToTimeStamp(startTime),
-        // questionList: [
-        //   {
-        //     name: 'safdsa',
-        //     mark: 10,
-        //     answerList: [
-        //       {
-        //         content: 'sadfdsaf',
-        //         isCorrect: true,
-        //       },
-        //     ],
-        //   },
-        // ],
       };
     });
 
