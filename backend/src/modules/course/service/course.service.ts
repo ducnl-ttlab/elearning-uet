@@ -29,6 +29,16 @@ export class CourseService {
     }
   }
 
+  async updateCourse(courseId: number, course: Partial<Course>) {
+    try {
+      return this.course.update(courseId, {
+        ...course,
+      });
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
   async instructorCourseDetail(
     courseId: number,
   ): Promise<instructorCourseDetailDto[]> {

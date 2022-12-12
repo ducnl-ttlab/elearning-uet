@@ -1,15 +1,10 @@
 import {
-  CourseStudentList,
-  StudentOutSideCourse,
-} from '../dto/user-course.dto';
-import {
   Injectable,
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { StudentCourseDto } from '../dto/user-course.dto';
 import { UserCourse } from 'src/modules/user-courses/entity/user-course.entity';
 import { UserCourseService } from 'src/modules/user-courses/service/user-course.service';
 import { UserService } from 'src/modules/user/service/user.service';

@@ -31,30 +31,10 @@ import { ApiTags } from '@nestjs/swagger';
 import { Response, Request } from 'express';
 import { AdminService } from './service/admin.service';
 import { IUserJwt, IUserReq } from 'src/common/interfaces';
-import { User } from 'src/common/decorator/custom.decorator';
-import {
-  Auth,
-  InstructorCourseAuth,
-  JoinCourseAuth,
-} from 'src/common/decorator/auth.decorator';
+
 import { validation } from './joi.request.pipe';
-import {
-  ErrorResponse,
-  SuccessResponse,
-} from 'src/common/helpers/api.response';
-import {
-  CheckoutCourseDto,
-  JoinCourseDto,
-  StudenCourseListResponse,
-  StudentCourseDto,
-  CheckRegisterDto,
-  CourseStudentList,
-  CourseStudenListResponse,
-  QueryListDto,
-  UserActionDto,
-  UserActionParam,
-  OutSideCourseStudenListResponse,
-} from './dto/user-course.dto';
+import { SuccessResponse } from 'src/common/helpers/api.response';
+import { courseParam, EditCourseDto } from './dto/admin.dto';
 import { STRIPE_CLIENT } from 'src/common/constant';
 import Stripe from 'stripe';
 import { CourseService } from '../course/service/course.service';
@@ -67,6 +47,7 @@ import { RedisCacheService } from '../cache/redis-cache.service';
 import { JWTAuthGuard } from '../auth/guard/jwt-auth.guard';
 import { LoginBody } from '../auth/dto/login-dto';
 import { validate } from 'class-validator';
+import { Auth } from 'src/common/decorator/auth.decorator';
 
 @ApiTags('Admin')
 @Controller('admin')
@@ -81,6 +62,7 @@ export class AdminController {
   ) {}
 
   @Get('users')
+  @Auth('admin')
   async getUsers(
     @Body() body: LoginBody,
     @Res() res: Response,
@@ -92,6 +74,7 @@ export class AdminController {
   }
 
   @Get('courses')
+  @Auth('admin')
   async getCourses(
     @Body() body: LoginBody,
     @Res() res: Response,
@@ -100,6 +83,49 @@ export class AdminController {
   ) {
     let courses = await this.adminService.getAllCourses();
     return res.status(HttpStatus.OK).json(new SuccessResponse(courses));
+  }
+
+  @Put('courses/:courseId')
+  @Auth('admin')
+  @UsePipes(
+    ...validation({
+      key: 'editCourseChema',
+      type: 'body',
+    }),
+  )
+  async editCourses(
+    @Body() body: EditCourseDto,
+    @Res() res: Response,
+    @Req() req: IUserReq<IUserJwt>,
+    @Headers('host') host: Headers,
+    @Param() param: courseParam,
+  ) {
+    const { courseId } = param;
+
+    const { name, price, isPublished } = body;
+    console.log({ body });
+    if (!name && !price && !isPublished) {
+      throw new BadRequestException();
+    }
+
+    let updateCourse: any = {};
+    if (name) {
+      updateCourse.name = name;
+    }
+    if (price) {
+      updateCourse.price = price;
+    }
+    if (isPublished) {
+      updateCourse.isPublished = isPublished;
+    }
+
+    console.log({ updateCourse });
+    let updateCoures = await this.courseService.updateCourse(
+      +courseId,
+      updateCourse,
+    );
+
+    return res.status(HttpStatus.OK).json(new SuccessResponse(updateCoures));
   }
 
   @Post('login')

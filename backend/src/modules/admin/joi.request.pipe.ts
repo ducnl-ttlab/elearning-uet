@@ -10,8 +10,21 @@ const loginSchema = Joi.object().keys({
   password: Joi.string().min(1).required(),
 });
 
+const editCourseChema = Joi.object().keys({
+  name: Joi.string().min(1).optional(),
+  price: Joi.string()
+    .pattern(/^[0-9]+$/)
+    .message('price should be a number')
+    .optional(),
+  isPublished: Joi.string()
+    .pattern(/^[0-1]$/)
+    .message('isPublished should be 1 or 0')
+    .optional(),
+});
+
 const validationSchemas = {
   loginSchema,
+  editCourseChema,
 };
 
 type validationKeyType = keyof typeof validationSchemas;

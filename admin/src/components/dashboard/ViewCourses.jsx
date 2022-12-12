@@ -60,6 +60,12 @@ function ViewCourses() {
       ),
     },
     {
+      title: "Email Gỉang viên",
+      field: "email",
+      cellStyle: { width: "15%" },
+      editable: "never",
+    },
+    {
       title: "Hình ảnh khoá học",
       field: "image",
       cellStyle: { width: "15%" },
@@ -133,17 +139,14 @@ function ViewCourses() {
                 resolve();
               }, 1000);
             }),
-          isEditable: (rowData) => {
-            console.log({ rowData });
-            return rowData.name === "price";
-          },
         }}
         cellEditable={{
           cellStyle: {},
           onCellEditApproved: (newValue, oldValue, rowData, columnDef) => {
+            console.log({ rowData }, { columnDef });
             return new Promise((resolve, reject) => {
               console.log("newValue: " + newValue);
-              setTimeout(resolve, 4000);
+              setTimeout(resolve, 100);
             });
           },
         }}
@@ -172,5 +175,4 @@ const Price = styled.div`
 
 const Image = styled.div`
   display: flex;
-  justify-content: center;
 `;
