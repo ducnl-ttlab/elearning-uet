@@ -18,7 +18,7 @@ import UserCourseGridItem from './UserCourseGridItem.vue';
 @Options({
     components: { UserCourseGridItem },
 })
-export default class InstructorCourseGrid extends Vue {
+export default class StudentCourseGrid extends Vue {
     get studentCourseList() {
         return userCourseModule.studentCourseList;
     }

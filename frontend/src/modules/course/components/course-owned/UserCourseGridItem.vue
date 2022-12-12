@@ -1,7 +1,7 @@
 <template>
     <div
         class="course-grid-item-wrapper d-flex flex-column gap-3"
-        @click="handleCourseClick(course.id)"
+        @click="handleCourseClick(course?.id)"
     >
         <div class="d-flex flex-row justify-content-between">
             <div
@@ -11,20 +11,20 @@
             >
                 <img src="@/assets/landing/icons/student.svg" width="16" alt="" />
                 <span>
-                    {{ course.instructorName }}
+                    {{ course?.instructorName }}
                 </span>
             </div>
             <div v-else></div>
             <div class="course-grid-item-rating d-flex flex-row align-items-center">
-                <div v-if="course.avgRating">{{ $t('course.course.rating') }}</div>
+                <div v-if="course?.avgRating">{{ $t('course.course.rating') }}</div>
                 <div>
                     <span>{{
-                        Math.round(course.avgRating * 100) / 100 ||
+                        Math.round(course?.avgRating * 100) / 100 ||
                         $t('course.course.notRated')
                     }}</span>
                     <img
                         class="mx-1 mb-1"
-                        v-if="course.avgRating"
+                        v-if="course?.avgRating"
                         src="@/assets/landing/icons/star.svg"
                         width="16"
                         alt=""
@@ -33,13 +33,13 @@
             </div>
         </div>
         <div class="course-grid-item-image">
-            <img :src="course.image" width="320" height="180" alt="" />
+            <img :src="course?.image" width="320" height="180" alt="" />
         </div>
         <div class="course-grid-item-title text">
-            {{ course.name }}
+            {{ course?.name }}
         </div>
         <div class="course-grid-item-description text">
-            {{ course.description }}
+            {{ course?.description }}
         </div>
         <div
             class="d-flex flex-row course-grid-item-infos align-items-center justify-content-between pt-2"
@@ -48,7 +48,7 @@
                 <span>
                     {{
                         $t('course.course.studentTotal', {
-                            studentTotal: course.studentTotal || 0,
+                            studentTotal: course?.studentTotal || 0,
                         })
                     }}
                 </span>
@@ -57,12 +57,12 @@
             <div v-if="userRole === SystemRole.INSTRUCTOR">
                 <div
                     class="price-tag"
-                    v-if="course.price"
+                    v-if="course?.price"
                     :style="{
-                        'background-color': getPriceBackgroundColor(course.price),
+                        'background-color': getPriceBackgroundColor(course?.price),
                     }"
                 >
-                    {{ $t('course.course.price', { price: course.price }) }}
+                    {{ $t('course.course.price', { price: course?.price }) }}
                 </div>
                 <div v-else class="price-tag" style="background-color: #3bb143">
                     {{ $t('course.course.free') }}
@@ -77,18 +77,18 @@ import { PageName, SystemRole } from '@/common/constants';
 import { userModule } from '@/modules/user/store/user.store';
 import { Options, Vue } from 'vue-class-component';
 import { Prop } from 'vue-property-decorator';
-import { ICourseData } from '../../constants/course.interfaces';
+import { ICourseData, IStudentCourseData } from '../../constants/course.interfaces';
 import { getPriceBackgroundColor } from '../../helpers/commonFunctions';
 
 @Options({
     components: {},
 })
 export default class UserCourseGridItem extends Vue {
+    @Prop({ default: {} }) readonly course!: ICourseData | IStudentCourseData;
     SystemRole = SystemRole;
     get userRole() {
         return userModule.userData.role;
     }
-    @Prop({ default: '' }) readonly course!: ICourseData;
     getPriceBackgroundColor(price: number) {
         return getPriceBackgroundColor(price);
     }

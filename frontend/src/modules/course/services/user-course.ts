@@ -27,6 +27,10 @@ export interface IGetCourseStudentListResponse {
     totalItems?: number;
 }
 
+export interface IStudentCourseItems {
+    items: Array<IStudentCourseData>;
+}
+
 export async function getUserCourseData(
     courseId: number,
 ): Promise<IAxiosDefaultResponse<IUserCourseData>> {
@@ -110,7 +114,7 @@ export async function courseCheckoutVerify(
 
 export async function getStudentCourseList(
     params: ICourseListParams,
-): Promise<IAxiosDefaultResponse<Array<IStudentCourseData>>> {
+): Promise<IAxiosDefaultResponse<IStudentCourseItems>> {
     return axios
         .get(`${BE_URL}/user-course`, {
             params: { ...params },

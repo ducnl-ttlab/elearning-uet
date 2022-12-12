@@ -147,8 +147,9 @@ export default class UserCourseListPage extends Vue {
         const response = await getStudentCourseList({
             pageSize: MAX_COURSE_GRID_ITEMS,
         });
+
         if (response.success) {
-            userCourseModule.setStudentCourseList(response?.data || []);
+            userCourseModule.setStudentCourseList(response?.data?.items || []);
         } else {
             let res = response?.errors || [
                 { message: this.$t('landing.categories.errors.getCategoryListError') },
@@ -161,6 +162,7 @@ export default class UserCourseListPage extends Vue {
 
     async initUserCourseListPage() {
         await this.initInstructorList();
+
         if (this.userData.role === SystemRole.INSTRUCTOR) {
             await this.getInstructorCourseList();
         }
