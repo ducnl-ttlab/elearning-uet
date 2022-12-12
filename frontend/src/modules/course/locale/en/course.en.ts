@@ -65,6 +65,11 @@ export const course = {
         getStudentListError: 'Get student list failed. Please try again later.',
         emptyStudentList: 'Cannot find any student.',
         getTopicListError: 'Cannot find any topic',
+        topic: {
+            updateTopic: 'Update topic failed! Please try again later',
+            createTopic: 'Create topic failed! Please try again later!',
+            deleteTopic: 'Delete topic failed! Please try again later!',
+        },
     },
     success: {
         favoriteCourse: {
@@ -77,6 +82,11 @@ export const course = {
             paidCourse: 'Please complete the checkout',
             successPayment:
                 'You have successfully bought this course. Please go back to the course page',
+        },
+        topic: {
+            updateTopic: 'Update topic successfully!',
+            createTopic: 'Create topic successfully!',
+            deleteTopic: 'Delete topic successfully!',
         },
     },
     coursePopup: {
@@ -99,5 +109,23 @@ export const course = {
     topicSidebar: {
         title: 'Topic List',
         addTopic: 'Add new topic',
+    },
+
+    topic: {
+        showVideo: 'Click here to show the video',
+        hideVideo: 'Click here to hide the video',
+        action: {
+            createTitle: 'Create Topic',
+            editTitle: 'Edit Topic',
+            edit: 'Edit this Topic',
+        },
+        form: {
+            title: 'Title',
+            description: 'Description',
+            content: 'Content',
+            video: 'Upload video',
+            save: 'Lưu',
+            cancel: 'Hủy',
+        },
     },
 };

@@ -12,6 +12,7 @@ export interface ICourseData {
     studentTotal: number;
     startCourse: string;
     endCourse: string;
+    instructorId: string;
 }
 
 export interface ICourseListParams {
@@ -98,4 +99,10 @@ export interface ITopicData {
     description?: string;
     content?: string;
     video?: string;
+}
+
+export interface IEditCourseQuery {
+    name?: string;
+    description?: string;
+    content?: string;
 }

@@ -15,6 +15,8 @@ class CourseModule extends VuexModule {
     topicList: Array<ITopicData> = [];
     selectedTopic: ITopicData = this.topicList.length > 0 ? this.topicList[0] : {};
     topicSidebarMode = TopicSidebarMode.EXPANDED;
+    isShowTopicVideo = true;
+    isShowTopicFormPopup = false;
 
     @Action
     setCourseList(courseList: Array<ICourseData>) {
@@ -84,6 +86,26 @@ class CourseModule extends VuexModule {
     @Mutation
     SET_SELECTED_TOPIC_OBJECT(selectedTopic: ITopicData) {
         this.selectedTopic = selectedTopic;
+    }
+
+    @Action
+    toggleShowTopicVideo(visible: boolean) {
+        this.TOGGLE_SHOW_TOPIC_VIDEO(visible);
+    }
+
+    @Mutation
+    TOGGLE_SHOW_TOPIC_VIDEO(visible: boolean) {
+        this.isShowTopicVideo = visible;
+    }
+
+    @Action
+    toggleShowTopicFormPopup(visible: boolean) {
+        this.TOGGLE_SHOW_TOPIC_FORM_POPUP(visible);
+    }
+
+    @Mutation
+    TOGGLE_SHOW_TOPIC_FORM_POPUP(visible: boolean) {
+        this.isShowTopicFormPopup = visible;
     }
 }
 export const courseModule = getModule(CourseModule);
