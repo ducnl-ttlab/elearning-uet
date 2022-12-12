@@ -6,9 +6,15 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './entity/user.entity';
 import { AuthModule } from '../auth/auth.module';
 import { ConfigService } from '@nestjs/config';
+import { NotificationModule } from '../notification/notification.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User]), AuthModule, RedisCacheModule],
+  imports: [
+    TypeOrmModule.forFeature([User]),
+    AuthModule,
+    RedisCacheModule,
+    NotificationModule,
+  ],
   providers: [UserService, ConfigService],
   controllers: [UserController],
   exports: [UserService],

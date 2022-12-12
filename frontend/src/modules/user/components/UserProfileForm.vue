@@ -109,10 +109,7 @@ export default class UserProfileForm extends Vue {
 
     async getUserData() {
         const response = await getUserData();
-        if (response.success) {
-            this;
-            userModule.setUserData(response?.data || {});
-        } else {
+        if (!response?.success) {
             let res = response?.errors || [
                 { message: this.$t('user.errors.getUserDataError') },
             ];

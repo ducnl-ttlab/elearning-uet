@@ -21,6 +21,7 @@ import { TopicModule } from './modules/topics/topic.module';
 import { CommentModule } from './modules/comment/comment.module';
 import { RatingModule } from './modules/rating/rating.module';
 import { FavoriteModule } from './modules/favorite/favorite.module';
+import { AdminModule } from './modules/admin/admin.module';
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { FavoriteModule } from './modules/favorite/favorite.module';
     CommentModule,
     RatingModule,
     FavoriteModule,
+    AdminModule,
   ],
   controllers: [AppController],
   providers: [AppService],

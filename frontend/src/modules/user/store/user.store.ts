@@ -15,8 +15,6 @@ class UserModule extends VuexModule {
 
     @Action
     setUserOnlineList(userOnlineList: IUserOnlineList[]) {
-        console.log('userOnlineList', userOnlineList);
-
         this.SET_USER_ONLINE(userOnlineList || []);
     }
 

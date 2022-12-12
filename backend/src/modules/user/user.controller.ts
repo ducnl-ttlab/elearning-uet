@@ -36,6 +36,7 @@ import { RedisCacheService } from '../cache/redis-cache.service';
 import { User } from './entity/user.entity';
 const fs = require('fs');
 import * as bcrypt from 'bcryptjs';
+import { NotificationService } from '../notification/service/notification.service';
 
 @ApiTags('User')
 @Controller('user')
@@ -44,6 +45,7 @@ export class UserController {
     private readonly usersService: UserService,
     private authService: AuthService,
     private readonly cacheManager: RedisCacheService,
+    private readonly notificationService: NotificationService,
   ) {}
 
   @Get('profile')
@@ -53,14 +55,17 @@ export class UserController {
     @Res() res: Response,
     @Headers('host') host: Headers,
   ) {
-    let user = (await this.cacheManager.setOrgetCache(
-      `user${req.user.id}`,
-      async () => {
-        return await this.authService.existEmail(req.user.email);
-      },
-    )) as User;
-
+    // let user = (await this.cacheManager.setOrgetCache(
+    //   `user${req.user.id}`,
+    //   async () => {
+    //     return await this.authService.existEmail(req.user.email);
+    //   },
+    // )) as User;
+    let user = await this.authService.existEmail(req.user.email);
     const { avatar, created_at, updated_at } = user;
+
+    let unreadNotification =
+      await this.notificationService.countUnreadNotification(user.id);
 
     user.avatar = avatar.startsWith('http')
       ? avatar
@@ -70,6 +75,7 @@ export class UserController {
       ...user,
       created_at: mysqlTimeStamp(created_at),
       updated_at: mysqlTimeStamp(updated_at),
+      unreadNotification,
     };
 
     return res

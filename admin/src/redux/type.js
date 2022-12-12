@@ -1,0 +1,11 @@
+export const LOGIN_SUCCESS = "login_success";
+export const LOGOUT = "LOGOUT";
+export const GET_USER_INFO = "get_user_info";
+export const SET_TOKEN = "TOKEN";
+export const SET_USER = "SET_USER";
+export const SET_ERROR = "SET_ERROR";
+export const SET_NOTIFICATION = "SET_NOTIFICATION";
+export const SET_USER_LIST = "SET_USER_LIST";
+export const SET_COURSE_LIST = "SET_COURSE_LIST";
+export const SET_COURSE_EDIT = "SET_COURSE_EDIT";
+export const SET_USER_EDIT = "SET_USER_EDIT";

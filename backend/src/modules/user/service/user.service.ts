@@ -20,6 +20,31 @@ export class UserService {
   async saveUser(user: Partial<User>): Promise<User> {
     return this.userRepository.save(user);
   }
+  async getUsers(): Promise<
+    {
+      id: string;
+      username: string;
+      email: string;
+      verified: number;
+      address: string;
+      phone: string;
+      avatar: string;
+      role: Role;
+      provider: string;
+    }[]
+  > {
+    try {
+      let query = `
+      SELECT u.id, u.username, u.email, u.verified, u.phone, u.address, u.avatar, u.role, u.provider
+      FROM users u
+      where u.role <> 'admin'
+      `;
+      let result = await this.userRepository.query(query);
+      return result;
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
 
   async getInstructorList(): Promise<InstructorDto[]> {
     return this.userRepository.find({

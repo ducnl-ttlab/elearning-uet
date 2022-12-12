@@ -94,6 +94,10 @@ export class AuthService {
     return { user: filterUser(newUser) };
   }
 
+  hashPw(password: string) {
+    return bcrypt.hash(password, 8);
+  }
+
   async existEmail(email: string): Promise<User> {
     const user = await this.userService.findOneByEmail(email);
     if (!user) {

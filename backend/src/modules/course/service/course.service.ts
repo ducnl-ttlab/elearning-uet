@@ -29,6 +29,16 @@ export class CourseService {
     }
   }
 
+  async updateCourse(courseId: number, course: Partial<Course>) {
+    try {
+      return this.course.update(courseId, {
+        ...course,
+      });
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
   async instructorCourseDetail(
     courseId: number,
   ): Promise<instructorCourseDetailDto[]> {
@@ -46,6 +56,19 @@ export class CourseService {
         WHERE c.id = ?
       `;
       return this.course.query(query, [courseId]);
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  async getAllCourses() {
+    try {
+      let query = `
+        SELECT c.*, u.username as instructorName, u.email, u.address, u.phone, u.avatar
+        FROM courses c
+        JOIN users u ON c.instructorId = u.id
+      `;
+      return this.course.query(query);
     } catch (error) {
       throw new InternalServerErrorException(error);
     }

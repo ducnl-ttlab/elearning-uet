@@ -83,7 +83,7 @@ class LocalStorageTokenService {
             : null;
     }
     resetLoginUser(): void {
-        storage.setLocalStorage(AUTH_SERVICE_KEY.ACCESS_TOKEN, '');
+        storage.setLocalStorage(AUTH_SERVICE_KEY.LOGIN_USER, '');
     }
 
     // LANGUAGE
