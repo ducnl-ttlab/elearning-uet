@@ -520,10 +520,4 @@ export class UserCourseController {
         .json(new SuccessResponse('Updated successfully'));
     }
   }
-
-  // @Get('update-noti')
-  // async update(@Res() res: Response) {
-  //   let a = await this.notification.updateStudentJoinCourse(3);
-  //   return res.status(HttpStatus.OK).json(new SuccessResponse(a));
-  // }
 }

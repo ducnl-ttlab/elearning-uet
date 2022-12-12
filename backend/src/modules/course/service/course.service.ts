@@ -51,6 +51,19 @@ export class CourseService {
     }
   }
 
+  async getAllCourses() {
+    try {
+      let query = `
+        SELECT c.*, u.username as instructorName, u.email, u.address, u.phone, u.avatar
+        FROM courses c
+        JOIN users u ON c.instructorId = u.id
+      `;
+      return this.course.query(query);
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
   async findInstructorCourse(
     instructorId: string,
     keyword?: string,

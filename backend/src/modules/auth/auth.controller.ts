@@ -14,6 +14,7 @@ import {
   ConflictException,
   Query,
   Put,
+  BadRequestException,
 } from '@nestjs/common';
 import { AuthService } from './service/auth.service';
 import { AuthGuard } from '@nestjs/passport';
