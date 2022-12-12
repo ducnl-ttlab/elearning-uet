@@ -39,3 +39,24 @@ export const doEditUserList = (userId, body) => async (dispatch) => {
       dispatch({ type: SET_NOTIFICATION, notification });
     });
 };
+
+export const doUpdateRole = (userId, role) => async (dispatch) => {
+  await AdminService.editRole(userId, { role })
+    .then((res) => {
+      let notification = {
+        type: "success",
+        title: "Thông báo!",
+        description: "Cập nhật thành công!",
+      };
+      dispatch({ type: SET_NOTIFICATION, notification });
+      dispatch({ type: SET_USER_EDIT, userId, body: { role } });
+    })
+    .catch(() => {
+      let notification = {
+        type: "warning",
+        title: "Thông báo!",
+        description: "Cập nhật thất bại!",
+      };
+      dispatch({ type: SET_NOTIFICATION, notification });
+    });
+};

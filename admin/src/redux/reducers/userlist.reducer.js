@@ -12,6 +12,7 @@ const initialState = {
       avatar: "",
       role: "",
       provider: "",
+      password: "",
     },
   ],
 };

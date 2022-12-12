@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from "react";
-import Material from "material-table";
 import MaterialTable from "material-table";
 import styled from "styled-components";
-import AdminService from "../../service/AdminService";
 import Popup from "../common/popup";
-import Toast from "../common/toast.jsx";
-import showToast from "../common/toast.js";
 import {
   Warning,
   BuildIcon,
@@ -13,7 +9,11 @@ import {
   AccountCircleIcon,
 } from "../common/icons";
 import { useSelector, useDispatch } from "react-redux";
-import { doGetUserList, doEditUserList } from "../../redux/actions";
+import {
+  doGetUserList,
+  doEditUserList,
+  doUpdateRole,
+} from "../../redux/actions";
 
 function ViewUsers() {
   const [getUsers, setUsers] = useState([
@@ -24,9 +24,9 @@ function ViewUsers() {
       address: "",
       role: "",
       avatar: "",
+      password: "",
     },
   ]);
-  const [toastList, setToastList] = useState([]);
 
   const dispatch = useDispatch();
   const store = useSelector((state) => state.store);
@@ -48,19 +48,10 @@ function ViewUsers() {
     }
   }, [store.userList.users]);
 
-  const handleUpdateUsers = async (event, data) => {
-    setToastList([
-      showToast(
-        "success",
-        "Thông báo!",
-        "Người dùng này đã trở thành giảng viên!"
-      ),
-    ]);
-    let index = getUsers.findIndex((v) => v.id === data.id);
-    let newArr = [...getUsers];
-    newArr[index].role = 1;
-    setUsers(newArr);
+  const handleUpdateUsers = async (event, data, role) => {
+    dispatch(doUpdateRole(data.id, role));
   };
+
   const handleEditRow = (newValue, oldValue, rowData, columnDef) => {
     let body = {
       [columnDef.field]: newValue,
@@ -72,6 +63,7 @@ function ViewUsers() {
     });
   };
 
+  const handleDeleteUsers = (event, data) => {};
   return (
     <Wrap>
       <MaterialTable
@@ -115,6 +107,12 @@ function ViewUsers() {
             cellStyle: { width: "12%" },
           },
           {
+            title: "Mật khẩu",
+            field: "password",
+            render: (rowData) => <div> ********</div>,
+            cellStyle: { width: "12%" },
+          },
+          {
             title: "Nơi ở hiện tại",
             field: "address",
             cellStyle: { width: "20%" },
@@ -122,18 +120,73 @@ function ViewUsers() {
           {
             title: "Vai trò",
             field: "role",
-            lookup: { instructor: "Giảng viên", student: "Học viên" },
+            lookup: {
+              instructor: "Giảng viên",
+              student: "Học viên",
+              pending: "Đang chờ xử lí",
+              guest: "Chưa chọn vai trò",
+            },
             editable: "never",
-            cellStyle: { width: "12%" },
+            cellStyle: { width: "20%" },
           },
         ]}
         actions={[
-          (rowData) =>
-            rowData.role === "guest" && {
-              icon: "upgradeOutlinedIcon",
-              tooltip: "Trở thành giảng viên",
-              onClick: (event, rowData) => handleUpdateUsers(event, rowData),
-            },
+          (rowData) => {
+            return {
+              icon: "closeIcon",
+              tooltip: "Xóa tài khoản",
+              onClick: (event, rowData) => handleDeleteUsers(event, rowData),
+            };
+          },
+          (rowData) => {
+            switch (rowData.role) {
+              case "instructor": {
+                break;
+              }
+              case "student": {
+                break;
+              }
+              case "pending": {
+                return {
+                  icon: "face3Icon",
+                  tooltip: "Trở thành giảng viên",
+                  onClick: (event, rowData) =>
+                    handleUpdateUsers(event, rowData, "instructor"),
+                };
+              }
+              case "guest": {
+                return {
+                  icon: "face3Icon",
+                  tooltip: "Trở thành giảng viên",
+                  onClick: (event, rowData) =>
+                    handleUpdateUsers(event, rowData, "instructor"),
+                };
+              }
+            }
+            return null;
+          },
+          (rowData) => {
+            switch (rowData.role) {
+              case "instructor": {
+                break;
+              }
+              case "student": {
+                break;
+              }
+              case "pending": {
+                break;
+              }
+              case "guest": {
+                return {
+                  icon: "schoolIcon",
+                  tooltip: "Trở thành học sinh",
+                  onClick: (event, rowData) =>
+                    handleUpdateUsers(event, rowData, "student"),
+                };
+              }
+            }
+            return null;
+          },
         ]}
         cellEditable={{
           cellStyle: {},
