@@ -24,7 +24,7 @@ export class QuizService {
 
   async getQuizsByTopicId(topicId: number) {
     try {
-      return this.quiz.findAndCount({
+      return this.quiz.find({
         where: { topicId: topicId },
       });
     } catch (error) {

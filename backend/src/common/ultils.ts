@@ -36,6 +36,23 @@ export const stringToMysqlTimeStamp = (yyyymmdd: string) => {
   return moment(yyyymmdd).add(1, 'day').utc().format() as unknown as Date;
 };
 
+export const mysqlToTimeStamp = (time: string | Date) => {
+  return (
+    (time &&
+      (moment(time)
+        .utc(false)
+        .format('YYYY/MM/DD HH:mm:ss') as unknown as Date)) ||
+    ('' as unknown as Date)
+  );
+};
+
+export const timeStampToMysql = (time: string) => {
+  return (
+    (time && (moment(time).utc(true).format() as unknown as Date)) ||
+    ('' as unknown as Date)
+  );
+};
+
 export const coursePeriod = (startTime: string, endTime: string) => {
   return {
     startCourseTime: stringToMysqlTimeStamp(startTime),

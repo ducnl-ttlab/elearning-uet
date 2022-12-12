@@ -1,8 +1,4 @@
-import {
-  defaultResponseTime,
-  mysqlTime,
-  removeExtention,
-} from 'src/common/ultils';
+import { mysqlToTimeStamp, timeStampToMysql } from 'src/common/ultils';
 import { UserCourseStatus } from 'database/constant';
 import {
   Body,
@@ -33,7 +29,7 @@ import {
   JoinCourseAuth,
 } from 'src/common/decorator/auth.decorator';
 import { SuccessResponse } from 'src/common/helpers/api.response';
-import { CreateQuizDto } from './dto/dto';
+import { CreateQuizDto, IQuizParam, QuizListResponseDto } from './dto/dto';
 import { CategoryService } from '../category/service/category.service';
 import LocalFilesInterceptor, {
   imageParams,
@@ -54,58 +50,47 @@ import { Course } from '../course/entity/course.entity';
 @Controller('quiz')
 export class QuizController {
   constructor(
-    private readonly topicService: QuizService,
+    private readonly quizService: QuizService,
     private readonly courseService: CourseService,
   ) {}
 
-  @Get('')
+  @Get('/:courseId/:topicId')
   @UsePipes(...validation({ key: 'topicIdParamSchema', type: 'param' }))
+  @CourseAuth()
   async getShortTopics(
     @Res() response: Response,
-    @Param() param: { courseId: number },
+    @Param() param: IQuizParam,
     @Req() req: Request,
     @Headers('host') host: Headers,
   ) {
-    // const { courseId } = param;
+    const { courseId, topicId } = param;
 
-    // let [course] = await this.courseService.instructorCourseDetail(courseId);
+    let quizes = await this.quizService.getQuizsByTopicId(+topicId);
+    quizes = quizes.map((item) => {
+      const { startTime } = item;
+      return {
+        ...item,
+        startTime: mysqlToTimeStamp(startTime),
+        // questionList: [
+        //   {
+        //     name: 'safdsa',
+        //     mark: 10,
+        //     answerList: [
+        //       {
+        //         content: 'sadfdsaf',
+        //         isCorrect: true,
+        //       },
+        //     ],
+        //   },
+        // ],
+      };
+    });
 
-    // course.image =
-    //   (course.image &&
-    //     (course.image.startsWith('http')
-    //       ? course.image
-    //       : `${req.protocol}://${host}/course/image/${course.image}`)) ||
-    //   '';
-
-    // course.avatar =
-    //   (course.avatar &&
-    //     (course.avatar.startsWith('http')
-    //       ? course.avatar
-    //       : `${req.protocol}://${host}/user/image/${course.avatar}`)) ||
-    //   '';
-
-    // course.startCourseTime =
-    //   (course.startCourseTime && mysqlTime(course.startCourseTime)) ||
-    //   ('' as unknown as Date);
-
-    // course.endCourseTime =
-    //   (course.endCourseTime && mysqlTime(course.endCourseTime)) ||
-    //   ('' as unknown as Date);
-
-    // let { created_at, updated_at } = defaultResponseTime(
-    //   course.created_at,
-    //   course.updated_at,
-    // );
-
-    // course.created_at = created_at;
-    // course.updated_at = updated_at;
-
-    // const topics = await this.topicService.findShortCourseTopicList(courseId);
-    // const res = {
-    //   topics: topics,
-    //   course: course,
-    // };
-    return response.status(HttpStatus.OK).json(new SuccessResponse('res'));
+    const res: QuizListResponseDto = {
+      items: quizes,
+      totalItems: quizes.length,
+    };
+    return response.status(HttpStatus.OK).json(new SuccessResponse(res));
   }
 
   @Get('/:courseId/:topicId')
@@ -117,27 +102,6 @@ export class QuizController {
     @Param() param: { courseId: number },
     @Headers('host') host: Headers,
   ) {
-    // const { courseId } = param;
-    // let topics = await this.topicService.getTopicsByCourseId(courseId);
-    // let res: TopicListResponse = {
-    //   items: topics[0].map((item) => {
-    //     let { video } = item;
-    //     if (video) {
-    //       let videoName = removeExtention(video);
-    //       video = video.startsWith('http')
-    //         ? video
-    //         : (videoName &&
-    //             `${req.protocol}://${host}/chunk/${videoName}/video.m3u8`) ||
-    //           '';
-    //     }
-
-    //     return {
-    //       ...item,
-    //       video: video || '',
-    //     };
-    //   }),
-    //   totalItems: topics[1],
-    // };
     return response.status(HttpStatus.OK).json(new SuccessResponse('res'));
   }
 
@@ -152,11 +116,21 @@ export class QuizController {
   async createTopic(
     @Res() res: Response,
     @Instructor() instructor: Course,
+    @Param() param: IQuizParam,
     @Body() body: CreateQuizDto,
   ) {
-    console.log('instructor', instructor);
     let { startTime, name, duration } = body;
+    const { topicId } = param;
 
-    return res.status(HttpStatus.OK).json(new SuccessResponse(name, duration));
+    let quiz = {
+      topicId: +topicId,
+      name,
+      startTime: timeStampToMysql(startTime),
+      duration: +duration,
+    };
+
+    let createQuiz = await this.quizService.saveQuiz(quiz);
+
+    return res.status(HttpStatus.OK).json(new SuccessResponse(createQuiz));
   }
 }
