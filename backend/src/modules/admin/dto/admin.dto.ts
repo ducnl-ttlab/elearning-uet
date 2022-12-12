@@ -1,3 +1,5 @@
+import { Role } from 'database/constant';
+
 export interface EditCourseDto {
   name: string;
   price: number;
@@ -16,4 +18,8 @@ export interface EditUserDto {
   phone: string;
   address: string;
   password: string;
+}
+
+export interface UpdateRole {
+  role: Role.instructor | Role.student;
 }

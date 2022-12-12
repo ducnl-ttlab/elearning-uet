@@ -38,6 +38,7 @@ import {
   courseParam,
   EditCourseDto,
   EditUserDto,
+  UpdateRole,
   userParam,
 } from './dto/admin.dto';
 import { STRIPE_CLIENT } from 'src/common/constant';
@@ -54,6 +55,7 @@ import { LoginBody } from '../auth/dto/login-dto';
 import { validate } from 'class-validator';
 import { Auth } from 'src/common/decorator/auth.decorator';
 import { UserService } from '../user/service/user.service';
+import { User } from '../user/entity/user.entity';
 
 @ApiTags('Admin')
 @Controller('admin')
@@ -192,6 +194,57 @@ export class AdminController {
 
     return res.status(HttpStatus.OK).json(new SuccessResponse(updateCoures));
   }
+
+  @Put('users/role/:userId')
+  @Auth('admin')
+  @UsePipes(
+    ...validation(
+      {
+        key: 'roleBodySchema',
+        type: 'body',
+      },
+      {
+        key: 'userParamSchema',
+        type: 'param',
+      },
+    ),
+  )
+  async updateUserRole(
+    @Body() body: UpdateRole,
+    @Res() res: Response,
+    @Req() req: IUserReq<IUserJwt>,
+    @Headers('host') host: Headers,
+    @Param() param: userParam,
+  ) {
+    const { userId } = param;
+
+    let existUser = await this.userService.findOneById(userId);
+
+    if (!existUser) {
+      throw new BadRequestException('user not found');
+    }
+    const { role } = body;
+    if (existUser.role === role) {
+      throw new BadRequestException(`you are become a ${role} already`);
+    }
+    let roleException = [Role.admin, Role.instructor, Role.student];
+
+    if (roleException.includes(existUser.role)) {
+      throw new BadRequestException('can not update role');
+    }
+
+    let updateCoures: Partial<User> = {};
+    if (existUser.role === Role.pending) {
+      updateCoures = await this.userService.updateUser(userId, {
+        role: Role.instructor,
+      });
+    } else {
+      updateCoures = await this.userService.updateUser(userId, { role: role });
+    }
+
+    return res.status(HttpStatus.OK).json(new SuccessResponse(updateCoures));
+  }
+
   @Post('login')
   @UsePipes(
     ...validation({

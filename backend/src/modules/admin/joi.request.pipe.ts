@@ -1,3 +1,4 @@
+import { Role } from 'database/constant';
 import * as Joi from 'joi';
 import {
   IValidationKeyType,
@@ -42,12 +43,17 @@ const courseParamSchema = Joi.object().keys({
     .required(),
 });
 
+const roleBodySchema = Joi.object().keys({
+  role: Joi.string().valid(Role.instructor, Role.student).required(),
+});
+
 const validationSchemas = {
   loginSchema,
   editCourseChema,
   editUserChema,
   userParamSchema,
   courseParamSchema,
+  roleBodySchema,
 };
 
 type validationKeyType = keyof typeof validationSchemas;
