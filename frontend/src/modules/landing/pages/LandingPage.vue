@@ -48,17 +48,27 @@
             </el-dropdown>
         </div>
         <Categories />
-        <video
-            class="video-js vjs-fluid vjs-default-skin"
+
+        <video-js
+            id="my_video_1"
+            class="vjs-default-skin"
             controls
             preload="auto"
-            data-setup="{}"
+            width="640"
+            height="268"
         >
             <source
-                src="http://localhost:5000/chunk/1670611447109-444608001/video.m3u8"
+                src="https://d2zihajmogu5jn.cloudfront.net/bipbop-advanced/bipbop_16x9_variant.m3u8"
                 type="application/x-mpegURL"
             />
-        </video>
+        </video-js>
+
+        <script src="https://unpkg.com/video.js/dist/video.js"></script>
+        <script src="https://unpkg.com/@videojs/http-streaming/dist/videojs-http-streaming.js"></script>
+
+        <script>
+            var player = videojs('my_video_1');
+        </script>
     </div>
 </template>
 
