@@ -64,8 +64,6 @@ export class AdminController {
     private readonly notification: NotificationService,
     private readonly courseService: CourseService,
     private readonly authService: AuthService,
-    @Inject(STRIPE_CLIENT) private stripe: Stripe,
-    private readonly cache: RedisCacheService,
     private readonly adminService: AdminService,
     private readonly userService: UserService,
   ) {}
