@@ -21,7 +21,7 @@
         <div
             v-for="(topic, index) in topicList"
             :key="topic.id"
-            @click="handleClickTopic(topic?.id)"
+            @click="handleClickTopic(index)"
             class="button sidebar d-flex"
             :class="{ collapsed: isCollapsed }"
         >
@@ -82,8 +82,8 @@ export default class CourseSidebar extends Vue {
         }
     }
 
-    handleClickTopic(id: number) {
-        courseModule.setSelectedTopic(id);
+    handleClickTopic(index: number) {
+        courseModule.setSelectedTopic(index + 1);
         courseModule.toggleShowTopicVideo(true);
     }
 

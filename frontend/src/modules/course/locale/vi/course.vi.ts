@@ -127,6 +127,9 @@ export const course = {
             title: 'Tên chủ đề',
             description: 'Mô tả',
             content: 'Nội dung',
+            video: 'Đăng tải video',
+            save: 'Lưu',
+            cancel: 'Hủy',
         },
     },
 };

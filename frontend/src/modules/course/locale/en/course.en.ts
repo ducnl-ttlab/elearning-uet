@@ -119,5 +119,13 @@ export const course = {
             editTitle: 'Edit Topic',
             edit: 'Edit this Topic',
         },
+        form: {
+            title: 'Title',
+            description: 'Description',
+            content: 'Content',
+            video: 'Upload video',
+            save: 'Lưu',
+            cancel: 'Hủy',
+        },
     },
 };
