@@ -8,3 +8,4 @@ export const SET_NOTIFICATION = "SET_NOTIFICATION";
 export const SET_USER_LIST = "SET_USER_LIST";
 export const SET_COURSE_LIST = "SET_COURSE_LIST";
 export const SET_COURSE_EDIT = "SET_COURSE_EDIT";
+export const SET_USER_EDIT = "SET_USER_EDIT";

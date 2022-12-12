@@ -4,8 +4,6 @@ import MaterialTable from "material-table";
 import AdminService from "../../service/AdminService";
 import { ClearIcon } from "../common/icons";
 import styled from "styled-components";
-import Toast from "../common/toast.jsx";
-import showToast from "../common/toast.js";
 import { useSelector, useDispatch } from "react-redux";
 import { doGetCourseList, doEditCourseList } from "../../redux/actions";
 
@@ -36,8 +34,6 @@ function ViewCourses() {
   ]);
   const dispatch = useDispatch();
   const store = useSelector((state) => state.store);
-
-  const [toastList, setToastList] = useState([]);
 
   const columns = [
     {
@@ -157,7 +153,6 @@ function ViewCourses() {
           onCellEditApproved: handleEditRow,
         }}
       />
-      <Toast toastList={toastList} />
     </Wrap>
   );
 }

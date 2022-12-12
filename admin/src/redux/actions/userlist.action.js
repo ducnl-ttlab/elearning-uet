@@ -1,5 +1,5 @@
 import AdminService from "../../service/AdminService";
-import { SET_USER_LIST } from "../type";
+import { SET_USER_LIST, SET_NOTIFICATION, SET_USER_EDIT } from "../type";
 
 export const doGetUserList = () => async (dispatch) => {
   await AdminService.getUserList()
@@ -10,5 +10,32 @@ export const doGetUserList = () => async (dispatch) => {
     })
     .catch(() => {
       // window.location = "/admin/auth";
+      let notification = {
+        type: "warning",
+        title: "Thông báo!",
+        description: "get users thất bại!",
+      };
+      dispatch({ type: SET_NOTIFICATION, notification });
+    });
+};
+
+export const doEditUserList = (userId, body) => async (dispatch) => {
+  await AdminService.editUser(userId, body)
+    .then((res) => {
+      let notification = {
+        type: "success",
+        title: "Thông báo!",
+        description: "Cập nhật thành công!",
+      };
+      dispatch({ type: SET_NOTIFICATION, notification });
+      dispatch({ type: SET_USER_EDIT, userId, body });
+    })
+    .catch(() => {
+      let notification = {
+        type: "warning",
+        title: "Thông báo!",
+        description: "Cập nhật thất bại!",
+      };
+      dispatch({ type: SET_NOTIFICATION, notification });
     });
 };

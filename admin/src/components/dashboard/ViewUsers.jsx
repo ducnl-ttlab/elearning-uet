@@ -13,7 +13,7 @@ import {
   AccountCircleIcon,
 } from "../common/icons";
 import { useSelector, useDispatch } from "react-redux";
-import { doGetUserList } from "../../redux/actions";
+import { doGetUserList, doEditUserList } from "../../redux/actions";
 
 function ViewUsers() {
   const [getUsers, setUsers] = useState([
@@ -37,7 +37,14 @@ function ViewUsers() {
 
   useEffect(() => {
     if (store.userList.users.length > 1) {
-      setUsers([...store.userList.users]);
+      setUsers([
+        ...store.userList.users.map((item) => {
+          return {
+            ...item,
+            address: (item.address && item.address) || " ",
+          };
+        }),
+      ]);
     }
   }, [store.userList.users]);
 
@@ -53,6 +60,16 @@ function ViewUsers() {
     let newArr = [...getUsers];
     newArr[index].role = 1;
     setUsers(newArr);
+  };
+  const handleEditRow = (newValue, oldValue, rowData, columnDef) => {
+    let body = {
+      [columnDef.field]: newValue,
+    };
+
+    return new Promise((resolve, reject) => {
+      dispatch(doEditUserList(rowData.id, body));
+      setTimeout(resolve, 0);
+    });
   };
 
   return (
@@ -77,15 +94,37 @@ function ViewUsers() {
                 />
               ),
             cellStyle: { width: 1 },
+            editable: "never",
+            cellStyle: { width: "10%" },
           },
-          { title: "Họ tên", field: "username", width: "1%" },
-          { title: "Địa chỉ email", field: "email" },
-          { title: "Số điện thoại", field: "phone" },
-          { title: "Nơi ở hiện tại", field: "address" },
+          {
+            title: "Họ tên",
+            field: "username",
+            cellStyle: { width: "12%" },
+          },
+          {
+            title: "Địa chỉ email",
+            field: "email",
+            editable: "never",
+            cellStyle: { width: "18%" },
+          },
+          {
+            title: "Số điện thoại",
+            field: "phone",
+
+            cellStyle: { width: "12%" },
+          },
+          {
+            title: "Nơi ở hiện tại",
+            field: "address",
+            cellStyle: { width: "20%" },
+          },
           {
             title: "Vai trò",
             field: "role",
             lookup: { instructor: "Giảng viên", student: "Học viên" },
+            editable: "never",
+            cellStyle: { width: "12%" },
           },
         ]}
         actions={[
@@ -96,6 +135,10 @@ function ViewUsers() {
               onClick: (event, rowData) => handleUpdateUsers(event, rowData),
             },
         ]}
+        cellEditable={{
+          cellStyle: {},
+          onCellEditApproved: handleEditRow,
+        }}
         options={{
           actionsColumnIndex: -1,
           pageSize: 10,

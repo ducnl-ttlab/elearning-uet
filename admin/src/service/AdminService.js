@@ -36,6 +36,9 @@ function getAdmin() {
 function editCourse(courseId, body) {
   return http.put(`${adminEndpoint}/courses/${courseId}`, body);
 }
+function editUser(userId, body) {
+  return http.put(`${adminEndpoint}/users/${userId}`, body);
+}
 export function getJwt() {
   return localStorage.getItem("token");
 }
@@ -75,4 +78,5 @@ export default {
   editCourse,
   getAll,
   setUpAuth,
+  editUser,
 };
