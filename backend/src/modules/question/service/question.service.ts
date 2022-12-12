@@ -11,12 +11,12 @@ import { Question } from '../entity/question.entity';
 export class QuestionService {
   constructor(
     @InjectRepository(Question)
-    private readonly quiz: Repository<Question>,
+    private readonly question: Repository<Question>,
   ) {}
 
-  async saveQuiz(quiz: Partial<Question>): Promise<Question> {
+  async save(question: Partial<Question>): Promise<Question> {
     try {
-      return this.quiz.save(quiz);
+      return this.question.save(question);
     } catch (error) {
       throw new InternalServerErrorException(error);
     }
@@ -24,7 +24,7 @@ export class QuestionService {
 
   async getQuizsByTopicId(topicId: number) {
     try {
-      return this.quiz.find({
+      return this.question.find({
         where: { topicId: topicId },
       });
     } catch (error) {
@@ -34,7 +34,7 @@ export class QuestionService {
 
   async findOneById(id: number): Promise<Question> {
     try {
-      return this.quiz.findOne(id);
+      return this.question.findOne(id);
     } catch (error) {
       throw new InternalServerErrorException(error);
     }

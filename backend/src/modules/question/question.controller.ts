@@ -30,7 +30,6 @@ import {
   JoinCourseAuth,
 } from 'src/common/decorator/auth.decorator';
 import { SuccessResponse } from 'src/common/helpers/api.response';
-import { CreateQuizDto, IQuizParam, QuizListResponseDto } from './dto/dto';
 import { CategoryService } from '../category/service/category.service';
 import LocalFilesInterceptor, {
   imageParams,
@@ -54,20 +53,12 @@ export class QuestionController {
 
   @Post('/:courseId/:quizId')
   @InstructorCourseAuth()
-  @UsePipes(
-    ...validation(
-      { key: 'createQuizSchema', type: 'body' },
-      { key: 'topicIdParamSchema', type: 'param' },
-    ),
-  )
   async createTopic(
     @Res() res: Response,
     @Instructor() instructor: Course,
-    @Param() param: IQuizParam,
-    @Body() body: CreateQuizDto,
+    @Param() param: {},
+    @Body() body: {},
   ) {
-    let { startTime, name, duration } = body;
-
     return res.status(HttpStatus.OK).json(new SuccessResponse());
   }
 }

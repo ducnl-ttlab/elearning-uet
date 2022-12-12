@@ -1,5 +1,4 @@
-import { ConfigModule } from '@nestjs/config';
-import { AuthModule } from '../auth/auth.module';
+import { AnswerModule } from './../answer/answer.module';
 import { Module } from '@nestjs/common';
 import { QuizController } from './quiz.controller';
 import { QuizService } from './service/quiz.service';
@@ -9,16 +8,19 @@ import { CategoryModule } from '../category/category.module';
 import { CourseModule } from '../course/course.module';
 import { UserModule } from '../user/user.module';
 import { UserCourseModule } from '../user-courses/user-courses.module';
+import { QuestionModule } from '../question/question.module';
+import { Question } from './entity/question.entity';
+import { Answer } from './entity/answer.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Quiz]),
+    TypeOrmModule.forFeature([Quiz, Question, Answer]),
     CategoryModule,
     CourseModule,
     UserModule,
-    AuthModule,
-    ConfigModule,
     UserCourseModule,
+    QuestionModule,
+    AnswerModule,
   ],
   controllers: [QuizController],
   providers: [QuizService],

@@ -1,3 +1,4 @@
+import { QuestionService } from './../question/service/question.service';
 import { mysqlToTimeStamp, timeStampToMysql } from 'src/common/ultils';
 import { UserCourseStatus } from 'database/constant';
 import {
@@ -29,7 +30,12 @@ import {
   JoinCourseAuth,
 } from 'src/common/decorator/auth.decorator';
 import { SuccessResponse } from 'src/common/helpers/api.response';
-import { CreateQuizDto, IQuizParam, QuizListResponseDto } from './dto/dto';
+import {
+  BulkQuizInsertDto,
+  CreateQuizDto,
+  IQuizParam,
+  QuizListResponseDto,
+} from './dto/dto';
 import { CategoryService } from '../category/service/category.service';
 import LocalFilesInterceptor, {
   imageParams,
@@ -51,7 +57,7 @@ import { Course } from '../course/entity/course.entity';
 export class QuizController {
   constructor(
     private readonly quizService: QuizService,
-    private readonly courseService: CourseService,
+    private readonly questionService: QuestionService,
   ) {}
 
   @Get('/:courseId/:topicId')
@@ -132,5 +138,20 @@ export class QuizController {
     let createQuiz = await this.quizService.saveQuiz(quiz);
 
     return res.status(HttpStatus.OK).json(new SuccessResponse(createQuiz));
+  }
+
+  @Post('topics/:courseId/:topicId')
+  @InstructorCourseAuth()
+  async createTopics(
+    @Res() res: Response,
+    @Instructor() instructor: Course,
+    @Param() param: IQuizParam,
+    @Body() body: BulkQuizInsertDto,
+  ) {
+    const { topicId } = param;
+
+    let quiz = await this.quizService.saveQuizBulk(body, +topicId);
+
+    return res.status(HttpStatus.OK).json(new SuccessResponse(quiz));
   }
 }

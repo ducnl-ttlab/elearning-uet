@@ -2,15 +2,15 @@ import { ApiProperty } from '@nestjs/swagger';
 import { CommonListResponse } from 'src/common/helpers/api.response';
 import { Question } from '../entity/question.entity';
 
-export interface CreateQuizDto {
+export interface IQuestionItem {
   name: string;
-  startTime: string;
-  duration: string;
+  mark: string;
+  answerList: IAnswerItem[];
 }
 
-export interface IQuizParam {
-  quizId: string;
-  courseId: string;
+export interface IAnswerItem {
+  content: string;
+  isCorrect: boolean;
 }
 
 export interface QuizListResponseDto extends CommonListResponse<Question> {}
