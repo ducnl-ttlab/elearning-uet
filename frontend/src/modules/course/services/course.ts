@@ -7,6 +7,7 @@ import {
     ICourseData,
     ICourseListParams,
     ICoursePreviewData,
+    ICreateQuizParams,
     IQuestionDetail,
     IQuizDetail,
     ITopicData,
@@ -169,7 +170,7 @@ export async function updateQuiz(
 export async function createQuiz(
     courseId: number,
     topicId: number,
-    params: IQuizDetail,
+    params: ICreateQuizParams,
 ): Promise<IAxiosDefaultResponse<IQuizDetail>> {
     return axios.post(`${BE_URL}/quiz/${courseId}/${topicId}`, params, {
         headers: {

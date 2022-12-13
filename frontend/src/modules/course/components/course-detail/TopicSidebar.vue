@@ -85,7 +85,7 @@ export default class CourseSidebar extends Vue {
 
     handleClickTopic(topic: ITopicData) {
         courseModule.setSelectedTopic(topic.id as number);
-        courseModule.toggleShowTopicVideo(true);
+        courseModule.toggleShowTopicVideo(false);
     }
 
     handleAddTopic() {

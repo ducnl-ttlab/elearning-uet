@@ -105,9 +105,14 @@ export default class CourseSidebar extends Vue {
         commonModule.setLoadingIndicator(false);
     }
 
-    created(): void {
+    async created() {
+        commonModule.setLoadingIndicator(true);
         window.addEventListener('resize', this.showFullScreenOnMobile);
         this.showFullScreenOnMobile();
+        courseModule.setTopicId(courseModule.topicList[0]?.id || 1);
+        await this.refreshInstructorQuizDetail();
+        courseModule.setAddingQuiz(false);
+        commonModule.setLoadingIndicator(false);
     }
 
     showFullScreenOnMobile() {

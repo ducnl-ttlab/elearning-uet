@@ -111,8 +111,9 @@ export interface IQuizDetail {
     id?: number;
     name: string;
     shown?: boolean;
+    topicId?: number;
     startTime: string;
-    duration: number;
+    duration: string;
     questionList?: Array<IQuestionDetail>;
 }
 
@@ -129,4 +130,10 @@ export interface IAnswerDetail {
     id: number;
     content: string;
     isCorrect: boolean;
+}
+
+export interface ICreateQuizParams {
+    name: string;
+    startTime: string;
+    duration: string;
 }

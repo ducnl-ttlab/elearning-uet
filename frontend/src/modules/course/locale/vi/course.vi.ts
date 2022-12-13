@@ -70,6 +70,7 @@ export const course = {
         instructorGetTopicError: 'Chưa có chủ đề, vui lòng tạo mới',
         getQuizListError: 'Có lỗi khi lấy danh sách quiz, vui lòng thử lại sau!',
         studentGetTopicError: 'Chưa có chủ đề',
+        createNewQuizError: 'Có lỗi khi tạo mới quiz, xin vui lòng thử lại sau',
         emptyQuizList: 'Chưa có quiz, vui lòng tạo mới',
         topic: {
             updateTopic: 'Sửa topic thất bại, vui lòng thử lại sau',
@@ -142,6 +143,12 @@ export const course = {
             addQuiz: 'Thêm bài tập',
             addQuestion: 'Thêm câu hỏi',
             addAnswer: 'Thêm câu trả lời',
+            title: 'Tiêu đề',
+            quizDuration: 'Thời lượng',
+            startDate: 'Ngày',
+            startTime: 'Thời gian',
+            save: 'Lưu',
+            cancel: 'Hủy',
         },
     },
 };

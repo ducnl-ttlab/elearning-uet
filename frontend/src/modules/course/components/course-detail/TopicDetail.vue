@@ -78,10 +78,6 @@ export default class TopicDetail extends Vue {
     handleEditTopic() {
         courseModule.toggleShowTopicFormPopup(true);
     }
-
-    created() {
-        this.showTopicVideo();
-    }
 }
 </script>
 <style lang="scss" scoped>

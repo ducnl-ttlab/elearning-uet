@@ -13,25 +13,32 @@
         </div>
         <div class="add-button d-flex flex-row gap-2 py-2">
             <img src="@/assets/course/icons/plus.svg" width="18" alt="" />
-            <span>{{ $t('course.quiz.form.addAnswer') }}</span>
+            <div @click="handleAddAnswer">{{ $t('course.quiz.form.addAnswer') }}</div>
         </div>
     </div>
 </template>
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
-import { SystemRole } from '@/common/constants';
-import { userModule } from '@/modules/user/store/user.store';
-import { IQuestionDetail, IQuizDetail } from '../../../constants/course.interfaces';
-import { courseModule } from '../../../store/course.store';
+import { IQuestionDetail } from '../../../constants/course.interfaces';
 import { Prop } from 'vue-property-decorator';
 import InstructorAnswer from './InstructorAnswer.vue';
+import { courseModule } from '@/modules/course/store/course.store';
 
 @Options({
     components: { InstructorAnswer },
 })
 export default class InstructorQuestion extends Vue {
     @Prop({ default: {} }) readonly question!: IQuestionDetail;
+
+    newAnswer = {
+        content: '',
+        isCorrect: false,
+    };
+
+    handleAddAnswer() {
+        // courseModule.setQuizList();
+    }
 }
 </script>
 

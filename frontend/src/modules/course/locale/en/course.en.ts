@@ -66,6 +66,7 @@ export const course = {
         emptyStudentList: 'Cannot find any student.',
         getTopicListError: 'Cannot find any topic',
         getQuizListError: 'Error getting quiz list. Please try again later!',
+        createNewQuizError: 'Error creating new quiz. Please try again later!',
         topic: {
             updateTopic: 'Update topic failed! Please try again later',
             createTopic: 'Create topic failed! Please try again later!',
@@ -126,8 +127,8 @@ export const course = {
             description: 'Description',
             content: 'Content',
             video: 'Upload video',
-            save: 'Lưu',
-            cancel: 'Hủy',
+            save: 'Save',
+            cancel: 'Cancel',
         },
     },
 
@@ -138,6 +139,12 @@ export const course = {
             addQuiz: 'Add a quiz',
             addQuestion: 'Add a question',
             addAnswer: 'Add an answer',
+            title: 'Quiz Title',
+            quizDuration: 'Duration',
+            startDate: 'Start date',
+            startTime: 'Start time',
+            save: 'Save',
+            cancel: 'Cancel',
         },
     },
 };

@@ -8,7 +8,7 @@
     <div class="question-wrapper d-flex flex-column gap-3">
         <div class="add-button d-flex flex-row gap-2">
             <img src="@/assets/course/icons/plus.svg" width="18" alt="" />
-            <span>{{ $t('course.quiz.form.addQuestion') }}</span>
+            <div @click="handleAddQuestion">{{ $t('course.quiz.form.addQuestion') }}</div>
         </div>
         <div v-for="question in quiz.questionList" :key="question.id">
             <InstructorQuestion :question="question" />
@@ -20,8 +20,7 @@
 import { Options, Vue } from 'vue-class-component';
 import { SystemRole } from '@/common/constants';
 import { userModule } from '@/modules/user/store/user.store';
-import { IQuestionDetail, IQuizDetail } from '../../../constants/course.interfaces';
-import { courseModule } from '../../../store/course.store';
+import { IQuizDetail } from '../../../constants/course.interfaces';
 import { Prop } from 'vue-property-decorator';
 import InstructorQuestion from './InstructorQuestion.vue';
 

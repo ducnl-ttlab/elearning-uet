@@ -93,7 +93,7 @@ export default class CourseDetail extends Vue {
         if (response.success) {
             courseModule.setTopicList(response?.data?.items || []);
             if (response?.data?.items && response?.data?.items.length > 0) {
-                courseModule.setSelectedTopic(1);
+                courseModule.setSelectedTopic(response.data.items[0]?.id ?? 1);
             } else {
                 courseModule.setSelectedTopicObject({});
             }

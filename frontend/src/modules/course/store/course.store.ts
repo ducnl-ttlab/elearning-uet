@@ -22,10 +22,11 @@ class CourseModule extends VuexModule {
     topicSidebarMode = '';
     quizSidebarMode = '';
     courseArea = '';
-    isShowTopicVideo = true;
+    isShowTopicVideo = false;
     isShowTopicFormPopup = false;
     quizList: Array<IQuizDetail> = [];
     topicId = 1;
+    isAddingQuiz = false;
 
     @Action
     setCourseList(courseList: Array<ICourseData>) {
@@ -155,6 +156,16 @@ class CourseModule extends VuexModule {
     @Mutation
     SET_TOPIC_ID(topicId: number) {
         this.topicId = topicId;
+    }
+
+    @Action
+    setAddingQuiz(state: boolean) {
+        this.SET_ADDING_QUIZ(state);
+    }
+
+    @Mutation
+    SET_ADDING_QUIZ(state: boolean) {
+        this.isAddingQuiz = state;
     }
 }
 export const courseModule = getModule(CourseModule);

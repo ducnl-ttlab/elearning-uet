@@ -30,12 +30,12 @@ export default class LoadingIndicator extends Vue {
     content: '';
     z-index: 1000;
     background: #000;
-    height: 100%;
     position: absolute;
     left: 0;
     right: 0;
     top: 0;
     width: 100%;
+    height: 100% !important;
     opacity: 0.2;
 }
 .wrapper-loader {
