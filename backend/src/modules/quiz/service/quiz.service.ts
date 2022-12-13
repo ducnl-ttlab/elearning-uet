@@ -137,7 +137,30 @@ export class QuizService {
     }
   }
 
-  async updateQuiz(quiz: BulkQuizInsertDto) {}
+  async updateQuiz(quiz: BulkQuizInsertDto) {
+    const queryRunner = await getConnection().createQueryRunner();
+    await queryRunner.startTransaction();
+    let { questionList, ...newQuiz } = quiz;
+
+    try {
+      await this.quiz.update(quiz.id, newQuiz);
+
+      let question = await Promise.all(
+        questionList.map((item) => {
+          return this.updateQuestion(item);
+        }),
+      );
+      await queryRunner.commitTransaction();
+      return {
+        questionList: question,
+      };
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      throw new InternalServerErrorException(error);
+    } finally {
+      await queryRunner.release();
+    }
+  }
 
   async updateQuestion(question: IQuestion) {
     const queryRunner = await getConnection().createQueryRunner();
@@ -152,7 +175,7 @@ export class QuizService {
       }
 
       let answers = await Promise.all(
-        answerList.map(async (item) => {
+        answerList.map((item) => {
           return this.updateAnswer(item, questionId);
         }),
       );
@@ -175,7 +198,6 @@ export class QuizService {
           questionId,
           ...answer,
         };
-        console.log({ newAnswer, questionId });
         return this.answer.save(newAnswer);
       } else {
         return this.answer.update(answer.id, answer);

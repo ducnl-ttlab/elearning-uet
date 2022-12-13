@@ -169,7 +169,6 @@ export class QuizController {
     } else if (answer) {
       result = await this.quizService.updateAnswer(answer);
     }
-    // let quiz = await this.quizServiece.saveQuizBulk(body, +topicId);
 
     return res.status(HttpStatus.OK).json(
       new SuccessResponse({
@@ -193,7 +192,6 @@ export class QuizController {
     @Query() query: IQueryEditDto,
   ) {
     const { sourceId, type } = query;
-    console.log(sourceId, type);
     let result: any;
 
     switch (type) {
@@ -206,14 +204,10 @@ export class QuizController {
         break;
       }
       case 'quiz': {
-        console.log('sadf', sourceId);
-
         result = await this.quizService.deleteQuiz(sourceId);
         break;
       }
     }
-
-    // let quiz = await this.quizServiece.saveQuizBulk(body, +topicId);
 
     return res.status(HttpStatus.OK).json(new SuccessResponse(result));
   }

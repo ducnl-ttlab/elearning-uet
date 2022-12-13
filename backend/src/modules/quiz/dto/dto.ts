@@ -14,18 +14,22 @@ export interface BulkQuizInsertDto {
   id: number;
   name: string;
   startTime: string;
-  duration: string;
+  duration: number;
   shown?: boolean;
   questionList: QuestionItem[];
 }
 
 export interface QuestionItem {
+  id: number;
+  quizId: number;
   name: string;
-  mark: string;
+  mark: number;
   answerList: AnswerItem[];
 }
 
 export interface AnswerItem {
+  id: number;
+  questionId: number;
   content: string;
   isCorrect: boolean;
 }
