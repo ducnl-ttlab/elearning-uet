@@ -449,6 +449,8 @@ export class UserCourseController {
       +courseId,
     );
 
+    await this.cache.deleteByKey(`usercourse${studentId}`);
+
     if (type === 'add') {
       if (!userCourse) {
         let newUserCourse: Partial<UserCourse> = {
@@ -497,8 +499,6 @@ export class UserCourseController {
     if (!userCourse) {
       throw new NotFoundException('Not found student in this course');
     }
-
-    await this.cache.deleteByKey(`usercourse${studentId}`);
 
     if (type === userCourse.status) {
       throw new BadRequestException('Action is not accepted');

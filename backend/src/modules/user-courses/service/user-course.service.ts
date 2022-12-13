@@ -101,7 +101,7 @@ export class UserCourseService {
           JOIN users u ON u.id = c.instructorId
       ) as c on c.id = uc.courseId
       LEFT JOIN ratings r on r.userCourseId = uc.id
-      WHERE uc.userId = ?;
+      WHERE uc.userId = ? and uc.status <> "reject";
       `;
       return this.usercourse.query(query, [userId]);
     } catch (error) {
