@@ -215,6 +215,23 @@ export class QuizService {
     return existQuiz;
   }
 
+  async getAnswerList(quizId: number): Promise<{ id: number }[]> {
+    try {
+      let query = `
+      SELECT a.id
+      FROM answers a
+      LEFT JOIN questions qu 
+      ON qu.id = a.questionId
+      LEFT JOIN quizes qi
+      ON qi.id = qu.quizId
+      WHERE qi.id = ?
+      `;
+      return this.quiz.query(query, [quizId]);
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
   async deleteAnswer(id: number) {
     try {
       return this.answer.delete(id);

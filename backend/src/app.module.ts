@@ -1,3 +1,4 @@
+import { UserAnswerModule } from './modules/user-answer/user-answer.module';
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -51,6 +52,7 @@ import { AnswerModule } from './modules/answer/answer.module';
     QuizModule,
     QuestionModule,
     AnswerModule,
+    UserAnswerModule,
   ],
   controllers: [AppController],
   providers: [AppService],
