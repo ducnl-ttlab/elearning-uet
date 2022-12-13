@@ -1,7 +1,41 @@
 <template>
-    <div class="question-card d-flex flex-row gap-4 pb-2">
-        <span>{{ question.name }}</span>
-        <span>{{ $t('course.quiz.form.mark', { mark: question.mark }) }}</span>
+    <div class="question-card d-flex flex-row gap-3 pb-2">
+        <div v-if="!isEditingQuestion" class="d-flex flex-row gap-4">
+            <span>{{ question.name }}</span>
+            <span>{{ $t('course.quiz.form.mark', { mark: question.mark }) }}</span>
+        </div>
+
+        <div v-else class="question-card d-flex flex-row gap-4 pb-2">
+            <el-input
+                :placeholder="$t('course.quiz.form.title')"
+                v-model="question.name"
+                @change="toggleEditQuestion"
+                autocomplete="off"
+            />
+            <el-input
+                :placeholder="$t('course.quiz.form.title')"
+                v-model="question.mark"
+                @change="toggleEditQuestion"
+                autocomplete="off"
+            />
+        </div>
+        <div class="d-flex flex-row gap-2" style="padding-left: 10px">
+            <img
+                src="@/assets/course/icons/edit.svg"
+                width="16"
+                alt=""
+                style="cursor: pointer"
+                @click="toggleEditQuestion"
+            />
+            <img
+                v-if="!isShowInput"
+                src="@/assets/course/icons/cancel.svg"
+                width="16"
+                alt=""
+                style="cursor: pointer"
+                @click="handleDeleteQuestion"
+            />
+        </div>
     </div>
     <div class="answer-wrapper px-3">
         <div
@@ -32,6 +66,7 @@ import { courseModule } from '@/modules/course/store/course.store';
 })
 export default class InstructorQuestion extends Vue {
     @Prop({ default: {} }) readonly question!: IQuestionDetail;
+    isEditingQuestion = false;
 
     newAnswer = {
         content: '',
@@ -39,7 +74,7 @@ export default class InstructorQuestion extends Vue {
     };
 
     handleAddAnswer(questionId: number) {
-        let newquizList = courseModule.quizList.map((item) => {
+        let newQuizList = courseModule.quizList.map((item) => {
             let { questionList } = item;
 
             questionList = questionList?.map((questionItem) => {
@@ -65,7 +100,11 @@ export default class InstructorQuestion extends Vue {
                 questionList,
             };
         });
-        courseModule.setQuizList(newquizList);
+        courseModule.setQuizList(newQuizList);
+    }
+
+    toggleEditQuestion() {
+        this.isEditingQuestion = !this.isEditingQuestion;
     }
 }
 </script>

@@ -1,15 +1,14 @@
 <template>
     <div class="d-flex flex-row align-items-center gap-3">
         <el-checkbox v-model="answer.isCorrect" size="large" />
-        <div v-if="!isShowInput">
+        <div v-if="!isEditingAnswer">
             {{ answer.content ? answer.content : 'Add your answer' }}
         </div>
-        <BaseInputText
+        <el-input
             :placeholder="$t('course.quiz.form.title')"
-            v-model:value="answer.content"
-            @change="handleEditAnswer"
+            v-model="answer.content"
+            @change="toggleEditAnswer"
             autocomplete="off"
-            style="margin-top: 8px"
             v-else
         />
         <div class="d-flex flex-row gap-2">
@@ -18,10 +17,10 @@
                 width="16"
                 alt=""
                 style="cursor: pointer"
-                @click="handleEditAnswer"
+                @click="toggleEditAnswer"
             />
             <img
-                v-if="!isShowInput"
+                v-if="!isEditingAnswer"
                 src="@/assets/course/icons/cancel.svg"
                 width="16"
                 alt=""
@@ -44,14 +43,14 @@ import { courseModule } from '@/modules/course/store/course.store';
 export default class InstructorAnswer extends Vue {
     @Prop({ default: {} }) readonly answer!: IAnswerDetail;
     @Prop({ default: 0 }) readonly index!: number;
-    isShowInput = false;
+    isEditingAnswer = false;
 
-    handleEditAnswer() {
-        this.isShowInput = !this.isShowInput;
+    toggleEditAnswer() {
+        this.isEditingAnswer = !this.isEditingAnswer;
     }
     handleDeleteAnswer() {
         console.log(this.index);
-        let newquizList = courseModule.quizList.map((item) => {
+        let newQuizList = courseModule.quizList.map((item) => {
             let { questionList } = item;
             questionList = questionList?.map((questionItem) => {
                 let { answerList } = questionItem;
@@ -66,7 +65,7 @@ export default class InstructorAnswer extends Vue {
                 questionList,
             };
         });
-        courseModule.setQuizList(newquizList);
+        courseModule.setQuizList(newQuizList);
     }
 }
 </script>

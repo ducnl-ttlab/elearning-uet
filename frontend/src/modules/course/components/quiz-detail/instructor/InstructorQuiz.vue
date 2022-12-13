@@ -1,10 +1,44 @@
 <template>
     <div class="d-flex flex-row gap-4 mb-3 quiz-title">
-        <div class="quiz-name text-ellipsis">{{ quiz.name }}</div>
-        <div class="quiz-duration">
-            {{ $t('course.quiz.form.duration', { time: quiz.duration }) }}
+        <div v-if="!isEditingQuiz" class="d-flex flex-row gap-4 align-items-center">
+            <div class="quiz-name text-ellipsis">{{ quiz.name }}</div>
+            <div class="quiz-duration">
+                {{ $t('course.quiz.form.duration', { time: quiz.duration }) }}
+            </div>
+        </div>
+        <div v-else class="d-flex flex-row gap-4 align-items-center">
+            <el-input
+                :placeholder="$t('course.quiz.form.title')"
+                v-model="quiz.name"
+                @change="toggleEditQuiz"
+                autocomplete="off"
+            />
+            <el-input
+                :placeholder="$t('course.quiz.form.title')"
+                v-model="quiz.duration"
+                @change="toggleEditQuiz"
+                autocomplete="off"
+            />
+        </div>
+        <div class="d-flex flex-row gap-3">
+            <img
+                src="@/assets/course/icons/edit.svg"
+                width="16"
+                alt=""
+                style="cursor: pointer"
+                @click="toggleEditQuiz"
+            />
+            <img
+                v-if="!isShowInput"
+                src="@/assets/course/icons/cancel.svg"
+                width="16"
+                alt=""
+                style="cursor: pointer"
+                @click="handleDeleteQuiz"
+            />
         </div>
     </div>
+
     <div class="question-wrapper d-flex flex-column gap-3">
         <div class="add-button d-flex flex-row gap-2">
             <img src="@/assets/course/icons/plus.svg" width="18" alt="" />
@@ -30,6 +64,12 @@ import { courseModule } from '@/modules/course/store/course.store';
 })
 export default class InstructorQuiz extends Vue {
     @Prop({ default: {} }) readonly quiz!: IQuizDetail;
+
+    isEditingQuiz = false;
+
+    toggleEditQuiz() {
+        this.isEditingQuiz = !this.isEditingQuiz;
+    }
 
     handleAddQuestion() {
         // courseModule.setQuizList();
