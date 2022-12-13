@@ -43,6 +43,7 @@ export class Quizes1669434922646 implements MigrationInterface {
             name: 'duration',
             type: 'int',
             default: 60, // minutes
+            isNullable: true,
           },
         ],
       }),

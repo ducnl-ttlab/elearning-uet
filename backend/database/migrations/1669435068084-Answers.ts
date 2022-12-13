@@ -24,6 +24,11 @@ export class Answers1669435068084 implements MigrationInterface {
             type: 'int',
           },
           {
+            name: 'content',
+            type: 'varchar',
+            length: '255',
+          },
+          {
             name: 'isCorrect',
             type: 'tinyint',
             default: 0,

@@ -22,6 +22,9 @@ import { CommentModule } from './modules/comment/comment.module';
 import { RatingModule } from './modules/rating/rating.module';
 import { FavoriteModule } from './modules/favorite/favorite.module';
 import { AdminModule } from './modules/admin/admin.module';
+import { QuizModule } from './modules/quiz/quiz.module';
+import { QuestionModule } from './modules/question/question.module';
+import { AnswerModule } from './modules/answer/answer.module';
 
 @Module({
   imports: [
@@ -45,6 +48,9 @@ import { AdminModule } from './modules/admin/admin.module';
     RatingModule,
     FavoriteModule,
     AdminModule,
+    QuizModule,
+    QuestionModule,
+    AnswerModule,
   ],
   controllers: [AppController],
   providers: [AppService],
