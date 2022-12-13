@@ -8,6 +8,11 @@ export const common = {
     role: {
         instructor: 'Giảng viên',
         student: 'Học sinh',
+        commentBlocking: 'Chặn chát',
+        block: 'Chặn',
+        nomal: 'Bình Thường',
+        expire: 'Hết hạn',
+        pending: 'Đang chờ xử lý',
     },
     gender: {
         male: 'Nam',

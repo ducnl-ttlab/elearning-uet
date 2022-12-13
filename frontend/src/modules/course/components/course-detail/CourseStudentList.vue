@@ -34,11 +34,15 @@
             <span class="student score" style="width: 8%">
                 {{ student.score }}
             </span>
-            <span class="student start-time" style="width: 22%">{{
+            <span class="student start-time" style="width: 10%">{{
                 student.startCourseTime
+            }}</span>
+            <span class="student start-time" style="width: 10%">{{
+                studentStatus(student.status)
             }}</span>
             <div class="actions d-flex flex-row" style="gap: 5px; justify-self: flex-end">
                 <div
+                    v-if="student.status !== UserCourseStatus.commentBlocking"
                     class="action"
                     @click="
                         handleStudentAction(
@@ -48,6 +52,15 @@
                     "
                 >
                     <img src="@/assets/course/icons/mute.png" width="20" alt="" />
+                </div>
+                <div
+                    class="action"
+                    v-else
+                    @click="
+                        handleStudentAction(UserCourseStatus.accepted, student.userId)
+                    "
+                >
+                    <img src="@/assets/course/icons/check.svg" width="20" alt="" />
                 </div>
                 <div class="action" @click="handleStudentAction('kick', student.userId)">
                     <img src="@/assets/course/icons/door.png" width="20" alt="" />
@@ -99,10 +112,31 @@ import { userCourseModule } from '../../store/user-course.store';
 export default class CourseStudentList extends Vue {
     UserCourseStatus = UserCourseStatus;
     keyword = '';
+
     get courseStudentList() {
         return userCourseModule.courseStudentList;
     }
 
+    studentStatus(status: UserCourseStatus) {
+        switch (status) {
+            case UserCourseStatus.pending: {
+                return 'Đang chờ xử lý';
+            }
+            case UserCourseStatus.accepted: {
+                return 'Bình Thường';
+            }
+            case UserCourseStatus.reject: {
+                return 'Chặn';
+            }
+            case UserCourseStatus.expired: {
+                return 'Hết hạn';
+            }
+            case UserCourseStatus.commentBlocking: {
+                return 'Chặn chát';
+            }
+        }
+        return '';
+    }
     async initCourseStudentList() {
         const courseId = this.$route.params.courseId as string;
         commonModule.setLoadingIndicator(true);

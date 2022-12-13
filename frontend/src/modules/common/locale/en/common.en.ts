@@ -8,6 +8,11 @@ export const common = {
     role: {
         instructor: 'instructor',
         student: 'student',
+        commentBlocking: 'Bomment blocking',
+        block: 'Block',
+        nomal: 'Nomal',
+        expire: 'Expire',
+        pending: 'Pending',
     },
     gender: {
         male: 'Male',
