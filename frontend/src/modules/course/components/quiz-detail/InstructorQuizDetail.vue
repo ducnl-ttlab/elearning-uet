@@ -56,7 +56,10 @@
 
 <script lang="ts">
 import { SystemRole } from '@/common/constants';
-import { showErrorNotificationFunction } from '@/common/helpers';
+import {
+    showErrorNotificationFunction,
+    showSuccessNotificationFunction,
+} from '@/common/helpers';
 import { commonModule } from '@/modules/common/store/common.store';
 import { userModule } from '@/modules/user/store/user.store';
 import moment from 'moment';
@@ -199,7 +202,8 @@ export default class InstructorQuizDetail extends Vue {
 
         const response = await createQuiz(courseId, this.topicId, params);
         if (response?.success) {
-            courseModule.setQuizList([...this.quizList, params]);
+            showSuccessNotificationFunction(this.$t('course.success.quiz.createQuiz'));
+            courseModule.setQuizList([...this.quizList, response.data || {}]);
         } else {
             let res = response?.errors || [
                 { message: this.$t('course.errors.createNewQuizError') },

@@ -1,8 +1,8 @@
 <template>
     <div class="question-card d-flex flex-row gap-3 pb-2">
         <div v-if="!isEditingQuestion" class="d-flex flex-row gap-4">
-            <span>{{ question.name }}</span>
-            <span>{{ $t('course.quiz.form.mark', { mark: question.mark }) }}</span>
+            <span>{{ question?.name }}</span>
+            <span>{{ $t('course.quiz.form.mark', { mark: question?.mark }) }}</span>
         </div>
 
         <div v-else class="question-card d-flex flex-row gap-4 pb-2">
@@ -40,14 +40,14 @@
     <div class="answer-wrapper px-3">
         <div
             class="answer-card d-flex flex-row gap-3"
-            v-for="(answer, index) in question.answerList"
+            v-for="(answer, index) in question?.answerList"
             :key="index"
         >
             <InstructorAnswer :answer="answer" :index="index" />
         </div>
         <div class="add-button d-flex flex-row gap-2 py-2">
             <img src="@/assets/course/icons/plus.svg" width="18" alt="" />
-            <div @click="handleAddAnswer(question.id)" style="cursor: pointer">
+            <div @click="handleAddAnswer(question?.id)" style="cursor: pointer">
                 {{ $t('course.quiz.form.addAnswer') }}
             </div>
         </div>
@@ -69,7 +69,7 @@ export default class InstructorQuestion extends Vue {
     isEditingQuestion = false;
 
     newAnswer = {
-        content: '',
+        content: this.$t('course.quiz.field.addAnswer') as string,
         isCorrect: false,
     };
 
@@ -80,10 +80,10 @@ export default class InstructorQuestion extends Vue {
             questionList = questionList?.map((questionItem) => {
                 let { answerList } = questionItem;
                 if (questionId === questionItem.id) {
-                    answerList.push(this.newAnswer);
+                    answerList?.push(this.newAnswer);
                 }
 
-                answerList = answerList.map((answerItem) => {
+                answerList = answerList?.map((answerItem) => {
                     return {
                         ...answerItem,
                         questionId,

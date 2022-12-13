@@ -91,6 +91,11 @@ export const course = {
             createTopic: 'Create topic successfully!',
             deleteTopic: 'Delete topic successfully!',
         },
+        quiz: {
+            updateQuiz: 'Update quiz successfully!',
+            createQuiz: 'Create quiz successfully!',
+            deleteQuiz: 'Delete quiz successfully!',
+        },
     },
     coursePopup: {
         showStudentList: 'Student List',
@@ -145,6 +150,10 @@ export const course = {
             startTime: 'Start time',
             save: 'Save',
             cancel: 'Cancel',
+        },
+        field: {
+            addQuestion: 'Question title',
+            addAnswer: 'Answer title',
         },
     },
 };

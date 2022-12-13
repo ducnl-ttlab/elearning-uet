@@ -95,6 +95,11 @@ export const course = {
             createTopic: 'Thêm chủ đề mới thành công!',
             deleteTopic: 'Xóa chủ đề thành công!',
         },
+        quiz: {
+            updateQuiz: 'Sửa bài tập thành công!',
+            createQuiz: 'Tạo bài tập thành công!',
+            deleteQuiz: 'Xóa bài tập thành công!',
+        },
     },
 
     courseDetail: {
@@ -149,6 +154,11 @@ export const course = {
             startTime: 'Thời gian',
             save: 'Lưu',
             cancel: 'Hủy',
+        },
+
+        field: {
+            addQuestion: 'Câu hỏi mới',
+            addAnswer: 'Câu trả lời mới',
         },
     },
 };

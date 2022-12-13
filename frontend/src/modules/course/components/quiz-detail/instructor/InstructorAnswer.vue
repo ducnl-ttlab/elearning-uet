@@ -54,7 +54,7 @@ export default class InstructorAnswer extends Vue {
             let { questionList } = item;
             questionList = questionList?.map((questionItem) => {
                 let { answerList } = questionItem;
-                answerList.splice(this.index, 1);
+                answerList?.splice(this.index, 1);
                 return {
                     ...questionItem,
                     answerList,

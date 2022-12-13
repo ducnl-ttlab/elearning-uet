@@ -109,11 +109,11 @@ export interface IEditCourseQuery {
 
 export interface IQuizDetail {
     id?: number;
-    name: string;
+    name?: string;
     shown?: boolean;
     topicId?: number;
-    startTime: string;
-    duration: string;
+    startTime?: string;
+    duration?: string;
     questionList?: Array<IQuestionDetail>;
 }
 
@@ -122,7 +122,7 @@ export interface IQuestionDetail {
     id?: number;
     name: string;
     mark: number;
-    answerList: Array<IAnswerDetail>;
+    answerList?: Array<IAnswerDetail>;
     answerCorrectState?: Array<boolean>;
 }
 

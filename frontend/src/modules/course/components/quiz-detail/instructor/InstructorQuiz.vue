@@ -58,6 +58,13 @@ import { IQuizDetail } from '../../../constants/course.interfaces';
 import { Prop } from 'vue-property-decorator';
 import InstructorQuestion from './InstructorQuestion.vue';
 import { courseModule } from '@/modules/course/store/course.store';
+import { deleteQuizPart, getQuizList } from '@/modules/course/services/course';
+import { deleteType } from '../../../constants/course.constants';
+import {
+    showErrorNotificationFunction,
+    showSuccessNotificationFunction,
+} from '@/common/helpers';
+import { commonModule } from '@/modules/common/store/common.store';
 
 @Options({
     components: { InstructorQuestion },
@@ -67,12 +74,42 @@ export default class InstructorQuiz extends Vue {
 
     isEditingQuiz = false;
 
+    get topicId() {
+        return courseModule.topicId;
+    }
+
     toggleEditQuiz() {
         this.isEditingQuiz = !this.isEditingQuiz;
     }
 
     handleAddQuestion() {
         // courseModule.setQuizList();
+    }
+
+    async handleDeleteQuiz() {
+        commonModule.setLoadingIndicator(true);
+        const courseId = +this.$route.params.courseId;
+        console.log(courseId, this.topicId, deleteType.QUIZ, this.quiz.id || 1);
+
+        const response = await deleteQuizPart(
+            courseId,
+            this.topicId,
+            deleteType.QUIZ,
+            this.quiz.id || 1,
+        );
+        if (response?.success) {
+            showSuccessNotificationFunction(this.$t('course.success.quiz.deleteQuiz'));
+        } else {
+            let res = response?.errors || [
+                { message: this.$t('course.errors.deleteQuizError') },
+            ];
+            showErrorNotificationFunction(res[0].message);
+        }
+
+        const reload = await getQuizList(courseId, this.topicId);
+        if (reload?.success) courseModule.setQuizList(reload.data?.items || []);
+
+        commonModule.setLoadingIndicator(false);
     }
 }
 </script>

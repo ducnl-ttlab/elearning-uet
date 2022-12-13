@@ -172,11 +172,18 @@ export async function createQuiz(
     topicId: number,
     params: ICreateQuizParams,
 ): Promise<IAxiosDefaultResponse<IQuizDetail>> {
-    return axios.post(`${BE_URL}/quiz/${courseId}/${topicId}`, params, {
-        headers: {
-            Authorization: 'Bearer ' + localStorageTokenService.getAccessToken(),
-        },
-    });
+    return axios
+        .post(`${BE_URL}/quiz/${courseId}/${topicId}`, params, {
+            headers: {
+                Authorization: 'Bearer ' + localStorageTokenService.getAccessToken(),
+            },
+        })
+        .then((res) => {
+            return res.data;
+        })
+        .catch((error) => {
+            return error.response.data;
+        });
 }
 
 export async function createQuizDetail(
@@ -184,20 +191,40 @@ export async function createQuizDetail(
     topicId: number,
     params: IQuizDetail,
 ): Promise<IAxiosDefaultResponse<IQuizDetail>> {
-    return axios.post(`${BE_URL}/quiz/${courseId}/${topicId}`, params, {
-        headers: {
-            Authorization: 'Bearer ' + localStorageTokenService.getAccessToken(),
-        },
-    });
+    return axios
+        .post(`${BE_URL}/quiz/${courseId}/${topicId}`, params, {
+            headers: {
+                Authorization: 'Bearer ' + localStorageTokenService.getAccessToken(),
+            },
+        })
+        .then((res) => {
+            return res.data;
+        })
+        .catch((error) => {
+            return error.response.data;
+        });
 }
 
-export async function deleteQuiz(
+export async function deleteQuizPart(
     courseId: number,
     topicId: number,
-): Promise<IAxiosDefaultResponse<IQuizDetail>> {
-    return axios.delete(`${BE_URL}/quiz/${courseId}/${topicId}`, {
-        headers: {
-            Authorization: 'Bearer ' + localStorageTokenService.getAccessToken(),
-        },
-    });
+    type: string,
+    sourceId: number,
+): Promise<IAxiosListDefaultResponse<IQuizDetail>> {
+    return axios
+        .delete(`${BE_URL}/quiz/${courseId}/${topicId}`, {
+            params: {
+                type: type,
+                sourceId: sourceId,
+            },
+            headers: {
+                Authorization: 'Bearer ' + localStorageTokenService.getAccessToken(),
+            },
+        })
+        .then((res) => {
+            return res.data;
+        })
+        .catch((error) => {
+            return error.response.data;
+        });
 }
