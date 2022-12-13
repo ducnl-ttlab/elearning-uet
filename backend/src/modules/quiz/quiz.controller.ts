@@ -17,7 +17,7 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Request, Response } from 'express';
-import { Instructor } from 'src/common/decorator/custom.decorator';
+import { Instructor, Student } from 'src/common/decorator/custom.decorator';
 import {
   CourseAuth,
   InstructorCourseAuth,
@@ -34,6 +34,7 @@ import {
 import { QuizService } from './service/quiz.service';
 import { validation } from './joi.request.pipe';
 import { Course } from '../course/entity/course.entity';
+import { UserCourse } from '../user-courses/entity/user-course.entity';
 
 @ApiTags('Topic')
 @Controller('quiz')
@@ -50,11 +51,15 @@ export class QuizController {
     @Res() response: Response,
     @Param() param: IQuizParam,
     @Req() req: Request,
+    @Student() student: UserCourse,
     @Headers('host') host: Headers,
   ) {
     const { courseId, topicId } = param;
 
-    let quizes = await this.quizService.getBulks(+topicId);
+    console.log('student', student);
+
+    let quizes = await this.quizService.getBulks(+topicId, student?.userId);
+
     quizes = quizes.map((item) => {
       const { startTime } = item;
       return {
@@ -83,35 +88,6 @@ export class QuizController {
   }
 
   @Post('/:courseId/:topicId')
-  @InstructorCourseAuth()
-  @UsePipes(
-    ...validation(
-      { key: 'createQuizSchema', type: 'body' },
-      { key: 'topicIdParamSchema', type: 'param' },
-    ),
-  )
-  async createTopic(
-    @Res() res: Response,
-    @Instructor() instructor: Course,
-    @Param() param: IQuizParam,
-    @Body() body: CreateQuizDto,
-  ) {
-    let { startTime, name, duration } = body;
-    const { topicId } = param;
-
-    let quiz = {
-      topicId: +topicId,
-      name,
-      startTime: timeStampToMysql(startTime),
-      duration: +duration,
-    };
-
-    let createQuiz = await this.quizService.saveQuiz(quiz);
-
-    return res.status(HttpStatus.OK).json(new SuccessResponse(createQuiz));
-  }
-
-  @Post('topics/:courseId/:topicId')
   @InstructorCourseAuth()
   async createTopics(
     @Res() res: Response,

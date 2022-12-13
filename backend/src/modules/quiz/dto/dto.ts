@@ -45,6 +45,7 @@ export interface BulkQuizResponseDto extends Quiz {
 
 export interface IQuestion extends Question {
   answerList?: Answer[];
+  userAnswers?: number[];
 }
 
 export interface IQueryEditDto {

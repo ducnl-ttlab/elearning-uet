@@ -498,6 +498,8 @@ export class UserCourseController {
       throw new NotFoundException('Not found student in this course');
     }
 
+    await this.cache.deleteByKey(`usercourse${studentId}`);
+
     if (type === userCourse.status) {
       throw new BadRequestException('Action is not accepted');
     }
