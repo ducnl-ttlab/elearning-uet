@@ -6,14 +6,16 @@
     <div class="answer-wrapper px-3">
         <div
             class="answer-card d-flex flex-row gap-3"
-            v-for="answer in question.answerList"
-            :key="answer.id"
+            v-for="(answer, index) in question.answerList"
+            :key="index"
         >
-            <InstructorAnswer :answer="answer" />
+            <InstructorAnswer :answer="answer" :index="index" />
         </div>
         <div class="add-button d-flex flex-row gap-2 py-2">
             <img src="@/assets/course/icons/plus.svg" width="18" alt="" />
-            <div @click="handleAddAnswer">{{ $t('course.quiz.form.addAnswer') }}</div>
+            <div @click="handleAddAnswer(question.id)" style="cursor: pointer">
+                {{ $t('course.quiz.form.addAnswer') }}
+            </div>
         </div>
     </div>
 </template>
@@ -36,8 +38,34 @@ export default class InstructorQuestion extends Vue {
         isCorrect: false,
     };
 
-    handleAddAnswer() {
-        // courseModule.setQuizList();
+    handleAddAnswer(questionId: number) {
+        let newquizList = courseModule.quizList.map((item) => {
+            let { questionList } = item;
+
+            questionList = questionList?.map((questionItem) => {
+                let { answerList } = questionItem;
+                if (questionId === questionItem.id) {
+                    answerList.push(this.newAnswer);
+                }
+
+                answerList = answerList.map((answerItem) => {
+                    return {
+                        ...answerItem,
+                        questionId,
+                    };
+                });
+
+                return {
+                    ...questionItem,
+                    answerList,
+                };
+            });
+            return {
+                ...item,
+                questionList,
+            };
+        });
+        courseModule.setQuizList(newquizList);
     }
 }
 </script>

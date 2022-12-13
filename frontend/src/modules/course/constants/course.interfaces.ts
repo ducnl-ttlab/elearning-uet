@@ -127,9 +127,11 @@ export interface IQuestionDetail {
 }
 
 export interface IAnswerDetail {
-    id: number;
+    id?: number;
+    questionId?: number;
     content: string;
     isCorrect: boolean;
+    isShowInput?: boolean;
 }
 
 export interface ICreateQuizParams {

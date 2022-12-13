@@ -23,12 +23,17 @@ import { userModule } from '@/modules/user/store/user.store';
 import { IQuizDetail } from '../../../constants/course.interfaces';
 import { Prop } from 'vue-property-decorator';
 import InstructorQuestion from './InstructorQuestion.vue';
+import { courseModule } from '@/modules/course/store/course.store';
 
 @Options({
     components: { InstructorQuestion },
 })
 export default class InstructorQuiz extends Vue {
     @Prop({ default: {} }) readonly quiz!: IQuizDetail;
+
+    handleAddQuestion() {
+        // courseModule.setQuizList();
+    }
 }
 </script>
 
