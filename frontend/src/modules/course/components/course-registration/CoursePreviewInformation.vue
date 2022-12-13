@@ -101,6 +101,7 @@
                         'background-color': isFavoriteCourse ? '#ff647c99' : '#fff',
                     }"
                     @click="handleToggleFavorite"
+                    v-if="isShowFavorite"
                 >
                     <img src="@/assets/course/icons/heart.svg" width="25" alt="" />
                 </div>
@@ -110,7 +111,7 @@
 </template>
 
 <script lang="ts">
-import { PageName } from '@/common/constants';
+import { PageName, SystemRole } from '@/common/constants';
 import {
     showErrorNotificationFunction,
     showSuccessNotificationFunction,
@@ -140,6 +141,9 @@ export default class CoursePreviewTopic extends Vue {
 
     get userData() {
         return userModule.userData;
+    }
+    get isShowFavorite() {
+        return userModule.userData.role === SystemRole.STUDENT;
     }
 
     get isCourseOwner() {
@@ -272,10 +276,6 @@ export default class CoursePreviewTopic extends Vue {
             }
             commonModule.setLoadingIndicator(false);
         }
-    }
-
-    created() {
-        console.log(this.actionKey);
     }
 }
 </script>
