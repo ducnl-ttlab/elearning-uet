@@ -192,4 +192,26 @@ export class QuizService {
     }
     return existQuiz;
   }
+
+  async deleteAnswer(id: number) {
+    try {
+      return this.answer.delete(id);
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+  async deleteQuestion(id: number) {
+    try {
+      return this.question.delete(id);
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+  async deleteQuiz(id: number) {
+    try {
+      return this.quiz.delete(id);
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
 }
