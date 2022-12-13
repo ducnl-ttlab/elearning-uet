@@ -20,6 +20,7 @@ import {
   BadRequestException,
   Put,
   Query,
+  Delete,
 } from '@nestjs/common';
 import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { Request, Response } from 'express';
@@ -175,5 +176,45 @@ export class QuizController {
         result,
       }),
     );
+  }
+
+  @Delete(':courseId/:topicId')
+  @InstructorCourseAuth()
+  @UsePipes(
+    ...validation(
+      { key: 'topicIdParamSchema', type: 'param' },
+      { key: 'editQuizQuerySchema', type: 'query' },
+    ),
+  )
+  async deleteQuiz(
+    @Res() res: Response,
+    @Instructor() instructor: Course,
+    @Param() param: IQuizParam,
+    @Query() query: IQueryEditDto,
+  ) {
+    const { sourceId, type } = query;
+    console.log(sourceId, type);
+    let result: any;
+
+    switch (type) {
+      case 'answer': {
+        result = await this.quizService.deleteAnswer(sourceId);
+        break;
+      }
+      case 'question': {
+        result = await this.quizService.deleteQuestion(sourceId);
+        break;
+      }
+      case 'quiz': {
+        console.log('sadf', sourceId);
+
+        result = await this.quizService.deleteQuiz(sourceId);
+        break;
+      }
+    }
+
+    // let quiz = await this.quizServiece.saveQuizBulk(body, +topicId);
+
+    return res.status(HttpStatus.OK).json(new SuccessResponse(result));
   }
 }
