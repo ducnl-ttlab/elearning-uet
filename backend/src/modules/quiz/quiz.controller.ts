@@ -17,7 +17,7 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Request, Response } from 'express';
-import { Instructor } from 'src/common/decorator/custom.decorator';
+import { Instructor, Student } from 'src/common/decorator/custom.decorator';
 import {
   CourseAuth,
   InstructorCourseAuth,
@@ -34,6 +34,7 @@ import {
 import { QuizService } from './service/quiz.service';
 import { validation } from './joi.request.pipe';
 import { Course } from '../course/entity/course.entity';
+import { UserCourse } from '../user-courses/entity/user-course.entity';
 
 @ApiTags('Topic')
 @Controller('quiz')
@@ -50,11 +51,15 @@ export class QuizController {
     @Res() response: Response,
     @Param() param: IQuizParam,
     @Req() req: Request,
+    @Student() student: UserCourse,
     @Headers('host') host: Headers,
   ) {
     const { courseId, topicId } = param;
 
-    let quizes = await this.quizService.getBulks(+topicId);
+    console.log('student', student);
+
+    let quizes = await this.quizService.getBulks(+topicId, student?.userId);
+
     quizes = quizes.map((item) => {
       const { startTime } = item;
       return {

@@ -22,11 +22,19 @@ export class UserAnswerService {
     }
   }
 
-  async getQuizsByTopicId(topicId: number) {
+  async getUserAnswerByQuestionId(questionId: number) {
     try {
-      return this.userAnswer.find({
-        where: { topicId: topicId },
-      });
+      let query = `
+      SELECT a.id
+      FROM user_answers ua
+      JOIN answers a
+      ON a.id = ua.answerId
+      WHERE a.questionId = ?
+      `;
+      let answerIds = (
+        (await this.userAnswer.query(query, [questionId])) as { id: number }[]
+      ).map((item) => item.id);
+      return answerIds;
     } catch (error) {
       throw new InternalServerErrorException(error);
     }

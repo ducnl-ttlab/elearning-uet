@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { timeStampToMysql } from 'src/common/ultils';
+import { UserAnswerService } from 'src/modules/user-answer/service/user-answer.service';
 import { getConnection, Repository } from 'typeorm';
 import { BulkQuizInsertDto, BulkQuizResponseDto, IQuestion } from '../dto/dto';
 import { Answer } from '../entity/answer.entity';
@@ -20,6 +21,7 @@ export class QuizService {
     private readonly question: Repository<Question>,
     @InjectRepository(Answer)
     private readonly answer: Repository<Answer>,
+    private readonly userAnswer: UserAnswerService,
   ) {}
 
   async saveQuiz(quiz: Partial<Quiz>): Promise<Quiz> {
@@ -74,6 +76,7 @@ export class QuizService {
               return answer;
             }),
           ]);
+
           question.answerList = answer;
           return question;
         }),
@@ -99,7 +102,7 @@ export class QuizService {
     }
   }
 
-  async getBulks(topicId: number) {
+  async getBulks(topicId: number, studentId: string) {
     try {
       let quiz: BulkQuizResponseDto[] = await this.quiz.find({
         where: { topicId: topicId },
@@ -115,9 +118,17 @@ export class QuizService {
               let answers = await this.answer.find({
                 where: { questionId: questionItem.id },
               });
+              let userAnswers: number[];
+              if (studentId) {
+                let ids = await this.userAnswer.getUserAnswerByQuestionId(
+                  questionItem.id,
+                );
+                userAnswers = ids;
+              }
               return {
                 ...questionItem,
                 answerList: answers,
+                userAnswers,
               };
             }),
           ]);
