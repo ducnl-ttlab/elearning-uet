@@ -22,17 +22,41 @@ export class UserAnswerService {
     }
   }
 
-  async getUserAnswerByQuestionId(questionId: number) {
+  async getUserAnswerByQuestionId(questionId: number, studentId: string) {
     try {
       let query = `
       SELECT a.id
       FROM user_answers ua
       JOIN answers a
       ON a.id = ua.answerId
-      WHERE a.questionId = ?
+      WHERE a.questionId = ? and ua.userId = ?
       `;
       let answerIds = (
-        (await this.userAnswer.query(query, [questionId])) as { id: number }[]
+        (await this.userAnswer.query(query, [questionId, studentId])) as {
+          id: number;
+        }[]
+      ).map((item) => item.id);
+      return answerIds;
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  async getUserAnswerByQuizId(quizId: number, studentId: string) {
+    try {
+      let query = `
+      SELECT a.id
+      FROM user_answers ua
+      JOIN answers a
+      ON a.id = ua.answerId
+      JOIN questions qu
+      ON qu.id = a.questionId
+      WHERE qu.quizId = ? and ua.userId = ?
+      `;
+      let answerIds = (
+        (await this.userAnswer.query(query, [quizId, studentId])) as {
+          id: number;
+        }[]
       ).map((item) => item.id);
       return answerIds;
     } catch (error) {

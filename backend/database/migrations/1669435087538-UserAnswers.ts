@@ -51,6 +51,10 @@ export class UserAnswers1669435087538 implements MigrationInterface {
         onDelete: 'CASCADE',
       }),
     );
+
+    await queryRunner.query(
+      `CREATE UNIQUE INDEX user_answers_index ON ${TableName.userAnswer}(userId, answerId) `,
+    );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {

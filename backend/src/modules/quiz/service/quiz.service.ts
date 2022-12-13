@@ -122,6 +122,7 @@ export class QuizService {
               if (studentId) {
                 let ids = await this.userAnswer.getUserAnswerByQuestionId(
                   questionItem.id,
+                  studentId,
                 );
                 userAnswers = ids;
               }

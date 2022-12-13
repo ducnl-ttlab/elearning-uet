@@ -1,6 +1,7 @@
 import { IUserJwt } from 'src/common/interfaces';
 import { UserAnswerService } from './service/user-answer.service';
 import {
+  BadRequestException,
   Body,
   Controller,
   HttpStatus,
@@ -39,6 +40,19 @@ export class UserAnswerController {
     let answerIds = (await this.quizService.getAnswerList(quizId)).map(
       (item) => item.id,
     );
+
+    let userAnswerIds = await this.userAnswerService.getUserAnswerByQuizId(
+      quizId,
+      user.id,
+    );
+
+    if (
+      body.some((item) => {
+        return userAnswerIds.includes(item);
+      })
+    ) {
+      throw new BadRequestException('you are answered this quiz already');
+    }
 
     let answerObj = answerIds.reduce(
       (acc, answerId) => ({ ...acc, [answerId]: true }),
