@@ -31,9 +31,6 @@ export class QuizService {
   }
 
   async saveQuizBulk(quizBulk: BulkQuizInsertDto, topicId: number) {
-    const queryRunner = await getConnection().createQueryRunner();
-    await queryRunner.startTransaction();
-
     const { questionList, name, startTime, shown, duration } = quizBulk;
     let newQuiz = {
       topicId: +topicId,
@@ -42,11 +39,16 @@ export class QuizService {
       startTime: timeStampToMysql(startTime),
       duration: +duration,
     };
+
+    const queryRunner = await getConnection().createQueryRunner();
+    await queryRunner.startTransaction();
     try {
       let quiz: BulkQuizResponseDto = await this.quiz.save(newQuiz);
-
+      if (!questionList?.length) {
+        return quiz;
+      }
       let questions = await Promise.all([
-        ...questionList.map(async (questionItem) => {
+        ...questionList?.map(async (questionItem) => {
           let { name, mark, answerList } = questionItem;
 
           let newQuestion = {
@@ -55,9 +57,11 @@ export class QuizService {
             mark: +mark,
           };
           let question: IQuestion = await this.question.save(newQuestion);
-
+          if (!answerList?.length) {
+            return question;
+          }
           let answer = await Promise.all([
-            ...answerList.map(async (answerItem) => {
+            ...answerList?.map(async (answerItem) => {
               const { isCorrect, content } = answerItem;
 
               let newAnswer = {
