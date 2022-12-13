@@ -269,4 +269,21 @@ export class QuizService {
       throw new InternalServerErrorException(error);
     }
   }
+
+  async rankCourse(courseId: number) {
+    try {
+      let query = `
+        SELECT ua.userId, a.questionId, qu.mark
+        FROM user_answers ua
+        JOIN answers a
+        ON a.id = ua.answerId
+        JOIN questions qu
+        ON qu.id = a.questionId
+        WHERE a.isCorrect = true
+      `;
+      return this.quiz.query(query);
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
 }

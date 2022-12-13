@@ -44,6 +44,18 @@ export class QuizController {
     private readonly questionService: QuestionService,
   ) {}
 
+  @Get('rank/:courseId')
+  async rankCourses(
+    @Res() res: Response,
+    @Param() param: { courseId: string },
+    @Query() query: IQueryEditDto,
+  ) {
+    const { courseId } = param;
+
+    let courseRank = await this.quizService.rankCourse(+courseId);
+    return res.status(HttpStatus.OK).json(new SuccessResponse(courseRank));
+  }
+
   @Get('/:courseId/:topicId')
   @UsePipes(...validation({ key: 'topicIdParamSchema', type: 'param' }))
   @CourseAuth()
@@ -54,7 +66,7 @@ export class QuizController {
     @Student() student: UserCourse,
     @Headers('host') host: Headers,
   ) {
-    const { courseId, topicId } = param;
+    const { topicId } = param;
 
     console.log('student', student);
 
