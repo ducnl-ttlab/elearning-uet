@@ -10,16 +10,11 @@ import {
   UsePipes,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import {
-  CourseAuth,
-  InstructorCourseAuth,
-  StudentCourseAuth,
-} from 'src/common/decorator/auth.decorator';
-import { QuestionService } from '../question/service/question.service';
+import { StudentCourseAuth } from 'src/common/decorator/auth.decorator';
 import { QuizService } from '../quiz/service/quiz.service';
-import { AnswerQuizBody, QAParam } from './dto/dto';
+import { QAParam } from './dto/dto';
 import { validation } from './joi.request.pipe';
-import { Request, Response } from 'express';
+import { Response } from 'express';
 import { SuccessResponse } from 'src/common/helpers/api.response';
 import { User } from 'src/common/decorator/custom.decorator';
 
