@@ -1,36 +1,26 @@
 import { QuestionService } from './../question/service/question.service';
 import { mysqlToTimeStamp, timeStampToMysql } from 'src/common/ultils';
-import { UserCourseStatus } from 'database/constant';
 import {
   Body,
   Controller,
   Get,
   HttpStatus,
-  NotFoundException,
   Param,
   Post,
   Req,
   Res,
-  UploadedFile,
-  UseInterceptors,
   UsePipes,
   Headers,
-  Inject,
-  UseGuards,
-  BadRequestException,
   Put,
   Query,
   Delete,
 } from '@nestjs/common';
-import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
+import { ApiTags } from '@nestjs/swagger';
 import { Request, Response } from 'express';
-import { IUserJwt } from 'src/common/interfaces';
-import { Instructor, User } from 'src/common/decorator/custom.decorator';
+import { Instructor } from 'src/common/decorator/custom.decorator';
 import {
-  Auth,
   CourseAuth,
   InstructorCourseAuth,
-  JoinCourseAuth,
 } from 'src/common/decorator/auth.decorator';
 import { SuccessResponse } from 'src/common/helpers/api.response';
 import {
@@ -41,18 +31,6 @@ import {
   IQuizParam,
   QuizListResponseDto,
 } from './dto/dto';
-import { CategoryService } from '../category/service/category.service';
-import LocalFilesInterceptor, {
-  imageParams,
-  videoParams,
-} from 'src/infra/local-file/local-files.interceptor';
-import { STRIPE_CLIENT } from 'src/common/constant';
-import Stripe from 'stripe';
-import { CourseService } from '../course/service/course.service';
-import { AuthService } from '../auth/service/auth.service';
-import { Quiz } from './entity/quiz.entity';
-import moment from 'moment';
-import { JoinCourseGuard } from 'src/common/guard/student-course.guard';
 import { QuizService } from './service/quiz.service';
 import { validation } from './joi.request.pipe';
 import { Course } from '../course/entity/course.entity';
@@ -169,7 +147,6 @@ export class QuizController {
     } else if (answer) {
       result = await this.quizService.updateAnswer(answer);
     }
-    // let quiz = await this.quizServiece.saveQuizBulk(body, +topicId);
 
     return res.status(HttpStatus.OK).json(
       new SuccessResponse({
@@ -193,7 +170,6 @@ export class QuizController {
     @Query() query: IQueryEditDto,
   ) {
     const { sourceId, type } = query;
-    console.log(sourceId, type);
     let result: any;
 
     switch (type) {
@@ -206,14 +182,10 @@ export class QuizController {
         break;
       }
       case 'quiz': {
-        console.log('sadf', sourceId);
-
         result = await this.quizService.deleteQuiz(sourceId);
         break;
       }
     }
-
-    // let quiz = await this.quizServiece.saveQuizBulk(body, +topicId);
 
     return res.status(HttpStatus.OK).json(new SuccessResponse(result));
   }
