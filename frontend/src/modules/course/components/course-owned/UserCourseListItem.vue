@@ -81,7 +81,7 @@ export default class UserCourseListItem extends Vue {
     }
     handleCourseClick(courseId: number) {
         this.$router.push({
-            name: PageName.COURSE_DETAIL_PAGE,
+            name: PageName.COURSE_PREVIEW_PAGE,
             params: {
                 courseId,
             },
