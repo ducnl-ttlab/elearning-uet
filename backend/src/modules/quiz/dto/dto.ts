@@ -11,6 +11,7 @@ export interface CreateQuizDto {
 }
 
 export interface BulkQuizInsertDto {
+  id: number;
   name: string;
   startTime: string;
   duration: string;
@@ -40,6 +41,17 @@ export interface BulkQuizResponseDto extends Quiz {
 
 export interface IQuestion extends Question {
   answerList?: Answer[];
+}
+
+export interface IQueryEditDto {
+  type: 'quiz' | 'question' | 'answer';
+  sourceId: number;
+}
+
+export interface IEditQuizDto {
+  answer?: Answer;
+  question?: IQuestion;
+  quiz?: BulkQuizInsertDto;
 }
 
 export interface QuizListResponseDto extends CommonListResponse<Quiz> {}

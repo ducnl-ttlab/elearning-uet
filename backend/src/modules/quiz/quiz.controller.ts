@@ -18,6 +18,8 @@ import {
   Inject,
   UseGuards,
   BadRequestException,
+  Put,
+  Query,
 } from '@nestjs/common';
 import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { Request, Response } from 'express';
@@ -33,6 +35,8 @@ import { SuccessResponse } from 'src/common/helpers/api.response';
 import {
   BulkQuizInsertDto,
   CreateQuizDto,
+  IEditQuizDto,
+  IQueryEditDto,
   IQuizParam,
   QuizListResponseDto,
 } from './dto/dto';
@@ -141,5 +145,35 @@ export class QuizController {
     let quiz = await this.quizService.saveQuizBulk(body, +topicId);
 
     return res.status(HttpStatus.OK).json(new SuccessResponse(quiz));
+  }
+
+  @Put(':courseId/:topicId')
+  @InstructorCourseAuth()
+  @UsePipes(...validation({ key: 'topicIdParamSchema', type: 'param' }))
+  async updateQuiz(
+    @Res() res: Response,
+    @Instructor() instructor: Course,
+    @Param() param: IQuizParam,
+    @Body() body: IEditQuizDto,
+    @Query() query: IQueryEditDto,
+  ) {
+    const { topicId } = param;
+    const { sourceId, type } = query;
+    let { answer, question, quiz } = body;
+    let result: any;
+    if (quiz) {
+      await this.quizService.updateQuiz(quiz);
+    } else if (question) {
+      result = await this.quizService.updateQuestion(question);
+    } else if (answer) {
+      result = await this.quizService.updateAnswer(answer);
+    }
+    // let quiz = await this.quizServiece.saveQuizBulk(body, +topicId);
+
+    return res.status(HttpStatus.OK).json(
+      new SuccessResponse({
+        result,
+      }),
+    );
   }
 }

@@ -137,6 +137,54 @@ export class QuizService {
     }
   }
 
+  async updateQuiz(quiz: BulkQuizInsertDto) {}
+
+  async updateQuestion(question: IQuestion) {
+    const queryRunner = await getConnection().createQueryRunner();
+    await queryRunner.startTransaction();
+    let { answerList, ...newQuestion } = question;
+    try {
+      let questionId: number;
+      if (question.id) {
+        await this.question.update(question.id, newQuestion);
+      } else {
+        questionId = (await this.question.save(newQuestion)).id;
+      }
+
+      let answers = await Promise.all(
+        answerList.map(async (item) => {
+          return this.updateAnswer(item, questionId);
+        }),
+      );
+      await queryRunner.commitTransaction();
+      return {
+        answerList: answers,
+      };
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      throw new InternalServerErrorException(error);
+    } finally {
+      await queryRunner.release();
+    }
+  }
+
+  async updateAnswer(answer: Answer, questionId?: number) {
+    try {
+      if (!answer.id) {
+        let newAnswer = {
+          questionId,
+          ...answer,
+        };
+        console.log({ newAnswer, questionId });
+        return this.answer.save(newAnswer);
+      } else {
+        return this.answer.update(answer.id, answer);
+      }
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
   async existQuiz(id: number): Promise<Quiz> {
     let existQuiz = await this.findOneById(id);
     if (!existQuiz) {
