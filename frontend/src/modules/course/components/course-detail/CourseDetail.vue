@@ -3,9 +3,14 @@
         <CourseGeneralInfo />
         <div class="course-detail d-flex flex-row">
             <CourseSidebar />
-            <div class="d-flex flex-row w-100">
+            <div class="d-flex flex-row w-100" v-if="courseArea === CourseArea.COURSE">
                 <TopicSidebar />
-                <TopicDetail :topic="topic" />
+                <TopicDetail />
+            </div>
+            <div class="d-flex flex-row w-100" v-if="courseArea === CourseArea.QUIZ">
+                <QuizSidebar />
+                <InstructorQuizDetail v-if="userRole === SystemRole.INSTRUCTOR" />
+                <StudentQuizDetail v-if="userRole === SystemRole.STUDENT" />
             </div>
         </div>
         <CourseStudentListPopup v-if="isShowStudentListPopup" />
@@ -22,6 +27,7 @@ import { Options, Vue } from 'vue-class-component';
 import { courseModule } from '../../store/course.store';
 import { getCoursePreviewData, getTopicList } from '../../services/course';
 import { showErrorNotificationFunction } from '@/common/helpers';
+import { CourseArea } from '../../constants/course.constants';
 
 import CourseStudentListPopup from './CourseStudentListPopup.vue';
 import CourseSidebar from './CourseSidebar.vue';
@@ -29,6 +35,9 @@ import TopicSidebar from './TopicSidebar.vue';
 import TopicDetail from './TopicDetail.vue';
 import CourseGeneralInfo from './CourseGeneralInfo.vue';
 import TopicFormPopup from './TopicFormPopup.vue';
+import InstructorQuizDetail from '../quiz-detail/InstructorQuizDetail.vue';
+import StudentQuizDetail from '../quiz-detail/StudentQuizDetail.vue';
+import QuizSidebar from '../quiz-detail/QuizSidebar.vue';
 
 @Options({
     components: {
@@ -38,10 +47,19 @@ import TopicFormPopup from './TopicFormPopup.vue';
         TopicDetail,
         CourseGeneralInfo,
         TopicFormPopup,
+        InstructorQuizDetail,
+        StudentQuizDetail,
+        QuizSidebar,
     },
 })
 export default class CourseDetail extends Vue {
     SystemRole = SystemRole;
+
+    CourseArea = CourseArea;
+
+    get courseArea() {
+        return courseModule.courseArea;
+    }
 
     get isShowStudentListPopup() {
         return commonModule.isShowStudentListPopup;
@@ -75,7 +93,7 @@ export default class CourseDetail extends Vue {
         if (response.success) {
             courseModule.setTopicList(response?.data?.items || []);
             if (response?.data?.items && response?.data?.items.length > 0) {
-                courseModule.setSelectedTopic(1);
+                courseModule.setSelectedTopic(response.data.items[0]?.id ?? 1);
             } else {
                 courseModule.setSelectedTopicObject({});
             }

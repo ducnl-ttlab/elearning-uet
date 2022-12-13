@@ -28,14 +28,14 @@ export default class LoadingIndicator extends Vue {
 <style scoped lang="scss">
 .bg-loader:before {
     content: '';
-    z-index: 99999;
+    z-index: 1000;
     background: #000;
-    height: 100%;
     position: absolute;
     left: 0;
     right: 0;
     top: 0;
     width: 100%;
+    height: 100% !important;
     opacity: 0.2;
 }
 .wrapper-loader {
@@ -46,7 +46,7 @@ export default class LoadingIndicator extends Vue {
     right: 0;
     top: 50%;
     margin: 0 auto;
-    z-index: 99999;
+    z-index: 1000;
     display: flex;
     flex-direction: column;
     justify-content: center;

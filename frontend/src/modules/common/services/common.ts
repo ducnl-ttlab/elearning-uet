@@ -1,21 +1,13 @@
 import { loginModule } from './../../auth/store/login.store';
-import { IAxiosDefaultResponse } from '@/common/interfaces';
+import { IAxiosDefaultResponse, IAxiosListDefaultResponse } from '@/common/interfaces';
 import axios from 'axios';
 import { IInstructorData, INotificationData } from '../constants/common.interfaces';
 
 const FE_URL = process.env.VUE_APP_FE_BASE_URL;
 const BE_URL = process.env.VUE_APP_API_URL;
 
-export interface IInstructorItems {
-    items: Array<IInstructorData>;
-}
-
-export interface INotificationItems {
-    items: Array<INotificationData>;
-}
-
 export async function getInstructorList(): Promise<
-    IAxiosDefaultResponse<IInstructorItems>
+    IAxiosListDefaultResponse<IInstructorData>
 > {
     return axios
         .get(`${BE_URL}/course/instructor-list`)
@@ -28,7 +20,7 @@ export async function getInstructorList(): Promise<
 }
 
 export async function getNotificationList(): Promise<
-    IAxiosDefaultResponse<INotificationItems>
+    IAxiosListDefaultResponse<INotificationData>
 > {
     return axios
         .get(`${BE_URL}/notification`, {

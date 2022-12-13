@@ -68,8 +68,6 @@ export class QuizController {
   ) {
     const { topicId } = param;
 
-    console.log('student', student);
-
     let quizes = await this.quizService.getBulks(+topicId, student?.userId);
 
     quizes = quizes.map((item) => {

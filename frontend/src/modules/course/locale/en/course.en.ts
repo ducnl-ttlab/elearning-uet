@@ -65,11 +65,14 @@ export const course = {
         getStudentListError: 'Get student list failed. Please try again later.',
         emptyStudentList: 'Cannot find any student.',
         getTopicListError: 'Cannot find any topic',
+        getQuizListError: 'Error getting quiz list. Please try again later!',
+        createNewQuizError: 'Error creating new quiz. Please try again later!',
         topic: {
             updateTopic: 'Update topic failed! Please try again later',
             createTopic: 'Create topic failed! Please try again later!',
             deleteTopic: 'Delete topic failed! Please try again later!',
         },
+        emptyQuizList: 'This topic does not have any quiz yet.',
     },
     success: {
         favoriteCourse: {
@@ -87,6 +90,11 @@ export const course = {
             updateTopic: 'Update topic successfully!',
             createTopic: 'Create topic successfully!',
             deleteTopic: 'Delete topic successfully!',
+        },
+        quiz: {
+            updateQuiz: 'Update quiz successfully!',
+            createQuiz: 'Create quiz successfully!',
+            deleteQuiz: 'Delete quiz successfully!',
         },
     },
     coursePopup: {
@@ -124,8 +132,28 @@ export const course = {
             description: 'Description',
             content: 'Content',
             video: 'Upload video',
-            save: 'Lưu',
-            cancel: 'Hủy',
+            save: 'Save',
+            cancel: 'Cancel',
+        },
+    },
+
+    quiz: {
+        form: {
+            duration: '{time} minutes',
+            mark: '{mark} points',
+            addQuiz: 'Add a quiz',
+            addQuestion: 'Add a question',
+            addAnswer: 'Add an answer',
+            title: 'Quiz Title',
+            quizDuration: 'Duration',
+            startDate: 'Start date',
+            startTime: 'Start time',
+            save: 'Save',
+            cancel: 'Cancel',
+        },
+        field: {
+            addQuestion: 'Question title',
+            addAnswer: 'Answer title',
         },
     },
 };

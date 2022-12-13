@@ -1,28 +1,28 @@
 <template>
     <div
         class="course-list-item-wrapper d-flex w-100 flex-row align-items-center"
-        @click="handleCourseClick(course.id)"
+        @click="handleCourseClick(course?.id)"
     >
         <div
             class="d-flex w-100 flex-row align-items-center"
             :style="{ gap: userRole === SystemRole.STUDENT ? '2.5vw' : '5vw' }"
         >
             <div class="course-list-item-title text">
-                {{ course.name }}
+                {{ course?.name }}
             </div>
             <div class="course-list-item-image">
-                <img :src="course.image" width="120" height="72" alt="" />
+                <img :src="course?.image" width="120" height="72" alt="" />
             </div>
             <div class="course-list-item-description text">
-                {{ course.description }}
+                {{ course?.description }}
             </div>
             <div class="course-list-item-rating d-flex flex-row align-items-center">
                 <span>{{
-                    Math.round(course.avgRating * 100) / 100 ||
+                    Math.round(course?.avgRating * 100) / 100 ||
                     $t('course.course.notRated')
                 }}</span>
                 <img
-                    v-if="course.avgRating"
+                    v-if="course?.avgRating"
                     src="@/assets/landing/icons/star.svg"
                     width="16"
                     alt=""
@@ -33,23 +33,23 @@
                 class="course-list-item-instructor"
                 v-if="userRole === SystemRole.STUDENT"
             >
-                {{ course.instructorName }}
+                {{ course?.instructorName }}
             </div>
             <div class="d-flex flex-row course-grid-item-infos">
                 <span>
-                    {{ course.studentTotal || 0 }}
+                    {{ course?.studentTotal || 0 }}
                 </span>
                 <img src="@/assets/landing/icons/student.svg" width="16" alt="" />
             </div>
         </div>
         <div
             class="price-tag"
-            v-if="course.price"
+            v-if="course?.price"
             :style="{
-                'background-color': getPriceBackgroundColor(course.price),
+                'background-color': getPriceBackgroundColor(course?.price),
             }"
         >
-            {{ $t('course.course.price', { price: course.price }) }}
+            {{ $t('course.course.price', { price: course?.price }) }}
         </div>
         <div v-else class="price-tag" style="background-color: #3bb143">
             {{ $t('course.course.free') }}
@@ -62,14 +62,14 @@ import { PageName, SystemRole } from '@/common/constants';
 import { userModule } from '@/modules/user/store/user.store';
 import { Options, Vue } from 'vue-class-component';
 import { Prop } from 'vue-property-decorator';
-import { ICourseData } from '../../constants/course.interfaces';
+import { ICourseData, IStudentCourseData } from '../../constants/course.interfaces';
 import { getPriceBackgroundColor } from '../../helpers/commonFunctions';
 
 @Options({
     components: {},
 })
 export default class UserCourseListItem extends Vue {
-    @Prop({ default: '' }) readonly course!: ICourseData;
+    @Prop({ default: {} }) readonly course!: ICourseData | IStudentCourseData;
 
     SystemRole = SystemRole;
 

@@ -32,7 +32,6 @@
     </div>
 </template>
 <script lang="ts">
-import { showErrorNotificationFunction } from '@/common/helpers';
 import { AuthProvider } from '@/modules/auth/constants/auth.constants';
 import { Options, Vue } from 'vue-class-component';
 import { Prop } from 'vue-property-decorator';

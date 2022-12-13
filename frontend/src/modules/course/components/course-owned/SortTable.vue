@@ -126,7 +126,7 @@ export default class SortTable extends Vue {
             pageSize: MAX_COURSE_LIST_ITEMS,
         });
         if (response.success) {
-            userCourseModule.setStudentCourseList(response?.data || []);
+            userCourseModule.setStudentCourseList(response?.data?.items || []);
         } else {
             let res = response?.errors || [
                 { message: this.$t('landing.categories.errors.getCategoryListError') },

@@ -68,7 +68,10 @@ export const course = {
         emptyStudentList: 'Không tìm thấy học viên nào',
         getTopicListError: 'Không tìm thấy chủ đề nào',
         instructorGetTopicError: 'Chưa có chủ đề, vui lòng tạo mới',
+        getQuizListError: 'Có lỗi khi lấy danh sách quiz, vui lòng thử lại sau!',
         studentGetTopicError: 'Chưa có chủ đề',
+        createNewQuizError: 'Có lỗi khi tạo mới quiz, xin vui lòng thử lại sau',
+        emptyQuizList: 'Chưa có quiz, vui lòng tạo mới',
         topic: {
             updateTopic: 'Sửa topic thất bại, vui lòng thử lại sau',
             createTopic: 'Thêm topic thất bại, vui lòng thử lại sau!',
@@ -91,6 +94,11 @@ export const course = {
             updateTopic: 'Sửa chủ đề thành công!',
             createTopic: 'Thêm chủ đề mới thành công!',
             deleteTopic: 'Xóa chủ đề thành công!',
+        },
+        quiz: {
+            updateQuiz: 'Sửa bài tập thành công!',
+            createQuiz: 'Tạo bài tập thành công!',
+            deleteQuiz: 'Xóa bài tập thành công!',
         },
     },
 
@@ -130,6 +138,27 @@ export const course = {
             video: 'Đăng tải video',
             save: 'Lưu',
             cancel: 'Hủy',
+        },
+    },
+
+    quiz: {
+        form: {
+            duration: '{time} phút',
+            mark: '{mark} điểm',
+            addQuiz: 'Thêm bài tập',
+            addQuestion: 'Thêm câu hỏi',
+            addAnswer: 'Thêm câu trả lời',
+            title: 'Tiêu đề',
+            quizDuration: 'Thời lượng',
+            startDate: 'Ngày',
+            startTime: 'Thời gian',
+            save: 'Lưu',
+            cancel: 'Hủy',
+        },
+
+        field: {
+            addQuestion: 'Câu hỏi mới',
+            addAnswer: 'Câu trả lời mới',
         },
     },
 };

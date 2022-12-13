@@ -12,6 +12,7 @@
 import { Options, Vue } from 'vue-class-component';
 import { userCourseModule } from '../../store/user-course.store';
 import UserCourseListItem from './UserCourseListItem.vue';
+
 @Options({
     components: { UserCourseListItem },
 })
