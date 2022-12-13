@@ -84,35 +84,6 @@ export class QuizController {
 
   @Post('/:courseId/:topicId')
   @InstructorCourseAuth()
-  @UsePipes(
-    ...validation(
-      { key: 'createQuizSchema', type: 'body' },
-      { key: 'topicIdParamSchema', type: 'param' },
-    ),
-  )
-  async createTopic(
-    @Res() res: Response,
-    @Instructor() instructor: Course,
-    @Param() param: IQuizParam,
-    @Body() body: CreateQuizDto,
-  ) {
-    let { startTime, name, duration } = body;
-    const { topicId } = param;
-
-    let quiz = {
-      topicId: +topicId,
-      name,
-      startTime: timeStampToMysql(startTime),
-      duration: +duration,
-    };
-
-    let createQuiz = await this.quizService.saveQuiz(quiz);
-
-    return res.status(HttpStatus.OK).json(new SuccessResponse(createQuiz));
-  }
-
-  @Post('topics/:courseId/:topicId')
-  @InstructorCourseAuth()
   async createTopics(
     @Res() res: Response,
     @Instructor() instructor: Course,
