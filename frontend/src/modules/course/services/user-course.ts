@@ -114,7 +114,7 @@ export async function courseCheckoutVerify(
 
 export async function getStudentCourseList(
     params: ICourseListParams,
-): Promise<IAxiosDefaultResponse<IStudentCourseItems>> {
+): Promise<IAxiosListDefaultResponse<IStudentCourseData>> {
     return axios
         .get(`${BE_URL}/user-course`, {
             params: { ...params },

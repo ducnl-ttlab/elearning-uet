@@ -1,5 +1,5 @@
 <template>
-    <div class="topic-sidebar-wrapper d-flex flex-column">
+    <div class="quiz-sidebar-wrapper d-flex flex-column">
         <div
             @click.self="handleToggleSidebar"
             class="button topic-title d-flex justify-content-between"
@@ -9,14 +9,6 @@
             <span v-if="!isCollapsed" class="text-ellipsis">{{
                 $t('course.topicSidebar.title')
             }}</span>
-            <img
-                v-if="userRole === SystemRole.INSTRUCTOR"
-                style="cursor: pointer"
-                src="@/assets/course/icons/plus.svg"
-                width="25"
-                alt=""
-                @click="handleAddTopic"
-            />
         </div>
         <div
             v-for="(topic, index) in topicList"
@@ -43,17 +35,21 @@
 
 <script lang="ts">
 import { SystemRole } from '@/common/constants';
+import { showErrorNotificationFunction } from '@/common/helpers';
+import { commonModule } from '@/modules/common/store/common.store';
 import { userModule } from '@/modules/user/store/user.store';
 import { Options, Vue } from 'vue-class-component';
 import { SidebarMode } from '../../constants/course.constants';
 import { ITopicData } from '../../constants/course.interfaces';
+
+import { getQuizList } from '../../services/course';
 import { courseModule } from '../../store/course.store';
 
 @Options({
     components: {},
 })
 export default class CourseSidebar extends Vue {
-    TopicSidebarMode = SidebarMode;
+    QuizSidebarMode = SidebarMode;
     SystemRole = SystemRole;
 
     get userRole() {
@@ -67,44 +63,62 @@ export default class CourseSidebar extends Vue {
         return courseModule.selectedTopic;
     }
 
-    get topicSidebarMode() {
-        return courseModule.topicSidebarMode;
+    get quizSidebarMode() {
+        return courseModule.quizSidebarMode;
     }
 
     get isCollapsed() {
-        return this.topicSidebarMode === SidebarMode.COLLAPSED;
+        return this.quizSidebarMode === SidebarMode.COLLAPSED;
+    }
+
+    get topicId() {
+        return courseModule.topicId;
     }
 
     handleToggleSidebar() {
-        if (this.topicSidebarMode === SidebarMode.EXPANDED) {
-            courseModule.setTopicSidebarMode(SidebarMode.COLLAPSED);
+        if (this.quizSidebarMode === SidebarMode.EXPANDED) {
+            courseModule.setQuizSidebarMode(SidebarMode.COLLAPSED);
         } else {
-            courseModule.setTopicSidebarMode(SidebarMode.EXPANDED);
+            courseModule.setQuizSidebarMode(SidebarMode.EXPANDED);
         }
     }
 
-    handleClickTopic(topic: ITopicData) {
-        courseModule.setSelectedTopic(topic.id as number);
+    async handleClickTopic(topic: ITopicData) {
+        courseModule.setTopicId(topic.id as number);
+        await this.refreshInstructorQuizDetail();
         courseModule.toggleShowTopicVideo(true);
     }
 
-    handleAddTopic() {
-        courseModule.toggleShowTopicFormPopup(true);
+    async refreshInstructorQuizDetail() {
+        const courseId = +this.$route.params.courseId;
+        commonModule.setLoadingIndicator(true);
+        const response = await getQuizList(courseId, this.topicId as number);
+        if (response?.success) {
+            courseModule.setQuizList(response?.data?.items || []);
+        } else {
+            let res = response?.errors || [
+                { message: this.$t('course.errors.getQuizListError') },
+            ];
+            courseModule.setQuizList([]);
+            showErrorNotificationFunction(res[0].message);
+        }
+        commonModule.setLoadingIndicator(false);
     }
 
     created(): void {
         window.addEventListener('resize', this.showFullScreenOnMobile);
         this.showFullScreenOnMobile();
     }
+
     showFullScreenOnMobile() {
         if (document.documentElement.clientWidth <= 1200) {
-            courseModule.setTopicSidebarMode(SidebarMode.COLLAPSED);
+            courseModule.setQuizSidebarMode(SidebarMode.COLLAPSED);
         }
     }
 }
 </script>
 <style lang="scss" scoped>
-.topic-sidebar-wrapper {
+.quiz-sidebar-wrapper {
     min-height: 169px;
     height: 100%;
     cursor: pointer;
@@ -119,7 +133,6 @@ export default class CourseSidebar extends Vue {
     transition: all 0.44s ease 0s;
     cursor: pointer;
     color: $color-white;
-
     width: 16vw;
 }
 
@@ -134,12 +147,7 @@ export default class CourseSidebar extends Vue {
         background-color: $color-violet-new;
     }
 }
-.add-topic {
-    background-color: #39e75f;
-    &:hover {
-        background-color: #83f28f;
-    }
-}
+
 .no-topic {
     background-color: #f9f9f9;
     color: #000;
@@ -153,6 +161,7 @@ export default class CourseSidebar extends Vue {
 .topic-title {
     background-color: #e6e6f0;
     color: #000;
+    height: 48px;
 }
 
 .j-center {

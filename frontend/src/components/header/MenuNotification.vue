@@ -1,6 +1,6 @@
 <template>
     <div class="notification">
-        <router-link class="text-decoration-none" to="#">
+        <div class="text-decoration-none" style="cursor: pointer">
             <el-dropdown trigger="click">
                 <div
                     class="notification-container d-flex align-items-center justify-content-center"
@@ -93,7 +93,7 @@
                     </el-dropdown-menu>
                 </template>
             </el-dropdown>
-        </router-link>
+        </div>
     </div>
 </template>
 
@@ -106,8 +106,6 @@ import {
 } from '@/common/helpers';
 import { getNotificationList, readNotification } from '@/modules/common/services/common';
 import { commonModule } from '@/modules/common/store/common.store';
-import { ElDropdown, ElDropdownMenu, ElDropdownItem } from 'element-plus';
-import { RouterLink } from 'vue-router';
 import {
     NotificationType,
     UserCourseStatus,

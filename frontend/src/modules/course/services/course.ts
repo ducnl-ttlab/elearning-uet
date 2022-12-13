@@ -7,19 +7,17 @@ import {
     ICourseData,
     ICourseListParams,
     ICoursePreviewData,
+    IQuestionDetail,
+    IQuizDetail,
     ITopicData,
 } from '../constants/course.interfaces';
 
 const FE_URL = process.env.VUE_APP_FE_BASE_URL;
 const BE_URL = process.env.VUE_APP_API_URL;
 
-export interface ICourseItems {
-    items: Array<ICourseData>;
-}
-
 export async function getCourseList(
     params: ICourseListParams,
-): Promise<IAxiosDefaultResponse<ICourseItems>> {
+): Promise<IAxiosListDefaultResponse<ICourseData>> {
     return axios
         .get(`${BE_URL}/course`, {
             params: { ...params },
@@ -125,6 +123,78 @@ export async function updateTopic(
 
 export async function deleteTopic(courseId: number): Promise<IAxiosDefaultResponse<any>> {
     return axios.delete(`${BE_URL}/topic/${courseId}`, {
+        headers: {
+            Authorization: 'Bearer ' + localStorageTokenService.getAccessToken(),
+        },
+    });
+}
+
+export async function getQuizList(
+    courseId: number,
+    topicId: number,
+): Promise<IAxiosListDefaultResponse<IQuizDetail>> {
+    return axios
+        .get(`${BE_URL}/quiz/${courseId}/${topicId}`, {
+            headers: {
+                Authorization: 'Bearer ' + loginModule.accessToken,
+            },
+        })
+        .then((res) => {
+            return res.data;
+        })
+        .catch((error) => {
+            return error.response.data;
+        });
+}
+
+export async function updateQuiz(
+    courseId: number,
+    topicId: number,
+    params: IQuizDetail | IQuestionDetail,
+): Promise<IAxiosDefaultResponse<IQuizDetail>> {
+    return axios
+        .put(`${BE_URL}/quiz/${courseId}/${topicId}`, params, {
+            headers: {
+                Authorization: 'Bearer ' + loginModule.accessToken,
+            },
+        })
+        .then((res) => {
+            return res.data;
+        })
+        .catch((error) => {
+            return error.response.data;
+        });
+}
+
+export async function createQuiz(
+    courseId: number,
+    topicId: number,
+    params: IQuizDetail,
+): Promise<IAxiosDefaultResponse<IQuizDetail>> {
+    return axios.post(`${BE_URL}/quiz/${courseId}/${topicId}`, params, {
+        headers: {
+            Authorization: 'Bearer ' + localStorageTokenService.getAccessToken(),
+        },
+    });
+}
+
+export async function createQuizDetail(
+    courseId: number,
+    topicId: number,
+    params: IQuizDetail,
+): Promise<IAxiosDefaultResponse<IQuizDetail>> {
+    return axios.post(`${BE_URL}/quiz/${courseId}/${topicId}`, params, {
+        headers: {
+            Authorization: 'Bearer ' + localStorageTokenService.getAccessToken(),
+        },
+    });
+}
+
+export async function deleteQuiz(
+    courseId: number,
+    topicId: number,
+): Promise<IAxiosDefaultResponse<IQuizDetail>> {
+    return axios.delete(`${BE_URL}/quiz/${courseId}/${topicId}`, {
         headers: {
             Authorization: 'Bearer ' + localStorageTokenService.getAccessToken(),
         },

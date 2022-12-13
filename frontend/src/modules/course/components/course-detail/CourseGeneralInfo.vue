@@ -54,13 +54,9 @@
 </template>
 
 <script lang="ts">
-import { PageName, SystemRole } from '@/common/constants';
-import { showErrorNotificationFunction } from '@/common/helpers';
+import { PageName } from '@/common/constants';
 import localStorageTokenService from '@/common/tokenService';
-import { commonModule } from '@/modules/common/store/common.store';
-import { userModule } from '@/modules/user/store/user.store';
 import { Options, Vue } from 'vue-class-component';
-import { getCoursePreviewData } from '../../services/course';
 import { courseModule } from '../../store/course.store';
 
 @Options({

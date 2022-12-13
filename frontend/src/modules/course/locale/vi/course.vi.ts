@@ -68,7 +68,9 @@ export const course = {
         emptyStudentList: 'Không tìm thấy học viên nào',
         getTopicListError: 'Không tìm thấy chủ đề nào',
         instructorGetTopicError: 'Chưa có chủ đề, vui lòng tạo mới',
+        getQuizListError: 'Có lỗi khi lấy danh sách quiz, vui lòng thử lại sau!',
         studentGetTopicError: 'Chưa có chủ đề',
+        emptyQuizList: 'Chưa có quiz, vui lòng tạo mới',
         topic: {
             updateTopic: 'Sửa topic thất bại, vui lòng thử lại sau',
             createTopic: 'Thêm topic thất bại, vui lòng thử lại sau!',
@@ -130,6 +132,16 @@ export const course = {
             video: 'Đăng tải video',
             save: 'Lưu',
             cancel: 'Hủy',
+        },
+    },
+
+    quiz: {
+        form: {
+            duration: '{time} phút',
+            mark: '{mark} điểm',
+            addQuiz: 'Thêm bài tập',
+            addQuestion: 'Thêm câu hỏi',
+            addAnswer: 'Thêm câu trả lời',
         },
     },
 };

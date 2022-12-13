@@ -3,9 +3,14 @@ import store from '@/plugins/vuex/index';
 import {
     ICourseData,
     ICoursePreviewData,
+    IQuizDetail,
     ITopicData,
 } from '../constants/course.interfaces';
-import { CourseListDisplayMode, TopicSidebarMode } from '../constants/course.constants';
+import {
+    CourseArea,
+    CourseListDisplayMode,
+    SidebarMode,
+} from '../constants/course.constants';
 
 @Module({ dynamic: true, namespaced: true, store, name: 'course' })
 class CourseModule extends VuexModule {
@@ -14,9 +19,13 @@ class CourseModule extends VuexModule {
     coursePreviewData: ICoursePreviewData = {};
     topicList: Array<ITopicData> = [];
     selectedTopic: ITopicData = this.topicList.length > 0 ? this.topicList[0] : {};
-    topicSidebarMode = TopicSidebarMode.EXPANDED;
+    topicSidebarMode = '';
+    quizSidebarMode = '';
+    courseArea = '';
     isShowTopicVideo = true;
     isShowTopicFormPopup = false;
+    quizList: Array<IQuizDetail> = [];
+    topicId = 1;
 
     @Action
     setCourseList(courseList: Array<ICourseData>) {
@@ -106,6 +115,46 @@ class CourseModule extends VuexModule {
     @Mutation
     TOGGLE_SHOW_TOPIC_FORM_POPUP(visible: boolean) {
         this.isShowTopicFormPopup = visible;
+    }
+
+    @Action
+    setQuizSidebarMode(mode: string) {
+        this.SET_QUIZ_SIDEBAR_MODE(mode);
+    }
+
+    @Mutation
+    SET_QUIZ_SIDEBAR_MODE(mode: string) {
+        this.quizSidebarMode = mode;
+    }
+
+    @Action
+    setCourseArea(area: string) {
+        this.SET_COURSE_AREA(area);
+    }
+
+    @Mutation
+    SET_COURSE_AREA(area: string) {
+        this.courseArea = area;
+    }
+
+    @Action
+    setQuizList(quizList: Array<IQuizDetail>) {
+        this.SET_QUIZ_LIST(quizList || []);
+    }
+
+    @Mutation
+    SET_QUIZ_LIST(quizList: Array<IQuizDetail>) {
+        this.quizList = quizList;
+    }
+
+    @Action
+    setTopicId(topicId: number) {
+        this.SET_TOPIC_ID(topicId);
+    }
+
+    @Mutation
+    SET_TOPIC_ID(topicId: number) {
+        this.topicId = topicId;
     }
 }
 export const courseModule = getModule(CourseModule);

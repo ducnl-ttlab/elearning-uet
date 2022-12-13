@@ -25,7 +25,12 @@ export enum UserCourseStatus {
     COMMENT_BLOCKED = 'comment_blocking',
 }
 
-export const TopicSidebarMode = {
+export const SidebarMode = {
     EXPANDED: 'EXPANDED',
     COLLAPSED: 'COLLAPSED',
+};
+
+export const CourseArea = {
+    COURSE: 'COURSE',
+    QUIZ: 'QUIZ',
 };

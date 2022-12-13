@@ -106,3 +106,27 @@ export interface IEditCourseQuery {
     description?: string;
     content?: string;
 }
+
+export interface IQuizDetail {
+    id?: number;
+    name: string;
+    shown?: boolean;
+    startTime: string;
+    duration: number;
+    questionList?: Array<IQuestionDetail>;
+}
+
+export interface IQuestionDetail {
+    quizId?: number;
+    id?: number;
+    name: string;
+    mark: number;
+    answerList: Array<IAnswerDetail>;
+    answerCorrectState?: Array<boolean>;
+}
+
+export interface IAnswerDetail {
+    id: number;
+    content: string;
+    isCorrect: boolean;
+}

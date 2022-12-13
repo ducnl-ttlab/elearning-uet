@@ -41,9 +41,7 @@ import { commonModule } from '@/modules/common/store/common.store';
 import { loginModule } from '../../store/login.store';
 import { PageName, SystemRole } from '@/common/constants';
 import { userModule } from '@/modules/user/store/user.store';
-import localStorageTokenService from '@/common/tokenService';
 import socketInstance from '@/plugins/socket';
-import { ElNotification } from 'element-plus/lib/components';
 
 @Options({
     components: {},
