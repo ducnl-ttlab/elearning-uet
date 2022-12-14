@@ -51,6 +51,18 @@ export class UserQuizService {
     }
   }
 
+  async getUserAnswerQuiz(userId: string, quizId: number) {
+    try {
+      return this.userQuiz.findOne({
+        where: {
+          userId,
+          quizId,
+        },
+      });
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
   async existAnswer(id: number): Promise<UserQuiz> {
     let userQuiz = await this.findOneById(id);
     if (!userQuiz) {

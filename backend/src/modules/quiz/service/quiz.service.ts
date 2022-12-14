@@ -6,6 +6,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { timeStampToMysql } from 'src/common/ultils';
 import { UserAnswerService } from 'src/modules/user-answer/service/user-answer.service';
+import { UserQuizService } from 'src/modules/user-quiz/service/user-quiz.service';
 import { getConnection, Repository } from 'typeorm';
 import { BulkQuizInsertDto, BulkQuizResponseDto, IQuestion } from '../dto/dto';
 import { Answer } from '../entity/answer.entity';
@@ -22,6 +23,7 @@ export class QuizService {
     @InjectRepository(Answer)
     private readonly answer: Repository<Answer>,
     private readonly userAnswer: UserAnswerService,
+    private readonly userQuiz: UserQuizService,
   ) {}
 
   async saveQuiz(quiz: Partial<Quiz>): Promise<Quiz> {
@@ -112,6 +114,12 @@ export class QuizService {
           let questions: IQuestion[] = await this.question.find({
             where: { quizId: quizItem.id },
           });
+          let score;
+          if (studentId) {
+            score =
+              (await this.userQuiz.getUserAnswerQuiz(studentId, quizItem.id))
+                ?.markTotal || -1;
+          }
 
           let questionList = await Promise.all([
             ...questions.map(async (questionItem) => {
@@ -135,7 +143,7 @@ export class QuizService {
           ]);
 
           quizItem.questionList = questionList;
-          return { ...quizItem };
+          return { ...quizItem, score };
         }),
       );
 
