@@ -100,7 +100,7 @@ export class QuizController {
   }
 
   @Post('/:courseId/:topicId')
-  // @InstructorCourseAuth()
+  @InstructorCourseAuth()
   async createTopics(
     @Res() res: Response,
     @Instructor() instructor: Course,

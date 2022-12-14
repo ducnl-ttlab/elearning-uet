@@ -83,7 +83,7 @@ export class UserAnswerController {
       }) ||
       userQuiz
     ) {
-      throw new BadRequestException('you are answered this quiz already');
+      throw new BadRequestException('you answered this quiz already');
     }
 
     let markTotal = 0;
