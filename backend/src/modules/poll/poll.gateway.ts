@@ -1,10 +1,4 @@
-import {
-  Logger,
-  UseFilters,
-  UseGuards,
-  UsePipes,
-  ValidationPipe,
-} from '@nestjs/common';
+import { Logger, UseFilters } from '@nestjs/common';
 import {
   OnGatewayInit,
   WebSocketGateway,
@@ -13,13 +7,12 @@ import {
   WebSocketServer,
   SubscribeMessage,
   MessageBody,
-  ConnectedSocket,
-  WsResponse,
 } from '@nestjs/websockets';
-import { from, map, Observable } from 'rxjs';
+import { CommentType } from 'database/constant';
 import { Namespace } from 'socket.io';
 import { WsCatchAllFilter } from 'src/common/filter/ws-catch-all-filter';
 import { SocketWithAuth } from 'src/common/interfaces';
+import { mysqlTimeStamp } from 'src/common/ultils';
 import { PollService } from './poll.service';
 
 @UseFilters(new WsCatchAllFilter())
@@ -45,12 +38,75 @@ export class PollGateway
   async handleConnection(client: SocketWithAuth) {
     const sockets = this.io.sockets;
 
+    const { id, userID, username, email, role } = client;
     this.logger.debug(
-      `Socket connected with userID: ${client.userID}, pollID: ${client.email}, and name: "${client.username}"`,
+      `Socket connected with userID: ${userID}, pollID: ${email}, and name: "${username}"`,
+    );
+    await client.join(userID);
+    this.logger.log(`WS Client with id: ${id} connected!`);
+
+    client.on(
+      'join-room',
+      async ({ courseId, avatar }: { courseId: number; avatar?: string }) => {
+        let index = this.pollsService.userIndex(userID);
+        if (index !== -1) {
+          await client.join(`${courseId}`);
+          avatar && this.pollsService.setAvatar(userID, avatar);
+          this.logger.debug(`${username} joined course ${courseId}`);
+        }
+        return `joined course ${courseId}`;
+      },
     );
 
-    this.logger.log(`WS Client with id: ${client.id} connected!`);
-    const { id, userID, username, email, role } = client;
+    client.on(
+      'notification',
+      async (data: { userId: string; title: string; description: string }) => {
+        let { userId, title, description } = data;
+        if (userId) {
+          this.logger.debug(`Number of connected sockets: ${users.length}`);
+          let newNotification = {
+            title,
+            description,
+            userID,
+            email,
+            username,
+          };
+          this.io.to(data?.userId).emit('notification', newNotification);
+        }
+      },
+    );
+
+    client.on(
+      'chat',
+      async (data: {
+        courseId: string;
+        sourceId: string;
+        comment: string;
+        type?: CommentType;
+      }) => {
+        let { courseId, type = CommentType.topic, comment, sourceId } = data;
+        let { email, image, role, username } =
+          this.pollsService.getUser(userID);
+
+        let chat = {
+          id: new Date().getTime(),
+          userId: userID,
+          sourceId,
+          type,
+          comment,
+          time: mysqlTimeStamp(new Date()),
+          isBad: 0,
+          isBlock: 0,
+          username: username,
+          email,
+          role,
+          avatar: image,
+        };
+
+        this.logger.debug(`${username} chatted course ${courseId}`);
+        this.io.to(courseId).emit('chat', chat);
+      },
+    );
 
     let user = {
       id,
@@ -66,38 +122,6 @@ export class PollGateway
     });
 
     this.logger.debug(`Number of connected sockets: ${users.length}`);
-
-    // const roomName = client.userID;
-    // await client.join(roomName);
-    // const connectedClients = this.io.adapter.rooms?.get(roomName)?.size;
-
-    // this.logger.debug(
-    //   `userID: ${client.userID} joined room with name: ${roomName}`,
-    // );
-    // this.logger.debug(
-    //   `Total clients connected to room '${roomName}': ${connectedClients}`,
-    // );
-
-    // const updatedPoll = await this.pollsService.addParticipant({
-    //   pollID: client.pollID,
-    //   userID: client.userID,
-    //   name: client.name,
-    // });
-
-    // this.io.to(roomName).emit('poll_updated', updatedPoll);
-  }
-
-  @SubscribeMessage('notification')
-  async notification(
-    @MessageBody() data: { title: string; description: string },
-  ) {
-    this.io.emit('notification', data);
-  }
-
-  @SubscribeMessage('identity')
-  async identity(@MessageBody() data: number): Promise<number> {
-    this.io.emit('identity', data);
-    return data;
   }
 
   @SubscribeMessage('events')
