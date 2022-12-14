@@ -114,6 +114,8 @@ export class UserCourseController {
   ) {
     const { keyword, page, pageSize } = query;
 
+    await this.cache.deleteByKey(`usercourse${user.id}`);
+
     let userCourses: StudentCourseDto[] = await this.cache?.setOrgetCache(
       `usercourse${user.id}`,
       async () => {
@@ -361,7 +363,7 @@ export class UserCourseController {
           ? avatar
           : `${req.protocol}://${host}/user/image/${avatar}`,
         startCourseTime: mysqlTime(startCourseTime),
-        score: Math.floor(Math.random() * 100),
+        score: item.score || '0',
       };
     });
 

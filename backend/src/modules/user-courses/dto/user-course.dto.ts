@@ -62,6 +62,7 @@ export interface CourseStudentList {
   email: string;
   status: string;
   startCourseTime: string | Date;
+  score: string;
 }
 
 export interface StudentOutSideCourse {
