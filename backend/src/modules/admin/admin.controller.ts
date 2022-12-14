@@ -1,28 +1,16 @@
-import { Course } from 'src/modules/course/entity/course.entity';
-import { Instructor } from '../../common/decorator/custom.decorator';
-import { FavoriteService } from '../favorite/service/favorite.service';
-import {
-  filterUser,
-  getPaginatedItems,
-  mysqlTime,
-  mysqlTimeStamp,
-} from 'src/common/ultils';
+import { filterUser } from 'src/common/ultils';
 import { NotificationService } from '../notification/service/notification.service';
-import { Role, UserCourseStatus } from 'database/constant';
+import { Role } from 'database/constant';
 import {
   Controller,
   Get,
   HttpStatus,
-  NotFoundException,
   Param,
   Post,
   Res,
   UsePipes,
-  Inject,
-  UseGuards,
   Headers,
   Req,
-  Query,
   Put,
   BadRequestException,
   Body,
@@ -41,18 +29,9 @@ import {
   UpdateRole,
   userParam,
 } from './dto/admin.dto';
-import { STRIPE_CLIENT } from 'src/common/constant';
-import Stripe from 'stripe';
 import { CourseService } from '../course/service/course.service';
 import { AuthService } from '../auth/service/auth.service';
-import {
-  InvitedStudentJoinCourseDto,
-  StudentJoinCourseDto,
-} from '../notification/dto/notification.dto';
-import { RedisCacheService } from '../cache/redis-cache.service';
-import { JWTAuthGuard } from '../auth/guard/jwt-auth.guard';
 import { LoginBody } from '../auth/dto/login-dto';
-import { validate } from 'class-validator';
 import { Auth } from 'src/common/decorator/auth.decorator';
 import { UserService } from '../user/service/user.service';
 import { User } from '../user/entity/user.entity';

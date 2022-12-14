@@ -287,21 +287,18 @@ export class QuizService {
 
   async rankCourse(courseId: number) {
     try {
-      // ua.answerId, ua.userId, a.questionId, SUM(qu.mark) as marks, qu.quizId
       let query = `
-      SELECT u.id, ua.answerId
+      SELECT u.id, u.username, SUM(uq.markTotal) as totalMark
       FROM users u
-      JOIN user_answers ua
-      ON u.id = ua.userId
-      JOIN answers a
-      ON a.id = ua.answerId
-      JOIN questions qu
-      ON qu.id = a.questionId
+      JOIN user_quizes uq
+      ON u.id = uq.userId
       JOIN quizes qi
-      ON qi.id = qu.quizId
+      ON qi.id = uq.quizId
       JOIN topics t
       ON t.id = qi.topicId
-      WHERE a.isCorrect = true and t.courseId = ?
+      WHERE t.courseId = ?
+      GROUP BY u.id
+      ORDER by totalMark desc, u.id desc limit 10;
       `;
 
       return this.quiz.query(query, [courseId]);
