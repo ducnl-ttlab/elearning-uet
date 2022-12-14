@@ -105,14 +105,14 @@ export class UserCourses1669059281163 implements MigrationInterface {
         startCourseTime: new Date(),
       },
       {
-        id: 14,
+        id: 15,
         courseId: 1,
         userId: '19020153',
         status: UserCourseStatus.accepted,
         startCourseTime: new Date(),
       },
       {
-        id: 14,
+        id: 16,
         courseId: 1,
         userId: '19020286',
         status: UserCourseStatus.accepted,
