@@ -1,7 +1,7 @@
 <template>
     <div class="notification">
         <div class="text-decoration-none" style="cursor: pointer">
-            <el-dropdown trigger="click">
+            <el-dropdown trigger="click" max-height="400px">
                 <div
                     class="notification-container d-flex align-items-center justify-content-center"
                     @click="handleGetNotification"
@@ -11,7 +11,9 @@
                 </div>
 
                 <template #dropdown>
-                    <h4 class="mt-3 mx-auto px-3">{{ $t(`common.notification`) }}</h4>
+                    <h4 class="mt-3 mx-auto px-3">
+                        {{ $t(`common.notification`) }}
+                    </h4>
 
                     <el-dropdown-menu>
                         <div

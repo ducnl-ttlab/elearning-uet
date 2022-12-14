@@ -8,6 +8,7 @@ import {
     ICourseListParams,
     ICoursePreviewData,
     ICreateQuizParams,
+    IMessageDetail,
     IQuestionDetail,
     IQuizDetail,
     ITopicData,
@@ -15,6 +16,12 @@ import {
 
 const FE_URL = process.env.VUE_APP_FE_BASE_URL;
 const BE_URL = process.env.VUE_APP_API_URL;
+
+export interface IGetMessageListParams {
+    topicId?: number;
+    page?: number;
+    pageSize?: number;
+}
 
 export async function getCourseList(
     params: ICourseListParams,
@@ -221,6 +228,51 @@ export async function deleteQuizPart(
                 Authorization: 'Bearer ' + localStorageTokenService.getAccessToken(),
             },
         })
+        .then((res) => {
+            return res.data;
+        })
+        .catch((error) => {
+            return error.response.data;
+        });
+}
+
+export async function getMessageList(
+    courseId: number,
+    params: IGetMessageListParams,
+): Promise<IAxiosListDefaultResponse<IMessageDetail>> {
+    return axios
+        .get(`${BE_URL}/comment/${courseId}`, {
+            params: params,
+            headers: {
+                Authorization: 'Bearer ' + loginModule.accessToken,
+            },
+        })
+        .then((res) => {
+            return res.data;
+        })
+        .catch((error) => {
+            return error.response.data;
+        });
+}
+
+export async function sendMessage(
+    courseId: number,
+    topicId: number,
+    message: string,
+): Promise<IAxiosListDefaultResponse<IMessageDetail>> {
+    return axios
+        .post(
+            `${BE_URL}/comment/${courseId}`,
+            { comment: message },
+            {
+                params: {
+                    topicId: topicId,
+                },
+                headers: {
+                    Authorization: 'Bearer ' + loginModule.accessToken,
+                },
+            },
+        )
         .then((res) => {
             return res.data;
         })

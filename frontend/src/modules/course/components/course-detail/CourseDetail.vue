@@ -69,6 +69,10 @@ export default class CourseDetail extends Vue {
         return courseModule.isShowTopicFormPopup;
     }
 
+    get isShowChatPopup() {
+        return commonModule.isShowChatPopup;
+    }
+
     get userRole() {
         return userModule.userData.role;
     }

@@ -6,7 +6,7 @@
         </div>
         <el-input
             :placeholder="$t('course.quiz.form.title')"
-            v-model="answer.content"
+            v-model.trim="answer.content"
             @change="toggleEditAnswer"
             autocomplete="off"
             v-else

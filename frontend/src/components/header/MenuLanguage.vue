@@ -12,7 +12,9 @@
                         "
                         alt=""
                     />
-                    {{ $t(`common.header.languages.${selectedLanguage}`) }}
+                    <span class="dropdown-text">{{
+                        $t(`common.header.languages.${selectedLanguage}`)
+                    }}</span>
                 </span>
                 <img src="@/assets/common/icons/header/header-select-arrow.svg" alt="" />
             </div>
@@ -106,6 +108,17 @@ export default class MenuLanguage extends Vue {
     .dropdown-item:last-of-type {
         border-bottom-left-radius: 12px;
         border-bottom-right-radius: 12px;
+    }
+}
+
+@media only screen and (max-width: map-get($map: $grid-breakpoints, $key: xl)) {
+    .dropdown-text,
+    .dropdown-item-text {
+        display: none;
+    }
+
+    .dropdown-selected {
+        min-width: 0 !important;
     }
 }
 </style>

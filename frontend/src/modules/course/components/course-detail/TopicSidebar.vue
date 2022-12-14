@@ -153,6 +153,7 @@ export default class CourseSidebar extends Vue {
 .topic-title {
     background-color: #e6e6f0;
     color: #000;
+    height: 48px;
 }
 
 .j-center {

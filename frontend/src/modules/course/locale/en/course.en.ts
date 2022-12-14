@@ -103,8 +103,8 @@ export const course = {
     },
 
     studentListMode: {
-        inside: 'Trong khóa học',
-        outside: 'Ngoài khóa học',
+        inside: 'Inside course',
+        outside: 'Outside course',
         invite: 'Invite',
     },
 
@@ -155,5 +155,15 @@ export const course = {
             addQuestion: 'Question title',
             addAnswer: 'Answer title',
         },
+    },
+
+    chat: {
+        title: 'Chat ',
+        sendMessage: 'Send message...',
+        defaultSelect: 'Course',
+    },
+    comment: {
+        hidden: 'This comment is marked as sensitive. Click on the eye icon to reveal',
+        instructor: ' (Instructor)',
     },
 };

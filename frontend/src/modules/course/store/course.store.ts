@@ -3,6 +3,7 @@ import store from '@/plugins/vuex/index';
 import {
     ICourseData,
     ICoursePreviewData,
+    IMessageDetail,
     IQuizDetail,
     ITopicData,
 } from '../constants/course.interfaces';
@@ -20,6 +21,7 @@ class CourseModule extends VuexModule {
     topicList: Array<ITopicData> = [];
     selectedTopic: ITopicData = this.topicList.length > 0 ? this.topicList[0] : {};
     topicSidebarMode = '';
+    courseSidebarMode = '';
     quizSidebarMode = '';
     courseArea = '';
     isShowTopicVideo = false;
@@ -27,6 +29,8 @@ class CourseModule extends VuexModule {
     quizList: Array<IQuizDetail> = [];
     topicId = 1;
     isAddingQuiz = false;
+    messageList: Array<IMessageDetail> = [];
+    currentChatTopicId = -1;
 
     @Action
     setCourseList(courseList: Array<ICourseData>) {
@@ -86,6 +90,16 @@ class CourseModule extends VuexModule {
     @Mutation
     SET_TOPIC_SIDEBAR_MODE(mode: string) {
         this.topicSidebarMode = mode;
+    }
+
+    @Action
+    setCourseSidebarMode(mode: string) {
+        this.SET_COURSE_SIDEBAR_MODE(mode);
+    }
+
+    @Mutation
+    SET_COURSE_SIDEBAR_MODE(mode: string) {
+        this.courseSidebarMode = mode;
     }
 
     @Action
@@ -166,6 +180,26 @@ class CourseModule extends VuexModule {
     @Mutation
     SET_ADDING_QUIZ(state: boolean) {
         this.isAddingQuiz = state;
+    }
+
+    @Action
+    setMessageList(messageList: Array<IMessageDetail>) {
+        this.SET_MESSAGE_LIST(messageList);
+    }
+
+    @Mutation
+    SET_MESSAGE_LIST(messageList: Array<IMessageDetail>) {
+        this.messageList = messageList;
+    }
+
+    @Action
+    setCurrentChatTopicId(topicId: number) {
+        this.SET_CURRENT_TOPIC_ID(topicId);
+    }
+
+    @Mutation
+    SET_CURRENT_TOPIC_ID(topicId: number) {
+        this.currentChatTopicId = topicId;
     }
 }
 export const courseModule = getModule(CourseModule);

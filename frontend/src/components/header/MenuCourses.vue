@@ -59,5 +59,8 @@ export default class HeaderGuest extends Vue {
 }
 
 @media only screen and (max-width: map-get($map: $grid-breakpoints, $key: lg)) {
+    .courses-button {
+        display: none !important;
+    }
 }
 </style>

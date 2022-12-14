@@ -1,5 +1,6 @@
 import { UserCourseStatus } from './course.constants';
 import { UserCourseStatus as UC } from '@/modules/common/constants/common.interfaces';
+import { SystemRole } from '@/common/constants';
 export interface ICourseData {
     id: number;
     categoryId: number;
@@ -138,4 +139,19 @@ export interface ICreateQuizParams {
     name: string;
     startTime: string;
     duration: string;
+}
+
+export interface IMessageDetail {
+    id: number;
+    userId: string;
+    sourceId: number;
+    type: string;
+    comment: string;
+    time: string;
+    isBad: number;
+    isBlock: number;
+    username: string;
+    email: string;
+    role: SystemRole;
+    avatar: string;
 }

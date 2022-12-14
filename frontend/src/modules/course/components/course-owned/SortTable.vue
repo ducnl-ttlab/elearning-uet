@@ -4,7 +4,7 @@
         style="gap: 2.5vw"
     >
         <div class="sort-table-title">{{ $t('course.filters.title') }}</div>
-        <div class="sort-fields d-flex w-100 flex-xl-row flex-column">
+        <div class="sort-fields d-flex flex-xl-row flex-column" style="flex-grow: 1">
             <el-input
                 class="input keyword"
                 style="width: 60%"
@@ -178,7 +178,6 @@ export default class SortTable extends Vue {
     &-title {
         font-size: 18px;
         font-weight: 600;
-        width: 14vw !important;
     }
 
     &-button {
@@ -207,6 +206,7 @@ export default class SortTable extends Vue {
     }
     .sort-fields {
         gap: 10px;
+        width: 100%;
     }
 }
 </style>
