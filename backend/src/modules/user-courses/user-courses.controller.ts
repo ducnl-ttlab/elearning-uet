@@ -322,7 +322,13 @@ export class UserCourseController {
 
     return res
       .status(HttpStatus.OK)
-      .json(new SuccessResponse({ status, favorite: !!favorite }));
+      .json(
+        new SuccessResponse({
+          status,
+          favorite: !!favorite,
+          instructorId: course.instructorId,
+        }),
+      );
   }
 
   @Get('student-list/:courseId')
