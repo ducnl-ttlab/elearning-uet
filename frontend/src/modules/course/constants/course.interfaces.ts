@@ -148,8 +148,8 @@ export interface IMessageDetail {
     type: string;
     comment: string;
     time: string;
-    isBad: 0 | 1;
-    isBlock: 0 | 1;
+    isBad: number;
+    isBlock: number;
     username: string;
     email: string;
     role: SystemRole;

@@ -254,3 +254,29 @@ export async function getMessageList(
             return error.response.data;
         });
 }
+
+export async function sendMessage(
+    courseId: number,
+    topicId: number,
+    message: string,
+): Promise<IAxiosListDefaultResponse<IMessageDetail>> {
+    return axios
+        .post(
+            `${BE_URL}/comment/${courseId}`,
+            { comment: message },
+            {
+                params: {
+                    topicId: topicId,
+                },
+                headers: {
+                    Authorization: 'Bearer ' + loginModule.accessToken,
+                },
+            },
+        )
+        .then((res) => {
+            return res.data;
+        })
+        .catch((error) => {
+            return error.response.data;
+        });
+}

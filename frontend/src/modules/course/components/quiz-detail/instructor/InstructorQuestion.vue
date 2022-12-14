@@ -8,13 +8,13 @@
         <div v-else class="question-card d-flex flex-row gap-4 pb-2">
             <el-input
                 :placeholder="$t('course.quiz.form.title')"
-                v-model="question.name"
+                v-model.trim="question.name"
                 @change="toggleEditQuestion"
                 autocomplete="off"
             />
             <el-input
                 :placeholder="$t('course.quiz.form.title')"
-                v-model="question.mark"
+                v-model.number="question.mark"
                 @change="toggleEditQuestion"
                 autocomplete="off"
             />

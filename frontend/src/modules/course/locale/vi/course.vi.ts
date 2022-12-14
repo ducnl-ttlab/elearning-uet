@@ -167,4 +167,9 @@ export const course = {
         sendMessage: 'Gửi tin nhắn...',
         defaultSelect: 'Toàn khóa học',
     },
+
+    comment: {
+        hidden: 'Tin nhắn này bị hệ thống đánh giá là tiêu cực. Bấm vào biểu tượng con mắt nếu bạn muốn xem',
+        instructor: ' (Giảng viên)',
+    },
 };

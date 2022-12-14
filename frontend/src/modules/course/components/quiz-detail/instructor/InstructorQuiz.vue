@@ -9,13 +9,13 @@
         <div v-else class="d-flex flex-row gap-4 align-items-center">
             <el-input
                 :placeholder="$t('course.quiz.form.title')"
-                v-model="quiz.name"
+                v-model.trim="quiz.name"
                 @change="toggleEditQuiz"
                 autocomplete="off"
             />
             <el-input
                 :placeholder="$t('course.quiz.form.title')"
-                v-model="quiz.duration"
+                v-model.number="quiz.duration"
                 @change="toggleEditQuiz"
                 autocomplete="off"
             />
