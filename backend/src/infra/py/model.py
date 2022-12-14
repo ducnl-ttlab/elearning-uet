@@ -18,6 +18,7 @@ def replace_url(comment, replacement):
 def remove_encoding(comment):
     comment = str(comment) 
     comment = comment.replace('\ufeff', '')
+    comment = comment.replace('_', ' ')
     return comment
 class Comment():
   def __init__(self, comment):
@@ -35,7 +36,7 @@ class Comment():
 
 
 if __name__ == '__main__':
-  data = sys.argv[1]
+  data = 'dit cu may'
   comment = Comment(comment=data)
   print(comment.classification())
 

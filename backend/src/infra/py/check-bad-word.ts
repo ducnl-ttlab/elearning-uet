@@ -2,9 +2,10 @@ import { exec } from 'child_process';
 import { join } from 'path';
 
 export async function checkBadWord(comment: string): Promise<boolean> {
+  let commentData = comment.replace(/\s/g, '_');
   let checkBadWordScriptPath = join(process.cwd(), '/src/infra/py');
 
-  let { stdout } = await exec(`python3 model.py ${comment}`, {
+  let { stdout } = await exec(`python3 model.py ${commentData}`, {
     cwd: checkBadWordScriptPath,
   });
   return new Promise((resolve) => {

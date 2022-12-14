@@ -81,7 +81,7 @@ class SocketIo {
 
     chatRealtime(courseId: number, sourceId: number, comment: string) {
         this.emitEvent('chat', {
-            courseId: courseId,
+            courseId: `${courseId}`,
             sourceId,
             comment: comment,
         });

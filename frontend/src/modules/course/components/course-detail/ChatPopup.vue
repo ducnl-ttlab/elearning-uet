@@ -127,7 +127,7 @@ export default class ChatPopup extends Vue {
         const params = {
             topicId: +this.topicId,
             page: DEFAULT_FIRST_PAGE,
-            pageSize: 20,
+            pageSize: 100,
         };
         const response = await getMessageList(courseId, params);
         if (response.success) {

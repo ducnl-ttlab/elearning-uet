@@ -16,6 +16,7 @@ import { CourseArea, SidebarMode } from '../constants/course.constants';
 import { courseModule } from '../store/course.store';
 import ChatPopup from '../components/course-detail/ChatPopup.vue';
 import socketInstance from '@/plugins/socket';
+import { cloneDeep } from 'lodash';
 
 @Options({
     components: { CourseDetail, ChatPopup },
@@ -28,7 +29,9 @@ export default class CourseListPage extends Vue {
         socketInstance.joinRoom(+this.$route.params.courseId);
         socketInstance.listenChat((data) => {
             if (courseModule.currentChatTopicId === data.sourceId) {
-                courseModule.setMessageList([...courseModule.messageList, { ...data }]);
+                let newChat = cloneDeep(courseModule.messageList);
+                let chatList = newChat.concat(data);
+                courseModule.setMessageList(chatList);
             }
         });
     }
