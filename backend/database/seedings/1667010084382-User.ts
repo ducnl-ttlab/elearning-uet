@@ -97,9 +97,9 @@ export class User1667010084382 implements MigrationInterface {
         role: Role.student,
       },
       {
-        id: '19020216',
+        id: '19020152',
         username: 'Đỗ Thị Hồng Ánh',
-        email: '19020216@vnu.edu.vn',
+        email: '19020152@vnu.edu.vn',
         phone: '012345678',
         password: '12345678',
         verified: true,
@@ -176,7 +176,7 @@ export class User1667010084382 implements MigrationInterface {
         phone: '012345678',
         password: '12345678',
         verified: true,
-        role: Role.instructor,
+        role: Role.student,
       },
       {
         id: '19020296',
@@ -188,9 +188,9 @@ export class User1667010084382 implements MigrationInterface {
         role: Role.student,
       },
       {
-        id: '19020301',
+        id: '19020151',
         username: 'Trịnh Hoàng',
-        email: '19020301@vnu.edu.vn',
+        email: '19020151@vnu.edu.vn',
         phone: '012345678',
         password: '12345678',
         verified: true,

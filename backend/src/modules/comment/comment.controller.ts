@@ -62,7 +62,7 @@ export class CommentController {
     @Body() body: { comment: string },
     @Param() param: { courseId: string },
   ) {
-    if (student.status === UserCourseStatus.commentBlocking) {
+    if (student?.status === UserCourseStatus.commentBlocking) {
       throw new ForbiddenException('you can not comment in this course');
     }
     let topic: Partial<Topic> = {};

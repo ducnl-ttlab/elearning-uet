@@ -35,13 +35,15 @@ import { QuizService } from './service/quiz.service';
 import { validation } from './joi.request.pipe';
 import { Course } from '../course/entity/course.entity';
 import { UserCourse } from '../user-courses/entity/user-course.entity';
+import { UserQuiz } from '../user-quiz/entity/user-quiz.entity';
+import { UserQuizService } from '../user-quiz/service/user-quiz.service';
 
 @ApiTags('Topic')
 @Controller('quiz')
 export class QuizController {
   constructor(
     private readonly quizService: QuizService,
-    private readonly questionService: QuestionService,
+    private readonly userQuiz: UserQuizService,
   ) {}
 
   @Get('rank/:courseId')
@@ -128,6 +130,7 @@ export class QuizController {
     let result: any;
     if (quiz) {
       await this.quizService.updateQuiz(quiz);
+      await this;
     } else if (question) {
       result = await this.quizService.updateQuestion(question);
     } else if (answer) {
@@ -169,6 +172,7 @@ export class QuizController {
       }
       case 'quiz': {
         result = await this.quizService.deleteQuiz(sourceId);
+        await this.userQuiz.deleteQuizByQuizId(sourceId);
         break;
       }
     }

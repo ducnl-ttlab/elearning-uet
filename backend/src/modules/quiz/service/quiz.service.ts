@@ -6,6 +6,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { timeStampToMysql } from 'src/common/ultils';
 import { UserAnswerService } from 'src/modules/user-answer/service/user-answer.service';
+import { UserQuizService } from 'src/modules/user-quiz/service/user-quiz.service';
 import { getConnection, Repository } from 'typeorm';
 import { BulkQuizInsertDto, BulkQuizResponseDto, IQuestion } from '../dto/dto';
 import { Answer } from '../entity/answer.entity';
@@ -22,6 +23,7 @@ export class QuizService {
     @InjectRepository(Answer)
     private readonly answer: Repository<Answer>,
     private readonly userAnswer: UserAnswerService,
+    private readonly userQuiz: UserQuizService,
   ) {}
 
   async saveQuiz(quiz: Partial<Quiz>): Promise<Quiz> {
@@ -112,6 +114,12 @@ export class QuizService {
           let questions: IQuestion[] = await this.question.find({
             where: { quizId: quizItem.id },
           });
+          let score;
+          if (studentId) {
+            score =
+              (await this.userQuiz.getUserAnswerQuiz(studentId, quizItem.id))
+                ?.markTotal || -1;
+          }
 
           let questionList = await Promise.all([
             ...questions.map(async (questionItem) => {
@@ -135,7 +143,7 @@ export class QuizService {
           ]);
 
           quizItem.questionList = questionList;
-          return { ...quizItem };
+          return { ...quizItem, score };
         }),
       );
 
@@ -231,10 +239,17 @@ export class QuizService {
     return existQuiz;
   }
 
-  async getAnswerList(quizId: number): Promise<{ id: number }[]> {
+  async getAnswerList(quizId: number): Promise<
+    {
+      isCorrect: boolean;
+      answerId: number;
+      questionId: number;
+      mark: number;
+    }[]
+  > {
     try {
       let query = `
-      SELECT a.id
+      SELECT a.id as answerId, a.questionId, qu.mark, a.isCorrect
       FROM answers a
       LEFT JOIN questions qu 
       ON qu.id = a.questionId
@@ -273,15 +288,20 @@ export class QuizService {
   async rankCourse(courseId: number) {
     try {
       let query = `
-        SELECT ua.userId, a.questionId, qu.mark
-        FROM user_answers ua
-        JOIN answers a
-        ON a.id = ua.answerId
-        JOIN questions qu
-        ON qu.id = a.questionId
-        WHERE a.isCorrect = true
+      SELECT u.id, u.username, SUM(uq.markTotal) as totalMark
+      FROM users u
+      JOIN user_quizes uq
+      ON u.id = uq.userId
+      JOIN quizes qi
+      ON qi.id = uq.quizId
+      JOIN topics t
+      ON t.id = qi.topicId
+      WHERE t.courseId = ?
+      GROUP BY u.id
+      ORDER by totalMark desc, u.id desc limit 10;
       `;
-      return this.quiz.query(query);
+
+      return this.quiz.query(query, [courseId]);
     } catch (error) {
       throw new InternalServerErrorException(error);
     }

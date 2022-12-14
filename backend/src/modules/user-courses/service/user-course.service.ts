@@ -58,14 +58,25 @@ export class UserCourseService {
   async getStudentList(courseId: number): Promise<CourseStudentList[]> {
     try {
       let query = `
-      SELECT uc.userId, u.username, u.email, u.avatar, uc.startCourseTime, uc.status
+      SELECT uc.userId, u.username, u.email, u.avatar, uc.startCourseTime, uc.status, uq.score
       FROM user_courses uc
       JOIN users u 
       ON u.id = uc.userId
-      WHERE uc.courseId = ?
+      LEFT JOIN (
+          SELECT uq.userId as id, SUM(uq.markTotal) as score
+          FROM user_quizes uq
+          JOIN quizes qi         
+          ON qi.id = uq.quizId
+          JOIN topics t         
+          ON t.id = qi.topicId 
+          WHERE t.courseId = ?
+          GROUP BY uq.userId
+      ) as uq
+      ON uq.id = uc.userId
+      WHERE uc.courseId = ? 
        `;
 
-      return this.usercourse.query(query, [courseId]);
+      return this.usercourse.query(query, [courseId, courseId]);
     } catch (error) {
       throw new InternalServerErrorException(error);
     }
