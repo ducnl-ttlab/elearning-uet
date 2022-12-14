@@ -161,4 +161,10 @@ export const course = {
             addAnswer: 'Câu trả lời mới',
         },
     },
+
+    chat: {
+        title: 'Trò chuyện',
+        sendMessage: 'Gửi tin nhắn...',
+        defaultSelect: 'Toàn khóa học',
+    },
 };

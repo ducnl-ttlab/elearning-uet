@@ -12,6 +12,7 @@ class CommonModule extends VuexModule {
     notificationList: Array<INotificationData> = [];
     showLoadingIndicator = false;
     isShowStudentListPopup = false;
+    isShowChatPopup = false;
 
     @Action
     toggleShowStudentListPopup(isShowStudentListPopup: boolean) {
@@ -63,6 +64,16 @@ class CommonModule extends VuexModule {
     @Mutation
     SET_SHOW_LOADING_INDICATOR(showLoadingIndicator: boolean) {
         this.showLoadingIndicator = showLoadingIndicator;
+    }
+
+    @Action
+    toggleChatPopup(isShowChatPopup: boolean) {
+        this.SET_CHAT_POPUP(isShowChatPopup);
+    }
+
+    @Mutation
+    SET_CHAT_POPUP(isShowChatPopup: boolean) {
+        this.isShowChatPopup = isShowChatPopup;
     }
 }
 export const commonModule = getModule(CommonModule);

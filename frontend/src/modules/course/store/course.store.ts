@@ -3,6 +3,7 @@ import store from '@/plugins/vuex/index';
 import {
     ICourseData,
     ICoursePreviewData,
+    IMessageDetail,
     IQuizDetail,
     ITopicData,
 } from '../constants/course.interfaces';
@@ -27,6 +28,7 @@ class CourseModule extends VuexModule {
     quizList: Array<IQuizDetail> = [];
     topicId = 1;
     isAddingQuiz = false;
+    messageList: Array<IMessageDetail> = [];
 
     @Action
     setCourseList(courseList: Array<ICourseData>) {
@@ -166,6 +168,16 @@ class CourseModule extends VuexModule {
     @Mutation
     SET_ADDING_QUIZ(state: boolean) {
         this.isAddingQuiz = state;
+    }
+
+    @Action
+    setMessageList(messageList: Array<IMessageDetail>) {
+        this.SET_MESSAGE_LIST(messageList);
+    }
+
+    @Mutation
+    SET_MESSAGE_LIST(messageList: Array<IMessageDetail>) {
+        this.messageList = messageList;
     }
 }
 export const courseModule = getModule(CourseModule);

@@ -156,4 +156,10 @@ export const course = {
             addAnswer: 'Answer title',
         },
     },
+
+    chat: {
+        title: 'Chat ',
+        sendMessage: 'Send message...',
+        defaultSelect: 'Course',
+    },
 };
