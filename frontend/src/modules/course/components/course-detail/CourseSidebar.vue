@@ -1,25 +1,52 @@
 <template>
     <div class="course-sidebar-wrapper d-flex flex-column">
-        <span
+        <div
+            class="sidebar-button collapse-toggle"
+            style="background-color: #e6e6f0; height: 48px"
+            :class="{ collapsed: isCollapsed }"
+            @click="handleToggleSidebar"
+        >
+            <div v-if="!isCollapsed" class="d-flex justify-content-end w-100">
+                <img src="@/assets/course/icons/collapse.png" width="24" alt="" />
+            </div>
+
+            <img v-else src="@/assets/course/icons/expand.png" width="24" alt="" />
+        </div>
+        <div
             class="sidebar-button"
+            :class="{ collapsed: isCollapsed }"
             :style="{
                 'background-color':
                     courseArea === CourseArea.COURSE ? '#6d79e8' : '#4057d0',
             }"
             @click="setCourseArea(CourseArea.COURSE)"
         >
-            {{ $t('course.courseSidebar.courseDetail') }}
-        </span>
-        <span
+            <div>
+                <span v-if="!isCollapsed">{{
+                    $t('course.courseSidebar.courseDetail')
+                }}</span>
+                <img
+                    v-else
+                    src="@/assets/course/icons/course-detail.png"
+                    width="24"
+                    alt=""
+                />
+            </div>
+        </div>
+        <div
             class="sidebar-button"
+            :class="{ collapsed: isCollapsed }"
             :style="{
                 'background-color':
                     courseArea === CourseArea.QUIZ ? '#6d79e8' : '#4057d0',
             }"
             @click="setCourseArea(CourseArea.QUIZ)"
         >
-            {{ $t('course.courseSidebar.quiz') }}
-        </span>
+            <div>
+                <span v-if="!isCollapsed"> {{ $t('course.courseSidebar.quiz') }}</span>
+                <img v-else src="@/assets/course/icons/quiz.png" width="24" alt="" />
+            </div>
+        </div>
         <span
             v-if="userRole === SystemRole.INSTRUCTOR"
             @click="showStudentListPopup"
@@ -36,7 +63,7 @@ import localStorageTokenService from '@/common/tokenService';
 import { commonModule } from '@/modules/common/store/common.store';
 import { userModule } from '@/modules/user/store/user.store';
 import { Options, Vue } from 'vue-class-component';
-import { CourseArea } from '../../constants/course.constants';
+import { CourseArea, SidebarMode } from '../../constants/course.constants';
 import { courseModule } from '../../store/course.store';
 
 @Options({
@@ -58,6 +85,14 @@ export default class CourseSidebar extends Vue {
         return courseModule.courseArea;
     }
 
+    get courseSidebarMode() {
+        return courseModule.courseSidebarMode;
+    }
+
+    get isCollapsed() {
+        return this.courseSidebarMode === SidebarMode.COLLAPSED;
+    }
+
     showStudentListPopup() {
         commonModule.toggleShowStudentListPopup(true);
     }
@@ -65,11 +100,28 @@ export default class CourseSidebar extends Vue {
     setCourseArea(area: string) {
         courseModule.setCourseArea(area);
     }
+
+    handleToggleSidebar() {
+        if (this.courseSidebarMode === SidebarMode.EXPANDED) {
+            courseModule.setCourseSidebarMode(SidebarMode.COLLAPSED);
+        } else {
+            courseModule.setCourseSidebarMode(SidebarMode.EXPANDED);
+        }
+    }
+
+    created(): void {
+        window.addEventListener('resize', this.showFullScreenOnMobile);
+        this.showFullScreenOnMobile();
+    }
+    showFullScreenOnMobile() {
+        if (document.documentElement.clientWidth <= 800) {
+            courseModule.setCourseSidebarMode(SidebarMode.COLLAPSED);
+        }
+    }
 }
 </script>
 <style lang="scss" scoped>
 .course-sidebar-wrapper {
-    width: 240px;
     min-height: 169px;
     background-color: $color-violet-new;
 }
@@ -79,11 +131,24 @@ export default class CourseSidebar extends Vue {
     line-height: 24px !important;
     white-space: nowrap;
     padding: 12px 24px;
-    transition: all 0.44s ease 0s;
+    transition: all 0.44s ease-in-out 0s;
     cursor: pointer;
     color: $color-white;
     &:hover {
         background-color: #5868d9 !important;
+    }
+}
+
+.collapsed {
+    display: flex;
+    width: 60px;
+    padding: 12px 0;
+    justify-content: center !important;
+}
+
+.collapse-toggle {
+    &:hover {
+        background-color: #e6e6f0 !important;
     }
 }
 </style>

@@ -21,6 +21,7 @@ class CourseModule extends VuexModule {
     topicList: Array<ITopicData> = [];
     selectedTopic: ITopicData = this.topicList.length > 0 ? this.topicList[0] : {};
     topicSidebarMode = '';
+    courseSidebarMode = '';
     quizSidebarMode = '';
     courseArea = '';
     isShowTopicVideo = false;
@@ -89,6 +90,16 @@ class CourseModule extends VuexModule {
     @Mutation
     SET_TOPIC_SIDEBAR_MODE(mode: string) {
         this.topicSidebarMode = mode;
+    }
+
+    @Action
+    setCourseSidebarMode(mode: string) {
+        this.SET_COURSE_SIDEBAR_MODE(mode);
+    }
+
+    @Mutation
+    SET_COURSE_SIDEBAR_MODE(mode: string) {
+        this.courseSidebarMode = mode;
     }
 
     @Action

@@ -3,7 +3,7 @@
         class="chat-window-wrapper flex-column"
         :style="[
             { display: isShowChatPopup ? 'flex' : 'none !important' },
-            { width: isShowChatPopup ? '25%' : '0' },
+            { width: isShowChatPopup ? '425px' : '0' },
         ]"
     >
         <div
@@ -231,5 +231,11 @@ export default class ChatPopup extends Vue {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+@media only screen and (max-width: map-get($map: $grid-breakpoints, $key: xl)) {
+    .chat-window-wrapper {
+        width: 50% !important;
+    }
 }
 </style>

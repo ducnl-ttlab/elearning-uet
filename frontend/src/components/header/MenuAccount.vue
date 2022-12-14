@@ -79,6 +79,28 @@
                         </router-link>
                     </el-dropdown-item>
                     <el-dropdown-item>
+                        <router-link
+                            class="dropdown-item-link text-decoration-none course"
+                            style="display: none"
+                            :to="{ name: PageName.USER_COURSE_LIST_PAGE }"
+                        >
+                            <div class="dropdown-item d-flex flex-row align-items-center">
+                                <div class="dropdown-item-icon-container">
+                                    <img
+                                        class="dropdown-item-icon"
+                                        src="@/assets/common/icons/header/book.svg"
+                                        alt=""
+                                        width="20"
+                                    />
+                                </div>
+                                <span class="dropdown-item-text">
+                                    {{ $t('common.header.courses') }}
+                                </span>
+                            </div>
+                        </router-link>
+                    </el-dropdown-item>
+
+                    <el-dropdown-item>
                         <div
                             @click="handleLogout"
                             class="dropdown-item d-flex flex-row align-items-center"
@@ -236,6 +258,10 @@ export default class HeaderMenuAccount extends Vue {
     }
 }
 
+.course {
+    display: none !important;
+}
+
 .default-avatar {
     cursor: pointer;
     font-style: normal;
@@ -245,9 +271,13 @@ export default class HeaderMenuAccount extends Vue {
     font-size: 22px;
 }
 
-@media only screen and (max-width: map-get($map: $grid-breakpoints, $key: md)) {
+@media only screen and (max-width: map-get($map: $grid-breakpoints, $key: lg)) {
     .name {
         display: none !important;
+    }
+
+    .course {
+        display: block !important;
     }
 }
 </style>

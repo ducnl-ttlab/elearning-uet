@@ -178,7 +178,6 @@ export default class SortTable extends Vue {
     &-title {
         font-size: 18px;
         font-weight: 600;
-        width: 14vw !important;
     }
 
     &-button {

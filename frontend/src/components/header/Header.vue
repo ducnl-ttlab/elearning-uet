@@ -8,7 +8,7 @@
                 </div>
                 <div
                     v-if="getLoggedIn"
-                    class="d-flex align-items-center"
+                    class="d-flex align-items-center justify-content-end header-right"
                     style="gap: 24px"
                 >
                     <MenuLanguage />
@@ -17,7 +17,6 @@
                     <MenuAccount />
                 </div>
                 <HeaderGuest v-else />
-                <HeaderMobileNav />
             </div>
         </div>
         <div class="header-height"></div>
@@ -28,7 +27,6 @@
 import { Vue, Options } from 'vue-class-component';
 import HeaderTitle from './HeaderTitle.vue';
 import HeaderGuest from './HeaderGuest.vue';
-import HeaderMobileNav from './HeaderMobileNav.vue';
 import MenuAccount from './MenuAccount.vue';
 import MenuNotification from './MenuNotification.vue';
 import Logo from './Logo.vue';
@@ -40,7 +38,6 @@ import { loginModule } from '@/modules/auth/store/login.store';
     components: {
         HeaderTitle,
         HeaderGuest,
-        HeaderMobileNav,
         MenuLanguage,
         MenuAccount,
         MenuNotification,
@@ -87,6 +84,12 @@ export default class Header extends Vue {
 @media only screen and (max-width: map-get($map: $grid-breakpoints, $key: sm)) {
     .header-guest {
         display: none !important;
+    }
+}
+
+@media only screen and (max-width: map-get($map: $grid-breakpoints, $key: md)) {
+    .header-right {
+        gap: 12px !important;
     }
 }
 </style>
