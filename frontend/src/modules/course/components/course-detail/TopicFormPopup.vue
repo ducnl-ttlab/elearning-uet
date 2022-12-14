@@ -47,12 +47,23 @@
                 <label class="fw-bold text-start mb-2 d-flex align-items-center">
                     {{ $t('course.topic.form.content') }}
                 </label>
-                <el-input
+                <!-- <el-input
                     :placeholder="$t('course.topic.form.content')"
                     type="textarea"
                     rows="7"
                     v-model="selectedTopic.content"
+                /> -->
+                <editor
+                    v-model="check"
+                    api-key="no-api-key"
+                    :init="{
+                        menubar: false,
+                        plugins: 'lists link image emoticons',
+                        toolbar:
+                            'styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist | link image emoticons',
+                    }"
                 />
+                <div v-html="check"></div>
             </div>
         </div>
         <div class="action-area d-flex flex-row w-100 justify-content-end gap-3">
@@ -81,13 +92,15 @@ import {
     updateTopic,
 } from '../../services/course';
 import { courseModule } from '../../store/course.store';
+import Editor from '@tinymce/tinymce-vue';
 
 @Options({
-    components: {},
+    components: { Editor },
 })
 export default class TopicFormPopup extends Vue {
     isCreate = true;
     video: '';
+    check = '';
     get isShowTopicFormPopup() {
         return courseModule.isShowTopicFormPopup;
     }
