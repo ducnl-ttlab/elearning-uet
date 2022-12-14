@@ -12,7 +12,6 @@
             <el-select
                 filterable
                 v-model="topicId"
-                class="m-2"
                 :placeholder="$t('course.topicSidebar.title')"
                 size="large"
             >

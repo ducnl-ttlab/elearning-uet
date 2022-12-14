@@ -50,16 +50,26 @@
         <span
             v-if="userRole === SystemRole.INSTRUCTOR"
             @click="showStudentListPopup"
+            :class="{ collapsed: isCollapsed }"
             class="sidebar-button"
         >
-            {{ $t('course.courseSidebar.studentList') }}
+            <div>
+                <span v-if="!isCollapsed">
+                    {{ $t('course.courseSidebar.studentList') }}</span
+                >
+                <img
+                    v-else
+                    src="@/assets/course/icons/student-list.png"
+                    width="24"
+                    alt=""
+                />
+            </div>
         </span>
     </div>
 </template>
 
 <script lang="ts">
-import { PageName, SystemRole } from '@/common/constants';
-import localStorageTokenService from '@/common/tokenService';
+import { SystemRole } from '@/common/constants';
 import { commonModule } from '@/modules/common/store/common.store';
 import { userModule } from '@/modules/user/store/user.store';
 import { Options, Vue } from 'vue-class-component';
@@ -131,7 +141,7 @@ export default class CourseSidebar extends Vue {
     line-height: 24px !important;
     white-space: nowrap;
     padding: 12px 24px;
-    transition: all 0.44s ease-in-out 0s;
+    transition: 1s ease 0s;
     cursor: pointer;
     color: $color-white;
     &:hover {

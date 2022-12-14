@@ -35,23 +35,26 @@ export default class App extends Vue {
     }
 }
 </script>
-<style lang="scss" scoped>
-::-webkit-scrollbar {
-    width: 10px;
-}
+<style lang="scss">
+* {
+    /* width */
+    ::-webkit-scrollbar {
+        width: 4px;
+    }
 
-/* Track */
-::-webkit-scrollbar-track {
-    background: #f1f1f1;
-}
+    /* Track */
+    ::-webkit-scrollbar-track {
+        background: #888;
+    }
 
-/* Handle */
-::-webkit-scrollbar-thumb {
-    background: #888;
-}
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+        background: $color-violet-new-1;
+    }
 
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-    background: #555;
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
 }
 </style>
