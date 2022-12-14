@@ -115,7 +115,7 @@ export class QuizController {
   }
 
   @Put(':courseId/:topicId')
-  // @InstructorCourseAuth()
+  @InstructorCourseAuth()
   @UsePipes(...validation({ key: 'topicIdParamSchema', type: 'param' }))
   async updateQuiz(
     @Res() res: Response,
@@ -145,7 +145,7 @@ export class QuizController {
   }
 
   @Delete(':courseId/:topicId')
-  // @InstructorCourseAuth()
+  @InstructorCourseAuth()
   @UsePipes(
     ...validation(
       { key: 'topicIdParamSchema', type: 'param' },
