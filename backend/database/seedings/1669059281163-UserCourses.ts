@@ -90,6 +90,34 @@ export class UserCourses1669059281163 implements MigrationInterface {
         status: UserCourseStatus.accepted,
         startCourseTime: new Date(),
       },
+      {
+        id: 13,
+        courseId: 1,
+        userId: '19020151',
+        status: UserCourseStatus.accepted,
+        startCourseTime: new Date(),
+      },
+      {
+        id: 14,
+        courseId: 1,
+        userId: '19020152',
+        status: UserCourseStatus.accepted,
+        startCourseTime: new Date(),
+      },
+      {
+        id: 14,
+        courseId: 1,
+        userId: '19020153',
+        status: UserCourseStatus.accepted,
+        startCourseTime: new Date(),
+      },
+      {
+        id: 14,
+        courseId: 1,
+        userId: '19020286',
+        status: UserCourseStatus.accepted,
+        startCourseTime: new Date(),
+      },
     ];
     await queryRunner.manager.getRepository(TableName.userCourse).insert(items);
   }

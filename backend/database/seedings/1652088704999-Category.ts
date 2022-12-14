@@ -14,7 +14,7 @@ export class Category1652088704999 implements MigrationInterface {
       },
       {
         image: 'design',
-        name: 'sáng tạo',
+        name: 'Sáng tạo',
       },
       {
         image: 'personal-development',
@@ -22,7 +22,7 @@ export class Category1652088704999 implements MigrationInterface {
       },
       {
         image: 'marketing',
-        name: 'Kinh doanh',
+        name: 'Marketing',
       },
       {
         image: 'development',
