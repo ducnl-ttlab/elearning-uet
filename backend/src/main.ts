@@ -47,8 +47,5 @@ async function bootstrap() {
 
   await app.listen(port);
   logger.log(`Server running on port ${port}`);
-  let a  = await checkBadWord("cam on ban")
-  console.log("32432423",a);
-  
 }
 bootstrap();

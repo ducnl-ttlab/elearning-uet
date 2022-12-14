@@ -40,13 +40,21 @@ export async function getCourseList(
 
 export async function createCourse(
     params: FormData,
+    categoryId: number,
 ): Promise<IAxiosDefaultResponse<Record<string, unknown>>> {
-    return axios.post(`${BE_URL}/course`, params, {
-        headers: {
-            Authorization: 'Bearer ' + localStorageTokenService.getAccessToken(),
-            'Content-Type': 'multipart/form-data',
-        },
-    });
+    return axios
+        .post(`${BE_URL}/course/${categoryId}`, params, {
+            headers: {
+                Authorization: 'Bearer ' + localStorageTokenService.getAccessToken(),
+                'Content-Type': 'multipart/form-data',
+            },
+        })
+        .then((res) => {
+            return res.data;
+        })
+        .catch((error) => {
+            return error.response.data;
+        });
 }
 
 export async function getCoursePreviewData(

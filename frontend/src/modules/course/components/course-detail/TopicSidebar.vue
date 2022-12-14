@@ -90,6 +90,7 @@ export default class CourseSidebar extends Vue {
 
     handleAddTopic() {
         courseModule.toggleShowTopicFormPopup(true);
+        courseModule.setTopicFormPopupMode('create');
     }
 
     created(): void {

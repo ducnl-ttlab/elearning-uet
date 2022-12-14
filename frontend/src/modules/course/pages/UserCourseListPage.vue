@@ -1,27 +1,37 @@
 <template>
-    <div class="display-options d-flex flex-row gap-3">
-        <img
-            @click="handleGridClick()"
-            src="@/assets/course/icons/display-grid.png"
-            :class="{
-                'active-display':
-                    userCourseListDisplayMode === CourseListDisplayMode.GRID,
-            }"
-            alt=""
-            class="display-button"
-        />
-        <img
-            @click="handleListClick()"
-            src="@/assets/course/icons/display-list.png"
-            alt=""
-            :class="{
-                'active-display':
-                    userCourseListDisplayMode === CourseListDisplayMode.LIST,
-            }"
-            class="display-button"
-        />
+    <div class="display-options d-flex flex-row justify-content-between">
+        <div class="d-flex flex-row gap-3">
+            <img
+                @click="handleGridClick()"
+                src="@/assets/course/icons/display-grid.png"
+                :class="{
+                    'active-display':
+                        userCourseListDisplayMode === CourseListDisplayMode.GRID,
+                }"
+                alt=""
+                class="display-button"
+            />
+            <img
+                @click="handleListClick()"
+                src="@/assets/course/icons/display-list.png"
+                alt=""
+                :class="{
+                    'active-display':
+                        userCourseListDisplayMode === CourseListDisplayMode.LIST,
+                }"
+                class="display-button"
+            />
+        </div>
+        <div
+            v-if="userRole === SystemRole.INSTRUCTOR"
+            @click="handleCreateCourse"
+            class="courses-button"
+        >
+            {{ $t('course.course.createCourse') }}
+        </div>
     </div>
     <SortTable />
+
     <CourseListTable v-if="userCourseListDisplayMode === CourseListDisplayMode.LIST" />
     <BaseNoResult
         v-if="studentCourseList?.length === 0 && instructorCourseList.length === 0"
@@ -109,6 +119,10 @@ export default class UserCourseListPage extends Vue {
         userCourseModule.setUserCourseListDisplayMode(CourseListDisplayMode.LIST);
     }
 
+    handleCreateCourse() {
+        this.$router.push({ name: PageName.CREATE_COURSE_PAGE });
+    }
+
     async initInstructorList() {
         commonModule.setLoadingIndicator(true);
         const response = await getInstructorList();
@@ -194,5 +208,22 @@ export default class UserCourseListPage extends Vue {
     width: 50px;
     height: 50px;
     cursor: pointer;
+}
+
+.courses-button {
+    font-size: 17px !important;
+    font-weight: 600 !important;
+    line-height: 24px !important;
+    border-radius: 8px;
+    white-space: nowrap;
+    padding: 12px 24px;
+    color: $color-gray-01;
+    background-color: #f2f2f2;
+    border: 1px solid black;
+    transition: all 0.44s ease 0s;
+    cursor: pointer;
+    &:hover {
+        background-color: #e3e3e3;
+    }
 }
 </style>

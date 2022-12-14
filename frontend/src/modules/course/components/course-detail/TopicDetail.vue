@@ -77,6 +77,7 @@ export default class TopicDetail extends Vue {
 
     handleEditTopic() {
         courseModule.toggleShowTopicFormPopup(true);
+        courseModule.setTopicFormPopupMode('edit');
     }
 }
 </script>

@@ -56,5 +56,12 @@ export default class App extends Vue {
     ::-webkit-scrollbar-thumb:hover {
         background: #555;
     }
+    ::v-deep .tox-dialog-wrap__backdrop--opaque {
+        display: none !important;
+    }
+
+    ::v-deep .tox-dialog-wrap__backdrop {
+        display: none !important;
+    }
 }
 </style>
