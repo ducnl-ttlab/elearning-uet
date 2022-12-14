@@ -79,6 +79,7 @@ import { DEFAULT_FIRST_PAGE } from '@/common/constants';
 import { showErrorNotificationFunction } from '@/common/helpers';
 import { commonModule } from '@/modules/common/store/common.store';
 import { userModule } from '@/modules/user/store/user.store';
+import socketInstance from '@/plugins/socket';
 import { ref } from 'vue';
 import { Options, Vue } from 'vue-class-component';
 import { IMessageDetail } from '../../constants/course.interfaces';
@@ -132,6 +133,7 @@ export default class ChatPopup extends Vue {
         const response = await getMessageList(courseId, params);
         if (response.success) {
             courseModule.setMessageList(response.data?.items || []);
+            courseModule.setCurrentChatTopicId(+this.topicId);
         } else {
             courseModule.setMessageList([]);
             showErrorNotificationFunction('');
@@ -139,7 +141,7 @@ export default class ChatPopup extends Vue {
         commonModule.setLoadingIndicator(false);
     }
 
-    created() {
+    mounted() {
         this.$watch('isShowChatPopup', () => {
             this.getMessageList();
         });
@@ -151,14 +153,13 @@ export default class ChatPopup extends Vue {
     async handleSendMessage() {
         commonModule.setLoadingIndicator(true);
         const courseId = +this.$route.params.courseId;
+        socketInstance.chatRealtime(courseId, +this.topicId, this.message);
         const response = await sendMessage(courseId, +this.topicId, this.message);
-        console.log(response, 'response');
         if (response.success) {
             // courseModule.setMessageList(response.data?.items || []);
             this.message = '';
-            await this.getMessageList();
+            // await this.getMessageList();
         } else {
-            // courseModule.setMessageList([]);
             // showErrorNotificationFunction('');
         }
         commonModule.setLoadingIndicator(false);

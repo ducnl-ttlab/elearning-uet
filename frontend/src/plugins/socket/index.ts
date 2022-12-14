@@ -4,6 +4,7 @@ import { userModule } from '@/modules/user/store/user.store';
 import { Socket } from 'socket.io-client';
 import { io } from 'socket.io-client';
 import { ElNotification } from 'element-plus';
+import { IMessageDetail } from '@/modules/course/constants/course.interfaces';
 
 class SocketIo {
     private socket: Socket;
@@ -30,9 +31,9 @@ class SocketIo {
             userModule.setUserOnlineList(data.users);
         });
 
-        this.listenEvent(
+        this.listenEvent<{ title: string; description: string }>(
             'notification',
-            (data: { title: string; description: string }) => {
+            (data) => {
                 ElNotification({
                     type: 'info',
                     title: data.title,
@@ -59,12 +60,31 @@ class SocketIo {
         this.socket.connect();
     }
 
-    listenEvent(name: string, cb: (data: any) => void) {
+    listenEvent<T>(name: string, cb: (data: T) => void) {
         this.socket.on(name, cb);
     }
 
-    emitEvent(name: string, data: any) {
+    emitEvent<T>(name: string, data: T) {
         this.socket.emit(name, data);
+    }
+
+    joinRoom(courseId: number) {
+        this.emitEvent('join-room', {
+            courseId,
+            avatar: userModule.userData.avatar,
+        });
+    }
+
+    listenChat(cb: (data: IMessageDetail) => void) {
+        this.listenEvent('chat', cb);
+    }
+
+    chatRealtime(courseId: number, sourceId: number, comment: string) {
+        this.emitEvent('chat', {
+            courseId: courseId,
+            sourceId,
+            comment: comment,
+        });
     }
 }
 const socketInstance = new SocketIo();

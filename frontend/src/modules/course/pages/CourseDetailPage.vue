@@ -15,6 +15,7 @@ import CourseDetail from '../components/course-detail/CourseDetail.vue';
 import { CourseArea, SidebarMode } from '../constants/course.constants';
 import { courseModule } from '../store/course.store';
 import ChatPopup from '../components/course-detail/ChatPopup.vue';
+import socketInstance from '@/plugins/socket';
 
 @Options({
     components: { CourseDetail, ChatPopup },
@@ -24,6 +25,12 @@ export default class CourseListPage extends Vue {
         courseModule.setTopicSidebarMode(SidebarMode.COLLAPSED);
         courseModule.setQuizSidebarMode(SidebarMode.COLLAPSED);
         courseModule.setCourseArea(CourseArea.COURSE);
+        socketInstance.joinRoom(+this.$route.params.courseId);
+        socketInstance.listenChat((data) => {
+            if (courseModule.currentChatTopicId === data.sourceId) {
+                courseModule.setMessageList([...courseModule.messageList, { ...data }]);
+            }
+        });
     }
 
     get isShowChatPopup() {
