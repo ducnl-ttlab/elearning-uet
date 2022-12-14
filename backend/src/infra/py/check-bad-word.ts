@@ -10,7 +10,7 @@ export async function checkBadWord(comment: string): Promise<boolean> {
   });
   return new Promise((resolve) => {
     stdout.on('data', (data) => {
-      let isBad = data.toString().toUpperCase().includes('1');
+      let isBad = data.toString().toUpperCase().includes('1.0');
       resolve(isBad);
     });
   });

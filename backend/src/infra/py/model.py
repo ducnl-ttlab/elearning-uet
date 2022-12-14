@@ -1,9 +1,13 @@
 import pickle
 import re
-import sys, json
+import sys
 # Miscellaneous
 import time
 import warnings
+# from tensorflow import keras
+# from keras import backend as K 
+
+
 warnings.filterwarnings('ignore')
 
 vect = pickle.load(open('transformer.h5', 'rb'))
@@ -36,7 +40,7 @@ class Comment():
 
 
 if __name__ == '__main__':
-  data = 'dit cu may'
+  data = sys.argv[1]
   comment = Comment(comment=data)
   print(comment.classification())
 
