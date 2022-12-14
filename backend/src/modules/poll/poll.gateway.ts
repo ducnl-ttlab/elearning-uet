@@ -71,7 +71,9 @@ export class PollGateway
             email,
             username,
           };
-          this.io.to(data?.userId).emit('notification', newNotification);
+          client.broadcast
+            .to(data?.userId)
+            .emit('notification', newNotification);
         }
       },
     );
@@ -104,7 +106,7 @@ export class PollGateway
         };
 
         this.logger.debug(`${username} chatted course ${courseId}`);
-        this.io.to(courseId).emit('chat', chat);
+        client.broadcast.to(courseId).emit('chat', chat);
       },
     );
 
