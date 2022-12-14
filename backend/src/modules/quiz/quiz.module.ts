@@ -12,7 +12,7 @@ import { QuestionModule } from '../question/question.module';
 import { Question } from './entity/question.entity';
 import { Answer } from './entity/answer.entity';
 import { UserAnswerModule } from '../user-answer/user-answer.module';
-
+import { UserQuizModule } from '../user-quiz/user-quiz.module';
 @Module({
   imports: [
     TypeOrmModule.forFeature([Quiz, Question, Answer]),
@@ -23,6 +23,7 @@ import { UserAnswerModule } from '../user-answer/user-answer.module';
     UserCourseModule,
     QuestionModule,
     AnswerModule,
+    UserQuizModule,
   ],
   controllers: [QuizController],
   providers: [QuizService],

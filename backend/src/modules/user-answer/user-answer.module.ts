@@ -8,15 +8,18 @@ import { CourseModule } from '../course/course.module';
 import { AnswerModule } from '../answer/answer.module';
 import { QuizModule } from '../quiz/quiz.module';
 import { QuestionModule } from '../question/question.module';
+import { UserQuiz } from './entity/user-quiz.entity';
+import { UserQuizModule } from '../user-quiz/user-quiz.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([UserAnswer]),
+    TypeOrmModule.forFeature([UserAnswer, UserQuiz]),
     CourseModule,
     UserCourseModule,
     QuizModule,
     QuestionModule,
     AnswerModule,
+    UserQuizModule,
   ],
   controllers: [UserAnswerController],
   providers: [UserAnswerService],

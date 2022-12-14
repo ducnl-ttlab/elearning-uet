@@ -1,3 +1,4 @@
+import { UserQuiz } from './../entity/user-quiz.entity';
 import {
   Injectable,
   InternalServerErrorException,
@@ -12,11 +13,34 @@ export class UserAnswerService {
   constructor(
     @InjectRepository(UserAnswer)
     private readonly userAnswer: Repository<UserAnswer>,
+    @InjectRepository(UserQuiz)
+    private readonly userQuiz: Repository<UserQuiz>,
   ) {}
 
   async save(userAnswer: Partial<UserAnswer>): Promise<UserAnswer> {
     try {
       return this.userAnswer.save(userAnswer);
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  async saveQuiz(userQuiz: Partial<UserQuiz>): Promise<UserQuiz> {
+    try {
+      return this.userQuiz.save(userQuiz);
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  async getUserAnswerQuiz(quizId: number, userId: string) {
+    try {
+      return this.userQuiz.findOne({
+        where: {
+          userId,
+          quizId,
+        },
+      });
     } catch (error) {
       throw new InternalServerErrorException(error);
     }

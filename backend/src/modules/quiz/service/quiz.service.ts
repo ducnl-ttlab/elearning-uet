@@ -231,10 +231,17 @@ export class QuizService {
     return existQuiz;
   }
 
-  async getAnswerList(quizId: number): Promise<{ id: number }[]> {
+  async getAnswerList(quizId: number): Promise<
+    {
+      isCorrect: boolean;
+      answerId: number;
+      questionId: number;
+      mark: number;
+    }[]
+  > {
     try {
       let query = `
-      SELECT a.id
+      SELECT a.id as answerId, a.questionId, qu.mark, a.isCorrect
       FROM answers a
       LEFT JOIN questions qu 
       ON qu.id = a.questionId
@@ -272,16 +279,24 @@ export class QuizService {
 
   async rankCourse(courseId: number) {
     try {
+      // ua.answerId, ua.userId, a.questionId, SUM(qu.mark) as marks, qu.quizId
       let query = `
-        SELECT ua.userId, a.questionId, qu.mark
-        FROM user_answers ua
-        JOIN answers a
-        ON a.id = ua.answerId
-        JOIN questions qu
-        ON qu.id = a.questionId
-        WHERE a.isCorrect = true
+      SELECT u.id, ua.answerId
+      FROM users u
+      JOIN user_answers ua
+      ON u.id = ua.userId
+      JOIN answers a
+      ON a.id = ua.answerId
+      JOIN questions qu
+      ON qu.id = a.questionId
+      JOIN quizes qi
+      ON qi.id = qu.quizId
+      JOIN topics t
+      ON t.id = qi.topicId
+      WHERE a.isCorrect = true and t.courseId = ?
       `;
-      return this.quiz.query(query);
+
+      return this.quiz.query(query, [courseId]);
     } catch (error) {
       throw new InternalServerErrorException(error);
     }

@@ -12,6 +12,7 @@ export enum TableName {
   answer = 'answers',
   userAnswer = 'user_answers',
   favorite = 'favorites',
+  userQuiz = 'user_quizes',
 }
 
 export enum Role {
