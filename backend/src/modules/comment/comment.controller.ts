@@ -2,7 +2,7 @@ import { UserCourseStatus } from './../../../database/constant';
 import { TopicService } from './../topics/service/topic.service';
 import { UserCourse } from './../user-courses/entity/user-course.entity';
 import { CommentService } from './service/comment.service';
-import { CommentType, NotificationType, Role } from 'database/constant';
+import { CommentType, Role } from 'database/constant';
 import {
   Body,
   Controller,
@@ -17,8 +17,8 @@ import {
   NotFoundException,
   ForbiddenException,
 } from '@nestjs/common';
-import { ApiConsumes, ApiTags } from '@nestjs/swagger';
-import { Request, Response } from 'express';
+import { ApiTags } from '@nestjs/swagger';
+import { Response } from 'express';
 import { IUserJwt } from 'src/common/interfaces';
 import {
   Instructor,
@@ -33,7 +33,7 @@ import { Course } from '../course/entity/course.entity';
 import { Topic } from '../topics/entity/topic.entity';
 import { NotificationService } from '../notification/service/notification.service';
 import { getPaginatedItems, mysqlTimeStamp } from 'src/common/ultils';
-// import { checkBadWordScript } from 'src/infra/python-script/check-bad-word';
+import { checkBadWord } from 'src/infra/py/check-bad-word';
 
 @ApiTags('Comment')
 @Controller('comment')
@@ -71,9 +71,7 @@ export class CommentController {
     }
     const { comment } = body;
     // check comment
-    // let idBad = await checkBadWordScript(comment);
-
-    let idBad = false;
+    let idBad = await checkBadWord(comment);
 
     // save comment to db
     let newComment: Partial<Comment> = {
