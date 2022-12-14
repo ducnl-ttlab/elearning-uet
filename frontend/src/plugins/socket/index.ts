@@ -86,6 +86,16 @@ class SocketIo {
             comment: comment,
         });
     }
+
+    sendNotification(userId: string, title: string, description: string) {
+        const newNotification = {
+            userId,
+            title,
+            description,
+        };
+
+        this.emitEvent('notification', newNotification);
+    }
 }
 const socketInstance = new SocketIo();
 
