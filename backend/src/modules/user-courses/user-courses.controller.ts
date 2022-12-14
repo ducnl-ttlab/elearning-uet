@@ -114,8 +114,6 @@ export class UserCourseController {
   ) {
     const { keyword, page, pageSize } = query;
 
-    await this.cache.deleteByKey(`usercourse${user.id}`);
-
     let userCourses: StudentCourseDto[] = await this.cache?.setOrgetCache(
       `usercourse${user.id}`,
       async () => {

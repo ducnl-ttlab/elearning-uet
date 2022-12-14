@@ -8,6 +8,7 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { ConfigService } from '@nestjs/config';
 import { generateChunkFiles } from './infra/local-file/videotohlschunks';
 import { SocketIOAdapter } from './socket-io-adapter';
+import { checkBadWord } from './infra/py/check-bad-word';
 
 async function bootstrap() {
   const logger = new Logger('Main (main.ts)');
@@ -46,5 +47,8 @@ async function bootstrap() {
 
   await app.listen(port);
   logger.log(`Server running on port ${port}`);
+  let a  = await checkBadWord("cam on ban")
+  console.log("32432423",a);
+  
 }
 bootstrap();
