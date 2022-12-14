@@ -25,6 +25,7 @@ export interface CommentNotificationDto {
   userId: string;
   courseOrTopicId: number;
   username: string;
+  sourceUserId: string;
 }
 
 type PickKey<T, K extends keyof T> = Extract<keyof T, K>;

@@ -98,6 +98,7 @@ export class CommentController {
             courseOrTopicId: newComment.sourceId,
             username:
               user.role === Role.instructor ? 'Giảng viên' : user.username,
+            sourceUserId: user.id,
           };
           this.notificationService.saveComment(newNotification);
         }
