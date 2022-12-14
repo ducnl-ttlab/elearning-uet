@@ -1,9 +1,13 @@
 import pickle
 import re
-import sys, json
+import sys
 # Miscellaneous
 import time
 import warnings
+# from tensorflow import keras
+# from keras import backend as K 
+
+
 warnings.filterwarnings('ignore')
 
 vect = pickle.load(open('transformer.h5', 'rb'))
@@ -18,6 +22,7 @@ def replace_url(comment, replacement):
 def remove_encoding(comment):
     comment = str(comment) 
     comment = comment.replace('\ufeff', '')
+    comment = comment.replace('_', ' ')
     return comment
 class Comment():
   def __init__(self, comment):
@@ -37,5 +42,6 @@ class Comment():
 if __name__ == '__main__':
   data = sys.argv[1]
   comment = Comment(comment=data)
+
   print(comment.classification())
 
