@@ -30,6 +30,19 @@ export class PollService {
       return userID === item.userID;
     });
   }
+
+  setAvatar(userID: string, avatar: string) {
+    let userIndex = this.userIndex(userID);
+    if (userIndex !== -1) {
+      this.users[userIndex].image = avatar;
+    }
+  }
+
+  getUser(userId: string): Partial<ISocketUser> {
+    let userIndex = this.userIndex(userId);
+    return userIndex !== -1 ? this.users[userIndex] : {};
+  }
+
   getUsers() {
     return this.users;
   }
