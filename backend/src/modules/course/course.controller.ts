@@ -134,10 +134,10 @@ export class CourseController {
       ...coursePeriod(data.startCourseTime, data.endCourseTime),
     };
     let course = await this.courseService.saveCourse(newCourse);
-    await this.searchService.indexPost<Partial<Course>>(
-      course,
-      TableName.course,
-    );
+    // await this.searchService.indexPost<Partial<Course>>(
+    //   course,
+    //   TableName.course,
+    // );
 
     return res.status(HttpStatus.CREATED).json(new SuccessResponse({ course }));
   }

@@ -47,11 +47,21 @@
                 <label class="fw-bold text-start mb-2 d-flex align-items-center">
                     {{ $t('course.topic.form.content') }}
                 </label>
-                <el-input
+                <!-- <el-input
                     :placeholder="$t('course.topic.form.content')"
                     type="textarea"
                     rows="7"
                     v-model="selectedTopic.content"
+                /> -->
+                <editor
+                    v-model="selectedTopic.content"
+                    api-key="no-api-key"
+                    :init="{
+                        menubar: false,
+                        plugins: 'lists link image emoticons',
+                        toolbar:
+                            'styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist | link image emoticons',
+                    }"
                 />
             </div>
         </div>
@@ -81,16 +91,22 @@ import {
     updateTopic,
 } from '../../services/course';
 import { courseModule } from '../../store/course.store';
+import Editor from '@tinymce/tinymce-vue';
 
 @Options({
-    components: {},
+    components: { Editor },
 })
 export default class TopicFormPopup extends Vue {
-    isCreate = true;
     video: '';
     get isShowTopicFormPopup() {
         return courseModule.isShowTopicFormPopup;
     }
+
+    get popupMode() {
+        return courseModule.topicFormPopupMode;
+    }
+
+    isCreate = this.popupMode === 'create';
 
     selectedTopic: ITopicData = this.isCreate
         ? {}
@@ -127,12 +143,16 @@ export default class TopicFormPopup extends Vue {
 
         formData.append('name', name || '');
         formData.append('description', description || '');
-        formData.append('content', content || '');
+        formData.append('content', content as string);
+
+        console.log(name, 'name');
+        console.log(description, 'description');
+        console.log(content, 'content');
 
         if (this.video) {
             formData.append('file', this.video || '');
         }
-        if (this.isCreate) {
+        if (this.video) {
             const response = await createTopic(formData, courseId);
             if (response.success) {
                 showSuccessNotificationFunction(
@@ -191,31 +211,28 @@ export default class TopicFormPopup extends Vue {
 }
 
 .save {
-    background-color: $color-violet-new-1;
-    color: $color-white;
+    background-color: #6d79e8;
+    color: #fff;
     cursor: pointer;
-    &:hover {
-        background-color: $color-violet-new-opacity-50;
-    }
+}
+
+.save:hover {
+    background-color: #4057d08d;
 }
 
 .cancel {
     background-color: #f7f7f7;
     color: #000;
     cursor: pointer;
-    &:hover {
-        background-color: #f2f2f2;
-    }
+}
+
+.cancel:hover {
+    background-color: #f2f2f2;
 }
 
 .upload-wrapper {
     cursor: pointer;
     background-color: #aaa;
     border: 1px solid #888;
-}
-
-:deep(.el-dialog) {
-    height: 70vh;
-    overflow-y: auto !important;
 }
 </style>

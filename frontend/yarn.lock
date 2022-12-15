@@ -1256,6 +1256,13 @@
     magic-string "^0.25.0"
     string.prototype.matchall "^4.0.6"
 
+"@tinymce/tinymce-vue@^4":
+  version "4.0.7"
+  resolved "https://registry.yarnpkg.com/@tinymce/tinymce-vue/-/tinymce-vue-4.0.7.tgz#811dd87a2a9f70e60c43c2d9d932771c0c8b4677"
+  integrity sha512-1esB8wGWrjPCY+rK8vy3QB1cxwXo7HLJWuNrcyPl6LOVR+QJjub0OiV/C+TUEsLN6OpCtRv+QnIqMC5vXz783Q==
+  dependencies:
+    tinymce "^5.5.0"
+
 "@trysound/sax@0.2.0":
   version "0.2.0"
   resolved "https://registry.npmmirror.com/@trysound/sax/-/sax-0.2.0.tgz#cccaab758af56761eb7bf37af6f03f326dd798ad"
@@ -7063,6 +7070,11 @@ thunky@^1.0.2:
   version "1.1.0"
   resolved "https://registry.npmmirror.com/thunky/-/thunky-1.1.0.tgz#5abaf714a9405db0504732bbccd2cedd9ef9537d"
   integrity sha512-eHY7nBftgThBqOyHGVN+l8gF0BucP09fMo0oO/Lb0w1OF80dJv+lDVpXG60WMQvkcxAkNybKsrEIE3ZtKGmPrA==
+
+tinymce@^5.5.0:
+  version "5.10.7"
+  resolved "https://registry.yarnpkg.com/tinymce/-/tinymce-5.10.7.tgz#d89d446f1962f2a1df6b2b70018ce475ec7ffb80"
+  integrity sha512-9UUjaO0R7FxcFo0oxnd1lMs7H+D0Eh+dDVo5hKbVe1a+VB0nit97vOqlinj+YwgoBDt6/DSCUoWqAYlLI8BLYA==
 
 to-fast-properties@^2.0.0:
   version "2.0.0"

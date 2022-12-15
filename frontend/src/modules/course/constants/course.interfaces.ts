@@ -99,7 +99,7 @@ export interface ITopicData {
     courseId?: number;
     name?: string;
     description?: string;
-    content?: string;
+    content?: string | HTMLElement;
     video?: string;
 }
 

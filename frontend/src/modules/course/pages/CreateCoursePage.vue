@@ -232,7 +232,7 @@ export default class CreateCoursePage extends Vue {
         if (this.thumbnail) {
             formData.append('file', this.thumbnail || '');
         }
-        const response = await createCourse(formData);
+        const response = await createCourse(formData, this.categoryId);
 
         if (response.success) {
             showSuccessNotificationFunction(

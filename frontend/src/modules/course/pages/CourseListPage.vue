@@ -1,23 +1,27 @@
 <template>
-    <div class="display-options d-flex flex-row gap-3">
-        <img
-            @click="handleGridClick()"
-            src="@/assets/course/icons/display-grid.png"
-            :class="{
-                'active-display': courseListDisplayMode === CourseListDisplayMode.GRID,
-            }"
-            alt=""
-            class="display-button"
-        />
-        <img
-            @click="handleListClick()"
-            src="@/assets/course/icons/display-list.png"
-            alt=""
-            :class="{
-                'active-display': courseListDisplayMode === CourseListDisplayMode.LIST,
-            }"
-            class="display-button"
-        />
+    <div class="display-options d-flex flex-row justify-content-between">
+        <div class="d-flex flex-row gap-3">
+            <img
+                @click="handleGridClick()"
+                src="@/assets/course/icons/display-grid.png"
+                :class="{
+                    'active-display':
+                        courseListDisplayMode === CourseListDisplayMode.GRID,
+                }"
+                alt=""
+                class="display-button"
+            />
+            <img
+                @click="handleListClick()"
+                src="@/assets/course/icons/display-list.png"
+                alt=""
+                :class="{
+                    'active-display':
+                        courseListDisplayMode === CourseListDisplayMode.LIST,
+                }"
+                class="display-button"
+            />
+        </div>
     </div>
     <SortTable />
     <CourseListTable v-if="courseListDisplayMode === CourseListDisplayMode.LIST" />

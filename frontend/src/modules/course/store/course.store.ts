@@ -31,6 +31,7 @@ class CourseModule extends VuexModule {
     isAddingQuiz = false;
     messageList: Array<IMessageDetail> = [];
     currentChatTopicId = -1;
+    topicFormPopupMode = '';
 
     @Action
     setCourseList(courseList: Array<ICourseData>) {
@@ -200,6 +201,16 @@ class CourseModule extends VuexModule {
     @Mutation
     SET_CURRENT_TOPIC_ID(topicId: number) {
         this.currentChatTopicId = topicId;
+    }
+
+    @Action
+    setTopicFormPopupMode(mode: string) {
+        this.SET_TOPIC_FORM_POPUP_MODE(mode);
+    }
+
+    @Mutation
+    SET_TOPIC_FORM_POPUP_MODE(mode: string) {
+        this.topicFormPopupMode = mode;
     }
 }
 export const courseModule = getModule(CourseModule);
