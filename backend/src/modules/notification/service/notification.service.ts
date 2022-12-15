@@ -158,6 +158,9 @@ export class NotificationService {
         where: {
           userId,
         },
+        order: {
+          created_at: 'DESC',
+        },
       });
     } catch (error) {
       throw new InternalServerErrorException(error);

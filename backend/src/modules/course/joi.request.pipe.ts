@@ -15,7 +15,7 @@ const categoryParamSchema = Joi.object().keys({
 });
 
 const deleteCourseParamSchema = Joi.object().keys({
-  id: Joi.string()
+  courseId: Joi.string()
     .pattern(/^[0-9]+$/)
     .message('courseId should be a number'),
 });
@@ -73,6 +73,10 @@ const createCourseSchema = Joi.object().keys({
   endCourseTime: Joi.string()
     .min(1)
     .message('endCourseTime should have at least one character')
+    .optional(),
+  categoryId: Joi.string()
+    .pattern(/^[0-9]+$/)
+    .message('categoryId should be a number')
     .optional(),
 });
 
