@@ -159,7 +159,7 @@ export class AuthController {
     });
     const { avatar } = user;
 
-    user.avatar = avatar.startsWith('http')
+    user.avatar = avatar?.startsWith('http')
       ? avatar
       : `${req.protocol}://${host}/user/image/${avatar}`;
 
