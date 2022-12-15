@@ -19,13 +19,17 @@ import {
   StreamableFile,
   InternalServerErrorException,
   Query,
+  Put,
 } from '@nestjs/common';
 import { ApiConsumes, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Request, Response } from 'express';
 import { CourseService } from './service/course.service';
 import { IUserJwt } from 'src/common/interfaces';
-import { User } from 'src/common/decorator/custom.decorator';
-import { Auth } from 'src/common/decorator/auth.decorator';
+import { Instructor, User } from 'src/common/decorator/custom.decorator';
+import {
+  Auth,
+  InstructorCourseAuth,
+} from 'src/common/decorator/auth.decorator';
 import { courseValidation } from './joi.request.pipe';
 import { SuccessResponse } from 'src/common/helpers/api.response';
 import {
@@ -140,6 +144,51 @@ export class CourseController {
     // );
 
     return res.status(HttpStatus.CREATED).json(new SuccessResponse({ course }));
+  }
+
+  @Put(':courseId')
+  @Auth('instructor')
+  @UseInterceptors(LocalFilesInterceptor(imageParams('course')))
+  @UsePipes(
+    ...courseValidation(
+      { type: 'body', key: 'createCourseSchema' },
+      { type: 'param', key: 'deleteCourseParamSchema' },
+    ),
+  )
+  @ApiConsumes('multipart/form-data')
+  @InstructorCourseAuth()
+  async editCourse(
+    @User() user: IUserJwt,
+    @Param() param: CategoryDto,
+    @Res() res: Response,
+    @Body() data: CourseCreateDto,
+    @Instructor() course: Course,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    const isExistCategory = await this.categoryService.findOneById(
+      param.categoryId,
+    );
+    if (!isExistCategory) {
+      throw new NotFoundException('Not found category');
+    }
+
+    if (course.image) {
+      removeImageFile(course.image, 'course');
+    }
+
+    let image;
+    image = (!!file?.filename && file?.filename) || undefined;
+
+    let newCourse: Partial<Course> = {
+      ...data,
+      categoryId: isExistCategory.id,
+      isPublished: (data.isPublished as any) === 'true' ?? data?.isPublished,
+      image: image,
+      ...coursePeriod(data.startCourseTime, data.endCourseTime),
+    };
+    let result = await this.courseService.updateCourse(course.id, newCourse);
+
+    return res.status(HttpStatus.CREATED).json(new SuccessResponse({ result }));
   }
 
   @Get('search')
@@ -261,13 +310,16 @@ export class CourseController {
     return res.status(HttpStatus.CREATED).json(new SuccessResponse(response));
   }
 
-  @Delete(':id')
+  @Delete(':courseId')
   @Auth('instructor')
   @UsePipes(
     ...courseValidation({ type: 'param', key: 'deleteCourseParamSchema' }),
   )
-  async deleteCourse(@Res() res: Response, @Param() params: { id: string }) {
-    const course = await this.courseService.existCourse(+params.id);
+  async deleteCourse(
+    @Res() res: Response,
+    @Param() params: { courseId: string },
+  ) {
+    const course = await this.courseService.existCourse(+params.courseId);
     const { id, image } = course;
     try {
       if (image) {
@@ -275,7 +327,7 @@ export class CourseController {
       }
       await Promise.all([
         this.courseService.deleteCourse(id),
-        this.searchService.removeDataById(id, TableName.course),
+        // this.searchService.removeDataById(id, TableName.course),
       ]);
     } catch (error) {
       throw new InternalServerErrorException(error);
