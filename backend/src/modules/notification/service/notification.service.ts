@@ -26,6 +26,7 @@ export class NotificationService {
     userId,
     courseOrTopicId,
     username,
+    sourceUserId,
   }: CommentNotificationDto) {
     let notificationType = {
       [CommentType.topic]: {
@@ -48,6 +49,7 @@ export class NotificationService {
       isRead: false,
       title: title,
       description: description,
+      sourceId: sourceUserId,
     };
 
     this.saveNotification(newNotification);

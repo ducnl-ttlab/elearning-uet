@@ -1,6 +1,7 @@
 export const common = {
     notification: 'Notification',
     online: 'Online',
+    studentJoinCourse: 'There is a person who want to join your course',
     error: {
         systemError: 'We are experiencing some issues. Please try again later!',
         emptyNotificationList: 'Cannot find any notifications.',

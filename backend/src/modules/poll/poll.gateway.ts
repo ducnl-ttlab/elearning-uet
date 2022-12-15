@@ -106,7 +106,7 @@ export class PollGateway
         };
 
         this.logger.debug(`${username} chatted course ${courseId}`);
-        client.broadcast.to(courseId).emit('chat', chat);
+        this.io.to(courseId).emit('chat', chat);
       },
     );
 

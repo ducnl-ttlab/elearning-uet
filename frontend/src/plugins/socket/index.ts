@@ -81,10 +81,20 @@ class SocketIo {
 
     chatRealtime(courseId: number, sourceId: number, comment: string) {
         this.emitEvent('chat', {
-            courseId: courseId,
+            courseId: `${courseId}`,
             sourceId,
             comment: comment,
         });
+    }
+
+    sendNotification(userId: string, title: string, description: string) {
+        const newNotification = {
+            userId,
+            title,
+            description,
+        };
+
+        this.emitEvent('notification', newNotification);
     }
 }
 const socketInstance = new SocketIo();

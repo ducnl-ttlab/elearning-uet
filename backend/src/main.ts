@@ -8,7 +8,6 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { ConfigService } from '@nestjs/config';
 import { generateChunkFiles } from './infra/local-file/videotohlschunks';
 import { SocketIOAdapter } from './socket-io-adapter';
-import { checkBadWord } from './infra/py/check-bad-word';
 
 async function bootstrap() {
   const logger = new Logger('Main (main.ts)');

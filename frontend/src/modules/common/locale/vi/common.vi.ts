@@ -1,6 +1,7 @@
 export const common = {
     notification: 'Thông báo',
     online: 'Trực tuyến',
+    studentJoinCourse: 'Có học sinh muốn vào khóa học của bạn',
     error: {
         systemError: 'Có lỗi xảy ra, vui lòng thử lại sau ít phút',
         emptyNotificationList: 'Không tìm thấy thông báo nào',

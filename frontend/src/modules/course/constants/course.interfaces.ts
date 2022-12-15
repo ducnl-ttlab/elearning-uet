@@ -50,6 +50,7 @@ export interface ICoursePreviewData {
 export interface IUserCourseData {
     status?: UserCourseStatus;
     favorite?: boolean;
+    instructorId?: string;
 }
 
 export interface IToggleCourseFavoriteResponse {

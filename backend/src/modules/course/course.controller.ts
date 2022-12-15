@@ -92,7 +92,7 @@ export class CourseController {
       ...course,
       image:
         (course.image &&
-          (course.image.startsWith('http')
+          (course.image?.startsWith('http')
             ? course.image
             : `${req.protocol}://${host}/course/image/${course.image}`)) ||
         '',
@@ -246,7 +246,7 @@ export class CourseController {
       return {
         ...course,
         ...date,
-        image: image.startsWith('http')
+        image: image?.startsWith('http')
           ? image
           : `${req.protocol}://${host}/course/image/${image}`,
         created_at: mysqlTimeStamp(created_at),

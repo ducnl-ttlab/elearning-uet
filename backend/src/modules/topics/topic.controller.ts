@@ -80,14 +80,14 @@ export class TopicController {
 
     course.image =
       (course.image &&
-        (course.image.startsWith('http')
+        (course.image?.startsWith('http')
           ? course.image
           : `${req.protocol}://${host}/course/image/${course.image}`)) ||
       '';
 
     course.avatar =
       (course.avatar &&
-        (course.avatar.startsWith('http')
+        (course.avatar?.startsWith('http')
           ? course.avatar
           : `${req.protocol}://${host}/user/image/${course.avatar}`)) ||
       '';
@@ -132,7 +132,7 @@ export class TopicController {
         let { video } = item;
         if (video) {
           let videoName = removeExtention(video);
-          video = video.startsWith('http')
+          video = video?.startsWith('http')
             ? video
             : (videoName &&
                 `${req.protocol}://${host}/chunk/${videoName}/video.m3u8`) ||

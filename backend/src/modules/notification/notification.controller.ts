@@ -66,6 +66,7 @@ export class NotificationController {
     let data = await Promise.all(
       notification[0].map(async (item) => {
         let avatar = '';
+
         if (item?.sourceId) {
           avatar = (await this.userService.findOneById(item.sourceId))?.avatar;
         }

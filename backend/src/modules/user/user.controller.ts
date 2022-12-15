@@ -67,7 +67,7 @@ export class UserController {
     let unreadNotification =
       await this.notificationService.countUnreadNotification(user.id);
 
-    user.avatar = avatar.startsWith('http')
+    user.avatar = avatar?.startsWith('http')
       ? avatar
       : `${req.protocol}://${host}/user/image/${avatar}`;
 
@@ -98,7 +98,7 @@ export class UserController {
 
     let existUser = await this.authService.existEmail(req.user.email);
 
-    if (existUser.avatar && !existUser.avatar.startsWith('http')) {
+    if (existUser.avatar && !existUser.avatar?.startsWith('http')) {
       removeImageFile(existUser.avatar, 'avatar');
     }
 

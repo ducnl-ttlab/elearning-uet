@@ -119,6 +119,7 @@ import {
 import { loginModule } from '@/modules/auth/store/login.store';
 import { commonModule } from '@/modules/common/store/common.store';
 import { userModule } from '@/modules/user/store/user.store';
+import socketInstance from '@/plugins/socket';
 import { Options, Vue } from 'vue-class-component';
 import { UserCourseStatus } from '../../constants/course.constants';
 import { getPriceBackgroundColor } from '../../helpers/commonFunctions';
@@ -211,6 +212,11 @@ export default class CoursePreviewTopic extends Vue {
                 showSuccessNotificationFunction(
                     this.$t('course.success.courseCheckout.freeCourse'),
                 );
+                socketInstance.sendNotification(
+                    this.userCourseData?.instructorId || '',
+                    this.$t('common.notification'),
+                    this.$t('common.studentJoinCourse'),
+                );
             }
         } else {
             let res = response?.errors || [
@@ -228,7 +234,6 @@ export default class CoursePreviewTopic extends Vue {
     }
 
     async handleAccessCourse(actionKey: number) {
-        console.log(actionKey, 'actionKey');
         console.log(userCourseModule.userCourseData.status);
         if (actionKey === 0) {
             if (loginModule.accessToken == '') {
