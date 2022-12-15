@@ -17,15 +17,19 @@ import { courseModule } from '../store/course.store';
 import ChatPopup from '../components/course-detail/ChatPopup.vue';
 import socketInstance from '@/plugins/socket';
 import { cloneDeep } from 'lodash';
+import { userCourseModule } from '../store/user-course.store';
+import { getUserCourseData } from '../services/user-course';
+import { showErrorNotificationFunction } from '@/common/helpers';
 
 @Options({
     components: { CourseDetail, ChatPopup },
 })
 export default class CourseListPage extends Vue {
-    created() {
+    async created() {
         courseModule.setTopicSidebarMode(SidebarMode.COLLAPSED);
         courseModule.setQuizSidebarMode(SidebarMode.COLLAPSED);
         courseModule.setCourseArea(CourseArea.COURSE);
+        await this.getUserCourseData()
         socketInstance.joinRoom(+this.$route.params.courseId);
         socketInstance.listenChat((data) => {
             if (courseModule.currentChatTopicId === data.sourceId) {
@@ -38,6 +42,22 @@ export default class CourseListPage extends Vue {
 
     get isShowChatPopup() {
         return commonModule.isShowChatPopup;
+    }
+
+    async getUserCourseData() {
+        commonModule.setLoadingIndicator(true);
+        const id: number = parseInt(this.$route.params.courseId as string);
+        const response = await getUserCourseData(id);
+        if (response.success) {
+            userCourseModule.setUserCourseData(response?.data || {});
+        } else {
+            let res = response?.errors || [
+                { message: this.$t('landing.categories.errors.getCategoryListError') },
+            ];
+            userCourseModule.setUserCourseData({});
+            showErrorNotificationFunction(res[0].message);
+        }
+        commonModule.setLoadingIndicator(false);
     }
 
     toggleChatPopup() {

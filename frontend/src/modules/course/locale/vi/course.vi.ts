@@ -77,6 +77,7 @@ export const course = {
             createTopic: 'Thêm topic thất bại, vui lòng thử lại sau!',
             deleteTopic: 'Xóa topic thất bại, vui lòng thử lại sau!',
         },
+        sendMessageError: 'Gửi tin nhắn thất bại, vui lòng thử lại sau!',
     },
 
     success: {
@@ -171,5 +172,6 @@ export const course = {
     comment: {
         hidden: 'Tin nhắn này bị hệ thống đánh giá là tiêu cực. Bấm vào biểu tượng con mắt nếu bạn muốn xem',
         instructor: ' (Giảng viên)',
+        commentBlocked: 'Bạn đã bị chặn chat, vui lòng liên hệ giảng viên.',
     },
 };

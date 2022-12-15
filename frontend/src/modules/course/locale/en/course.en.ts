@@ -73,6 +73,7 @@ export const course = {
             deleteTopic: 'Delete topic failed! Please try again later!',
         },
         emptyQuizList: 'This topic does not have any quiz yet.',
+        sendMessageError: 'Cannot send message. Please try again later!',
     },
     success: {
         favoriteCourse: {
@@ -165,5 +166,7 @@ export const course = {
     comment: {
         hidden: 'This comment is marked as sensitive. Click on the eye icon to reveal',
         instructor: ' (Instructor)',
+        commentBlocked:
+            'You have beeN blocked from commentting. Please contact the instructor.',
     },
 };

@@ -55,7 +55,14 @@
             </div>
         </div>
         <div
+            class="bottom d-flex flex-row align-items-center justify-content-center w-100 comment-blocked"
+            v-if="isCommentBlocked"
+        >
+            {{ $t('course.comment.commentBlocked') }}
+        </div>
+        <div
             class="bottom d-flex flex-row align-items-center w-100 gap-4 justify-content-between"
+            v-else
         >
             <el-input
                 @change="handleSendMessage"
@@ -75,6 +82,7 @@
 <script lang="ts">
 import { DEFAULT_FIRST_PAGE } from '@/common/constants';
 import { showErrorNotificationFunction } from '@/common/helpers';
+import { UserCourseStatus } from '@/modules/common/constants/common.interfaces';
 import { commonModule } from '@/modules/common/store/common.store';
 import { userModule } from '@/modules/user/store/user.store';
 import socketInstance from '@/plugins/socket';
@@ -83,6 +91,7 @@ import { Options, Vue } from 'vue-class-component';
 import { IMessageDetail } from '../../constants/course.interfaces';
 import { getMessageList, sendMessage } from '../../services/course';
 import { courseModule } from '../../store/course.store';
+import { userCourseModule } from '../../store/user-course.store';
 import CommentData from './CommentData.vue';
 
 @Options({
@@ -90,7 +99,16 @@ import CommentData from './CommentData.vue';
 })
 export default class ChatPopup extends Vue {
     message = '';
-    topicId = ref(1);
+
+    get isCommentBlocked() {
+        return userCourseModule.userCourseData.status === 'comment_blocking';
+    }
+    get topicId() {
+        return courseModule.selectedTopic?.id;
+    }
+    set topicId(value) {
+        courseModule.setSelectedTopic(value || -1);
+    }
 
     get userId() {
         return userModule.userData.id;
@@ -100,12 +118,13 @@ export default class ChatPopup extends Vue {
         return commonModule.isShowChatPopup;
     }
 
-    get selectedTopic() {
-        return courseModule.selectedTopic;
-    }
-
     get topicList() {
         return courseModule.topicList;
+    }
+
+    get messageList() {
+        this.setScroll();
+        return courseModule.messageList;
     }
 
     isOwnMessage(message: IMessageDetail) {
@@ -116,22 +135,18 @@ export default class ChatPopup extends Vue {
         commonModule.toggleChatPopup(false);
     }
 
-    get messageList() {
-        return courseModule.messageList;
-    }
-
     async getMessageList() {
         commonModule.setLoadingIndicator(true);
         const courseId = +this.$route.params.courseId;
         const params = {
-            topicId: +this.topicId,
+            topicId: this.topicId,
             page: DEFAULT_FIRST_PAGE,
             pageSize: 100,
         };
         const response = await getMessageList(courseId, params);
         if (response.success) {
             courseModule.setMessageList(response.data?.items || []);
-            courseModule.setCurrentChatTopicId(+this.topicId);
+            courseModule.setCurrentChatTopicId(this.topicId || -1);
         } else {
             courseModule.setMessageList([]);
             showErrorNotificationFunction('');
@@ -139,28 +154,44 @@ export default class ChatPopup extends Vue {
         commonModule.setLoadingIndicator(false);
     }
 
-    mounted() {
+    created() {
+        this.setScroll();
         this.$watch('isShowChatPopup', () => {
             this.getMessageList();
+            this.setScroll();
         });
         this.$watch('topicId', () => {
             this.getMessageList();
+            this.setScroll();
         });
+        // this.$watch('messageList', () => {
+        //     this.setScroll();
+        // });
+    }
+
+    setScroll() {
+        const container = document.querySelector('.middle');
+        if (container) {
+            container.scrollTop = container.scrollHeight;
+        }
     }
 
     async handleSendMessage() {
-        commonModule.setLoadingIndicator(true);
         const courseId = +this.$route.params.courseId;
-        socketInstance.chatRealtime(courseId, +this.topicId, this.message);
-        const response = await sendMessage(courseId, +this.topicId, this.message);
-        if (response.success) {
-            // courseModule.setMessageList(response.data?.items || []);
+
+        if (this.message !== '') {
+            socketInstance.chatRealtime(courseId, this.topicId || -1, this.message);
+            const response = await sendMessage(
+                courseId,
+                this.topicId || -1,
+                this.message,
+            );
+            this.setScroll();
             this.message = '';
-            // await this.getMessageList();
-        } else {
-            // showErrorNotificationFunction('');
+            if (!response.success) {
+                showErrorNotificationFunction('course.errors.commentError');
+            }
         }
-        commonModule.setLoadingIndicator(false);
     }
 }
 </script>
@@ -199,7 +230,7 @@ export default class ChatPopup extends Vue {
 .bottom {
     border-top: 1px solid #f0f0f0;
     border-radius: 7px;
-    padding: 15px 5px 5px;
+    padding: 10px;
     flex: 0 0 auto;
 }
 
@@ -222,6 +253,14 @@ export default class ChatPopup extends Vue {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.comment-blocked {
+    font-size: 13px;
+    font-style: italic;
+    color: #0f0f0f;
+    font-weight: 400;
+    padding: 10px 0;
 }
 
 @media only screen and (max-width: map-get($map: $grid-breakpoints, $key: xl)) {
