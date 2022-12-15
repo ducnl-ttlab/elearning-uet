@@ -320,15 +320,13 @@ export class UserCourseController {
     let status: CheckRegisterDto['status'] =
       userCourse?.status || user.role || 'guest';
 
-    return res
-      .status(HttpStatus.OK)
-      .json(
-        new SuccessResponse({
-          status,
-          favorite: !!favorite,
-          instructorId: course.instructorId,
-        }),
-      );
+    return res.status(HttpStatus.OK).json(
+      new SuccessResponse({
+        status,
+        favorite: !!favorite,
+        instructorId: course.instructorId,
+      }),
+    );
   }
 
   @Get('student-list/:courseId')
@@ -363,7 +361,7 @@ export class UserCourseController {
       const { avatar, startCourseTime } = item;
       return {
         ...item,
-        avatar: avatar.startsWith('http')
+        avatar: avatar?.startsWith('http')
           ? avatar
           : `${req.protocol}://${host}/user/image/${avatar}`,
         startCourseTime: mysqlTime(startCourseTime),
