@@ -47,21 +47,10 @@
                 <label class="fw-bold text-start mb-2 d-flex align-items-center">
                     {{ $t('course.topic.form.content') }}
                 </label>
-                <!-- <el-input
-                    :placeholder="$t('course.topic.form.content')"
-                    type="textarea"
-                    rows="7"
-                    v-model="selectedTopic.content"
-                /> -->
                 <editor
                     v-model="selectedTopic.content"
-                    api-key="no-api-key"
-                    :init="{
-                        menubar: false,
-                        plugins: 'lists link image emoticons',
-                        toolbar:
-                            'styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist | link image emoticons',
-                    }"
+                    api-key="ztdxquej3s6xf8bvkjxffvizlccpvno0r18e89gidaslllug"
+                    :init="toolbarInit"
                 />
             </div>
         </div>
@@ -69,7 +58,7 @@
             <div class="button save" @click="handleSubmitTopic">
                 {{ $t('course.topic.form.save') }}
             </div>
-            <div class="button cancel" @click="handleCancel">
+            <div class="button cancel" @click="closeTopicFormPopup">
                 {{ $t('course.topic.form.cancel') }}
             </div>
         </div>
@@ -98,6 +87,15 @@ import Editor from '@tinymce/tinymce-vue';
 })
 export default class TopicFormPopup extends Vue {
     video: '';
+    get toolbarInit() {
+        return {
+            menubar: false,
+            plugins: 'lists link image emoticons code',
+            toolbar:
+                'undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help | code',
+        };
+    }
+
     get isShowTopicFormPopup() {
         return courseModule.isShowTopicFormPopup;
     }
@@ -130,6 +128,22 @@ export default class TopicFormPopup extends Vue {
         });
     }
 
+    async reloadTopicList() {
+        const courseId = +this.$route.params.courseId;
+        commonModule.setLoadingIndicator(true);
+        const response = await getTopicList(courseId);
+        if (response.success) {
+            showSuccessNotificationFunction(this.$t('course.success.topic.createTopic'));
+            courseModule.setTopicList(response.data?.items || []);
+        } else {
+            let res = response?.errors || [
+                { message: this.$t('course.errors.topic.createTopic') },
+            ];
+            showErrorNotificationFunction(res[0].message);
+        }
+        commonModule.setLoadingIndicator(false);
+    }
+
     async handleSubmitTopic() {
         commonModule.setLoadingIndicator(true);
         const topicData: ITopicData = {
@@ -152,13 +166,13 @@ export default class TopicFormPopup extends Vue {
         if (this.video) {
             formData.append('file', this.video || '');
         }
-        if (this.video) {
+        if (this.isCreate) {
             const response = await createTopic(formData, courseId);
             if (response.success) {
                 showSuccessNotificationFunction(
                     this.$t('course.success.topic.createTopic'),
                 );
-                await getTopicList(courseId);
+                await this.reloadTopicList();
             } else {
                 let res = response?.errors || [
                     { message: this.$t('course.errors.topic.createTopic') },
@@ -171,7 +185,7 @@ export default class TopicFormPopup extends Vue {
                 showSuccessNotificationFunction(
                     this.$t('course.success.topic.updateTopic'),
                 );
-                await getTopicList(courseId);
+                await this.reloadTopicList();
             } else {
                 let res = response?.errors || [
                     { message: this.$t('course.errors.topic.editTopic') },

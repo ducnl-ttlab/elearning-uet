@@ -33,7 +33,7 @@
                 <source :src="selectedTopic?.video" type="application/x-mpegURL" />
             </video>
         </div>
-        <div class="topic-detail-content">{{ selectedTopic?.content }}</div>
+        <div class="topic-detail-content" v-html="selectedTopic?.content"></div>
         <BaseNoResult
             v-if="selectedTopic && !selectedTopic.id"
             :message="
