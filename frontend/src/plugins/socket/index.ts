@@ -44,6 +44,13 @@ class SocketIo {
             },
         );
     }
+    listenEvent<T>(name: string, cb: (data: T) => void) {
+        this.socket.on(name, cb);
+    }
+
+    emitEvent<T>(name: string, data: T) {
+        this.socket.emit(name, data);
+    }
 
     disconnect() {
         this.socket.removeAllListeners;
@@ -58,14 +65,6 @@ class SocketIo {
     setAccessToken(accessToken: string) {
         (this.socket.io.opts.extraHeaders as any).token = accessToken;
         this.socket.connect();
-    }
-
-    listenEvent<T>(name: string, cb: (data: T) => void) {
-        this.socket.on(name, cb);
-    }
-
-    emitEvent<T>(name: string, data: T) {
-        this.socket.emit(name, data);
     }
 
     joinRoom(courseId: number) {

@@ -39,7 +39,7 @@ export interface StudentCourseDto {
   startBlockTime: Date;
   status: UserCourseStatus;
   rating: number;
-
+  description: string;
   courseId: number;
   name: string;
   instructorName: string;
