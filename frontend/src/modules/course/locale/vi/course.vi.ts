@@ -137,6 +137,7 @@ export const course = {
             description: 'Mô tả',
             content: 'Nội dung',
             video: 'Đăng tải video',
+            delete: 'Xóa',
             save: 'Lưu',
             cancel: 'Hủy',
         },

@@ -65,8 +65,8 @@
             v-else
         >
             <el-input
-                @change="handleSendMessage"
                 class="input send-message-input"
+                @keyup.enter="handleSendMessage"
                 :placeholder="$t('course.chat.sendMessage')"
                 v-model="message"
                 autocomplete="off"
@@ -159,6 +159,7 @@ export default class ChatPopup extends Vue {
         this.$watch('isShowChatPopup', () => {
             this.getMessageList();
             this.setScroll();
+            courseModule.resetUnreadMessageCount();
         });
         this.$watch('topicId', () => {
             this.getMessageList();
@@ -178,7 +179,6 @@ export default class ChatPopup extends Vue {
 
     async handleSendMessage() {
         const courseId = +this.$route.params.courseId;
-
         if (this.message !== '') {
             socketInstance.chatRealtime(courseId, this.topicId || -1, this.message);
             const response = await sendMessage(
@@ -261,6 +261,10 @@ export default class ChatPopup extends Vue {
     color: #0f0f0f;
     font-weight: 400;
     padding: 10px 0;
+}
+
+.send-message-icon {
+    cursor: pointer;
 }
 
 @media only screen and (max-width: map-get($map: $grid-breakpoints, $key: xl)) {

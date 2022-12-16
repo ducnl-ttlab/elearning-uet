@@ -3,6 +3,7 @@
         <CourseDetail />
         <div @click="toggleChatPopup" class="chat-wrapper">
             <img src="@/assets/course/images/chat.png" width="40" alt="" />
+            <div class="unread-counter">{{ unreadMessageCount }}</div>
         </div>
         <ChatPopup />
     </div>
@@ -25,19 +26,8 @@ import { showErrorNotificationFunction } from '@/common/helpers';
     components: { CourseDetail, ChatPopup },
 })
 export default class CourseListPage extends Vue {
-    async created() {
-        courseModule.setTopicSidebarMode(SidebarMode.COLLAPSED);
-        courseModule.setQuizSidebarMode(SidebarMode.COLLAPSED);
-        courseModule.setCourseArea(CourseArea.COURSE);
-        await this.getUserCourseData()
-        socketInstance.joinRoom(+this.$route.params.courseId);
-        socketInstance.listenChat((data) => {
-            if (courseModule.currentChatTopicId === data.sourceId) {
-                let newChat = cloneDeep(courseModule.messageList);
-                let chatList = newChat.concat(data);
-                courseModule.setMessageList(chatList);
-            }
-        });
+    get unreadMessageCount() {
+        return courseModule.unreadMessageCount;
     }
 
     get isShowChatPopup() {
@@ -63,6 +53,24 @@ export default class CourseListPage extends Vue {
     toggleChatPopup() {
         commonModule.toggleChatPopup(true);
     }
+
+    async mounted() {
+        courseModule.setTopicSidebarMode(SidebarMode.COLLAPSED);
+        courseModule.setQuizSidebarMode(SidebarMode.COLLAPSED);
+        courseModule.setCourseArea(CourseArea.COURSE);
+        courseModule.resetUnreadMessageCount();
+        commonModule.toggleChatPopup(false);
+        await this.getUserCourseData();
+        socketInstance.joinRoom(+this.$route.params.courseId);
+        socketInstance.listenChat((data) => {
+            if (courseModule.currentChatTopicId === data.sourceId) {
+                let newChat = cloneDeep(courseModule.messageList);
+                let chatList = newChat.concat(data);
+                courseModule.setMessageList(chatList);
+                courseModule.incrementUnreadMessageCount();
+            }
+        });
+    }
 }
 </script>
 <style lang="scss" scoped>
@@ -78,5 +86,15 @@ export default class CourseListPage extends Vue {
     &:hover {
         background: $color-violet-new-2;
     }
+}
+
+.unread-counter {
+    padding: 1px 4px;
+    background: red;
+    border-radius: 50%;
+    color: $color-white;
+    position: absolute;
+    top: 0%;
+    right: 0%;
 }
 </style>

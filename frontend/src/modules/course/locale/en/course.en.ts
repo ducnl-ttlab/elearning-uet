@@ -133,6 +133,7 @@ export const course = {
             description: 'Description',
             content: 'Content',
             video: 'Upload video',
+            delete: 'Delete',
             save: 'Save',
             cancel: 'Cancel',
         },
