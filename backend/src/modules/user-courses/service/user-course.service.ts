@@ -11,7 +11,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { StudentCourseDto } from '../dto/user-course.dto';
 import { UserCourse } from '../entity/user-course.entity';
+import { Rating } from 'src/modules/rating/entity/rating.entity';
 
+type UserRating = UserCourse & Rating;
 @Injectable()
 export class UserCourseService {
   constructor(
@@ -131,6 +133,22 @@ export class UserCourseService {
           courseId,
         },
       });
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  async findUserRating(userId: string, courseId: number): Promise<UserRating[]> {
+    try {
+      const query = `
+      SELECT *
+      FROM user_courses uc
+      JOIN ratings r
+      ON r.userCourseId = uc.id
+      WHERE uc.userId = ? and uc.courseId = ?
+      LIMIT 1
+      `;
+      return this.usercourse.query(query, [userId, courseId]);
     } catch (error) {
       throw new InternalServerErrorException(error);
     }
