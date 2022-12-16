@@ -1,3 +1,4 @@
+import { generateAvatar } from './../../common/ultils';
 import { NotificationService } from './../notification/service/notification.service';
 import {
   Controller,
@@ -49,7 +50,6 @@ import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { User } from 'src/common/decorator/custom.decorator';
 import { Auth } from 'src/common/decorator/auth.decorator';
 import { RoleDto } from './dto/role.dto';
-const gravatar = require('gravatar');
 
 @ApiTags('Authentication')
 @Controller('auth')
@@ -94,11 +94,7 @@ export class AuthController {
       email,
       id,
     });
-    let avatar = await gravatar.url(
-      email,
-      { s: '100', r: 'x', d: 'retro' },
-      true,
-    );
+    let avatar = generateAvatar(id);
 
     await Promise.all([
       this.mailService.sendUserEmailConfirmation(

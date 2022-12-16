@@ -113,7 +113,6 @@ export class UserCourseController {
     @Query() query: { keyword: string; page: number; pageSize: number },
   ) {
     const { keyword, page, pageSize } = query;
-
     let userCourses: StudentCourseDto[] = await this.cache?.setOrgetCache(
       `usercourse${user.id}`,
       async () => {
@@ -310,7 +309,7 @@ export class UserCourseController {
     if (!course) {
       throw new NotFoundException('Not found course');
     }
-    let userCourse = await this.userCourseService.findOneByUsercourse(
+    let [userCourse] = await this.userCourseService.findUserRating(
       user.id,
       course.id,
     );
@@ -325,6 +324,7 @@ export class UserCourseController {
         status,
         favorite: !!favorite,
         instructorId: course.instructorId,
+        rating: userCourse?.rating,
       }),
     );
   }

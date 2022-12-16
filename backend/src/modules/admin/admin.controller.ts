@@ -68,6 +68,20 @@ export class AdminController {
     @Headers('host') host: Headers,
   ) {
     let courses = await this.adminService.getAllCourses();
+    courses = courses.map((item) => {
+      const { avatar, image } = item;
+      return {
+        ...item,
+        avatar:
+          avatar && avatar?.startsWith('http')
+            ? avatar
+            : `${req.protocol}://${host}/user/image/${avatar}` || '',
+        image:
+          image && image?.startsWith('http')
+            ? image
+            : `${req.protocol}://${host}/course/image/${image}` || '',
+      };
+    });
     return res.status(HttpStatus.OK).json(new SuccessResponse(courses));
   }
 

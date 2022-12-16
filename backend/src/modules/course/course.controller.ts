@@ -20,6 +20,7 @@ import {
   InternalServerErrorException,
   Query,
   Put,
+  ForbiddenException,
 } from '@nestjs/common';
 import { ApiConsumes, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Request, Response } from 'express';
@@ -53,7 +54,7 @@ import {
   mysqlToTime,
   removeImageFile,
 } from 'src/common/ultils';
-import { TableName } from 'database/constant';
+import { Role, TableName } from 'database/constant';
 import { join } from 'path';
 import { createReadStream } from 'fs';
 const fs = require('fs');
@@ -311,16 +312,24 @@ export class CourseController {
   }
 
   @Delete(':courseId')
-  @Auth('instructor')
+  @Auth('instructor', 'admin')
   @UsePipes(
     ...courseValidation({ type: 'param', key: 'deleteCourseParamSchema' }),
   )
   async deleteCourse(
     @Res() res: Response,
     @Param() params: { courseId: string },
+    @User() user: IUserJwt,
   ) {
     const course = await this.courseService.existCourse(+params.courseId);
     const { id, image } = course;
+    if (user.role === Role.instructor) {
+      if (course.instructorId !== user.id) {
+        throw new ForbiddenException(
+          'you do not have right to delete this course',
+        );
+      }
+    }
     try {
       if (image) {
         removeImageFile(image, 'course');

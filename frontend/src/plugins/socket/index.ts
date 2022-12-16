@@ -5,6 +5,7 @@ import { Socket } from 'socket.io-client';
 import { io } from 'socket.io-client';
 import { ElNotification } from 'element-plus';
 import { IMessageDetail } from '@/modules/course/constants/course.interfaces';
+const BE_API = process.env.VUE_APP_API_URL as string;
 
 class SocketIo {
     private socket: Socket;
@@ -14,7 +15,7 @@ class SocketIo {
     }
 
     init() {
-        this.socket = io(`http://localhost:5000`, {
+        this.socket = io(BE_API, {
             extraHeaders: {
                 token: localStorageTokenService.getAccessToken() || '',
             },
@@ -44,6 +45,13 @@ class SocketIo {
             },
         );
     }
+    listenEvent<T>(name: string, cb: (data: T) => void) {
+        this.socket.on(name, cb);
+    }
+
+    emitEvent<T>(name: string, data: T) {
+        this.socket.emit(name, data);
+    }
 
     disconnect() {
         this.socket.removeAllListeners;
@@ -58,14 +66,6 @@ class SocketIo {
     setAccessToken(accessToken: string) {
         (this.socket.io.opts.extraHeaders as any).token = accessToken;
         this.socket.connect();
-    }
-
-    listenEvent<T>(name: string, cb: (data: T) => void) {
-        this.socket.on(name, cb);
-    }
-
-    emitEvent<T>(name: string, data: T) {
-        this.socket.emit(name, data);
     }
 
     joinRoom(courseId: number) {
