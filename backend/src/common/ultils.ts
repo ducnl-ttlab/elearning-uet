@@ -123,3 +123,22 @@ export function hasFile(path: string) {
   }
   return false;
 }
+
+export const generateAvatar = (identify: string, stt?: number) => {
+  const name = [
+    'croodles',
+    'micah',
+    'avataaars',
+    'adventurer',
+    'big-smile',
+    'miniavs',
+    'open-peeps',
+    'personas',
+  ];
+  const index = stt % name.length;
+  const randomIndex = Math.floor(Math.random() * name.length);
+  const avatarApi = (avatarName: string, id: string) =>
+    `https://avatars.dicebear.com/api/${avatarName}/${id}.svg`;
+
+  return avatarApi(name[index || randomIndex], identify);
+};
