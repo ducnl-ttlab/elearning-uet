@@ -1,4 +1,7 @@
-import { instructorCourseDetailDto } from './../dto/course.dto';
+import {
+  adminInstructorCourse,
+  instructorCourseDetailDto,
+} from './../dto/course.dto';
 import { UserService } from 'src/modules/user/service/user.service';
 import {
   Injectable,
@@ -61,7 +64,7 @@ export class CourseService {
     }
   }
 
-  async getAllCourses() {
+  async getAllCourses(): Promise<adminInstructorCourse[]> {
     try {
       let query = `
         SELECT c.*, u.username as instructorName, u.email, u.address, u.phone, u.avatar

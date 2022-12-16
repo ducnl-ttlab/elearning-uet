@@ -91,3 +91,11 @@ export interface instructorCourseDetailDto extends Course {
   avgRating: string;
   studentTotal: string;
 }
+
+export type adminInstructorCourse = Course & {
+  instructorName: string;
+  email: string;
+  address: string;
+  phone: string;
+  avatar: string;
+};
