@@ -14,19 +14,18 @@ WHERE a.isCorrect = true and t.courseId = ?
 
 
 SELECT uq.userId as id, SUM(uq.markTotal) as markTotal, t.courseId
-FROM user_quizes uq         
-JOIN quizes qi         
+FROM user_quizes uq
+JOIN quizes qi
 ON qi.id = uq.quizId
-JOIN topics t         
-ON t.id = qi.topicId 
+JOIN topics t
+ON t.id = qi.topicId
 GROUP BY uq.id;
 
-      
-userId, username, email, image, startCourseTime, status, 
+userId, username, email, image, startCourseTime, status,
 
 SELECT uc.userId, u.username, u.email, u.avatar, uc.startCourseTime, uc.status
 FROM user_courses uc
-JOIN users u 
+JOIN users u
 ON u.id = uc.userId
 WHERE uc.courseId = 1
 
@@ -34,14 +33,14 @@ WHERE uc.courseId = 1
 SELECT u.*, uc.status
 FROM users u
 JOIN user_courses uc on uc.userId = u.id
-WHERE u.id not in  
-    ( SELECT uc.userId as id 
+WHERE u.id not in
+    ( SELECT uc.userId as id
     FROM user_courses uc
     WHERE uc.courseId = 1 )
 
-SELECT * 
+SELECT *
 FROM user_courses uc
-JOIN users u 
+JOIN users u
 WHERE uc.userId = '123456abf'
 
 
