@@ -57,6 +57,23 @@ export async function createCourse(
         });
 }
 
+export async function deleteCourse(
+    courseId: number,
+): Promise<IAxiosDefaultResponse<Record<string, unknown>>> {
+    return axios
+        .delete(`${BE_URL}/course/${courseId}`, {
+            headers: {
+                Authorization: 'Bearer ' + localStorageTokenService.getAccessToken(),
+            },
+        })
+        .then((res) => {
+            return res.data;
+        })
+        .catch((error) => {
+            return error.response.data;
+        });
+}
+
 export async function getCoursePreviewData(
     courseId: number,
 ): Promise<IAxiosDefaultResponse<ICoursePreviewData>> {

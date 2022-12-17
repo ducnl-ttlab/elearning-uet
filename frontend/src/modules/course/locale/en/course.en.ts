@@ -34,6 +34,7 @@ export const course = {
             pendingCourse: 'Waiting the instructor to approve your request.',
             expiredCourse: 'The course has been expired.',
         },
+        confirmDelete: 'Are you sure you want to delete this course?',
     },
 
     filters: {
@@ -78,6 +79,7 @@ export const course = {
         sendMessageError: 'Cannot send message. Please try again later!',
         leaveRatingError: 'Leave rating error. Please try again later!',
         chooseRole: 'Cannot access course. Please select your role first!',
+        deleteCourseError: 'Error deleting this course. Please try again later!',
     },
     success: {
         favoriteCourse: {
@@ -102,6 +104,7 @@ export const course = {
             deleteQuiz: 'Delete quiz successfully!',
         },
         leaveRating: 'Rate course successfully!',
+        deleteCourse: 'Delete course successfully',
     },
     coursePopup: {
         showStudentList: 'Student List',
@@ -118,6 +121,9 @@ export const course = {
         courseDetail: 'Course Details',
         quiz: 'Quizzes',
         studentList: 'Student List',
+        deleteCourse: 'Delete Course',
+        activateCourse: 'Activate Course',
+        suspendCourse: 'Suspend Course',
     },
 
     topicSidebar: {

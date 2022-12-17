@@ -36,24 +36,6 @@
                     </div>
 
                     <div class="create-course-buttons">
-                        <div>
-                            <el-button
-                                type="primary"
-                                :class="[
-                                    { 'active-color': status, 'inactive-color': !status },
-                                    'active-courses',
-                                    'w-100',
-                                    'buttons',
-                                ]"
-                                @click="handleActive"
-                            >
-                                {{
-                                    status
-                                        ? $t('course.course.active')
-                                        : $t('course.course.inactive')
-                                }}
-                            </el-button>
-                        </div>
                         <el-button
                             type="primary"
                             class="create-course w-100 buttons"

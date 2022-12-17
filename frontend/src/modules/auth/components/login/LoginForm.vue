@@ -1,7 +1,7 @@
 <template>
     <div class="login-form-container d-flex flex-column">
         <div class="title">{{ $t('auth.general.welcomeTitle') }}</div>
-        <div class="inputs d-flex flex-column">
+        <div class="inputs d-flex flex-column pt-3">
             <BaseInputText
                 class="input"
                 :label="$t('auth.register.credential.label')"
