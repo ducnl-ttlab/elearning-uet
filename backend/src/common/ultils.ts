@@ -108,7 +108,7 @@ export function getPaginatedItems(
     total_pages: Math.ceil(items.length / pgSize),
   };
 }
-type Folder = 'avatar' | 'course';
+type Folder = 'avatar' | 'course'| 'video';
 
 export function removeImageFile(image: string, folder: Folder) {
   let path = join(process.cwd(), `/uploads/${folder}/${image}`);

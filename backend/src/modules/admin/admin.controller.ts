@@ -1,4 +1,4 @@
-import { filterUser } from 'src/common/ultils';
+import { filterUser, removeImageFile } from 'src/common/ultils';
 import { NotificationService } from '../notification/service/notification.service';
 import { Role } from 'database/constant';
 import {
@@ -14,6 +14,8 @@ import {
   Put,
   BadRequestException,
   Body,
+  Delete,
+  InternalServerErrorException,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Response, Request } from 'express';
@@ -62,7 +64,6 @@ export class AdminController {
   @Get('courses')
   @Auth('admin')
   async getCourses(
-    @Body() body: LoginBody,
     @Res() res: Response,
     @Req() req: IUserReq<IUserJwt>,
     @Headers('host') host: Headers,
@@ -102,8 +103,6 @@ export class AdminController {
   async editCourses(
     @Body() body: EditCourseDto,
     @Res() res: Response,
-    @Req() req: IUserReq<IUserJwt>,
-    @Headers('host') host: Headers,
     @Param() param: courseParam,
   ) {
     const { courseId } = param;
@@ -184,6 +183,31 @@ export class AdminController {
     let updateCoures = await this.userService.updateUser(userId, updateUser);
 
     return res.status(HttpStatus.OK).json(new SuccessResponse(updateCoures));
+  }
+
+  @Delete('users/:userId')
+  @Auth('admin')
+  @UsePipes(...validation({ type: 'param', key: 'userParamSchema' }))
+  async deleteCourse(
+    @Res() res: Response,
+    @Param() params: { userId: string },
+  ) {
+    const userExist = await this.userService.findOneById(params.userId);
+    if (!userExist) {
+      throw new BadRequestException('user is not exist');
+    }
+    const { id, avatar } = userExist;
+
+    try {
+      if (avatar) {
+        removeImageFile(avatar, 'avatar');
+      }
+      await Promise.all([this.userService.delete(id)]);
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+
+    return res.status(HttpStatus.OK).json(new SuccessResponse());
   }
 
   @Put('users/role/:userId')

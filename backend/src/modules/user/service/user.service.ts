@@ -91,6 +91,16 @@ export class UserService {
     }
   }
 
+  async delete(id: string) {
+    try {
+      return this.userRepository.delete({
+        id,
+      });
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
   async findGoogleUser(email: string): Promise<User> {
     try {
       return this.userRepository.findOne({

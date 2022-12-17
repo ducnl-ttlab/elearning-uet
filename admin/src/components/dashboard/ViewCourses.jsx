@@ -1,37 +1,15 @@
 import React, { useState, useEffect } from "react";
-import Material from "material-table";
 import MaterialTable from "material-table";
-import AdminService from "../../service/AdminService";
-import { ClearIcon } from "../common/icons";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
-import { doGetCourseList, doEditCourseList } from "../../redux/actions";
+import {
+  doGetCourseList,
+  doEditCourseList,
+  doDeleteCourse,
+} from "../../redux/actions";
 
 function ViewCourses() {
-  const [getCourses, setCourses] = useState([
-    // {
-    //   id: 2,
-    //   categoryId: 3,
-    //   instructorId: "19020226",
-    //   name: "Khóa học Front-end căn bản (ReactJS - Bootstrap)",
-    //   description:
-    //     "Khóa học tiếp theo của khóa Web căn bản, dành cho các bạn theo thiên hướng Front-end",
-    //   isPublished: 1,
-    //   price: 102,
-    //   image:
-    //     "https://res.cloudinary.com/subarashis/image/upload/v1637942622/courses/csetvbz8bxpzzlkpy9nx.png",
-    //   startCourseTime: null,
-    //   endCourseTime: null,
-    //   created_at: "2022-12-09T11:40:34.000Z",
-    //   updated_at: "2022-12-09T11:40:34.000Z",
-    //   instructorName: "Lê Trần Lâm Bình",
-    //   email: "19020226@vnu.edu.vn",
-    //   address: null,
-    //   phone: "012345678",
-    //   avatar:
-    //     "https://s.gravatar.com/avatar/283488939cea6d19c39498511bebc63b?s=100&r=x&d=retro",
-    // },
-  ]);
+  const [getCourses, setCourses] = useState([]);
   const dispatch = useDispatch();
   const store = useSelector((state) => state.store);
 
@@ -94,16 +72,6 @@ function ViewCourses() {
     }
   }, [store.courseList.courses]);
 
-  const handleDeleteCourse = (data) => {
-    // AdminService.deleteCourse(data.id)
-    //   .then((res) => {
-    //     setToastList([showToast("success", "thông báo!", "Xoá thành công!")]);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err.response.data);
-    //   });
-  };
-
   const handleEditRow = (newValue, oldValue, rowData, columnDef) => {
     let body = {
       [columnDef.field]: newValue,
@@ -116,6 +84,33 @@ function ViewCourses() {
     });
   };
 
+  const optionStyles = () => ({
+    actionsColumnIndex: -1,
+    pageSize: 10,
+    headerStyle: {
+      backgroundColor: "#039be5",
+      color: "#FFF",
+    },
+    rowStyle: {
+      backgroundColor: "#EEE",
+      padding: 5,
+    },
+  });
+
+  const handleEditable = () => ({
+    onRowDelete: (oldData) =>
+      new Promise((resolve, reject) => {
+        setTimeout(() => {
+          const dataDelete = [...getCourses];
+          const index = oldData.tableData.id;
+          dataDelete.splice(index, 1);
+          setCourses([...dataDelete]);
+          dispatch(doDeleteCourse(oldData.id));
+          resolve();
+        }, 0);
+      }),
+  });
+
   return (
     <Wrap>
       <MaterialTable
@@ -123,31 +118,8 @@ function ViewCourses() {
         style={{ padding: 10 }}
         data={getCourses}
         columns={columns}
-        options={{
-          actionsColumnIndex: -1,
-          pageSize: 10,
-          headerStyle: {
-            backgroundColor: "#039be5",
-            color: "#FFF",
-          },
-          rowStyle: {
-            backgroundColor: "#EEE",
-            padding: 5,
-          },
-        }}
-        editable={{
-          onRowDelete: (oldData) =>
-            new Promise((resolve, reject) => {
-              setTimeout(() => {
-                handleDeleteCourse(oldData);
-                const dataDelete = [...getCourses];
-                const index = oldData.tableData.id;
-                dataDelete.splice(index, 1);
-                setCourses([...dataDelete]);
-                resolve();
-              }, 1000);
-            }),
-        }}
+        options={optionStyles()}
+        editable={handleEditable()}
         cellEditable={{
           cellStyle: {},
           onCellEditApproved: handleEditRow,

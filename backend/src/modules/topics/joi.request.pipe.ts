@@ -16,9 +16,19 @@ const createTopicSchema = Joi.object().keys({
   content: Joi.string().min(1).required(),
 });
 
+const deleteTopicParam = Joi.object().keys({
+  courseId: Joi.string()
+    .pattern(/^[0-9]+$/)
+    .message('courseId should be a number'),
+  topicId: Joi.string()
+    .pattern(/^[0-9]+$/)
+    .message('topicId should be a number'),
+});
+
 const validationSchemas = {
   courseIdParamSchema,
   createTopicSchema,
+  deleteTopicParam,
 };
 
 type validationKeyType = keyof typeof validationSchemas;

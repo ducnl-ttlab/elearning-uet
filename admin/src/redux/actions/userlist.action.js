@@ -60,3 +60,23 @@ export const doUpdateRole = (userId, role) => async (dispatch) => {
       dispatch({ type: SET_NOTIFICATION, notification });
     });
 };
+
+export const doDeleteUser = (userId) => async (dispatch) => {
+  await AdminService.deleteUser(userId)
+    .then((res) => {
+      let notification = {
+        type: "success",
+        title: "Thông báo!",
+        description: "Xóa thành công!",
+      };
+      dispatch({ type: SET_NOTIFICATION, notification });
+    })
+    .catch(() => {
+      let notification = {
+        type: "warning",
+        title: "Thông báo!",
+        description: "Xóa thất bại!",
+      };
+      dispatch({ type: SET_NOTIFICATION, notification });
+    });
+};

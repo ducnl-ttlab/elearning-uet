@@ -32,7 +32,9 @@ import EditIcon from "@mui/icons-material/Edit";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import ClearIcon from '@mui/icons-material/Clear';
 import BuildIcon from '@mui/icons-material/Build';
+import GridViewIcon from '@mui/icons-material/GridView';
 export {
+    GridViewIcon,
     SearchIcon,
     MenuIcon,
     AccountCircleIcon,

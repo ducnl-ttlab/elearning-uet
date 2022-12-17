@@ -1,12 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
-import { LockIcon, PersonIcon, EditIcon } from "../common/icons";
+import { LockIcon, PersonIcon, EditIcon, GridViewIcon } from "../common/icons";
 import AdminService from "../../service/AdminService";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
-function Sidebar({ user }) {
-  const dispatch = useDispatch();
+function Sidebar() {
   const store = useSelector((state) => state.store.auth);
 
   const handleLogout = () => {
@@ -19,11 +18,25 @@ function Sidebar({ user }) {
     <SideBar>
       <div>
         <Avt>
-          <img src={store?.user?.avatar} alt="" />
+          <img
+            src={store?.user?.avatar}
+            alt=""
+            style={{
+              borderRadius: "50%",
+              border: "1px solid #ccc",
+              width: 50,
+              height: 50,
+            }}
+          />
           <p>{store.user.username}</p>
         </Avt>
       </div>
-
+      <NavLink to="/" activeClassName="active">
+        <Wrap>
+          <GridViewIcon />
+          <p>Tổng quan</p>
+        </Wrap>
+      </NavLink>
       <NavLink to="/users" activeClassName="active">
         <Wrap>
           <PersonIcon />
@@ -94,6 +107,7 @@ const Avt = styled.div`
   height: 3rem;
   font-size: 1.5rem;
   font-weight: 400;
+  margin-bottom: 20px;
   img {
     height: 100%;
     border-radius: 100%;

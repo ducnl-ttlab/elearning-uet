@@ -1,18 +1,13 @@
 import React, { useState, useEffect } from "react";
 import MaterialTable from "material-table";
 import styled from "styled-components";
-import Popup from "../common/popup";
-import {
-  Warning,
-  BuildIcon,
-  ClearIcon,
-  AccountCircleIcon,
-} from "../common/icons";
+import { AccountCircleIcon } from "../common/icons";
 import { useSelector, useDispatch } from "react-redux";
 import {
   doGetUserList,
   doEditUserList,
   doUpdateRole,
+  doDeleteUser,
 } from "../../redux/actions";
 
 function ViewUsers() {
@@ -63,7 +58,12 @@ function ViewUsers() {
     });
   };
 
-  const handleDeleteUsers = (event, data) => {};
+  const handleDeleteUsers = (event, data) => {
+    return new Promise((resolve, reject) => {
+      console.log("data", data);
+      setTimeout(resolve, 1000);
+    });
+  };
 
   const columns = [
     {
@@ -73,7 +73,12 @@ function ViewUsers() {
         rowData.avatar ? (
           <img
             src={rowData.avatar}
-            style={{ width: 50, height: 50, borderRadius: "50%" }}
+            style={{
+              width: 50,
+              height: 50,
+              borderRadius: "50%",
+              border: "1px solid #ccc",
+            }}
           />
         ) : (
           <AccountCircleIcon
@@ -82,7 +87,7 @@ function ViewUsers() {
         ),
       cellStyle: { width: 1 },
       editable: "never",
-      cellStyle: { width: "10%" },
+      cellStyle: { width: "5%" },
     },
     {
       title: "Họ tên",
@@ -127,13 +132,6 @@ function ViewUsers() {
   ];
 
   const actions = [
-    (rowData) => {
-      return {
-        icon: "closeIcon",
-        tooltip: "Xóa tài khoản",
-        onClick: (event, rowData) => handleDeleteUsers(event, rowData),
-      };
-    },
     (rowData) => {
       switch (rowData.role) {
         case "instructor": {
@@ -185,6 +183,20 @@ function ViewUsers() {
     },
   ];
 
+  const handleEditable = () => ({
+    onRowDelete: (oldData) =>
+      new Promise((resolve, reject) => {
+        setTimeout(() => {
+          const dataDelete = [...getUsers];
+          const index = oldData.tableData.id;
+          dispatch(doDeleteUser(oldData.id));
+          dataDelete.splice(index, 1);
+          setUsers([...dataDelete]);
+          resolve();
+        }, 0);
+      }),
+  });
+
   return (
     <Wrap>
       <MaterialTable
@@ -197,6 +209,7 @@ function ViewUsers() {
           cellStyle: {},
           onCellEditApproved: handleEditRow,
         }}
+        editable={handleEditable()}
         options={{
           actionsColumnIndex: -1,
           pageSize: 10,
