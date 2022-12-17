@@ -105,7 +105,6 @@ export class AuthController {
         id,
         email,
         verified: false,
-        password: accessToken,
         avatar,
       }),
     ]);
