@@ -75,6 +75,7 @@ export const course = {
         emptyQuizList: 'This topic does not have any quiz yet.',
         sendMessageError: 'Cannot send message. Please try again later!',
         leaveRatingError: 'Leave rating error. Please try again later!',
+        chooseRole: 'Cannot access course. Please select your role first!',
     },
     success: {
         favoriteCourse: {

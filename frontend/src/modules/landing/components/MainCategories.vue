@@ -18,6 +18,8 @@ import { showErrorNotificationFunction } from '@/common/helpers';
 import CategoryCard from './CategoryCard.vue';
 import { PageName } from '@/common/constants';
 import { commonModule } from '@/modules/common/store/common.store';
+import { getUserData } from '@/modules/user/services/user';
+import tokenService from '@/common/tokenService';
 
 @Options({
     components: { CategoryCard },
@@ -43,7 +45,11 @@ export default class MainCategories extends Vue {
     }
 
     async created() {
+        const accessToken = tokenService.getAccessToken();
         await this.getCategoryList();
+        if (accessToken !== '') {
+            await getUserData();
+        }
     }
 
     handleCategoryClick(id: number) {

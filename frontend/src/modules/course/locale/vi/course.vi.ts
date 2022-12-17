@@ -79,6 +79,7 @@ export const course = {
         },
         sendMessageError: 'Gửi tin nhắn thất bại, vui lòng thử lại sau!',
         leaveRatingError: 'Đánh giá khóa học thất bại, vui lòng thử lại sau!',
+        chooseRole: 'Không thể tham gia khóa học. Vui lòng chọn vai trò của bạn trước!',
     },
 
     success: {
