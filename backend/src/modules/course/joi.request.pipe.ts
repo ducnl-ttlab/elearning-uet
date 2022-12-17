@@ -80,6 +80,31 @@ const createCourseSchema = Joi.object().keys({
     .optional(),
 });
 
+const editCourseSchema = Joi.object().keys({
+  name: Joi.string()
+    .optional()
+    .min(1)
+    .message('name should have at least one character'),
+  description: Joi.string()
+    .optional()
+    .min(1)
+    .message('name should have at least one character'),
+  isPublished: Joi.boolean().optional(),
+  price: Joi.number().min(1).optional(),
+  startCourseTime: Joi.string()
+    .min(1)
+    .message('startCourseTime should have at least one character')
+    .optional(),
+  endCourseTime: Joi.string()
+    .min(1)
+    .message('endCourseTime should have at least one character')
+    .optional(),
+  categoryId: Joi.string()
+    .pattern(/^[0-9]+$/)
+    .message('categoryId should be a number')
+    .optional(),
+});
+
 const instructorCourseSchema = Joi.object().keys({
   instructorId: Joi.string()
     .required()
@@ -95,6 +120,7 @@ const courseValidationSchemas = {
   courseQueryListSchema,
   courseSearchQueryListSchema,
   instructorCourseSchema,
+  editCourseSchema
 };
 
 type courseValidationKey = keyof typeof courseValidationSchemas;

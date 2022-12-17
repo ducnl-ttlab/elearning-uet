@@ -1,3 +1,4 @@
+import { getMonthText } from './../../common/ultils';
 import { filterUser, removeImageFile } from 'src/common/ultils';
 import { NotificationService } from '../notification/service/notification.service';
 import { Role } from 'database/constant';
@@ -16,9 +17,10 @@ import {
   Body,
   Delete,
   InternalServerErrorException,
+  Inject,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { Response, Request } from 'express';
+import { Response } from 'express';
 import { AdminService } from './service/admin.service';
 import { IUserJwt, IUserReq } from 'src/common/interfaces';
 
@@ -37,6 +39,9 @@ import { LoginBody } from '../auth/dto/login-dto';
 import { Auth } from 'src/common/decorator/auth.decorator';
 import { UserService } from '../user/service/user.service';
 import { User } from '../user/entity/user.entity';
+import { STRIPE_CLIENT } from 'src/common/constant';
+import Stripe from 'stripe';
+import { UserCourseService } from '../user-courses/service/user-course.service';
 
 @ApiTags('Admin')
 @Controller('admin')
@@ -47,6 +52,8 @@ export class AdminController {
     private readonly authService: AuthService,
     private readonly adminService: AdminService,
     private readonly userService: UserService,
+    private readonly userCourseService: UserCourseService,
+    @Inject(STRIPE_CLIENT) private stripe: Stripe,
   ) {}
 
   @Get('users')
@@ -301,5 +308,57 @@ export class AdminController {
         accessToken,
       }),
     );
+  }
+
+  @Get('')
+  @Auth('admin')
+  async getStatistic(
+    @Body() body: LoginBody,
+    @Res() res: Response,
+    @Req() req: IUserReq<IUserJwt>,
+    @Headers('host') host: Headers,
+  ) {
+    let instructorTotal = await this.userService.countUser(Role.instructor);
+    let studentTotal = await this.userService.countUser(Role.student);
+    let userTotal = await this.userService.countUser();
+    let revenue = await this.stripe.balance.retrieve();
+    let userCourses = await this.userCourseService.find();
+
+    let data: { x?: number; y?: number } = {};
+    userCourses.forEach((item) => {
+      const { startCourseTime } = item;
+      let month = new Date(startCourseTime).getMonth();
+      let year = new Date(startCourseTime).getFullYear();
+
+      if (year === new Date().getFullYear()) {
+        data[month] = data[month] + 1 || 1;
+      }
+    });
+
+    let chart = Object.keys(data).map((item) => {
+      return {
+        x: item,
+        y: data[item],
+      };
+    });
+
+    chart = chart
+      .sort((a, b) => (+a.x > +b.x ? 1 : -1))
+      .map((item) => {
+        return {
+          ...item,
+          x: getMonthText(+item.x),
+        };
+      });
+
+    let response = {
+      instructorTotal,
+      studentTotal,
+      userTotal,
+      revenue: revenue.available[0].amount,
+      chart,
+    };
+    this.userService.getUsers();
+    return res.status(HttpStatus.OK).json(new SuccessResponse(response));
   }
 }

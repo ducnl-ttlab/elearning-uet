@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
-import { LockIcon, PersonIcon, EditIcon, GridViewIcon } from "../common/icons";
+import { LockIcon, GroupsIcon, BooksIcon, GridViewIcon } from "../common/icons";
 import AdminService from "../../service/AdminService";
 import { useSelector } from "react-redux";
 
@@ -39,13 +39,13 @@ function Sidebar() {
       </NavLink>
       <NavLink to="/users" activeClassName="active">
         <Wrap>
-          <PersonIcon />
+          <GroupsIcon />
           <p>Người dùng</p>
         </Wrap>
       </NavLink>
       <NavLink to="/courses" activeClassName="active">
         <Wrap>
-          <EditIcon />
+          <BooksIcon />
           <p>Khoá học</p>
         </Wrap>
       </NavLink>
@@ -66,7 +66,10 @@ function Sidebar() {
 const SideBar = styled.div`
   display: flex;
   flex-flow: column nowrap;
-  height: 100%;
+  height: 100vh;
+  margin-left: 20px;
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+  padding: 20px 5px;
   a {
     padding: 10px 1.5rem;
     background: linear-gradient(to left, #fff 50%, #039be5 50%) right;
@@ -75,20 +78,25 @@ const SideBar = styled.div`
     transition: 0.471s ease-out;
     color: black;
     text-decoration: none;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
+    margin: 2px 0;
+    border-radius: 12px;
     p {
       font-size: 1.4rem;
     }
   }
   a:hover {
     cursor: pointer;
-    background-color: #039be5;
+    background-color: #E9D8D7;
     color: white;
     background-position: left;
+    border-radius: 12px;
   }
   a.active {
-    background-color: #039be5;
+    background-color: #B75B6C;
     background-position: 0 0;
     color: #fff;
+    border-radius: 12px;
   }
 `;
 

@@ -28,6 +28,13 @@ export class UserCourseService {
       throw new InternalServerErrorException(error);
     }
   }
+  async find(): Promise<UserCourse[]> {
+    try {
+      return this.usercourse.find();
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
 
   async deleteUserCourse(id: number) {
     try {
@@ -94,7 +101,7 @@ export class UserCourseService {
     WHERE u.id not in  
       ( SELECT uc.userId
       FROM user_courses uc
-      WHERE uc.courseId = ? )
+      WHERE uc.courseId = ? ) and u.role <> 'admin' and u.role <> 'instructor'
        `;
 
       return this.usercourse.query(query, [courseId]);
@@ -138,7 +145,10 @@ export class UserCourseService {
     }
   }
 
-  async findUserRating(userId: string, courseId: number): Promise<UserRating[]> {
+  async findUserRating(
+    userId: string,
+    courseId: number,
+  ): Promise<UserRating[]> {
     try {
       const query = `
       SELECT *

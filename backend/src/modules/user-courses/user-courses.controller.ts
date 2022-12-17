@@ -314,8 +314,6 @@ export class UserCourseController {
       course.id,
     );
 
-    console.log("userCourse", userCourse);
-
     let favorite = await this.favoriteService.existFavorite(user.id, course.id);
 
     let status: CheckRegisterDto['status'] =

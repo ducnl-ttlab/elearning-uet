@@ -22,6 +22,14 @@ export class TopicService {
     }
   }
 
+  async update(topicId: number, topic: Partial<Topic>) {
+    try {
+      return this.topic.update(topicId, topic);
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
   async getTopicsByCourseId(courseId: number) {
     try {
       return this.topic.findAndCount({
@@ -60,5 +68,13 @@ export class TopicService {
       throw new NotFoundException('Not found topic');
     }
     return existCourse;
+  }
+
+  async delete(id: number) {
+    try {
+      return this.topic.delete(id);
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
   }
 }

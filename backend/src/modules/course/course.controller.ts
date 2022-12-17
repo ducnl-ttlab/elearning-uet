@@ -84,26 +84,46 @@ export class CourseController {
     return res.status(HttpStatus.CREATED).json(new SuccessResponse(reponse));
   }
 
-  @Get(':id')
-  async getCourse(
-    @Param() param: CourseDto,
+  @Get('instructor')
+  @UsePipes(
+    ...courseValidation({ type: 'query', key: 'courseQueryListSchema' }),
+  )
+  @Auth('instructor')
+  async getInstructorCourses(
+    @User() user: IUserJwt,
     @Res() res: Response,
     @Req() req: Request,
     @Headers('host') host: Headers,
+    @Query() query: CourseQueryDto,
   ) {
-    const course = await this.courseService.existCourse(param.id);
+    const { page = 1, pageSize = 8, keyword, rating, categoryId } = query;
 
-    const courseRes = {
-      ...course,
-      image:
-        (course.image &&
-          (course.image?.startsWith('http')
-            ? course.image
-            : `${req.protocol}://${host}/course/image/${course.image}`)) ||
-        '',
+    const courseList = await this.courseService.findCourses(
+      +categoryId,
+      keyword,
+      rating,
+      user.id,
+    );
+
+    let coursesResponse = courseList.map((course) => {
+      const { image, startCourse, endCourse } = course;
+
+      return {
+        ...course,
+        image: image?.startsWith('http')
+          ? image
+          : `${req.protocol}://${host}/course/image/${image}`,
+        startCourse: (startCourse && mysqlTimeStamp(startCourse)) || '',
+        endCourse: (endCourse && mysqlTimeStamp(endCourse)) || '',
+      };
+    });
+
+    let response: CourseListResponse = {
+      ...getPaginatedItems(coursesResponse, +page, +pageSize),
+      totalItems: coursesResponse.length,
     };
 
-    return res.status(HttpStatus.CREATED).json(new SuccessResponse(courseRes));
+    return res.status(HttpStatus.CREATED).json(new SuccessResponse(response));
   }
 
   @Post(':categoryId')
@@ -152,7 +172,7 @@ export class CourseController {
   @UseInterceptors(LocalFilesInterceptor(imageParams('course')))
   @UsePipes(
     ...courseValidation(
-      { type: 'body', key: 'createCourseSchema' },
+      { type: 'body', key: 'editCourseSchema' },
       { type: 'param', key: 'deleteCourseParamSchema' },
     ),
   )
@@ -243,6 +263,7 @@ export class CourseController {
       keyword,
       rating,
       instructorIds,
+      true,
     );
 
     let coursesResponse = courseList.map((course) => {
@@ -263,51 +284,6 @@ export class CourseController {
       totalItems: coursesResponse.length,
     };
 
-    return res.status(HttpStatus.CREATED).json(new SuccessResponse(response));
-  }
-
-  @Get('instructor/:instructorId')
-  @UsePipes(
-    ...courseValidation(
-      { type: 'param', key: 'instructorCourseSchema' },
-      { type: 'query', key: 'courseQueryListSchema' },
-    ),
-  )
-  async getInstructorCourses(
-    @Res() res: Response,
-    @Req() req: Request,
-    @Headers('host') host: Headers,
-    @Query() query: CourseQueryDto,
-    @Param() param: { instructorId: string },
-  ) {
-    let { keyword, page = 1, pageSize = 8 } = query;
-    const course = await this.courseService.findInstructorCourse(
-      param?.instructorId,
-      keyword,
-    );
-
-    let coursesResponse = course.map((course) => {
-      const { created_at, image, endCourseTime, startCourseTime, updated_at } =
-        course;
-      let date = startCourseTime
-        ? mysqlToTime(startCourseTime, endCourseTime)
-        : {};
-
-      return {
-        ...course,
-        ...date,
-        image: image?.startsWith('http')
-          ? image
-          : `${req.protocol}://${host}/course/image/${image}`,
-        created_at: mysqlTimeStamp(created_at),
-        updated_at: mysqlTimeStamp(updated_at),
-      };
-    });
-
-    let response: CourseListResponse = {
-      ...getPaginatedItems(coursesResponse, +page, +pageSize),
-      totalItems: course.length,
-    };
     return res.status(HttpStatus.CREATED).json(new SuccessResponse(response));
   }
 
@@ -366,5 +342,27 @@ export class CourseController {
     });
 
     return new StreamableFile(stream);
+  }
+
+  @Get(':id')
+  async getCourse(
+    @Param() param: CourseDto,
+    @Res() res: Response,
+    @Req() req: Request,
+    @Headers('host') host: Headers,
+  ) {
+    const course = await this.courseService.existCourse(param.id);
+
+    const courseRes = {
+      ...course,
+      image:
+        (course.image &&
+          (course.image?.startsWith('http')
+            ? course.image
+            : `${req.protocol}://${host}/course/image/${course.image}`)) ||
+        '',
+    };
+
+    return res.status(HttpStatus.CREATED).json(new SuccessResponse(courseRes));
   }
 }
