@@ -361,9 +361,10 @@ export class UserCourseController {
       const { avatar, startCourseTime } = item;
       return {
         ...item,
-        avatar: avatar?.startsWith('http')
-          ? avatar
-          : `${req.protocol}://${host}/user/image/${avatar}`,
+        avatar:
+          avatar && avatar?.startsWith('http')
+            ? avatar
+            : `${req.protocol}://${host}/user/image/${avatar}` || '',
         startCourseTime: mysqlTime(startCourseTime),
         score: item.score || '0',
       };

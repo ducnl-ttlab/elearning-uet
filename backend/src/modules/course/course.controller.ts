@@ -110,9 +110,10 @@ export class CourseController {
 
       return {
         ...course,
-        image: image?.startsWith('http')
-          ? image
-          : `${req.protocol}://${host}/course/image/${image}`,
+        image:
+          image && image?.startsWith('http')
+            ? image
+            : `${req.protocol}://${host}/course/image/${image}` || '',
         startCourse: (startCourse && mysqlTimeStamp(startCourse)) || '',
         endCourse: (endCourse && mysqlTimeStamp(endCourse)) || '',
       };
@@ -271,9 +272,10 @@ export class CourseController {
 
       return {
         ...course,
-        image: image?.startsWith('http')
-          ? image
-          : `${req.protocol}://${host}/course/image/${image}`,
+        image:
+          image && image?.startsWith('http')
+            ? image
+            : `${req.protocol}://${host}/course/image/${image}` || '',
         startCourse: (startCourse && mysqlTimeStamp(startCourse)) || '',
         endCourse: (endCourse && mysqlTimeStamp(endCourse)) || '',
       };

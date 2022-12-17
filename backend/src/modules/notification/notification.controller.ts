@@ -80,9 +80,10 @@ export class NotificationController {
 
       return {
         ...item,
-        avatar: avatar?.startsWith('http')
-          ? avatar
-          : `${req.protocol}://${host}/user/image/${avatar}` || '',
+        avatar:
+          avatar && avatar?.startsWith('http')
+            ? avatar
+            : `${req.protocol}://${host}/user/image/${avatar}` || '',
         ...defaultResponseTime(created_at, updated_at),
       };
     });

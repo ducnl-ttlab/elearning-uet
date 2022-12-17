@@ -67,9 +67,10 @@ export class UserController {
     let unreadNotification =
       await this.notificationService.countUnreadNotification(user.id);
 
-    user.avatar = avatar?.startsWith('http')
-      ? avatar
-      : `${req.protocol}://${host}/user/image/${avatar}`;
+    user.avatar =
+      avatar && avatar?.startsWith('http')
+        ? avatar
+        : `${req.protocol}://${host}/user/image/${avatar}` || '';
 
     let userRes = {
       ...user,
