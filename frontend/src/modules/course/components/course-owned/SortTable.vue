@@ -32,7 +32,7 @@
                 </el-select>
 
                 <el-select
-                    v-if="userData.role === SystemRole.STUDENT"
+                    v-if="userData.role !== SystemRole.INSTRUCTOR"
                     class="input instructor"
                     style="width: 60%"
                     v-model="courseQuery.instructorIds"

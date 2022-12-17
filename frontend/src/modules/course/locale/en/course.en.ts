@@ -2,7 +2,8 @@ export const course = {
     course: {
         price: '${price}',
         free: 'Free',
-        rating: 'Rating:\xa0',
+        avgRating: 'Average rating:\xa0',
+        selfRating: 'Your rating: \xa0',
         instructor: 'Instructor: {instructor}',
         notRated: 'Not rated',
         studentTotal: 'Attenders: {studentTotal}',
@@ -59,6 +60,7 @@ export const course = {
 
     errors: {
         emptyCourseList: 'Cannot find any course.',
+        guestCourseList: 'You need to select your role first.',
         emptyTopicList: 'Cannot find any topic.',
         courseRejected: 'You have been blocked by the instructor.',
         declinedPayment: 'Payment declined. Please try again later.',
@@ -99,6 +101,7 @@ export const course = {
             createQuiz: 'Create quiz successfully!',
             deleteQuiz: 'Delete quiz successfully!',
         },
+        leaveRating: 'Rate course successfully!',
     },
     coursePopup: {
         showStudentList: 'Student List',

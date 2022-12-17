@@ -10,7 +10,7 @@ import {
 import { CourseListDisplayMode, StudentListMode } from '../constants/course.constants';
 import { UserCourseStatus } from '@/modules/common/constants/common.interfaces';
 
-@Module({ dynamic: true, namespaced: true, store, name: 'course' })
+@Module({ dynamic: true, namespaced: true, store, name: 'userCourse' })
 class UserCourseModule extends VuexModule {
     userCourseData: IUserCourseData = {};
     favoriteCourse = false;

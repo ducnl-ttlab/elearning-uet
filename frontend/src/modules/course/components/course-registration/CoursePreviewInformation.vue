@@ -9,7 +9,7 @@
             </div>
             <div class="course-p-rating d-flex flex-row pt-3">
                 <div v-if="coursePreviewInformation?.avgRating">
-                    {{ $t('course.course.rating') }}
+                    {{ $t('course.course.avgRating') }}
                 </div>
                 <div>
                     <span>{{

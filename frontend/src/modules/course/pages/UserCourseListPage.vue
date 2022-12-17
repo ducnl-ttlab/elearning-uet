@@ -189,6 +189,13 @@ export default class UserCourseListPage extends Vue {
         if (!localStorageTokenService.getAccessToken()) {
             this.$router.push({ name: PageName.LOGIN_PAGE });
         }
+        if (this.userRole === SystemRole.GUEST) {
+            showErrorNotificationFunction(this.$t('course.errors.chooseRole'));
+            setTimeout(
+                () => this.$router.push({ name: PageName.SELECT_ROLE_PAGE }),
+                2000,
+            );
+        }
         await this.initUserCourseListPage();
     }
 }

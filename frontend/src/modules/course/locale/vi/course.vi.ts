@@ -3,7 +3,8 @@ export const course = {
         price: '${price}',
         free: 'Miễn phí',
         instructor: 'Giảng viên: {instructor}',
-        rating: 'Đánh giá:\xa0',
+        avgRating: 'Đánh giá trung bình:\xa0',
+        selfRating: 'Đánh giá của bạn: \xa0',
         notRated: 'Chưa có đánh giá',
         studentTotal: 'Số học viên: {studentTotal}',
         ratingList: {
@@ -59,6 +60,7 @@ export const course = {
 
     errors: {
         emptyCourseList: 'Không tìm thấy khóa học nào theo bộ lọc.',
+        guestCourseList: 'Bạn cần chọn vai trò trước.',
         emptyTopicList: 'Không tìm thấy chủ đề nào.',
         courseRejected: 'Bạn đã bị giảng viên chặn khỏi khóa học.',
         declinedPayment: 'Thanh toán thất bại, xin vui lòng thử lại',
@@ -80,6 +82,8 @@ export const course = {
         sendMessageError: 'Gửi tin nhắn thất bại, vui lòng thử lại sau!',
         leaveRatingError: 'Đánh giá khóa học thất bại, vui lòng thử lại sau!',
         chooseRole: 'Không thể tham gia khóa học. Vui lòng chọn vai trò của bạn trước!',
+        getCoursePreviewDataError:
+            'Không thể lấy đánh giá khóa học, vui lòng thử lại sau!',
     },
 
     success: {
@@ -103,6 +107,7 @@ export const course = {
             createQuiz: 'Tạo bài tập thành công!',
             deleteQuiz: 'Xóa bài tập thành công!',
         },
+        leaveRating: 'Đánh giá khóa học thành công!!',
     },
 
     courseDetail: {
