@@ -185,11 +185,13 @@ export const course = {
         title: 'Chat ',
         sendMessage: 'Send message...',
         defaultSelect: 'Course',
+        defaultMessage:
+            'There is no one here. Be the first person to initiate the conversation!',
     },
     comment: {
         hidden: 'This comment is marked as sensitive. Click on the eye icon to reveal',
         instructor: ' (Instructor)',
         commentBlocked:
-            'You have beeN blocked from commentting. Please contact the instructor.',
+            'You have been blocked from commentting. Please contact the instructor.',
     },
 };

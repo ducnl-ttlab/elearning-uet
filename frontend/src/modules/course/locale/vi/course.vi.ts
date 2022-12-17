@@ -183,6 +183,7 @@ export const course = {
         title: 'Trò chuyện',
         sendMessage: 'Gửi tin nhắn...',
         defaultSelect: 'Toàn khóa học',
+        defaultMessage: 'Chưa có tin nhắn nào. Hãy là người đầu tiên bắt chuyện !',
     },
 
     comment: {

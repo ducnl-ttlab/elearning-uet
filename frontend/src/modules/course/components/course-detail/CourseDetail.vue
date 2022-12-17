@@ -78,7 +78,7 @@ export default class CourseDetail extends Vue {
     }
 
     async getCourseGeneralInfo() {
-        const id: number = parseInt(this.$route.params.courseId as string);
+        const id: number = +this.$route.params.courseId;
         const response = await getCoursePreviewData(id);
         if (response?.success) {
             courseModule.setCoursePreviewData(response?.data || {});
@@ -92,12 +92,13 @@ export default class CourseDetail extends Vue {
     }
 
     async getTopicList() {
-        const id: number = parseInt(this.$route.params.courseId as string);
+        const id: number = +this.$route.params.courseId;
         const response = await getTopicList(id);
         if (response.success) {
             courseModule.setTopicList(response?.data?.items || []);
             if (response?.data?.items && response?.data?.items.length > 0) {
                 courseModule.setSelectedTopic(response.data.items[0]);
+                courseModule.setCurrentChatTopicId(response.data.items[0]?.id || -1);
             } else {
                 courseModule.setSelectedTopicObject({});
             }

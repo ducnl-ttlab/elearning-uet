@@ -88,6 +88,7 @@
                 </span>
             </div>
             <div
+                @click="toggleCourseState(!courseState)"
                 class="sidebar-button"
                 :class="[
                     { 'suspend-course-button': courseState },
@@ -97,7 +98,7 @@
                     { collapsed: isCollapsed },
                 ]"
             >
-                <div @click="toggleCourseState(true)" v-if="!courseState">
+                <div v-if="!courseState">
                     <span v-if="!isCollapsed">
                         {{ $t('course.courseSidebar.activateCourse') }}
                     </span>
@@ -108,7 +109,7 @@
                         alt=""
                     />
                 </div>
-                <div @click="toggleCourseState(false)" v-else>
+                <div v-else>
                     <span v-if="!isCollapsed">
                         {{ $t('course.courseSidebar.suspendCourse') }}
                     </span>

@@ -204,7 +204,7 @@ export default class CoursePreviewTopic extends Vue {
 
     async courseCheckout() {
         commonModule.setLoadingIndicator(true);
-        const id: number = parseInt(this.$route.params.courseId as string);
+        const id: number = +this.$route.params.courseId;
         const response = await courseCheckout(id);
         if (response.success) {
             if (response.data?.url) {
@@ -280,7 +280,7 @@ export default class CoursePreviewTopic extends Vue {
             this.$router.push({ name: PageName.LOGIN_PAGE });
         } else {
             commonModule.setLoadingIndicator(true);
-            const id: number = parseInt(this.$route.params.courseId as string);
+            const id: number = +this.$route.params.courseId;
             const response = await toggleCourseFavorite(id);
             if (response.success) {
                 userCourseModule.setFavoriteCourse(response?.data?.favorite || false);

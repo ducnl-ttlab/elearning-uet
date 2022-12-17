@@ -22,7 +22,7 @@ import CoursePreviewTopic from './CoursePreviewTopic.vue';
 export default class CourseRegistration extends Vue {
     async initCourseRegistration() {
         commonModule.setLoadingIndicator(true);
-        const id: number = parseInt(this.$route.params.courseId as string);
+        const id: number = +this.$route.params.courseId;
         const response = await getCoursePreviewData(id);
         console.log(response);
         if (response.success) {
@@ -39,7 +39,7 @@ export default class CourseRegistration extends Vue {
 
     async getUserCourseData() {
         commonModule.setLoadingIndicator(true);
-        const id: number = parseInt(this.$route.params.courseId as string);
+        const id: number = +this.$route.params.courseId;
         const response = await getUserCourseData(id);
         if (response.success) {
             userCourseModule.setUserCourseData(response?.data || {});

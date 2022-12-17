@@ -111,7 +111,7 @@ export default class CourseGeneralInfo extends Vue {
 
     async rateCourse(rating: number) {
         commonModule.setLoadingIndicator(true);
-        const id: number = parseInt(this.$route.params.courseId as string);
+        const id: number = +this.$route.params.courseId;
         const response = await rateCourse(id, rating + '');
         if (response?.success) {
             await this.getUserCourseData();
@@ -126,7 +126,7 @@ export default class CourseGeneralInfo extends Vue {
     }
 
     async getUserCourseData() {
-        const id: number = parseInt(this.$route.params.courseId as string);
+        const id: number = +this.$route.params.courseId;
         const response = await getUserCourseData(id);
         if (response?.success) {
             userCourseModule.setUserCourseData(response?.data || {});

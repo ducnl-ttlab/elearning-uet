@@ -51,8 +51,13 @@
                         alt=""
                     />
                 </div>
-
                 <CommentData :message="message" :isOwnMessage="isOwnMessage" />
+            </div>
+            <div
+                v-if="messageList?.length === 0"
+                class="no-chat d-flex align-items-center justify-content-center w-100"
+            >
+                {{ $t('course.chat.defaultMessage') }}
             </div>
         </div>
         <div
@@ -87,7 +92,6 @@ import { UserCourseStatus } from '@/modules/common/constants/common.interfaces';
 import { commonModule } from '@/modules/common/store/common.store';
 import { userModule } from '@/modules/user/store/user.store';
 import socketInstance from '@/plugins/socket';
-import { ref } from 'vue';
 import { Options, Vue } from 'vue-class-component';
 import { IMessageDetail } from '../../constants/course.interfaces';
 import { getMessageList, sendMessage } from '../../services/course';
@@ -106,7 +110,6 @@ export default class ChatPopup extends Vue {
     }
 
     get topicId() {
-        console.log(courseModule.currentChatTopicId);
         return courseModule.currentChatTopicId;
     }
 
@@ -241,6 +244,16 @@ export default class ChatPopup extends Vue {
 .middle {
     background-color: $color-violet-new-1-opacity-30;
     padding: 15px;
+    flex: 1;
+    overflow: auto;
+}
+
+.no-chat {
+    font-size: 13px !important;
+    font-weight: 300 !important;
+    line-height: 24px !important;
+    font-style: italic;
+    text-align: center;
     flex: 1;
     overflow: auto;
 }
