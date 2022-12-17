@@ -1,8 +1,8 @@
 import http from "./httpService";
 
-const apiEndpoint = "http://localhost:5000";
+const apiEndpoint = "http://localhost:5001";
 const prefix = "/admin";
-const adminEndpoint = "http://localhost:5000" + prefix;
+const adminEndpoint = apiEndpoint + prefix;
 
 async function login({ email, password }) {
   const config = { headers: { "Content-Type": "application/json" } };
@@ -17,32 +17,6 @@ async function login({ email, password }) {
   );
 }
 
-async function getCourseList() {
-  return http.get(adminEndpoint + `/courses`);
-}
-async function getUserList() {
-  return http.get(adminEndpoint + `/users`);
-}
-
-function logout() {
-  localStorage.removeItem("token");
-  localStorage.removeItem("user");
-}
-
-function getAdmin() {
-  return http.get(`${apiEndpoint}/user/profile`);
-}
-
-function editCourse(courseId, body) {
-  return http.put(`${adminEndpoint}/courses/${courseId}`, body);
-}
-function editUser(userId, body) {
-  return http.put(`${adminEndpoint}/users/${userId}`, body);
-}
-function editRole(userId, body) {
-  return http.put(`${adminEndpoint}/users/role/${userId}`, body);
-}
-
 export function getJwt() {
   return localStorage.getItem("token");
 }
@@ -52,21 +26,50 @@ function setUpAuth() {
 }
 setUpAuth();
 
-async function setInstructor(userId) {
-  const config = { headers: { "Content-Type": "multipart/form-data" } };
-  return await http.put(apiEndpoint + `/setInstructor/${userId}`, config);
+function logout() {
+  localStorage.removeItem("token");
+  localStorage.removeItem("user");
 }
 
-async function deleteUser(userId) {
-  return await http.delete(apiEndpoint + `/delete/${userId}`);
+async function getCourseList() {
+  return http.get(adminEndpoint + `/courses`);
+}
+
+function editCourse(courseId, body) {
+  return http.put(`${adminEndpoint}/courses/${courseId}`, body);
 }
 
 async function deleteCourse(courseId) {
-  return await http.delete(apiEndpoint + `/deleteCourse/${courseId}`);
+  return http.delete(`${apiEndpoint}/course/${courseId}`);
 }
 
-async function getAll() {
-  return await http.get(apiEndpoint + `/statistic`);
+async function getUserList() {
+  return http.get(`${adminEndpoint}/users`);
+}
+
+function getAdmin() {
+  return http.get(`${apiEndpoint}/user/profile`);
+}
+
+function editUser(userId, body) {
+  return http.put(`${adminEndpoint}/users/${userId}`, body);
+}
+
+function editRole(userId, body) {
+  return http.put(`${adminEndpoint}/users/role/${userId}`, body);
+}
+
+function deleteUser(userId) {
+  return http.delete(`${adminEndpoint}/users/${userId}`);
+}
+
+function getAll() {
+  return http.get(`${apiEndpoint}/statistic`);
+}
+
+function setInstructor(userId) {
+  const config = { headers: { "Content-Type": "multipart/form-data" } };
+  return http.put(apiEndpoint + `/setInstructor/${userId}`, config);
 }
 
 export default {
@@ -84,4 +87,5 @@ export default {
   setUpAuth,
   editUser,
   editRole,
+  deleteCourse,
 };

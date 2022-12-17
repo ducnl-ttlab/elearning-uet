@@ -19,7 +19,16 @@ function Sidebar({ user }) {
     <SideBar>
       <div>
         <Avt>
-          <img src={store?.user?.avatar} alt="" />
+          <img
+            src={store?.user?.avatar}
+            alt=""
+            style={{
+              borderRadius: "50%",
+              border: "1px solid #ccc",
+              width: 50,
+              height: 50,
+            }}
+          />
           <p>{store.user.username}</p>
         </Avt>
       </div>
@@ -94,6 +103,7 @@ const Avt = styled.div`
   height: 3rem;
   font-size: 1.5rem;
   font-weight: 400;
+  margin-bottom: 20px;
   img {
     height: 100%;
     border-radius: 100%;
