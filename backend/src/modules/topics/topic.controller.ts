@@ -24,10 +24,8 @@ import {
 } from '@nestjs/common';
 import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { Request, Response } from 'express';
-import { IUserJwt } from 'src/common/interfaces';
-import { Instructor, User } from 'src/common/decorator/custom.decorator';
+import { Instructor } from 'src/common/decorator/custom.decorator';
 import {
-  Auth,
   CourseAuth,
   InstructorCourseAuth,
 } from 'src/common/decorator/auth.decorator';
@@ -225,7 +223,6 @@ export class TopicController {
   @UsePipes(...validation({ key: 'deleteTopicParam', type: 'param' }))
   async deleteTopic(
     @Res() res: Response,
-    @UploadedFile() file: Express.Multer.File,
     @Param() param: { courseId: string; topicId: string },
   ) {
     const { topicId } = param;
