@@ -18,7 +18,7 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { Response, Request } from 'express';
+import { Response } from 'express';
 import { AdminService } from './service/admin.service';
 import { IUserJwt, IUserReq } from 'src/common/interfaces';
 
@@ -301,5 +301,17 @@ export class AdminController {
         accessToken,
       }),
     );
+  }
+
+  @Get('')
+  @Auth('admin')
+  async getStatistic(
+    @Body() body: LoginBody,
+    @Res() res: Response,
+    @Req() req: IUserReq<IUserJwt>,
+    @Headers('host') host: Headers,
+  ) {
+    this.userService.getUsers()
+    return res.status(HttpStatus.OK).json(new SuccessResponse('dfsa'));
   }
 }

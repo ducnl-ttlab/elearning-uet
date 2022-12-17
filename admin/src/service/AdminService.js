@@ -64,7 +64,7 @@ function deleteUser(userId) {
 }
 
 function getAll() {
-  return http.get(`${apiEndpoint}/statistic`);
+  return http.get(adminEndpoint + `/`);
 }
 
 function setInstructor(userId) {

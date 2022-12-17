@@ -29,7 +29,7 @@ export const generateDigits = (numberRandom: number = 6) => {
 };
 
 export const removeExtention = (fileName: string) => {
-  return (fileName && fileName?.split('.').slice(0, -1).join('.')) || '';
+  return (fileName && fileName?.split('.').slice(0, -1).join('.')) || fileName;
 };
 
 export const stringToMysqlTimeStamp = (yyyymmdd: string) => {
@@ -108,10 +108,13 @@ export function getPaginatedItems(
     total_pages: Math.ceil(items.length / pgSize),
   };
 }
-type Folder = 'avatar' | 'course'| 'video';
+type Folder = 'avatar' | 'course' | 'video';
 
 export function removeImageFile(image: string, folder: Folder) {
   let path = join(process.cwd(), `/uploads/${folder}/${image}`);
+  if (folder === 'video') {
+    rmvideo(image);
+  }
   if (fs.existsSync(path)) {
     fs.unlinkSync(path);
   }
@@ -141,4 +144,20 @@ export const generateAvatar = (identify: string, stt?: number) => {
     `https://avatars.dicebear.com/api/${avatarName}/${id}.svg`;
 
   return avatarApi(name[index || randomIndex], identify);
+};
+
+export const rmvideo = (filename: string) => {
+  let videoPath = join(
+    process.cwd(),
+    `/temp/chunks/${removeExtention(filename)}`,
+  );
+
+  if (fs.existsSync(videoPath)) {
+    fs.rm(videoPath, { recursive: true, force: true }, (err) => {
+      if (err) {
+        throw err;
+      }
+      console.log(`${videoPath} is deleted!`);
+    });
+  }
 };
