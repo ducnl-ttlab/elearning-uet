@@ -11,7 +11,7 @@
                 <div v-if="courseInfo?.avgRating">
                     {{ $t('course.course.rating') }}
                 </div>
-                <div>
+                <div v-if="userRole === SystemRole.INSTRUCTOR">
                     <span>{{
                         Math.round(courseInfo?.avgRating * 100) / 100 ||
                         $t('course.course.notRated')
@@ -23,6 +23,18 @@
                         width="16"
                         alt=""
                     />
+                </div>
+                <div class="d-flex flex-row" v-if="userRole === SystemRole.STUDENT">
+                    <div v-for="index in 5" :key="index">
+                        <img
+                            @click="rateCourse(index)"
+                            class="mb-1"
+                            style="color: white; cursor: pointer"
+                            src="@/assets/landing/icons/star.svg"
+                            width="16"
+                            alt=""
+                        />
+                    </div>
                 </div>
             </div>
             <div class="course-info-infos d-flex flex-row justify-content-between pt-3">
@@ -54,10 +66,14 @@
 </template>
 
 <script lang="ts">
-import { PageName } from '@/common/constants';
+import { PageName, SystemRole } from '@/common/constants';
+import { showErrorNotificationFunction } from '@/common/helpers';
 import localStorageTokenService from '@/common/tokenService';
+import { userModule } from '@/modules/user/store/user.store';
 import { Options, Vue } from 'vue-class-component';
+import { rateCourse } from '../../services/course';
 import { courseModule } from '../../store/course.store';
+import { userCourseModule } from '../../store/user-course.store';
 
 @Options({
     components: {},
@@ -67,9 +83,32 @@ export default class CourseGeneralInfo extends Vue {
         return courseModule.coursePreviewData?.course;
     }
 
+    SystemRole = SystemRole;
+    get userRole() {
+        return userModule.userData.role;
+    }
+
+    get courseRating() {
+        return userCourseModule.userCourseData.rating;
+    }
+
     created() {
         if (!localStorageTokenService.getAccessToken()) {
             this.$router.push({ name: PageName.LOGIN_PAGE });
+        }
+    }
+
+    async rateCourse(rating: number) {
+        const id: number = parseInt(this.$route.params.courseId as string);
+        const response = await rateCourse(id, rating + '');
+        if (response?.success) {
+            // courseModule.setCourseRating(response?.data || {});
+        } else {
+            let res = response?.errors || [
+                { message: this.$t('landing.categories.errors.getCategoryListError') },
+            ];
+            // courseModule.setCourseRating(0);
+            showErrorNotificationFunction(res[0].message);
         }
     }
 }

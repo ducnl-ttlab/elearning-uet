@@ -73,6 +73,9 @@ export const course = {
             deleteTopic: 'Delete topic failed! Please try again later!',
         },
         emptyQuizList: 'This topic does not have any quiz yet.',
+        sendMessageError: 'Cannot send message. Please try again later!',
+        leaveRatingError: 'Leave rating error. Please try again later!',
+        chooseRole: 'Cannot access course. Please select your role first!',
     },
     success: {
         favoriteCourse: {
@@ -132,6 +135,7 @@ export const course = {
             description: 'Description',
             content: 'Content',
             video: 'Upload video',
+            delete: 'Delete',
             save: 'Save',
             cancel: 'Cancel',
         },
@@ -165,5 +169,7 @@ export const course = {
     comment: {
         hidden: 'This comment is marked as sensitive. Click on the eye icon to reveal',
         instructor: ' (Instructor)',
+        commentBlocked:
+            'You have beeN blocked from commentting. Please contact the instructor.',
     },
 };

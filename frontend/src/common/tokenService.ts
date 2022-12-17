@@ -74,7 +74,6 @@ class LocalStorageTokenService {
 
     // LOGIN USER
     setLoginUser(user: IUserData): void {
-        console.log('user tokenservice', user);
         storage.setLocalStorage(AUTH_SERVICE_KEY.LOGIN_USER, JSON.stringify(user || ''));
     }
     getLoginUser(): IUserData | null {
