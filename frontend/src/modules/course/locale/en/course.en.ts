@@ -71,6 +71,7 @@ export const course = {
         getQuizListError: 'Error getting quiz list. Please try again later!',
         createNewQuizError: 'Error creating new quiz. Please try again later!',
         topic: {
+            getTopic: 'Get topic detail failed. Please try again later!',
             updateTopic: 'Update topic failed! Please try again later',
             createTopic: 'Create topic failed! Please try again later!',
             deleteTopic: 'Delete topic failed! Please try again later!',
@@ -88,6 +89,7 @@ export const course = {
         userCourseDataError: 'Error getting your course data. Please try again later!',
         getInstructorListError: 'Error getting instructor list. Please try again later!',
         getCategoryListError: 'Error getting category list. Please try again later!',
+        toggleCourse: 'Change course state failed. Please try again later!',
     },
     success: {
         favoriteCourse: {
@@ -113,6 +115,7 @@ export const course = {
         },
         leaveRating: 'Rate course successfully!',
         deleteCourse: 'Delete course successfully',
+        toggleCourse: 'Change course status successfully!',
     },
     coursePopup: {
         showStudentList: 'Student List',

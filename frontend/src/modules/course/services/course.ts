@@ -57,6 +57,25 @@ export async function createCourse(
         });
 }
 
+export async function updateCourse(
+    params: FormData,
+    categoryId: number,
+): Promise<IAxiosDefaultResponse<Record<string, unknown>>> {
+    return axios
+        .put(`${BE_URL}/course/${categoryId}`, params, {
+            headers: {
+                Authorization: 'Bearer ' + localStorageTokenService.getAccessToken(),
+                'Content-Type': 'multipart/form-data',
+            },
+        })
+        .then((res) => {
+            return res.data;
+        })
+        .catch((error) => {
+            return error.response.data;
+        });
+}
+
 export async function deleteCourse(
     courseId: number,
 ): Promise<IAxiosDefaultResponse<Record<string, unknown>>> {
@@ -118,6 +137,24 @@ export async function getTopicList(
 ): Promise<IAxiosListDefaultResponse<ITopicData>> {
     return axios
         .get(`${BE_URL}/topic/${courseId}`, {
+            headers: {
+                Authorization: 'Bearer ' + localStorageTokenService.getAccessToken(),
+            },
+        })
+        .then((res) => {
+            return res.data;
+        })
+        .catch((error) => {
+            return error.response.data;
+        });
+}
+
+export async function getSingleTopic(
+    courseId: number,
+    topicId: number,
+): Promise<IAxiosDefaultResponse<ITopicData>> {
+    return axios
+        .get(`${BE_URL}/topic/${courseId}/${topicId}`, {
             headers: {
                 Authorization: 'Bearer ' + localStorageTokenService.getAccessToken(),
             },

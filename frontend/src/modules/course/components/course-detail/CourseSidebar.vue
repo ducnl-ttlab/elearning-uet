@@ -69,7 +69,7 @@
                 </div>
             </div>
         </div>
-        <div class="d-flex flex-column">
+        <div class="d-flex flex-column" v-if="userRole === SystemRole.INSTRUCTOR">
             <div
                 class="sidebar-button delete-course-button"
                 :class="{ collapsed: isCollapsed }"
@@ -90,15 +90,14 @@
             <div
                 class="sidebar-button"
                 :class="[
-                    { 'suspend-course-button': !isSuspended },
+                    { 'suspend-course-button': courseState },
                     {
-                        'activate-course-button': isSuspended,
+                        'activate-course-button': !courseState,
                     },
                     { collapsed: isCollapsed },
                 ]"
-                @click="handleActiveCourse"
             >
-                <span v-if="isSuspended">
+                <div @click="toggleCourseState(true)" v-if="!courseState">
                     <span v-if="!isCollapsed">
                         {{ $t('course.courseSidebar.activateCourse') }}
                     </span>
@@ -108,8 +107,8 @@
                         width="24"
                         alt=""
                     />
-                </span>
-                <span v-else>
+                </div>
+                <div @click="toggleCourseState(false)" v-else>
                     <span v-if="!isCollapsed">
                         {{ $t('course.courseSidebar.suspendCourse') }}
                     </span>
@@ -119,7 +118,7 @@
                         width="24"
                         alt=""
                     />
-                </span>
+                </div>
             </div>
         </div>
     </div>
@@ -135,7 +134,12 @@ import { commonModule } from '@/modules/common/store/common.store';
 import { userModule } from '@/modules/user/store/user.store';
 import { Options, Vue } from 'vue-class-component';
 import { CourseArea, SidebarMode } from '../../constants/course.constants';
-import { deleteCourse } from '../../services/course';
+import {
+    deleteCourse,
+    getTopicList,
+    updateCourse,
+    updateTopic,
+} from '../../services/course';
 import { courseModule } from '../../store/course.store';
 import { ElMessageBox } from 'element-plus';
 import { appModule } from '@/plugins/vuex/appModule';
@@ -149,10 +153,6 @@ export default class CourseSidebar extends Vue {
 
     get currentLanguage() {
         return appModule.currentLanguage;
-    }
-
-    get isSuspended() {
-        return false;
     }
 
     get isShowStudentListPopup() {
@@ -175,6 +175,10 @@ export default class CourseSidebar extends Vue {
         return this.courseSidebarMode === SidebarMode.COLLAPSED;
     }
 
+    get courseState() {
+        return courseModule.coursePreviewData?.course?.isPublished;
+    }
+
     showStudentListPopup() {
         commonModule.toggleShowStudentListPopup(true);
     }
@@ -194,7 +198,6 @@ export default class CourseSidebar extends Vue {
     created(): void {
         window.addEventListener('resize', this.showFullScreenOnMobile);
         this.showFullScreenOnMobile();
-        console.log(this.$route.params.courseId);
     }
     showFullScreenOnMobile() {
         if (document.documentElement.clientWidth <= 800) {
@@ -231,6 +234,25 @@ export default class CourseSidebar extends Vue {
         }
         commonModule.setLoadingIndicator(false);
     }
+
+    async toggleCourseState(state: boolean) {
+        commonModule.setLoadingIndicator(true);
+        let formData = new FormData();
+        const courseId = +this.$route.params.courseId;
+
+        formData.append('isPublished', state.toString());
+        const response = await updateCourse(formData, courseId);
+        if (response.success) {
+            showSuccessNotificationFunction(this.$t('course.success.toggleCourse'));
+            await this.$emit('reload');
+        } else {
+            let res = response?.errors || [
+                { message: this.$t('course.errors.toggleCourse') },
+            ];
+            showErrorNotificationFunction(res[0].message);
+        }
+        commonModule.setLoadingIndicator(false);
+    }
 }
 </script>
 <style lang="scss" scoped>
@@ -239,6 +261,7 @@ export default class CourseSidebar extends Vue {
     background-color: $color-violet-new;
 }
 .sidebar-button {
+    width: 240px;
     font-size: 17px !important;
     font-weight: 600 !important;
     line-height: 24px !important;

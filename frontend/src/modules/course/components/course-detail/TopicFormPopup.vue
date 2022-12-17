@@ -136,7 +136,6 @@ export default class TopicFormPopup extends Vue {
         commonModule.setLoadingIndicator(true);
         const response = await getTopicList(courseId);
         if (response.success) {
-            showSuccessNotificationFunction(this.$t('course.success.topic.createTopic'));
             courseModule.setTopicList(response.data?.items || []);
         } else {
             let res = response?.errors || [

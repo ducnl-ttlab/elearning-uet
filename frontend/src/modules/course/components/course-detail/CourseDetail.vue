@@ -2,7 +2,7 @@
     <div class="course-detail-wrapper d-flex flex-column w-100">
         <CourseGeneralInfo />
         <div class="course-detail d-flex flex-row">
-            <CourseSidebar />
+            <CourseSidebar @reload="getCourseGeneralInfo" />
             <div class="d-flex flex-row w-100" v-if="courseArea === CourseArea.COURSE">
                 <TopicSidebar />
                 <TopicDetail />
@@ -97,7 +97,7 @@ export default class CourseDetail extends Vue {
         if (response.success) {
             courseModule.setTopicList(response?.data?.items || []);
             if (response?.data?.items && response?.data?.items.length > 0) {
-                courseModule.setSelectedTopic(response.data.items[0]?.id ?? 1);
+                courseModule.setSelectedTopic(response.data.items[0]);
             } else {
                 courseModule.setSelectedTopicObject({});
             }

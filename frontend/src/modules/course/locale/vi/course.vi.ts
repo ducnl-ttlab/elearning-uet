@@ -86,6 +86,7 @@ export const course = {
         getCoursePreviewDataError:
             'Không thể lấy đánh giá khóa học, vui lòng thử lại sau!',
         deleteCourseError: 'Không thể xóa khóa học này, vui lòng thử lại sau!',
+        toggleCourse: 'Thay đổi trạng thái khóa học thất bại, vui lòng thử lại sau!',
     },
 
     success: {
@@ -111,6 +112,7 @@ export const course = {
         },
         leaveRating: 'Đánh giá khóa học thành công!!',
         deleteCourse: 'Xóa khóa học thành công!',
+        toggleCourse: 'Thay đổi trạng thái khóa học thành công!',
     },
 
     courseDetail: {

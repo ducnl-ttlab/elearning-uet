@@ -3,11 +3,14 @@
         class="sort-table-wrapper d-flex w-100 flex-xl-row flex-column align-items-center mb-5 py-3"
         style="gap: 2.5vw"
     >
-        <div class="sort-table-title">{{ $t('course.filters.title') }}</div>
+        <div class="sort-table-title">
+            {{ $t('course.filters.title') }}
+        </div>
         <div class="sort-fields d-flex flex-xl-row flex-column" style="flex-grow: 1">
             <el-input
                 class="input keyword"
                 style="width: 60%"
+                @keyup.enter="handleApplyFilter"
                 :placeholder="$t('course.filters.keyword')"
                 v-model="courseQuery.keyword"
                 autocomplete="off"
@@ -69,7 +72,10 @@ import {
 } from '../../constants/course.constants';
 import { ICourseListParams } from '../../constants/course.interfaces';
 import { getCourseList } from '../../services/course';
-import { getStudentCourseList } from '../../services/user-course';
+import {
+    getInstructorCourseList,
+    getStudentCourseList,
+} from '../../services/user-course';
 import { userCourseModule } from '../../store/user-course.store';
 
 @Options({
@@ -143,10 +149,9 @@ export default class SortTable extends Vue {
             keyword: (this.courseQuery.keyword && this.courseQuery.keyword) || undefined,
             rating: (this.courseQuery.rating && this.courseQuery.rating) || undefined,
         };
-        const response = await getCourseList({
+        const response = await getInstructorCourseList({
             ...params,
             pageSize: MAX_COURSE_GRID_ITEMS,
-            instructorIds: this.userData.id,
         });
         if (response.success) {
             userCourseModule.setInstructorCourseList(response?.data?.items || []);

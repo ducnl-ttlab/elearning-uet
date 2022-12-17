@@ -104,11 +104,14 @@ export default class ChatPopup extends Vue {
     get isCommentBlocked() {
         return userCourseModule.userCourseData.status === 'comment_blocking';
     }
+
     get topicId() {
-        return courseModule.selectedTopic?.id;
+        console.log(courseModule.currentChatTopicId);
+        return courseModule.currentChatTopicId;
     }
+
     set topicId(value) {
-        courseModule.setSelectedTopic(value || -1);
+        courseModule.setCurrentChatTopicId(value);
     }
 
     get userId() {
@@ -159,16 +162,17 @@ export default class ChatPopup extends Vue {
         this.setScroll();
         this.$watch('isShowChatPopup', () => {
             this.getMessageList();
-            this.setScroll();
+            this.$nextTick(() => this.setScroll());
             courseModule.resetUnreadMessageCount();
         });
         this.$watch('topicId', () => {
             this.getMessageList();
-            this.setScroll();
+            this.$nextTick(() => this.setScroll());
         });
-        // this.$watch('messageList', () => {
-        //     this.setScroll();
-        // });
+        this.$watch('messageList', () => {
+            this.$nextTick(() => this.setScroll());
+        });
+        courseModule.setCurrentChatTopicId(courseModule.selectedTopic.id || -1);
     }
 
     setScroll() {
