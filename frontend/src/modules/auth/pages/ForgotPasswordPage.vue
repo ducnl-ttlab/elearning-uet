@@ -5,32 +5,20 @@
         <img src="@/assets/auth/images/auth-logo.png" alt="" />
 
         <div class="form">
-            <!-- Enter email or phone number -->
-            <RegisterForm />
-        </div>
-
-        <SocialButtonBox />
-        <div class="bottom-wrapper">
-            <span
-                >{{ $t('auth.register.haveAccount') }}
-                <router-link :to="{ name: PageName.LOGIN_PAGE }">{{
-                    $t('auth.register.login')
-                }}</router-link>
-            </span>
+            <ForgotPasswordForm />
         </div>
     </div>
 </template>
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
-import RegisterForm from '@/modules/auth/components/register/RegisterForm.vue';
-import SocialButtonBox from '@/modules/auth/components/layouts/common/SocialButtonBox.vue';
+import ForgotPasswordForm from '@/modules/auth/components/login/ForgotPasswordForm.vue';
 import { PageName } from '@/common/constants';
 
 @Options({
-    components: { SocialButtonBox, RegisterForm },
+    components: { ForgotPasswordForm },
 })
-export default class RegisterPage extends Vue {
+export default class ForgotPasswordPage extends Vue {
     PageName = PageName;
 }
 </script>

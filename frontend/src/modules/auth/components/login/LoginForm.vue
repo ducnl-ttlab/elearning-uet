@@ -19,6 +19,7 @@
                 autocomplete="off"
             />
         </div>
+
         <el-button
             :disabled="!password ? true : false"
             type="primary"
@@ -27,6 +28,12 @@
         >
             {{ $t('auth.login.login') }}
         </el-button>
+        <div
+            @click="handleForgotPassword"
+            class="forgot-password d-flex w-100 justify-content-center"
+        >
+            {{ $t('auth.forgotPassword.forgotPassword') }}
+        </div>
     </div>
 </template>
 <script lang="ts">
@@ -46,10 +53,10 @@ import socketInstance from '@/plugins/socket';
 @Options({
     components: {},
 })
-export default class InputCredentialForm extends Vue {
+export default class LoginForm extends Vue {
     credential = '';
     credentialError = '';
-    password = '12345678';
+    password = '';
 
     get userData() {
         return userModule.userData;
@@ -57,6 +64,10 @@ export default class InputCredentialForm extends Vue {
 
     get accessToken() {
         return loginModule.accessToken;
+    }
+
+    handleForgotPassword() {
+        this.$router.push({ name: PageName.FORGOT_PASSWORD_PAGE });
     }
 
     async handleLogin() {
@@ -127,6 +138,17 @@ export default class InputCredentialForm extends Vue {
 
 .login-button {
     background-color: $color-violet-new-1 !important;
+}
+
+.forgot-password {
+    cursor: pointer;
+    margin: 10px 0;
+    font-size: 14px;
+    line-height: 21px;
+    color: $color-violet-new-1;
+    &:hover {
+        color: $color-violet-new;
+    }
 }
 
 :deep(.el-input) {

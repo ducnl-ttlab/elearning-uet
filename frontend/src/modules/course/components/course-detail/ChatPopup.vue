@@ -25,6 +25,7 @@
                 @click="closeChatPopup"
                 src="@/assets/course/icons/close.svg"
                 style="cursor: pointer; margin-right: 8px"
+                class="x-button"
                 width="12"
                 alt=""
             />
@@ -179,15 +180,14 @@ export default class ChatPopup extends Vue {
 
     async handleSendMessage() {
         const courseId = +this.$route.params.courseId;
-        if (this.message !== '') {
-            socketInstance.chatRealtime(courseId, this.topicId || -1, this.message);
-            const response = await sendMessage(
-                courseId,
-                this.topicId || -1,
-                this.message,
-            );
+        const message = this.message;
+        this.message = '';
+        if (message !== '') {
+            socketInstance.chatRealtime(courseId, this.topicId || -1, message);
+            const response = await sendMessage(courseId, this.topicId || -1, message);
+
             this.setScroll();
-            this.message = '';
+
             if (!response.success) {
                 showErrorNotificationFunction('course.errors.commentError');
             }
@@ -265,6 +265,11 @@ export default class ChatPopup extends Vue {
 
 .send-message-icon {
     cursor: pointer;
+}
+
+.x-button {
+    filter: invert(100%) sepia(7%) saturate(0%) hue-rotate(274deg) brightness(102%)
+        contrast(103%);
 }
 
 @media only screen and (max-width: map-get($map: $grid-breakpoints, $key: xl)) {

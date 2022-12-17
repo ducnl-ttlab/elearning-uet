@@ -57,11 +57,5 @@ export default class AuthLayout extends Vue {}
     .logo-wrapper {
         margin: 0 !important;
     }
-
-    .content-wrapper {
-        border-radius: 46px 46px 0 0;
-        background-color: $color-white;
-        transform: translateY(-50px);
-    }
 }
 </style>
