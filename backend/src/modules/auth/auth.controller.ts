@@ -95,16 +95,19 @@ export class AuthController {
       id,
     });
     let avatar = generateAvatar(id);
+    let hashpw = await this.authService.hashPw('12345678');
 
     await Promise.all([
       this.mailService.sendUserEmailConfirmation(
         { email, username: email.split('@')[0] },
         url + accessToken,
       ),
+
       this.userService.saveUser({
         id,
         email,
         verified: false,
+        password: hashpw,
         avatar,
       }),
     ]);
