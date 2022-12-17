@@ -156,7 +156,9 @@ export class CourseController {
       instructorId: user.id,
       categoryId: isExistCategory.id,
       isPublished: (data.isPublished as any) === 'true' ?? data?.isPublished,
-      image: file?.filename,
+      image:
+        file?.filename ||
+        'https://i.pinimg.com/564x/13/5c/4e/135c4e70743ec6eebaf2ea6c10135e4c.jpg',
       ...coursePeriod(data.startCourseTime, data.endCourseTime),
     };
     let course = await this.courseService.saveCourse(newCourse);
