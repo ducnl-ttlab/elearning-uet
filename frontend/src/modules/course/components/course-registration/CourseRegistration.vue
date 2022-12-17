@@ -29,7 +29,7 @@ export default class CourseRegistration extends Vue {
             courseModule.setCoursePreviewData(response?.data || {});
         } else {
             let res = response?.errors || [
-                { message: this.$t('landing.categories.errors.getCategoryListError') },
+                { message: this.$t('course.errors.getCoursePreviewError') },
             ];
             courseModule.setCoursePreviewData({});
             showErrorNotificationFunction(res[0].message);
@@ -45,7 +45,7 @@ export default class CourseRegistration extends Vue {
             userCourseModule.setUserCourseData(response?.data || {});
         } else {
             let res = response?.errors || [
-                { message: this.$t('landing.categories.errors.getCategoryListError') },
+                { message: this.$t('course.errors.userCourseDataError') },
             ];
             userCourseModule.setUserCourseData({});
             showErrorNotificationFunction(res[0].message);

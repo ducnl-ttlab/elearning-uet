@@ -129,7 +129,7 @@ export default class SortTable extends Vue {
             userCourseModule.setStudentCourseList(response?.data?.items || []);
         } else {
             let res = response?.errors || [
-                { message: this.$t('landing.categories.errors.getCategoryListError') },
+                { message: this.$t('course.errors.getCourseListError') },
             ];
             userCourseModule.setStudentCourseList([]);
             showErrorNotificationFunction(res[0].message);
@@ -152,7 +152,7 @@ export default class SortTable extends Vue {
             userCourseModule.setInstructorCourseList(response?.data?.items || []);
         } else {
             let res = response?.errors || [
-                { message: this.$t('landing.categories.errors.getCategoryListError') },
+                { message: this.$t('course.errors.getCourseListError') },
             ];
             userCourseModule.setInstructorCourseList([]);
             showErrorNotificationFunction(res[0].message);

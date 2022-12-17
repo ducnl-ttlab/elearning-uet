@@ -84,20 +84,6 @@
                             autocomplete="off"
                         />
                     </div>
-                    <div class="block d-flex flex-column">
-                        <div class="date-range mb-2 mt-3">
-                            {{ $t('course.course.dateRange') }}
-                        </div>
-
-                        <el-date-picker
-                            v-model="date"
-                            type="daterange"
-                            :start-placeholder="$t('course.course.startDate')"
-                            :end-placeholder="$t('course.course.endDate')"
-                            :default-value="[new Date(), new Date()]"
-                            class="date"
-                        />
-                    </div>
                 </div>
             </div>
         </div>
@@ -167,7 +153,7 @@ export default class CreateCoursePage extends Vue {
             landingModule.setCategoryList(response?.data?.items || []);
         } else {
             let res = response?.errors || [
-                { message: this.$t('landing.categories.errors.getCategoryListError') },
+                { message: this.$t('course.errors.getCategoryListError') },
             ];
             landingModule.setCategoryList([]);
             showErrorNotificationFunction(res[0].message);
@@ -183,10 +169,6 @@ export default class CreateCoursePage extends Vue {
         this.categoryId = categoryId;
     }
 
-    async handleActive() {
-        this.status = !this.status;
-    }
-
     async handleCourseSubmit() {
         commonModule.setLoadingIndicator(true);
 
@@ -195,20 +177,13 @@ export default class CreateCoursePage extends Vue {
             name: this.name,
             description: this.description,
             price: this.price,
-            startCourseTime: this.date[0] && yyyymmddFormat(this.date[0]),
-            endCourseTime: this.date[1] && yyyymmddFormat(this.date[1]),
         };
-
         let formData = new FormData();
-
-        const { name, description, price, startCourseTime, endCourseTime, isPublished } =
-            courseData;
+        const { name, description, price, isPublished } = courseData;
 
         formData.append('name', name);
         formData.append('description', description);
         formData.append('price', String(price));
-        formData.append('startCourseTime', startCourseTime);
-        formData.append('endCourseTime', endCourseTime);
         formData.append('isPublished', isPublished.toString());
 
         if (this.thumbnail) {

@@ -80,6 +80,14 @@ export const course = {
         leaveRatingError: 'Leave rating error. Please try again later!',
         chooseRole: 'Cannot access course. Please select your role first!',
         deleteCourseError: 'Error deleting this course. Please try again later!',
+        getCoursePreviewError:
+            'Error getting course preview data. Please try again later!',
+        getCourseList: 'Error getting course list. Please try again later!',
+        courseCheckoutError: 'Error getting checkout data. Please try again later!',
+        toggleFavoriteError: 'Error changing favorite course. Please try again later!',
+        userCourseDataError: 'Error getting your course data. Please try again later!',
+        getInstructorListError: 'Error getting instructor list. Please try again later!',
+        getCategoryListError: 'Error getting category list. Please try again later!',
     },
     success: {
         favoriteCourse: {

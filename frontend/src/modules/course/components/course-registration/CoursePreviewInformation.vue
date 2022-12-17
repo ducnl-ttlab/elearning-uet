@@ -226,7 +226,7 @@ export default class CoursePreviewTopic extends Vue {
         } else {
             let res = response?.errors || [
                 {
-                    message: this.$t('landing.categories.errors.getCategoryListError'),
+                    message: this.$t('course.errors.checkoutError'),
                 },
             ];
             userCourseModule.setFavoriteCourse(this.userCourseData?.favorite || false);
@@ -294,11 +294,7 @@ export default class CoursePreviewTopic extends Vue {
                     );
             } else {
                 let res = response?.errors || [
-                    {
-                        message: this.$t(
-                            'landing.categories.errors.getCategoryListError',
-                        ),
-                    },
+                    { message: this.$t('course.errors.toggleFavoriteError') },
                 ];
                 userCourseModule.setFavoriteCourse(
                     this.userCourseData?.favorite || false,

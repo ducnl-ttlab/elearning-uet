@@ -111,7 +111,7 @@ export default class SortTable extends Vue {
             courseModule.setCourseList(response?.data?.items || []);
         } else {
             let res = response?.errors || [
-                { message: this.$t('landing.categories.errors.getCategoryListError') },
+                { message: this.$t('course.errors.getCourseListError') },
             ];
             courseModule.setCourseList([]);
             showErrorNotificationFunction(res[0].message);

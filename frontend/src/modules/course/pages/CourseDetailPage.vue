@@ -42,7 +42,7 @@ export default class CourseListPage extends Vue {
             userCourseModule.setUserCourseData(response?.data || {});
         } else {
             let res = response?.errors || [
-                { message: this.$t('landing.categories.errors.getCategoryListError') },
+                { message: this.$t('course.errors.userCourseDataError') },
             ];
             userCourseModule.setUserCourseData({});
             showErrorNotificationFunction(res[0].message);

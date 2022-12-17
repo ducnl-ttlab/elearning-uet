@@ -14,6 +14,7 @@ import {
     IStudentCourseData,
     IStudentCourseShortData,
     IOutsideStudentCourseData,
+    ICourseData,
 } from '../constants/course.interfaces';
 
 const FE_URL = process.env.VUE_APP_FE_BASE_URL;
@@ -117,6 +118,24 @@ export async function getStudentCourseList(
 ): Promise<IAxiosListDefaultResponse<IStudentCourseData>> {
     return axios
         .get(`${BE_URL}/user-course`, {
+            params: { ...params },
+            headers: {
+                Authorization: 'Bearer ' + localStorageTokenService.getAccessToken(),
+            },
+        })
+        .then((res) => {
+            return res.data;
+        })
+        .catch((error) => {
+            return error.response.data;
+        });
+}
+
+export async function getInstructorCourseList(
+    params: ICourseListParams,
+): Promise<IAxiosListDefaultResponse<ICourseData>> {
+    return axios
+        .get(`${BE_URL}/course/instructor`, {
             params: { ...params },
             headers: {
                 Authorization: 'Bearer ' + localStorageTokenService.getAccessToken(),

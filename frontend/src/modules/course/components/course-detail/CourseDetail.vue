@@ -84,7 +84,7 @@ export default class CourseDetail extends Vue {
             courseModule.setCoursePreviewData(response?.data || {});
         } else {
             let res = response?.errors || [
-                { message: this.$t('landing.categories.errors.getCategoryListError') },
+                { message: this.$t('course.errors.getCoursePreviewError') },
             ];
             courseModule.setCoursePreviewData({});
             showErrorNotificationFunction(res[0].message);

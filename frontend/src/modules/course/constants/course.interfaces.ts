@@ -11,9 +11,8 @@ export interface ICourseData {
     instructorName: string;
     avgRating: number | null;
     studentTotal: number;
-    startCourse: string;
-    endCourse: string;
     instructorId: string;
+    isPublished?: boolean;
 }
 
 export interface ICourseListParams {
@@ -31,8 +30,6 @@ export interface ICourseCreation {
     name: string;
     description: string;
     price: number;
-    startCourseTime: string;
-    endCourseTime: string;
     file?: string;
 }
 
