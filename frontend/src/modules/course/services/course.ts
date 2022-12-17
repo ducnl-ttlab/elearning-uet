@@ -84,7 +84,7 @@ export async function studentAction(
             {},
             {
                 headers: {
-                    Authorization: 'Bearer ' + loginModule.accessToken,
+                    Authorization: 'Bearer ' + localStorageTokenService.getAccessToken(),
                 },
             },
         )
@@ -102,7 +102,7 @@ export async function getTopicList(
     return axios
         .get(`${BE_URL}/topic/${courseId}`, {
             headers: {
-                Authorization: 'Bearer ' + loginModule.accessToken,
+                Authorization: 'Bearer ' + localStorageTokenService.getAccessToken(),
             },
         })
         .then((res) => {
@@ -173,7 +173,7 @@ export async function getQuizList(
     return axios
         .get(`${BE_URL}/quiz/${courseId}/${topicId}`, {
             headers: {
-                Authorization: 'Bearer ' + loginModule.accessToken,
+                Authorization: 'Bearer ' + localStorageTokenService.getAccessToken(),
             },
         })
         .then((res) => {
@@ -192,7 +192,7 @@ export async function updateQuiz(
     return axios
         .put(`${BE_URL}/quiz/${courseId}/${topicId}`, params, {
             headers: {
-                Authorization: 'Bearer ' + loginModule.accessToken,
+                Authorization: 'Bearer ' + localStorageTokenService.getAccessToken(),
             },
         })
         .then((res) => {
@@ -273,7 +273,7 @@ export async function getMessageList(
         .get(`${BE_URL}/comment/${courseId}`, {
             params: params,
             headers: {
-                Authorization: 'Bearer ' + loginModule.accessToken,
+                Authorization: 'Bearer ' + localStorageTokenService.getAccessToken(),
             },
         })
         .then((res) => {
@@ -298,7 +298,31 @@ export async function sendMessage(
                     topicId: topicId,
                 },
                 headers: {
-                    Authorization: 'Bearer ' + loginModule.accessToken,
+                    Authorization: 'Bearer ' + localStorageTokenService.getAccessToken(),
+                },
+            },
+        )
+        .then((res) => {
+            return res.data;
+        })
+        .catch((error) => {
+            return error.response.data;
+        });
+}
+
+export async function rateCourse(
+    courseId: number,
+    rating: string,
+): Promise<IAxiosListDefaultResponse<Record<string, never>>> {
+    return axios
+        .post(
+            `${BE_URL}/rating/${courseId}`,
+            {
+                rating: rating,
+            },
+            {
+                headers: {
+                    Authorization: 'Bearer ' + localStorageTokenService.getAccessToken(),
                 },
             },
         )

@@ -2,6 +2,7 @@ import { loginModule } from './../../auth/store/login.store';
 import { IAxiosDefaultResponse, IAxiosListDefaultResponse } from '@/common/interfaces';
 import axios from 'axios';
 import { IInstructorData, INotificationData } from '../constants/common.interfaces';
+import localStorageTokenService from '@/common/tokenService';
 
 const FE_URL = process.env.VUE_APP_FE_BASE_URL;
 const BE_URL = process.env.VUE_APP_API_URL;
@@ -25,7 +26,7 @@ export async function getNotificationList(): Promise<
     return axios
         .get(`${BE_URL}/notification`, {
             headers: {
-                Authorization: 'Bearer ' + loginModule.accessToken,
+                Authorization: 'Bearer ' + localStorageTokenService.getAccessToken(),
             },
         })
         .then((res) => {
@@ -45,7 +46,7 @@ export async function readNotification(): Promise<
             {},
             {
                 headers: {
-                    Authorization: 'Bearer ' + loginModule.accessToken,
+                    Authorization: 'Bearer ' + localStorageTokenService.getAccessToken(),
                 },
             },
         )

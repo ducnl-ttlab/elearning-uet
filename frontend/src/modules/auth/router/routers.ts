@@ -26,11 +26,6 @@ const authRouters: Array<RouteRecordRaw> = [
                 name: PageName.CREATE_PASSWORD_PAGE,
                 component: CreatePasswordPage,
             },
-            // {
-            //     path: '/auth/google/:token',
-            //     name: PageName.LOGIN_PAGE,
-            //     component: GoogleLogin,
-            // },
         ],
     },
     {

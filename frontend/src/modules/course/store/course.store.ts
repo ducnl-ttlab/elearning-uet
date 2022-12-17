@@ -33,6 +33,7 @@ class CourseModule extends VuexModule {
     currentChatTopicId = -1;
     topicFormPopupMode = '';
     unreadMessageCount = 0;
+    courseRating = 1;
 
     @Action
     setCourseList(courseList: Array<ICourseData>) {
@@ -232,6 +233,16 @@ class CourseModule extends VuexModule {
     @Mutation
     RESET_UNREAD_MESSAGE_COUNT() {
         this.unreadMessageCount = 0;
+    }
+
+    @Action
+    setCourseRating(rating: number) {
+        this.SET_COURSE_RATING(rating);
+    }
+
+    @Mutation
+    SET_COURSE_RATING(rating: number) {
+        this.courseRating = rating;
     }
 }
 export const courseModule = getModule(CourseModule);

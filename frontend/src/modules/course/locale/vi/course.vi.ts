@@ -78,6 +78,7 @@ export const course = {
             deleteTopic: 'Xóa topic thất bại, vui lòng thử lại sau!',
         },
         sendMessageError: 'Gửi tin nhắn thất bại, vui lòng thử lại sau!',
+        leaveRatingError: 'Đánh giá khóa học thất bại, vui lòng thử lại sau!',
     },
 
     success: {
