@@ -1,12 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
-import { LockIcon, PersonIcon, EditIcon } from "../common/icons";
+import { LockIcon, PersonIcon, EditIcon, GridViewIcon } from "../common/icons";
 import AdminService from "../../service/AdminService";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
-function Sidebar({ user }) {
-  const dispatch = useDispatch();
+function Sidebar() {
   const store = useSelector((state) => state.store.auth);
 
   const handleLogout = () => {
@@ -32,7 +31,12 @@ function Sidebar({ user }) {
           <p>{store.user.username}</p>
         </Avt>
       </div>
-
+      <NavLink to="/" activeClassName="active">
+        <Wrap>
+          <GridViewIcon />
+          <p>Tổng quan</p>
+        </Wrap>
+      </NavLink>
       <NavLink to="/users" activeClassName="active">
         <Wrap>
           <PersonIcon />

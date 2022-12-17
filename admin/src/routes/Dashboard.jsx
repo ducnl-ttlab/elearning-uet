@@ -15,7 +15,7 @@ function Dashboard() {
         </LeftSide>
         <RightSide>
           <Routes>
-            <Route path="/all" element={<ViewAll />} />
+            <Route path="/" element={<ViewAll />} />
             <Route path="/users" element={<ViewUsers />} />
             <Route path="/courses" element={<ViewCourses />} />
           </Routes>
