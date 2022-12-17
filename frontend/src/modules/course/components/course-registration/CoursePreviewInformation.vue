@@ -116,6 +116,7 @@ import {
     showErrorNotificationFunction,
     showSuccessNotificationFunction,
 } from '@/common/helpers';
+import localStorageTokenService from '@/common/tokenService';
 import { loginModule } from '@/modules/auth/store/login.store';
 import { commonModule } from '@/modules/common/store/common.store';
 import { userModule } from '@/modules/user/store/user.store';
@@ -153,6 +154,10 @@ export default class CoursePreviewTopic extends Vue {
 
     get isFavoriteCourse() {
         return userCourseModule.favoriteCourse;
+    }
+
+    get courseStatus() {
+        return userCourseModule.userCourseData.status;
     }
 
     get actionKey() {
@@ -229,6 +234,20 @@ export default class CoursePreviewTopic extends Vue {
         }
     }
 
+    async handleLogout() {
+        commonModule.setLoadingIndicator(true);
+        userModule.setUserData({});
+        loginModule.setAccessToken('');
+        loginModule.setLoginState(false);
+        localStorageTokenService.resetAll();
+        localStorageTokenService.setLoginUser({});
+        socketInstance.disconnect();
+        this.$router.push({
+            name: PageName.LOGIN_PAGE,
+        });
+        commonModule.setLoadingIndicator(false);
+    }
+
     getPriceBackgroundColor(price: number) {
         return getPriceBackgroundColor(price);
     }
@@ -238,7 +257,14 @@ export default class CoursePreviewTopic extends Vue {
         if (actionKey === 0) {
             if (loginModule.accessToken == '') {
                 showErrorNotificationFunction(this.$t('course.errors.notLoggedIn'));
-                setTimeout(() => this.$router.push({ name: PageName.LOGIN_PAGE }), 2000);
+                await this.handleLogout();
+            }
+            if (this.courseStatus === UserCourseStatus.GUEST) {
+                showErrorNotificationFunction(this.$t('course.errors.chooseRole'));
+                setTimeout(
+                    () => this.$router.push({ name: PageName.SELECT_ROLE_PAGE }),
+                    2000,
+                );
             } else {
                 await this.courseCheckout();
             }

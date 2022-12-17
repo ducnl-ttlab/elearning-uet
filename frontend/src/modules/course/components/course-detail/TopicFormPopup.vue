@@ -55,6 +55,9 @@
             </div>
         </div>
         <div class="action-area d-flex flex-row w-100 justify-content-end gap-3">
+            <div class="button delete" @click="handleDeleteTopic">
+                {{ $t('course.topic.form.delete') }}
+            </div>
             <div class="button save" @click="handleSubmitTopic">
                 {{ $t('course.topic.form.save') }}
             </div>
@@ -222,12 +225,12 @@ export default class TopicFormPopup extends Vue {
     white-space: nowrap;
     padding: 8px 20px;
     transition: all 0.44s ease 0s;
+    cursor: pointer;
 }
 
 .save {
     background-color: #6d79e8;
     color: #fff;
-    cursor: pointer;
 }
 
 .save:hover {
@@ -237,11 +240,19 @@ export default class TopicFormPopup extends Vue {
 .cancel {
     background-color: #f7f7f7;
     color: #000;
-    cursor: pointer;
 }
 
 .cancel:hover {
     background-color: #f2f2f2;
+}
+
+.delete {
+    background: red;
+    color: $color-white;
+
+    &:hover {
+        background: #ff4122;
+    }
 }
 
 .upload-wrapper {
