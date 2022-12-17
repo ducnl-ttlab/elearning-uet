@@ -143,7 +143,7 @@ export class UserCourseService {
       const query = `
       SELECT *
       FROM user_courses uc
-      JOIN ratings r
+      LEFT JOIN ratings r
       ON r.userCourseId = uc.id
       WHERE uc.userId = ? and uc.courseId = ?
       LIMIT 1
