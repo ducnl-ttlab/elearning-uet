@@ -236,4 +236,26 @@ export class TopicController {
 
     return res.status(HttpStatus.OK).json(new SuccessResponse(deleteTopic));
   }
+
+  @Get(':courseId/:topicId')
+  @UsePipes(...validation({ key: 'deleteTopicParam', type: 'param' }))
+  @CourseAuth()
+  async getTopicDetail(
+    @Req() req: Request,
+    @Res() response: Response,
+    @Param() param: { courseId: number, topicId: number },
+    @Headers('host') host: Headers,
+  ) {
+    const { topicId } = param;
+    let topic = await this.topicService.findOneById(topicId);
+    const {video} = topic
+
+    topic.video = video?.startsWith('http')
+    ? video
+    : (video &&
+        `${req.protocol}://${host}/chunk/${video}/video.m3u8`) ||
+      '';
+
+    return response.status(HttpStatus.OK).json(new SuccessResponse(topic));
+  }
 }
