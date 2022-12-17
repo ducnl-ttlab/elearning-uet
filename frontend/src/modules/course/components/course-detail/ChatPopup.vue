@@ -25,6 +25,7 @@
                 @click="closeChatPopup"
                 src="@/assets/course/icons/close.svg"
                 style="cursor: pointer; margin-right: 8px"
+                class="x-button"
                 width="12"
                 alt=""
             />
@@ -50,8 +51,13 @@
                         alt=""
                     />
                 </div>
-
                 <CommentData :message="message" :isOwnMessage="isOwnMessage" />
+            </div>
+            <div
+                v-if="messageList?.length === 0"
+                class="no-chat d-flex align-items-center justify-content-center w-100"
+            >
+                {{ $t('course.chat.defaultMessage') }}
             </div>
         </div>
         <div
@@ -86,7 +92,6 @@ import { UserCourseStatus } from '@/modules/common/constants/common.interfaces';
 import { commonModule } from '@/modules/common/store/common.store';
 import { userModule } from '@/modules/user/store/user.store';
 import socketInstance from '@/plugins/socket';
-import { ref } from 'vue';
 import { Options, Vue } from 'vue-class-component';
 import { IMessageDetail } from '../../constants/course.interfaces';
 import { getMessageList, sendMessage } from '../../services/course';
@@ -103,11 +108,13 @@ export default class ChatPopup extends Vue {
     get isCommentBlocked() {
         return userCourseModule.userCourseData.status === 'comment_blocking';
     }
+
     get topicId() {
-        return courseModule.selectedTopic?.id;
+        return courseModule.currentChatTopicId;
     }
+
     set topicId(value) {
-        courseModule.setSelectedTopic(value || -1);
+        courseModule.setCurrentChatTopicId(value);
     }
 
     get userId() {
@@ -158,16 +165,17 @@ export default class ChatPopup extends Vue {
         this.setScroll();
         this.$watch('isShowChatPopup', () => {
             this.getMessageList();
-            this.setScroll();
+            this.$nextTick(() => this.setScroll());
             courseModule.resetUnreadMessageCount();
         });
         this.$watch('topicId', () => {
             this.getMessageList();
-            this.setScroll();
+            this.$nextTick(() => this.setScroll());
         });
-        // this.$watch('messageList', () => {
-        //     this.setScroll();
-        // });
+        this.$watch('messageList', () => {
+            this.$nextTick(() => this.setScroll());
+        });
+        courseModule.setCurrentChatTopicId(courseModule.selectedTopic.id || -1);
     }
 
     setScroll() {
@@ -179,15 +187,14 @@ export default class ChatPopup extends Vue {
 
     async handleSendMessage() {
         const courseId = +this.$route.params.courseId;
-        if (this.message !== '') {
-            socketInstance.chatRealtime(courseId, this.topicId || -1, this.message);
-            const response = await sendMessage(
-                courseId,
-                this.topicId || -1,
-                this.message,
-            );
+        const message = this.message;
+        this.message = '';
+        if (message !== '') {
+            socketInstance.chatRealtime(courseId, this.topicId || -1, message);
+            const response = await sendMessage(courseId, this.topicId || -1, message);
+
             this.setScroll();
-            this.message = '';
+
             if (!response.success) {
                 showErrorNotificationFunction('course.errors.commentError');
             }
@@ -241,6 +248,16 @@ export default class ChatPopup extends Vue {
     overflow: auto;
 }
 
+.no-chat {
+    font-size: 13px !important;
+    font-weight: 300 !important;
+    line-height: 24px !important;
+    font-style: italic;
+    text-align: center;
+    flex: 1;
+    overflow: auto;
+}
+
 .send-message-input {
     flex: 1 1 0;
 }
@@ -265,6 +282,11 @@ export default class ChatPopup extends Vue {
 
 .send-message-icon {
     cursor: pointer;
+}
+
+.x-button {
+    filter: invert(100%) sepia(7%) saturate(0%) hue-rotate(274deg) brightness(102%)
+        contrast(103%);
 }
 
 @media only screen and (max-width: map-get($map: $grid-breakpoints, $key: xl)) {

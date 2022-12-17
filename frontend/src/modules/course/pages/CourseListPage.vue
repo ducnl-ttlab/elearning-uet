@@ -76,7 +76,7 @@ export default class CourseListPage extends Vue {
             commonModule.setInstructorList(response?.data?.items || []);
         } else {
             let res = response?.errors || [
-                { message: this.$t('landing.categories.errors.getCategoryListError') },
+                { message: this.$t('course.errors.getInstructorListError') },
             ];
             commonModule.setInstructorList([]);
             showErrorNotificationFunction(res[0].message);
@@ -96,7 +96,7 @@ export default class CourseListPage extends Vue {
             courseModule.setCourseList(response?.data?.items || []);
         } else {
             let res = response?.errors || [
-                { message: this.$t('landing.categories.errors.getCategoryListError') },
+                { message: this.$t('course.errors.getCourseList') },
             ];
             courseModule.setCourseList([]);
             showErrorNotificationFunction(res[0].message);

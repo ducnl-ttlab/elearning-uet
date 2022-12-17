@@ -6,7 +6,7 @@ import {
     NotificationType,
 } from '../constants/common.interfaces';
 
-@Module({ dynamic: true, namespaced: true, store, name: 'authLogin' })
+@Module({ dynamic: true, namespaced: true, store, name: 'common' })
 class CommonModule extends VuexModule {
     instructorList: Array<IInstructorData> = [];
     notificationList: Array<INotificationData> = [];

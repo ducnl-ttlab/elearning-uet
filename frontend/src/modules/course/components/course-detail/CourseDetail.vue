@@ -2,7 +2,7 @@
     <div class="course-detail-wrapper d-flex flex-column w-100">
         <CourseGeneralInfo />
         <div class="course-detail d-flex flex-row">
-            <CourseSidebar />
+            <CourseSidebar @reload="getCourseGeneralInfo" />
             <div class="d-flex flex-row w-100" v-if="courseArea === CourseArea.COURSE">
                 <TopicSidebar />
                 <TopicDetail />
@@ -78,13 +78,13 @@ export default class CourseDetail extends Vue {
     }
 
     async getCourseGeneralInfo() {
-        const id: number = parseInt(this.$route.params.courseId as string);
+        const id: number = +this.$route.params.courseId;
         const response = await getCoursePreviewData(id);
         if (response?.success) {
             courseModule.setCoursePreviewData(response?.data || {});
         } else {
             let res = response?.errors || [
-                { message: this.$t('landing.categories.errors.getCategoryListError') },
+                { message: this.$t('course.errors.getCoursePreviewError') },
             ];
             courseModule.setCoursePreviewData({});
             showErrorNotificationFunction(res[0].message);
@@ -92,12 +92,13 @@ export default class CourseDetail extends Vue {
     }
 
     async getTopicList() {
-        const id: number = parseInt(this.$route.params.courseId as string);
+        const id: number = +this.$route.params.courseId;
         const response = await getTopicList(id);
         if (response.success) {
             courseModule.setTopicList(response?.data?.items || []);
             if (response?.data?.items && response?.data?.items.length > 0) {
-                courseModule.setSelectedTopic(response.data.items[0]?.id ?? 1);
+                courseModule.setSelectedTopic(response.data.items[0]);
+                courseModule.setCurrentChatTopicId(response.data.items[0]?.id || -1);
             } else {
                 courseModule.setSelectedTopicObject({});
             }

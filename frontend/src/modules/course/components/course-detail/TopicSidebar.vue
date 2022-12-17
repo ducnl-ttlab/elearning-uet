@@ -21,7 +21,7 @@
         <div
             v-for="(topic, index) in topicList"
             :key="topic.id"
-            @click="handleClickTopic(topic)"
+            @click="getTopicDetail(topic.id)"
             class="button sidebar d-flex"
             :class="{ collapsed: isCollapsed }"
         >
@@ -43,10 +43,13 @@
 
 <script lang="ts">
 import { SystemRole } from '@/common/constants';
+import { showErrorNotificationFunction } from '@/common/helpers';
+import { commonModule } from '@/modules/common/store/common.store';
 import { userModule } from '@/modules/user/store/user.store';
 import { Options, Vue } from 'vue-class-component';
 import { SidebarMode } from '../../constants/course.constants';
 import { ITopicData } from '../../constants/course.interfaces';
+import { getSingleTopic } from '../../services/course';
 import { courseModule } from '../../store/course.store';
 
 @Options({
@@ -83,11 +86,6 @@ export default class CourseSidebar extends Vue {
         }
     }
 
-    handleClickTopic(topic: ITopicData) {
-        courseModule.setSelectedTopic(topic.id as number);
-        courseModule.toggleShowTopicVideo(false);
-    }
-
     handleAddTopic() {
         courseModule.toggleShowTopicFormPopup(true);
         courseModule.setTopicFormPopupMode('create');
@@ -101,6 +99,19 @@ export default class CourseSidebar extends Vue {
         if (document.documentElement.clientWidth <= 1200) {
             courseModule.setTopicSidebarMode(SidebarMode.COLLAPSED);
         }
+    }
+
+    async getTopicDetail(id: number) {
+        commonModule.setLoadingIndicator(true);
+        const courseId = +this.$route.params.courseId;
+        const response = await getSingleTopic(courseId, id);
+        if (response.success) {
+            courseModule.setSelectedTopic(response.data || {});
+        } else {
+            courseModule.setSelectedTopic({});
+            showErrorNotificationFunction(this.$t('course.errors.getTopic'));
+        }
+        commonModule.setLoadingIndicator(false);
     }
 }
 </script>

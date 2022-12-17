@@ -35,7 +35,7 @@ Options({
     components: {},
 });
 export default class SetPasswordForm extends GlobalMixin {
-    @Prop({ default: '' }) readonly token!: string;
+    @Prop({ default: '' }) readonly token!: { accessToken: string };
     password = '';
     confirmPassword = '';
 
@@ -46,7 +46,7 @@ export default class SetPasswordForm extends GlobalMixin {
                 this.$t('auth.setPassword.errors.mismatchError'),
             );
         } else {
-            const response = await setPassword(this.password, this.token);
+            const response = await setPassword(this.password, this.token.accessToken);
             if (response?.success) {
                 showSuccessNotificationFunction(this.$t('auth.setPassword.success'));
                 this.$router.push({ name: PageName.LOGIN_PAGE });

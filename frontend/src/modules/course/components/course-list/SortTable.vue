@@ -3,7 +3,9 @@
         class="sort-table-wrapper d-flex w-100 flex-xl-row flex-column align-items-center mb-5 py-3"
         style="gap: 2.5vw"
     >
-        <div class="sort-table-title">{{ $t('course.filters.title') }}</div>
+        <div class="sort-table-title">
+            {{ $t('course.filters.title') }}
+        </div>
         <div
             class="sort-fields d-flex flex-xl-row flex-column w-100"
             style="flex-grow: 1"
@@ -12,6 +14,7 @@
                 class="input keyword"
                 style="width: 60%"
                 :placeholder="$t('course.filters.keyword')"
+                @keyup.enter="handleApplyFilter"
                 v-model="courseQuery.keyword"
                 autocomplete="off"
                 size="large"
@@ -111,7 +114,7 @@ export default class SortTable extends Vue {
             courseModule.setCourseList(response?.data?.items || []);
         } else {
             let res = response?.errors || [
-                { message: this.$t('landing.categories.errors.getCategoryListError') },
+                { message: this.$t('course.errors.getCourseListError') },
             ];
             courseModule.setCourseList([]);
             showErrorNotificationFunction(res[0].message);

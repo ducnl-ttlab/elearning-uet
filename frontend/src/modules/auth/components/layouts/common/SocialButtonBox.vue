@@ -1,23 +1,7 @@
 <template>
     <div class="form social-button-box">
         <el-divider class="divider">{{ $t('auth.auth.or') }}</el-divider>
-        <el-button @click="requestSocialLoginUrl(AuthProvider.ZALO)"
-            ><img class="button-image" src="@/assets/auth/images/zalo-logo.svg" alt="" />
-            {{
-                isLogin ? $t('auth.login.zaloLogin') : $t('auth.register.zaloRegister')
-            }}</el-button
-        >
-        <el-button @click="requestSocialLoginUrl(AuthProvider.FACEBOOK)"
-            ><img
-                class="button-image"
-                src="@/assets/auth/images/facebook-logo.svg"
-                alt=""
-            />{{
-                isLogin
-                    ? $t('auth.login.facebookLogin')
-                    : $t('auth.register.facebookRegister')
-            }}</el-button
-        >
+
         <el-button @click.prevent="signupWithGoogle"
             ><img
                 class="button-image"
@@ -72,14 +56,6 @@ export default class SocialButtonBox extends Vue {
     }
     :deep(.el-button:hover img) {
         filter: none;
-    }
-}
-
-@media only screen and (max-width: map-get($map: $grid-breakpoints, $key: md)) {
-    .social-button-box {
-        :deep(.el-button) {
-            padding-left: 10%;
-        }
     }
 }
 

@@ -57,10 +57,4 @@ export default class LoginPage extends Vue {
         }
     }
 }
-
-@media only screen and (max-width: map-get($map: $grid-breakpoints, $key: md)) {
-    .form {
-        margin: 40px auto 51px !important;
-    }
-}
 </style>

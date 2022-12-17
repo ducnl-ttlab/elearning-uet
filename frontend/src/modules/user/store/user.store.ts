@@ -2,7 +2,7 @@ import { Module, VuexModule, Action, Mutation, getModule } from 'vuex-module-dec
 import store from '@/plugins/vuex/index';
 import { IUserData, IUserOnlineList } from '@/common/interfaces';
 
-@Module({ dynamic: true, namespaced: true, store, name: 'landing' })
+@Module({ dynamic: true, namespaced: true, store, name: 'user' })
 class UserModule extends VuexModule {
     userData: IUserData = {};
 

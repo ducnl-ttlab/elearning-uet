@@ -41,45 +41,6 @@
                     </el-dropdown-item>
                     <el-dropdown-item>
                         <router-link
-                            class="dropdown-item-link text-decoration-none"
-                            :to="{ name: PageName.CHANGE_PASSWORD_PAGE }"
-                        >
-                            <div class="dropdown-item d-flex flex-row align-items-center">
-                                <div class="dropdown-item-icon-container">
-                                    <img
-                                        class="dropdown-item-icon"
-                                        src="@/assets/common/icons/header/header-change-password.svg"
-                                        alt=""
-                                    />
-                                </div>
-                                <span class="dropdown-item-text">
-                                    {{ $t('common.header.dropdownPassword') }}
-                                </span>
-                            </div>
-                        </router-link>
-                    </el-dropdown-item>
-                    <el-dropdown-item>
-                        <router-link
-                            class="dropdown-item-link text-decoration-none"
-                            :to="{ name: PageName.PAYMENT_PAGE }"
-                        >
-                            <div class="dropdown-item d-flex flex-row align-items-center">
-                                <div class="dropdown-item-icon-container">
-                                    <img
-                                        class="dropdown-item-icon"
-                                        src="@/assets/common/icons/header/header-cart.svg"
-                                        alt=""
-                                        width="20"
-                                    />
-                                </div>
-                                <span class="dropdown-item-text">
-                                    {{ $t('common.header.dropdownCart') }}
-                                </span>
-                            </div>
-                        </router-link>
-                    </el-dropdown-item>
-                    <el-dropdown-item>
-                        <router-link
                             class="dropdown-item-link text-decoration-none course"
                             style="display: none"
                             :to="{ name: PageName.USER_COURSE_LIST_PAGE }"

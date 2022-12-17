@@ -28,7 +28,7 @@ export const auth = {
     forgotPassword: {
         welcomeDescription:
             'It is a long established fact that a reader will be distracted by the readable content of a.',
-        forgotPassword: 'Quên mật khẩu',
+        forgotPassword: 'Quên mật khẩu?',
         email: {
             label: 'Email',
             placeholder: 'Nhập email',
@@ -44,6 +44,7 @@ export const auth = {
         },
         errors: {
             defaultErrors: 'Đặt lại mật khẩu không thành công',
+            verifyCodeError: 'Mã code đặt lại mật khẩu không chính xác, vui lòng thử lại',
         },
         success: {
             setPassword: 'Đặt lại mật khẩu thành công',
@@ -67,7 +68,7 @@ export const auth = {
             label: 'Email/Số điện thoại',
             placeholder: 'Nhập email hoặc số điện thoại',
             required: 'Yêu cầu nhập email hoặc số điện thoại',
-            invalidFormat: 'Vui lòng nhập địa chỉ email hoặc số điện thoại hợp lệ',
+            invalidFormat: 'Vui lòng nhập đúng định dạng email ',
         },
         email: {
             label: 'Email',
