@@ -63,7 +63,7 @@ function deleteUser(userId) {
   return http.delete(`${adminEndpoint}/users/${userId}`);
 }
 
-function getAll() {
+function getStatistic() {
   return http.get(adminEndpoint + `/`);
 }
 
@@ -83,7 +83,7 @@ export default {
   deleteCourse,
   deleteUser,
   editCourse,
-  getAll,
+  getStatistic,
   setUpAuth,
   editUser,
   editRole,

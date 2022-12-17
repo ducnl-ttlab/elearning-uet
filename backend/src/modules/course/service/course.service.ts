@@ -115,6 +115,7 @@ export class CourseService {
     text?: string,
     rating?: string,
     instructorIds?: string,
+    isPublished?: boolean,
   ): Promise<CourseSearch[]> {
     try {
       let instructorIdArr = instructorIds?.split(',');
@@ -128,20 +129,21 @@ export class CourseService {
       text && queryArr.push(`c.name like '%${text}%'`);
       rating && queryArr.push(`uc.avgRating > ${rating}`);
       instructorIds && queryArr.push(`c.instructorId in (?)`);
+      isPublished && queryArr.push(`c.isPublished = ${isPublished ? 1 : 0}`);
 
       let queryWhereStr = queryArr.join(' and ');
 
       let query = `
-      SELECT c.id, c.categoryId, c.name, c.image, c.price, c.description, u.username as instructorName, ROUND(uc.avgRating, 1) as avgRating, uc.studentTotal, c.startCourseTime as startCourse, c.endCourseTime as endCourse  
+      SELECT c.id, c.categoryId, c.name, c.image, c.price, c.description, u.username as instructorName, ROUND(uc.avgRating, 1) as avgRating, uc.studentTotal, c.startCourseTime as startCourse, c.endCourseTime as endCourse, c.isPublished
       FROM courses c
       JOIN users u on u.id = c.instructorId
-      LEFT JOIN ( 
+      LEFT JOIN (
         SELECT c.id, AVG(CAST(r.rating AS UNSIGNED)) as avgRating, COUNT(uc.id) as studentTotal FROM courses c
           LEFT JOIN user_courses uc on uc.courseId = c.id and uc.status <> 'expired' and uc.status <> 'reject'
           LEFT JOIN ratings r on r.userCourseId = uc.id 
           GROUP BY c.id
       ) as uc on uc.id = c.id
-      ${where}${queryWhereStr}
+      ${where} ${queryWhereStr}
       `;
       let result = await this.course.query(query, [instructorIdArr]);
       return result;

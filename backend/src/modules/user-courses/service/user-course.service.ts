@@ -28,6 +28,13 @@ export class UserCourseService {
       throw new InternalServerErrorException(error);
     }
   }
+  async find(): Promise<UserCourse[]> {
+    try {
+      return this.usercourse.find();
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
 
   async deleteUserCourse(id: number) {
     try {

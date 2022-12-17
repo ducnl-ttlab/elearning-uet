@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 import {
   VictoryPie,
@@ -6,10 +7,8 @@ import {
   VictoryAxis,
   VictoryScatter,
   VictoryLine,
-  VictoryContainer,
   VictoryTheme,
   VictoryLabel,
-  VictoryTooltip,
   VictoryVoronoiContainer,
 } from "victory";
 import {
@@ -18,55 +17,38 @@ import {
   GroupsIcon,
   FaceRetouchingNaturalIcon,
 } from "../common/icons";
+import { setOverViewData } from "../../redux/actions";
 
 function ViewAll() {
-  const [getAll, setAll] = useState([
-    {
-      users: "",
-      courses: "",
-      students: "",
-      instructors: "",
-    },
-  ]);
+  const dispatch = useDispatch();
+  const store = useSelector((state) => state.store);
 
-  const RADIAN = Math.PI / 180;
-  const renderCustomizedLabel = ({
-    cx,
-    cy,
-    midAngle,
-    innerRadius,
-    outerRadius,
-    percent,
-    index,
-  }) => {
-    const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
-    const x = cx + radius * Math.cos(-midAngle * RADIAN);
-    const y = cy + radius * Math.sin(-midAngle * RADIAN);
+  const { instructorTotal, studentTotal, userTotal, revenue, chart } =
+    store.app?.overview || {};
 
-    return (
-      <text
-        x={x}
-        y={y}
-        fill="white"
-        textAnchor={x > cx ? "start" : "end"}
-        dominantBaseline="central"
-      >
-        {`${(percent * 100).toFixed(0)}%`}
-      </text>
-    );
-  };
+  const pieData = useMemo(() => {
+    const student = Math.floor((studentTotal / userTotal) * 100, 0) || 0;
+    const instructor =
+      Math.floor((instructorTotal / userTotal) * 100, 0) || 100;
+    const others = 100 - instructor - student;
+    return [
+      { x: `${instructor}%`, y: instructor },
+      { x: `${student}%`, y: student },
+      { x: `${others}%`, y: others },
+    ];
+  }, [store.app?.overview]);
 
   const itemList = [
     {
       title: "Tổng số người dùng",
-      quantity: "500",
+      quantity: userTotal,
       Icon: GroupsIcon,
       color: "#C2EAD2",
       iconColor: "#44C483",
     },
     {
       title: "Tổng số học sinh",
-      quantity: "300",
+      quantity: studentTotal,
       Icon: SchoolIcon,
       color: "#CDE2EE",
       iconColor: "#94C5E7",
@@ -74,33 +56,24 @@ function ViewAll() {
 
     {
       title: "Tổng số giảng viên",
-      quantity: "500",
+      quantity: instructorTotal,
       Icon: FaceRetouchingNaturalIcon,
       color: "#FFE9B3",
       iconColor: "#E2D168",
     },
     {
       title: "Doanh thu",
-      quantity: "500$",
+      quantity: `${revenue}$`,
       Icon: MonetizationOnIcon,
       color: "#E9D8D7",
       iconColor: "#B75B6C",
     },
   ];
-  const data = [
-    { x: "Jan", y: 0 },
-    { x: "Feb", y: 2 },
-    { x: "Mar", y: 3 },
-    { x: "Apr", y: 4 },
-    { x: "May", y: 5 },
-    { x: "Jun", y: 6 },
-    { x: "Jul", y: 2 },
-    { x: "Aug", y: 3 },
-    { x: "Sep", y: 2 },
-    { x: "Oct", y: 1 },
-    { x: "Nov", y: 3 },
-    { x: "Dec", y: 4 },
-  ];
+
+  useEffect(() => {
+    dispatch(setOverViewData());
+  }, []);
+
   const StyledPoint = styled.circle`
     fill: ${(props) => props.color};
   `;
@@ -115,7 +88,7 @@ function ViewAll() {
     return <StyledPoint color={colors[i]} cx={x} cy={y} r={6} />;
   };
 
-  const temperatures = data.map(({ y }) => y);
+  const temperatures = chart.map(({ y }) => y);
   const min = Math.min(...temperatures);
   const max = Math.max(...temperatures);
 
@@ -154,21 +127,17 @@ function ViewAll() {
             <div>
               <svg viewBox="0 0 500 500" width={500} height={500}>
                 <VictoryPie
-                  colorScale={["#E2D168", "#94C5E7", "gray"]}
+                  colorScale={["#E2D168", "#94C5E7", "#A6A8AA"]}
                   standalone={false}
                   width={500}
                   height={500}
-                  data={[
-                    { x: `${45}%`, y: 45 },
-                    { x: `${50}%`, y: 50 },
-                    { x: `${5}%`, y: 5 },
-                  ]}
+                  data={pieData}
                   innerRadius={80}
                   labelRadius={100}
                   style={{
                     labels: {
                       fontSize: 20,
-                      fill: "white",
+                      fill: "black",
                     },
                   }}
                   animate={{
@@ -221,7 +190,7 @@ function ViewAll() {
                 }}
               >
                 <VictoryLine
-                  data={data}
+                  data={chart}
                   style={{
                     data: {
                       fillOpacity: 0.7,
@@ -267,7 +236,7 @@ function ViewAll() {
                   theme={VictoryTheme.material}
                 />
                 <VictoryScatter
-                  data={data}
+                  data={chart}
                   dataComponent={<ScatterPoint min={min} max={max} />}
                 />
               </VictoryChart>

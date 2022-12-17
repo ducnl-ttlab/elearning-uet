@@ -46,6 +46,21 @@ export class UserService {
     }
   }
 
+  async countUser(role?: Role) {
+    try {
+      let result = await this.userRepository.count(
+        role && {
+          where: {
+            role,
+          },
+        },
+      );
+      return result;
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
   async getInstructorList(): Promise<InstructorDto[]> {
     return this.userRepository.find({
       where: {

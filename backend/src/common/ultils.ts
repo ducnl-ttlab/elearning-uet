@@ -161,3 +161,22 @@ export const rmvideo = (filename: string) => {
     });
   }
 };
+
+export const getMonthText = (month: number) => {
+  let monthTx = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
+  ];
+
+  return monthTx[month];
+};
