@@ -55,8 +55,8 @@ export const timeStampToMysql = (time: string) => {
 
 export const coursePeriod = (startTime: string, endTime: string) => {
   return {
-    startCourseTime: stringToMysqlTimeStamp(startTime),
-    endCourseTime: stringToMysqlTimeStamp(endTime),
+    startCourseTime: startTime && stringToMysqlTimeStamp(startTime),
+    endCourseTime: endTime && stringToMysqlTimeStamp(endTime),
   };
 };
 

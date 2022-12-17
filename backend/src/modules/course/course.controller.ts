@@ -110,9 +110,10 @@ export class CourseController {
 
       return {
         ...course,
-        image: image?.startsWith('http')
-          ? image
-          : `${req.protocol}://${host}/course/image/${image}`,
+        image:
+          image && image?.startsWith('http')
+            ? image
+            : `${req.protocol}://${host}/course/image/${image}` || '',
         startCourse: (startCourse && mysqlTimeStamp(startCourse)) || '',
         endCourse: (endCourse && mysqlTimeStamp(endCourse)) || '',
       };
@@ -155,7 +156,9 @@ export class CourseController {
       instructorId: user.id,
       categoryId: isExistCategory.id,
       isPublished: (data.isPublished as any) === 'true' ?? data?.isPublished,
-      image: file?.filename,
+      image:
+        file?.filename ||
+        'https://i.pinimg.com/564x/13/5c/4e/135c4e70743ec6eebaf2ea6c10135e4c.jpg',
       ...coursePeriod(data.startCourseTime, data.endCourseTime),
     };
     let course = await this.courseService.saveCourse(newCourse);
@@ -271,9 +274,10 @@ export class CourseController {
 
       return {
         ...course,
-        image: image?.startsWith('http')
-          ? image
-          : `${req.protocol}://${host}/course/image/${image}`,
+        image:
+          image && image?.startsWith('http')
+            ? image
+            : `${req.protocol}://${host}/course/image/${image}` || '',
         startCourse: (startCourse && mysqlTimeStamp(startCourse)) || '',
         endCourse: (endCourse && mysqlTimeStamp(endCourse)) || '',
       };
