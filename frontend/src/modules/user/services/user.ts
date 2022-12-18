@@ -1,10 +1,8 @@
 import { PageName } from '@/common/constants';
 import { IAxiosDefaultResponse, IUserData } from '@/common/interfaces';
 import localStorageTokenService from '@/common/tokenService';
-import { loginModule } from '@/modules/auth/store/login.store';
 import router from '@/plugins/vue-router';
 import axios from 'axios';
-import { IUpdateUserData } from '../constants/user.interfaces';
 import { userModule } from '../store/user.store';
 
 const FE_URL = process.env.VUE_APP_FE_BASE_URL;
@@ -19,6 +17,7 @@ export async function getUserData(): Promise<IAxiosDefaultResponse<IUserData>> {
         })
         .then((res) => {
             userModule.setUserData(res.data?.data || {});
+            localStorageTokenService.setAccessToken(res.data?.data?.accessToken);
             return res.data;
         })
         .catch((error) => {

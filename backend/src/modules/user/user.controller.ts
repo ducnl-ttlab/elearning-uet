@@ -55,17 +55,24 @@ export class UserController {
     @Res() res: Response,
     @Headers('host') host: Headers,
   ) {
-    // let user = (await this.cacheManager.setOrgetCache(
-    //   `user${req.user.id}`,
-    //   async () => {
-    //     return await this.authService.existEmail(req.user.email);
-    //   },
-    // )) as User;
-    let user = await this.authService.existEmail(req.user.email);
-    const { avatar, created_at, updated_at } = user;
+    let user = (await this.cacheManager.setOrgetCache(
+      `user${req.user.id}`,
+      async () => {
+        return await this.authService.existEmail(req.user.email);
+      },
+    )) as User;
+    // let user = await this.authService.existEmail(req.user.email);
+    const { avatar, created_at, updated_at, email } = user;
 
     let unreadNotification =
       await this.notificationService.countUnreadNotification(user.id);
+
+    const { accessToken } = await this.authService.signUserJwt({
+      email,
+      id: user.id,
+      username: user.username,
+      role: user.role,
+    });
 
     user.avatar =
       avatar && avatar?.startsWith('http')
@@ -81,7 +88,7 @@ export class UserController {
 
     return res
       .status(HttpStatus.OK)
-      .json(new SuccessResponse(filterUser(userRes)));
+      .json(new SuccessResponse({ ...filterUser(userRes), accessToken }));
   }
 
   @Put('profile')

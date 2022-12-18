@@ -47,6 +47,7 @@ export interface IUserData {
     created_at?: string;
     updated_at?: string;
     unreadNotification?: number;
+    accessToken?: string
 }
 
 export interface IGetListDefaultParams {
