@@ -107,7 +107,7 @@ export class QuizService {
   async getBulks(topicId: number, studentId: string) {
     try {
       let quiz: BulkQuizResponseDto[] = await this.quiz.find({
-        where: { topicId: topicId },
+        where: { topicId: topicId, shown: true },
       });
       quiz = await Promise.all(
         quiz.map(async (quizItem) => {
