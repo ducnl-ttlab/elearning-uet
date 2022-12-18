@@ -407,11 +407,11 @@ export class UserCourseController {
     const { keyword } = query;
 
     let student = await this.userCourseService.findUserOutsideCourse(courseId);
-
+    
     if (keyword) {
       student = [
         ...student.filter((item) => {
-          return item.username.includes(keyword);
+          return item.username?.includes(keyword);
         }),
       ];
     }

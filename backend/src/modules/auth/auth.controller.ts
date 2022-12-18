@@ -107,6 +107,7 @@ export class AuthController {
         email,
         verified: false,
         password: hashpw,
+        username: email?.split('@')[0],
         avatar,
       }),
     ]);

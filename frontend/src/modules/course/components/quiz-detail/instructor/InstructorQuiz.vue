@@ -1,9 +1,23 @@
 <template>
-    <div class="d-flex flex-row gap-4 mb-3 quiz-title">
+    <div class="d-flex flex-row gap-4 mb-3 quiz-title" v-if="isShowTitle">
         <div v-if="!isEditingQuiz" class="d-flex flex-row gap-4 align-items-center">
-            <div class="quiz-name text-ellipsis">{{ quiz.name }}</div>
+            <div class="quiz-name text-ellipsis">
+                {{
+                    quiz.name
+                        ? quiz?.name
+                        : $t('course.quiz.field.addQuestionPlaceholder')
+                }}
+            </div>
             <div class="quiz-duration">
                 {{ $t('course.quiz.form.duration', { time: quiz.duration }) }}
+            </div>
+            <div class="d-flex align-items-center justify-content-center">
+                <el-icon v-if="!quiz.shown" style="cursor: pointer">
+                    <Lock color="red" />
+                </el-icon>
+                <el-icon v-else style="cursor: pointer">
+                    <Unlock color="green" />
+                </el-icon>
             </div>
         </div>
         <div v-else class="d-flex flex-row gap-4 align-items-center">
@@ -29,7 +43,6 @@
                 @click="toggleEditQuiz"
             />
             <img
-                v-if="!isEditingQuiz"
                 src="@/assets/course/icons/cancel.svg"
                 width="16"
                 alt=""
@@ -38,39 +51,42 @@
             />
         </div>
     </div>
-
     <div class="question-wrapper d-flex flex-column gap-3">
+        <div v-for="(question, index) in quiz.questionList" :key="index">
+            <InstructorQuestion
+                :question="question"
+                :index="index"
+                @delete-question="handleDeleteQuestion"
+                @delete-answer="handleDeleteAnswer"
+            />
+        </div>
         <div class="add-button d-flex flex-row gap-2">
             <img src="@/assets/course/icons/plus.svg" width="18" alt="" />
-            <div @click="handleAddQuestion">{{ $t('course.quiz.form.addQuestion') }}</div>
-        </div>
-        <div v-for="question in quiz.questionList" :key="question.id">
-            <InstructorQuestion :question="question" />
+            <div @click="handleAddQuestion" style="cursor: pointer">
+                {{ $t('course.quiz.form.addQuestion') }}
+            </div>
         </div>
     </div>
 </template>
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
-import { SystemRole } from '@/common/constants';
-import { userModule } from '@/modules/user/store/user.store';
-import { IQuizDetail } from '../../../constants/course.interfaces';
+
+import {
+    IAnswerDetail,
+    IQuestionDetail,
+    IQuizDetail,
+} from '../../../constants/course.interfaces';
 import { Prop } from 'vue-property-decorator';
 import InstructorQuestion from './InstructorQuestion.vue';
 import { courseModule } from '@/modules/course/store/course.store';
-import { deleteQuizPart, getQuizList } from '@/modules/course/services/course';
-import { deleteType } from '../../../constants/course.constants';
-import {
-    showErrorNotificationFunction,
-    showSuccessNotificationFunction,
-} from '@/common/helpers';
-import { commonModule } from '@/modules/common/store/common.store';
 
 @Options({
     components: { InstructorQuestion },
 })
 export default class InstructorQuiz extends Vue {
     @Prop({ default: {} }) readonly quiz!: IQuizDetail;
+    @Prop({ default: false }) readonly isShowTitle: boolean;
 
     isEditingQuiz = false;
 
@@ -83,33 +99,29 @@ export default class InstructorQuiz extends Vue {
     }
 
     handleAddQuestion() {
-        // courseModule.setQuizList();
+        this.quiz.questionList?.push({
+            name: '',
+            mark: 0,
+            quizId: this.quiz.id,
+            answerList: [],
+        });
     }
 
-    async handleDeleteQuiz() {
-        commonModule.setLoadingIndicator(true);
-        const courseId = +this.$route.params.courseId;
-        console.log(courseId, this.topicId, deleteType.QUIZ, this.quiz.id || 1);
+    handleDeleteQuestion(question: IQuestionDetail, index: number) {
+        this.quiz.questionList?.splice(index, 1);
+        this.$emit('delete-question', question, index);
+    }
 
-        const response = await deleteQuizPart(
-            courseId,
-            this.topicId,
-            deleteType.QUIZ,
-            this.quiz.id || 1,
-        );
-        if (response?.success) {
-            showSuccessNotificationFunction(this.$t('course.success.quiz.deleteQuiz'));
-        } else {
-            let res = response?.errors || [
-                { message: this.$t('course.errors.deleteQuizError') },
-            ];
-            showErrorNotificationFunction(res[0].message);
-        }
+    handleDeleteAnswer(
+        answer: IAnswerDetail,
+        answerIndex: number,
+        questionIndex: number,
+    ) {
+        this.$emit('delete-answer', answer, answerIndex, questionIndex);
+    }
 
-        const reload = await getQuizList(courseId, this.topicId);
-        if (reload?.success) courseModule.setQuizList(reload.data?.items || []);
-
-        commonModule.setLoadingIndicator(false);
+    handleDeleteQuiz() {
+        this.$emit('delete-quiz', this.quiz);
     }
 }
 </script>

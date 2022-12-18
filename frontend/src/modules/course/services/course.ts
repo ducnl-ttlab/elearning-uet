@@ -280,6 +280,26 @@ export async function createQuiz(
         });
 }
 
+export async function deleteQuiz(
+    courseId: number,
+    topicId: number,
+    sourceId: number,
+    type: 'question' | 'quiz' | 'answer',
+): Promise<IAxiosDefaultResponse<IQuizDetail>> {
+    return axios
+        .delete(`${BE_URL}/quiz/${courseId}/${topicId}?type=${type}&sourceId=${sourceId}`, {
+            headers: {
+                Authorization: 'Bearer ' + localStorageTokenService.getAccessToken(),
+            },
+        })
+        .then((res) => {
+            return res.data;
+        })
+        .catch((error) => {
+            return error.response.data;
+        });
+}
+
 export async function createQuizDetail(
     courseId: number,
     topicId: number,

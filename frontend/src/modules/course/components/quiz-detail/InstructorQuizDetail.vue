@@ -10,34 +10,23 @@
         <div class="add-quiz-area d-flex flex-column gap-4" v-if="isAddingQuiz">
             <div class="field-wrapper">
                 <div class="label pb-3">{{ $t('course.quiz.form.title') }}:</div>
-                <BaseInputText
-                    :placeholder="$t('course.quiz.form.title')"
-                    v-model:value="newQuizForm.name"
-                    autocomplete="off"
-                />
+                <BaseInputText :placeholder="$t('course.quiz.form.title')" v-model:value="newQuizForm.name"
+                    autocomplete="off" />
             </div>
 
             <div class="field-wrapper">
                 <div class="label">{{ $t('course.quiz.form.startTime') }}:</div>
-                <el-date-picker
-                    v-model="newQuizForm.startTime"
-                    type="datetime"
-                    size="large"
-                    :placeholder="$t('course.quiz.form.startTime')"
-                />
+                <el-date-picker v-model="newQuizForm.startTime" type="datetime" size="large"
+                    :placeholder="$t('course.quiz.form.startTime')" />
             </div>
 
             <div class="field-wrapper">
                 <div class="label">{{ $t('course.quiz.form.quizDuration') }}:</div>
-                <el-slider
-                    style="padding-left: 18px"
-                    v-model="newQuizForm.duration"
-                    :step="5"
-                    :min="5"
-                    :max="60"
-                    show-stops
-                />
+                <el-slider style="padding-left: 18px" v-model="newQuizForm.duration" :step="5" :min="5" :max="60"
+                    show-stops />
             </div>
+
+            <InstructorQuiz :quiz="newQuizForm" />
 
             <div class="action-buttons d-flex flex-row gap-2">
                 <div @click="handleSaveAddQuiz" class="button save-add-quiz">
@@ -48,32 +37,40 @@
                 </div>
             </div>
         </div>
+
         <div class="quiz-card" v-for="quiz in quizList" :key="quiz.id">
-            <InstructorQuiz :quiz="quiz" />
+            <InstructorQuiz :quiz="quiz" isShowTitle="true" @delete-answer="handleDeleteAnswer"
+                @delete-question="handleDeleteQuestion" @delete-quiz="handleDeleteQuiz" />
         </div>
     </div>
 </template>
 
 <script lang="ts">
 import { SystemRole } from '@/common/constants';
-import {
-    showErrorNotificationFunction,
-    showSuccessNotificationFunction,
-} from '@/common/helpers';
-import { commonModule } from '@/modules/common/store/common.store';
 import { userModule } from '@/modules/user/store/user.store';
-import moment from 'moment';
 import { Options, Vue } from 'vue-class-component';
-import { IQuizDetail } from '../../constants/course.interfaces';
-import { createQuiz } from '../../services/course';
+import { IAnswerDetail, IQuestionDetail, IQuizDetail } from '../../constants/course.interfaces';
 import { courseModule } from '../../store/course.store';
 import InstructorQuiz from '../quiz-detail/instructor/InstructorQuiz.vue';
-
+import { toRaw } from 'vue';
+import { commonModule } from '@/modules/common/store/common.store';
+import moment from 'moment';
+import { createQuiz, deleteQuiz } from '../../services/course';
+import { showErrorNotificationFunction, showSuccessNotificationFunction } from '@/common/helpers';
 @Options({
-    components: { InstructorQuiz },
+    components: { InstructorQuiz, },
 })
 export default class InstructorQuizDetail extends Vue {
     SystemRole = SystemRole;
+
+    newQuizForm = {
+        name: '',
+        startTime: '',
+        duration: 0,
+        topicId: this.topicId,
+        questionList: [
+        ],
+    };
 
     get userRole() {
         return userModule.userData.role;
@@ -86,103 +83,22 @@ export default class InstructorQuizDetail extends Vue {
         return courseModule.topicId;
     }
 
-    quizList: Array<IQuizDetail> = [
-        {
-            id: 1,
-            topicId: 1,
-            name: 'Duc mup 1',
-            shown: false,
-            startTime: '2022/12/16 00:00:00',
-            duration: '25',
-            questionList: [],
-        },
-        {
-            id: 2,
-            topicId: 1,
-            name: 'Duc mup 2',
-            shown: false,
-            startTime: '2022/12/15 00:00:00',
-            duration: '25',
-            questionList: [],
-        },
-        {
-            id: 3,
-            topicId: 1,
-            name: 'abc react native',
-            shown: false,
-            startTime: '2011/12/11 23:21:00',
-            duration: '45',
-            questionList: [
-                {
-                    id: 1,
-                    quizId: 3,
-                    name: 'safdsa',
-                    mark: 10,
-                    answerList: [
-                        {
-                            id: 1,
-                            content: 'sadfdsaf',
-                            isCorrect: true,
-                        },
-                        {
-                            id: 3,
-                            content: 'sadfdsaf',
-                            isCorrect: false,
-                        },
-                    ],
-                },
-                {
-                    id: 2,
-                    quizId: 3,
-                    name: 'hieu mup',
-                    mark: 160,
-                    answerList: [
-                        {
-                            id: 2,
-                            content: 'sadfdsaf',
-                            isCorrect: true,
-                        },
-                    ],
-                },
-            ],
-        },
-        {
-            id: 4,
-            topicId: 1,
-            name: 'Duc mup 123',
-            shown: false,
-            startTime: '2022/12/16 00:00:00',
-            duration: '20',
-            questionList: [],
-        },
-        {
-            id: 4,
-            topicId: 1,
-            name: 'Duc mup 123',
-            shown: false,
-            startTime: '2022/12/16 00:00:00',
-            duration: '20',
-            questionList: [],
-        },
-    ];
-
-    // return courseModule.quizList;
+    get quizList(): Array<IQuizDetail> {
+        return courseModule.quizList;
+    }
 
     get isAddingQuiz() {
         return courseModule.isAddingQuiz;
     }
-
-    newQuizForm = {
-        name: '',
-        startTime: '',
-        duration: 0,
-    };
 
     resetNewQuiz() {
         this.newQuizForm = {
             name: '',
             startTime: '',
             duration: 0,
+            topicId: this.topicId,
+            questionList: [
+            ],
         };
     }
 
@@ -218,6 +134,52 @@ export default class InstructorQuizDetail extends Vue {
         this.resetNewQuiz();
         courseModule.setAddingQuiz(false);
     }
+
+    async handleDeleteAnswer(answer: IAnswerDetail) {
+        if (answer?.id) {
+            let response = await deleteQuiz(+this.$route.params.courseId, this.topicId, answer.id, 'answer')
+            if (response?.success) {
+                showSuccessNotificationFunction(this.$t('course.success.quiz.deleteQuiz'));
+            } else {
+                let res = response?.errors || [
+                    { message: this.$t('course.errors.deleteQuizError') },
+                ];
+                showErrorNotificationFunction(res[0].message);
+            }
+        }
+    }
+    async handleDeleteQuestion(question: IQuestionDetail) {
+        if (question?.id) {
+            let response = await deleteQuiz(+this.$route.params.courseId, this.topicId, question.id, 'question')
+            if (response?.success) {
+                showSuccessNotificationFunction(this.$t('course.success.quiz.deleteQuiz'));
+            } else {
+                let res = response?.errors || [
+                    { message: this.$t('course.errors.deleteQuizError') },
+                ];
+                showErrorNotificationFunction(res[0].message);
+            }
+        }
+    }
+
+    async handleDeleteQuiz(quiz: IQuizDetail) {
+        if (quiz?.id) {
+            let quizes = this.quizList
+            let quizIndex = this.quizList.findIndex(item => item.id === quiz.id)
+            quizes.splice(quizIndex, 1)
+            courseModule.setQuizList([...quizes]);
+
+            let response = await deleteQuiz(+this.$route.params.courseId, this.topicId, quiz.id, 'quiz')
+            if (response?.success) {
+                showSuccessNotificationFunction(this.$t('course.success.quiz.deleteQuiz'));
+            } else {
+                let res = response?.errors || [
+                    { message: this.$t('course.errors.deleteQuizError') },
+                ];
+                showErrorNotificationFunction(res[0].message);
+            }
+        }
+    }
 }
 </script>
 <style lang="scss" scoped>
@@ -240,6 +202,7 @@ export default class InstructorQuizDetail extends Vue {
 .save-add-quiz {
     color: $color-white;
     background-color: $color-violet-new-1;
+
     &:hover {
         background-color: $color-violet-new-opacity-50;
     }
@@ -248,6 +211,7 @@ export default class InstructorQuizDetail extends Vue {
 .cancel-add-quiz {
     color: #000;
     background-color: #e8e8e8;
+
     &:hover {
         background-color: #f3f3f3;
     }
@@ -255,6 +219,11 @@ export default class InstructorQuizDetail extends Vue {
 
 .add-button {
     cursor: pointer;
+    padding: 10px 20px;
+    border-left: 4px solid black;
+    font-size: 20px;
+    font-weight: 700;
+    background: #ccc;
 }
 
 .text-ellipsis {
@@ -262,6 +231,7 @@ export default class InstructorQuizDetail extends Vue {
     overflow: hidden !important;
     text-overflow: ellipsis !important;
 }
+
 .field-wrapper {
     display: flex;
     flex-direction: row;

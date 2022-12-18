@@ -70,6 +70,7 @@ export const course = {
         getTopicListError: 'Cannot find any topic',
         getQuizListError: 'Error getting quiz list. Please try again later!',
         createNewQuizError: 'Error creating new quiz. Please try again later!',
+        deleteQuizError: 'Error deleting new quiz. Please try again later!',
         topic: {
             getTopic: 'Get topic detail failed. Please try again later!',
             updateTopic: 'Update topic failed! Please try again later',
@@ -178,6 +179,8 @@ export const course = {
         field: {
             addQuestion: 'Question title',
             addAnswer: 'Answer title',
+            addQuestionPlaceholder: 'Please enter a question name',
+            question: 'Question'
         },
         leaderboard: 'Leaderboard',
     },

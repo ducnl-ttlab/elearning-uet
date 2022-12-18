@@ -6,7 +6,7 @@
         </div>
         <el-input
             :placeholder="$t('course.quiz.form.title')"
-            v-model.trim="answer.content"
+            v-model="answer.content"
             @change="toggleEditAnswer"
             autocomplete="off"
             v-else
@@ -32,14 +32,10 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component';
+import { Vue } from 'vue-class-component';
 import { IAnswerDetail } from '../../../constants/course.interfaces';
 import { Prop } from 'vue-property-decorator';
-import { courseModule } from '@/modules/course/store/course.store';
 
-@Options({
-    components: {},
-})
 export default class InstructorAnswer extends Vue {
     @Prop({ default: {} }) readonly answer!: IAnswerDetail;
     @Prop({ default: 0 }) readonly index!: number;
@@ -48,23 +44,9 @@ export default class InstructorAnswer extends Vue {
     toggleEditAnswer() {
         this.isEditingAnswer = !this.isEditingAnswer;
     }
+
     handleDeleteAnswer() {
-        let newQuizList = courseModule.quizList.map((item) => {
-            let { questionList } = item;
-            questionList = questionList?.map((questionItem) => {
-                let { answerList } = questionItem;
-                answerList?.splice(this.index, 1);
-                return {
-                    ...questionItem,
-                    answerList,
-                };
-            });
-            return {
-                ...item,
-                questionList,
-            };
-        });
-        courseModule.setQuizList(newQuizList);
+        this.$emit('delete-answer', this.answer, this.index);
     }
 }
 </script>
