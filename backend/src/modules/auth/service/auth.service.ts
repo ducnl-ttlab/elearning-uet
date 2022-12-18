@@ -101,7 +101,7 @@ export class AuthService {
   async existEmail(email: string): Promise<User> {
     const user = await this.userService.findOneByEmail(email);
     if (!user) {
-      throw new NotFoundException('Not found email');
+      throw new BadRequestException('Not found email');
     }
     return user;
   }

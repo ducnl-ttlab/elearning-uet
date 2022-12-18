@@ -7,6 +7,7 @@ import { UserModule } from '../user/user.module';
 import { RedisCacheService } from '../cache/redis-cache.service';
 import { UserCourseModule } from '../user-courses/user-courses.module';
 import { NotificationModule } from '../notification/notification.module';
+import { RedisCacheModule } from '../cache/redis-cache.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { NotificationModule } from '../notification/notification.module';
     AuthModule,
     UserCourseModule,
     NotificationModule,
+    RedisCacheModule
   ],
   controllers: [AdminController],
   providers: [AdminService, RedisCacheService, AdminService],

@@ -1,4 +1,5 @@
 import { IAxiosDefaultResponse, IUserData } from '@/common/interfaces';
+import localStorageTokenService from '@/common/tokenService';
 import axios from 'axios';
 import { IGoogleLoginParams } from '../constants/auth.interfaces';
 
@@ -35,7 +36,8 @@ export async function selectRole(
             },
             {
                 headers: {
-                    Authorization: 'Bearer ' + token,
+                    Authorization:
+                        'Bearer ' + token || localStorageTokenService.getAccessToken(),
                 },
             },
         )

@@ -112,6 +112,7 @@ export class UserCourseController {
     @Res() res: Response,
     @Query() query: { keyword: string; page: number; pageSize: number },
   ) {
+        
     const { keyword, page, pageSize } = query;
     let userCourses: StudentCourseDto[] = await this.cache?.setOrgetCache(
       `usercourse${user.id}`,

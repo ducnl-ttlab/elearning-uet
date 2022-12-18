@@ -219,6 +219,7 @@ export class AuthController {
     @Res() res: Response,
     @Body('role') role: Role,
   ) {
+
     await this.userService.updateUser(user.id, {
       role,
     });

@@ -55,6 +55,7 @@ export class UserController {
     @Res() res: Response,
     @Headers('host') host: Headers,
   ) {
+
     let user = (await this.cacheManager.setOrgetCache(
       `user${req.user.id}`,
       async () => {

@@ -1,3 +1,4 @@
+import { RedisCacheService } from './../cache/redis-cache.service';
 import { getMonthText } from './../../common/ultils';
 import { filterUser, removeImageFile } from 'src/common/ultils';
 import { NotificationService } from '../notification/service/notification.service';
@@ -53,6 +54,7 @@ export class AdminController {
     private readonly adminService: AdminService,
     private readonly userService: UserService,
     private readonly userCourseService: UserCourseService,
+    private readonly cacheManager: RedisCacheService,
     @Inject(STRIPE_CLIENT) private stripe: Stripe,
   ) {}
 
@@ -204,6 +206,7 @@ export class AdminController {
       throw new BadRequestException('user is not exist');
     }
     const { id, avatar } = userExist;
+    await this.cacheManager.deleteByKey(`user${id}`);
 
     try {
       if (avatar) {
