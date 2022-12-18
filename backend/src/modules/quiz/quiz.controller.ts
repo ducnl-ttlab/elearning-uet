@@ -29,6 +29,7 @@ import {
   IEditQuizDto,
   IQueryEditDto,
   IQuizParam,
+  IUpdateQuizDto,
   QuizListResponseDto,
 } from './dto/dto';
 import { QuizService } from './service/quiz.service';
@@ -114,28 +115,43 @@ export class QuizController {
     return res.status(HttpStatus.OK).json(new SuccessResponse(quiz));
   }
 
-  @Put(':courseId/:topicId')
+  @Put(':courseId')
   @InstructorCourseAuth()
-  @UsePipes(...validation({ key: 'topicIdParamSchema', type: 'param' }))
+  @UsePipes(
+    ...validation(
+      { key: 'updateQuizParamSchema', type: 'param' },
+      { key: 'editQuizQuerySchema', type: 'query' },
+    ),
+  )
   async updateQuiz(
     @Res() res: Response,
     @Instructor() instructor: Course,
     @Param() param: IQuizParam,
-    @Body() body: IEditQuizDto,
+    @Body() body: IUpdateQuizDto,
     @Query() query: IQueryEditDto,
   ) {
-    const { topicId } = param;
     const { sourceId, type } = query;
     let { answer, question, quiz } = body;
+
     let result: any;
-    if (quiz) {
-      await this.quizService.updateQuiz(quiz);
-      await this;
-    } else if (question) {
-      result = await this.quizService.updateQuestion(question);
-    } else if (answer) {
-      result = await this.quizService.updateAnswer(answer);
+
+    if (type === 'answer' && !!answer) {
+      result = await this.quizService.updateAnswerOnly(sourceId, answer);
+    } else if (type === 'question' && !!question) {
+      result = await this.quizService.updateQuestionOnly(sourceId, question);
+    } else if (type === 'quiz' && !!quiz) {
+      result = await this.quizService.updateQuizOnly(sourceId, quiz);
     }
+
+    // let result: any;
+    // if (quiz) {
+    //   await this.quizService.updateQuiz(quiz);
+    //   await this;
+    // } else if (question) {
+    //   result = await this.quizService.updateQuestion(question);
+    // } else if (answer) {
+    //   result = await this.quizService.updateAnswer(answer);
+    // }
 
     return res.status(HttpStatus.OK).json(
       new SuccessResponse({

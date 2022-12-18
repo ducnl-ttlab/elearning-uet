@@ -13,6 +13,12 @@ const topicIdParamSchema = Joi.object().keys({
     .message('courseId should be a number'),
 });
 
+const updateQuizParamSchema = Joi.object().keys({
+  courseId: Joi.string()
+    .pattern(/^[0-9]+$/)
+    .message('courseId should be a number'),
+});
+
 const createQuizSchema = Joi.object().keys({
   name: Joi.string().min(1).required(),
   startTime: Joi.string().min(1).optional(),
@@ -33,6 +39,7 @@ const validationSchemas = {
   topicIdParamSchema,
   createQuizSchema,
   editQuizQuerySchema,
+  updateQuizParamSchema,
 };
 
 type validationKeyType = keyof typeof validationSchemas;

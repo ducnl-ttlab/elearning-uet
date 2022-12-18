@@ -59,4 +59,10 @@ export interface IEditQuizDto {
   quiz?: BulkQuizInsertDto;
 }
 
+export interface IUpdateQuizDto {
+  answer?: Answer;
+  question?: Question;
+  quiz?: Quiz;
+}
+
 export interface QuizListResponseDto extends CommonListResponse<Quiz> {}

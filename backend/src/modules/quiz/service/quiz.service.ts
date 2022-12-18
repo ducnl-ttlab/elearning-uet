@@ -306,4 +306,27 @@ export class QuizService {
       throw new InternalServerErrorException(error);
     }
   }
+
+  async updateQuizOnly(quizId: number, quiz: Partial<Quiz>) {
+    try {
+      return this.quiz.update(quizId, quiz);
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  async updateQuestionOnly(questionId: number, question: Partial<Question>) {
+    try {
+      return this.question.update(questionId, question);
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+  async updateAnswerOnly(answerId: number, answer: Partial<Answer>) {
+    try {
+      return this.answer.update(answerId, answer);
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
 }
