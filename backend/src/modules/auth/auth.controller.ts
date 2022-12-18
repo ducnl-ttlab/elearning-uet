@@ -84,7 +84,7 @@ export class AuthController {
         .json(
           new ErrorResponse(
             HttpStatus.CONFLICT,
-            'This email is alrealdy exist',
+            'This email is already exist',
           ),
         );
     }

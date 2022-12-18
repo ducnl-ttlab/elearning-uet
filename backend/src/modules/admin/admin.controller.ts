@@ -286,6 +286,9 @@ export class AdminController {
     if (user.role !== Role.admin) {
       throw new BadRequestException('incorrect role');
     }
+    if (!user.verified) {
+      throw new BadRequestException('this email is not verified');
+    }
     let unreadNotification = await this.notification.countUnreadNotification(
       user.id,
     );
