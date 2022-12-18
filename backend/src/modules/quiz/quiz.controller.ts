@@ -38,6 +38,8 @@ import { Course } from '../course/entity/course.entity';
 import { UserCourse } from '../user-courses/entity/user-course.entity';
 import { UserQuiz } from '../user-quiz/entity/user-quiz.entity';
 import { UserQuizService } from '../user-quiz/service/user-quiz.service';
+import { Answer } from './entity/answer.entity';
+import { Question } from './entity/question.entity';
 
 @ApiTags('Topic')
 @Controller('quiz')
@@ -141,6 +143,20 @@ export class QuizController {
       result = await this.quizService.updateQuestionOnly(sourceId, question);
     } else if (type === 'quiz' && !!quiz) {
       result = await this.quizService.updateQuizOnly(sourceId, quiz);
+    } else if (type === 'addAnswer' && !!answer) {
+      let newAnswer: Partial<Answer> = {
+        questionId: sourceId,
+        content: answer.content,
+        isCorrect: answer.isCorrect,
+      };
+      result = await this.quizService.saveAnswer(newAnswer);
+    } else if (type === 'addQuestion' && !!question) {
+      let newQuestion: Partial<Question> = {
+        quizId: sourceId,
+        name: question.name,
+        mark: question.mark,
+      };
+      result = await this.quizService.saveQuestion(newQuestion);
     }
 
     // let result: any;

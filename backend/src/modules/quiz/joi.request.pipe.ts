@@ -28,7 +28,9 @@ const createQuizSchema = Joi.object().keys({
 });
 
 const editQuizQuerySchema = Joi.object().keys({
-  type: Joi.string().valid('question', 'quiz', 'answer').required(),
+  type: Joi.string()
+    .valid('question', 'quiz', 'answer', 'addQuestion', 'addAnswer')
+    .required(),
   sourceId: Joi.string()
     .pattern(/^[0-9]+$/)
     .message('sourceId should be a number')

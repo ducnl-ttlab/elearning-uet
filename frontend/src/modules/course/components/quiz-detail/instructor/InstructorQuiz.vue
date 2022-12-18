@@ -12,10 +12,14 @@
                 {{ $t('course.quiz.form.duration', { time: quiz.duration }) }}
             </div>
             <div class="d-flex align-items-center justify-content-center">
-                <el-icon v-if="!quiz.shown" style="cursor: pointer">
+                <el-icon
+                    v-if="!quiz.shown"
+                    style="cursor: pointer"
+                    @click="toggleShownQuiz"
+                >
                     <Lock color="red" />
                 </el-icon>
-                <el-icon v-else style="cursor: pointer">
+                <el-icon v-else style="cursor: pointer" @click="toggleShownQuiz">
                     <Unlock color="green" />
                 </el-icon>
             </div>
@@ -58,6 +62,8 @@
                 :index="index"
                 @delete-question="handleDeleteQuestion"
                 @delete-answer="handleDeleteAnswer"
+                @edit-question="handleEditQuestion"
+                @edit-answer="handleEditAnswer"
             />
         </div>
         <div class="add-button d-flex flex-row gap-2">
@@ -73,7 +79,9 @@
 import { Options, Vue } from 'vue-class-component';
 
 import {
+    IAnswer,
     IAnswerDetail,
+    IQuestion,
     IQuestionDetail,
     IQuizDetail,
 } from '../../../constants/course.interfaces';
@@ -88,14 +96,23 @@ export default class InstructorQuiz extends Vue {
     @Prop({ default: {} }) readonly quiz!: IQuizDetail;
     @Prop({ default: false }) readonly isShowTitle: boolean;
 
+    isShown = true;
     isEditingQuiz = false;
 
     get topicId() {
         return courseModule.topicId;
     }
 
+    toggleShownQuiz() {
+        this.quiz.shown = !this.quiz.shown;
+        this.$emit('toggle-show-quiz', this.quiz);
+    }
+
     toggleEditQuiz() {
         this.isEditingQuiz = !this.isEditingQuiz;
+        if (!this.isEditingQuiz) {
+            this.$emit('edit-quiz', this.quiz);
+        }
     }
 
     handleAddQuestion() {
@@ -122,6 +139,14 @@ export default class InstructorQuiz extends Vue {
 
     handleDeleteQuiz() {
         this.$emit('delete-quiz', this.quiz);
+    }
+
+    handleEditQuestion(question: IQuestion) {
+        this.$emit('edit-question', question, this.quiz.id);
+    }
+
+    handleEditAnswer(answer: IAnswer, questionId: number) {
+        this.$emit('edit-answer', answer, questionId);
     }
 }
 </script>

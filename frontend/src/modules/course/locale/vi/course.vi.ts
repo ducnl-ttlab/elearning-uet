@@ -88,6 +88,9 @@ export const course = {
             'Không thể lấy đánh giá khóa học, vui lòng thử lại sau!',
         deleteCourseError: 'Không thể xóa khóa học này, vui lòng thử lại sau!',
         toggleCourse: 'Thay đổi trạng thái khóa học thất bại, vui lòng thử lại sau!',
+        quiz: {
+            updateTopic: 'Thay đổi trạng thái bài tập thất bại, vui lòng thử lại sau!',
+        },
     },
 
     success: {
@@ -178,7 +181,7 @@ export const course = {
             addQuestion: 'Câu hỏi mới',
             addAnswer: 'Câu trả lời mới',
             addQuestionPlaceholder: 'Nhập tên câu hỏi',
-            question: 'Câu'
+            question: 'Câu',
         },
         leaderboard: 'Đại lộ danh vọng',
     },

@@ -52,6 +52,7 @@
                 :answer="answer"
                 :index="index"
                 @delete-answer="handleDeteleAnswer"
+                @edit-answer="handleEditAnswer"
             />
         </div>
         <div class="add-button d-flex flex-row gap-2 py-2">
@@ -65,7 +66,11 @@
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
-import { IAnswerDetail, IQuestionDetail } from '../../../constants/course.interfaces';
+import {
+    IAnswer,
+    IAnswerDetail,
+    IQuestionDetail,
+} from '../../../constants/course.interfaces';
 import { Prop } from 'vue-property-decorator';
 import InstructorAnswer from './InstructorAnswer.vue';
 
@@ -87,6 +92,9 @@ export default class InstructorQuestion extends Vue {
 
     toggleEditQuestion() {
         this.isEditingQuestion = !this.isEditingQuestion;
+        if (!this.isEditingQuestion) {
+            this.$emit('edit-question', this.question);
+        }
     }
 
     handleDeteleAnswer(answer: IAnswerDetail, index: number) {
@@ -96,6 +104,10 @@ export default class InstructorQuestion extends Vue {
 
     handleDeleteQuestion() {
         this.$emit('delete-question', this.question, this.index);
+    }
+
+    handleEditAnswer(answer: IAnswer) {
+        this.$emit('edit-answer', answer, this.question.id);
     }
 }
 </script>

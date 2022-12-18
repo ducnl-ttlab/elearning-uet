@@ -329,4 +329,20 @@ export class QuizService {
       throw new InternalServerErrorException(error);
     }
   }
+
+  async saveAnswer(answer: Partial<Answer>) {
+    try {
+      return this.answer.save(answer);
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  async saveQuestion(question: Partial<Question>) {
+    try {
+      return this.question.save(question);
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
 }

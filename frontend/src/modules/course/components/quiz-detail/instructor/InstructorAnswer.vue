@@ -43,6 +43,9 @@ export default class InstructorAnswer extends Vue {
 
     toggleEditAnswer() {
         this.isEditingAnswer = !this.isEditingAnswer;
+        if (!this.isEditingAnswer) {
+            this.$emit('edit-answer', this.answer);
+        }
     }
 
     handleDeleteAnswer() {

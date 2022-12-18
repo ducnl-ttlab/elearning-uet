@@ -49,7 +49,7 @@ export interface IQuestion extends Question {
 }
 
 export interface IQueryEditDto {
-  type: 'quiz' | 'question' | 'answer';
+  type: 'quiz' | 'question' | 'answer' | 'addQuestion' | 'addAnswer';
   sourceId: number;
 }
 

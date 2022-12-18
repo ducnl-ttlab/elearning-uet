@@ -107,6 +107,29 @@ export interface IEditCourseQuery {
     content?: string;
 }
 
+export interface IQuiz {
+    id?: number;
+    topicId?: number;
+    name?: string;
+    shown?: boolean;
+    startTime?: string;
+    duration?: string;
+}
+
+export interface IQuestion {
+    id?: number;
+    quizId?: number;
+    name?: string;
+    mark?: number;
+}
+
+export interface IAnswer {
+    id?: number;
+    questionId?: number;
+    content?: string;
+    isCorrect?: boolean;
+}
+
 export interface IQuizDetail {
     id?: number;
     name?: string;

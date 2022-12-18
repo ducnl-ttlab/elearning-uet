@@ -4,12 +4,15 @@ import { loginModule } from '@/modules/auth/store/login.store';
 import { UserActionDto } from '@/modules/common/constants/common.interfaces';
 import axios from 'axios';
 import {
+    IAnswer,
     ICourseData,
     ICourseListParams,
     ICoursePreviewData,
     ICreateQuizParams,
     IMessageDetail,
+    IQuestion,
     IQuestionDetail,
+    IQuiz,
     IQuizDetail,
     ITopicData,
 } from '../constants/course.interfaces';
@@ -287,11 +290,42 @@ export async function deleteQuiz(
     type: 'question' | 'quiz' | 'answer',
 ): Promise<IAxiosDefaultResponse<IQuizDetail>> {
     return axios
-        .delete(`${BE_URL}/quiz/${courseId}/${topicId}?type=${type}&sourceId=${sourceId}`, {
-            headers: {
-                Authorization: 'Bearer ' + localStorageTokenService.getAccessToken(),
+        .delete(
+            `${BE_URL}/quiz/${courseId}/${topicId}?type=${type}&sourceId=${sourceId}`,
+            {
+                headers: {
+                    Authorization: 'Bearer ' + localStorageTokenService.getAccessToken(),
+                },
             },
+        )
+        .then((res) => {
+            return res.data;
         })
+        .catch((error) => {
+            return error.response.data;
+        });
+}
+export async function editQuiz(
+    courseId: number,
+    sourceId: number,
+    type: 'question' | 'quiz' | 'answer' | 'addQuestion' | 'addAnswer',
+    data: { question?: IQuestion; answer?: IAnswer; quiz?: IQuiz },
+): Promise<IAxiosDefaultResponse<IQuizDetail>> {
+    const { question, answer, quiz } = data;
+    return axios
+        .put(
+            `${BE_URL}/quiz/${courseId}?type=${type}&sourceId=${sourceId}`,
+            {
+                answer,
+                question,
+                quiz,
+            },
+            {
+                headers: {
+                    Authorization: 'Bearer ' + localStorageTokenService.getAccessToken(),
+                },
+            },
+        )
         .then((res) => {
             return res.data;
         })

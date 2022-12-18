@@ -91,6 +91,9 @@ export const course = {
         getInstructorListError: 'Error getting instructor list. Please try again later!',
         getCategoryListError: 'Error getting category list. Please try again later!',
         toggleCourse: 'Change course state failed. Please try again later!',
+        quiz: {
+            updateTopic: 'Update quiz failed. Please try again later!',
+        },
     },
     success: {
         favoriteCourse: {
@@ -180,7 +183,7 @@ export const course = {
             addQuestion: 'Question title',
             addAnswer: 'Answer title',
             addQuestionPlaceholder: 'Please enter a question name',
-            question: 'Question'
+            question: 'Question',
         },
         leaderboard: 'Leaderboard',
     },
