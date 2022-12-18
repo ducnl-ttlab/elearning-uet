@@ -150,6 +150,7 @@ export default class TopicFormPopup extends Vue {
             courseModule.setTopicList([]);
             showErrorNotificationFunction(res[0].message);
         }
+        await this.closeTopicFormPopup();
         commonModule.setLoadingIndicator(false);
     }
 
@@ -189,7 +190,11 @@ export default class TopicFormPopup extends Vue {
                 showErrorNotificationFunction(res[0].message);
             }
         } else {
-            const response = await updateTopic(formData, courseId);
+            const response = await updateTopic(
+                formData,
+                courseId,
+                this.selectedTopic.id as number,
+            );
             if (response.success) {
                 showSuccessNotificationFunction(
                     this.$t('course.success.topic.updateTopic'),
@@ -208,10 +213,10 @@ export default class TopicFormPopup extends Vue {
     async handleDeleteTopic() {
         commonModule.setLoadingIndicator(true);
         const courseId = +this.$route.params.courseId;
-        const response = await deleteTopic(courseId);
+        const response = await deleteTopic(courseId, this.selectedTopic.id as number);
         if (response.success) {
             showSuccessNotificationFunction(this.$t('course.success.topic.deleteTopic'));
-            await getTopicList(courseId);
+            await this.reloadTopicList();
         } else {
             let res = response.errors || [
                 { message: this.$t('course.errors.topic.deleteTopic') },
