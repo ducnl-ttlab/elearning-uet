@@ -57,19 +57,21 @@
                 v-model:value="userForm.address"
                 autocomplete="off"
             />
-            <BaseInputPassword
-                class="input input-password"
-                :label="$t('user.profile.form.password')"
-                :placeholder="$t('user.profile.placeholder.password')"
-                v-model:value="userForm.password"
-            />
-            <BaseInputPassword
-                v-if="userForm.password"
-                class="input"
-                :label="$t('user.profile.form.currentPassword')"
-                :placeholder="$t('user.profile.placeholder.currentPassword')"
-                v-model:value="userForm.currentPassword"
-            />
+            <div class="d-flex flex-column flex-md-row w-100 gap-2">
+                <BaseInputPassword
+                    class="input input-password"
+                    :label="$t('user.profile.form.password')"
+                    :placeholder="$t('user.profile.placeholder.password')"
+                    v-model:value="userForm.password"
+                />
+                <BaseInputPassword
+                    v-if="userForm.password"
+                    class="input input-password"
+                    :label="$t('user.profile.form.currentPassword')"
+                    :placeholder="$t('user.profile.placeholder.currentPassword')"
+                    v-model:value="userForm.currentPassword"
+                />
+            </div>
         </div>
     </div>
     <div class="save-button" @click="handleUpdateUser">
@@ -271,12 +273,19 @@ export default class UserProfileForm extends Vue {
     }
 }
 
+.input-password {
+    width: 50%;
+}
+
 @media only screen and (max-width: map-get($map: $grid-breakpoints, $key: md)) {
     .profile-image-wrapper {
         padding: 0 !important;
         align-self: center;
     }
     .user-profile-form {
+        width: 100% !important;
+    }
+    .input-password {
         width: 100% !important;
     }
 }

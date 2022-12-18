@@ -1,17 +1,16 @@
 import pickle
 import re
-import sys
+import sys, json
 # Miscellaneous
 import time
 import warnings
-# from tensorflow import keras
-# from keras import backend as K 
-
-
+from tensorflow import keras
 warnings.filterwarnings('ignore')
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '1'
 
 vect = pickle.load(open('transformer.h5', 'rb'))
-model = pickle.load(open('model_spam_comment.h5', 'rb'))
+model = keras.models.load_model('model_spam_comment.h5')
 
 def replace_url(comment, replacement):
     comment = str(comment)
@@ -21,8 +20,12 @@ def replace_url(comment, replacement):
     return comment
 def remove_encoding(comment):
     comment = str(comment) 
+    
     comment = comment.replace('\ufeff', '')
     comment = comment.replace('_', ' ')
+    comment = comment.replace('/', ' ')
+    comment = comment.replace('.', ' ')
+    comment = comment.replace(',', ' ')
     return comment
 class Comment():
   def __init__(self, comment):
@@ -35,12 +38,13 @@ class Comment():
     comment = ' '.join(comment)
     X = [comment]
     X_test = vect.transform(X).toarray()
-    predict = model.predict(X_test)[0]
-    return predict
+    predict = model.predict(X_test, verbose = 0)[0]
+    return int(predict+0.5)
 
 
 if __name__ == '__main__':
   data = sys.argv[1]
   comment = Comment(comment=data)
+  keras.backend.clear_session()
   print(comment.classification())
 

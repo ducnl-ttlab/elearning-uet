@@ -16,7 +16,7 @@ export const auth = {
         title: 'Chào mừng bạn đến với Sorademic',
         welcomeDescription:
             'It is a long established fact that a reader will be distracted by the readable content of a.',
-        forgotPassword: 'Quên mật khẩu',
+        forgotPassword: 'Forgot password?',
         email: {
             label: 'Email',
             placeholder: 'Nhập email',
@@ -31,7 +31,8 @@ export const auth = {
             placeholder: 'Xác nhận mật khẩu',
         },
         errors: {
-            defaultErrors: 'Đặt lại mật khẩu không thành công',
+            defaultError: 'Đặt lại mật khẩu không thành công',
+            verifyCodeError: 'Invalid reset password code, please try again later',
         },
         success: {
             setPassword: 'Đặt lại mật khẩu thành công',
@@ -55,7 +56,7 @@ export const auth = {
             label: 'Email/Số điện thoại',
             placeholder: 'Nhập email hoặc số điện thoại',
             required: 'Yêu cầu nhập email hoặc số điện thoại',
-            invalidFormat: 'Vui lòng nhập địa chỉ email hoặc số điện thoại hợp lệ',
+            invalidFormat: 'Please enter the correct email format',
         },
         email: {
             label: 'Email',

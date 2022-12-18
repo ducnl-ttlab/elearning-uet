@@ -132,16 +132,22 @@ export default class TopicFormPopup extends Vue {
     }
 
     async reloadTopicList() {
-        const courseId = +this.$route.params.courseId;
         commonModule.setLoadingIndicator(true);
-        const response = await getTopicList(courseId);
+        const id: number = +this.$route.params.courseId;
+        const response = await getTopicList(id);
         if (response.success) {
-            showSuccessNotificationFunction(this.$t('course.success.topic.createTopic'));
-            courseModule.setTopicList(response.data?.items || []);
+            courseModule.setTopicList(response?.data?.items || []);
+            if (response?.data?.items && response?.data?.items.length > 0) {
+                courseModule.setSelectedTopic(response.data.items[0]);
+                courseModule.setCurrentChatTopicId(response.data.items[0]?.id || -1);
+            } else {
+                courseModule.setSelectedTopicObject({});
+            }
         } else {
             let res = response?.errors || [
-                { message: this.$t('course.errors.topic.createTopic') },
+                { message: this.$t('course.errors.getTopicListError') },
             ];
+            courseModule.setTopicList([]);
             showErrorNotificationFunction(res[0].message);
         }
         commonModule.setLoadingIndicator(false);

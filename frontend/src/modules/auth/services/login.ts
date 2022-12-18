@@ -46,3 +46,42 @@ export async function selectRole(
             return error.response.data;
         });
 }
+
+export async function forgotPassword(
+    email: string,
+): Promise<IAxiosDefaultResponse<string>> {
+    return axios
+        .post(`${BE_URL}/auth/forgot-password`, {
+            email: email,
+            url: `${FE_URL}/reset-password`,
+        })
+        .then((res) => {
+            return res.data;
+        })
+        .catch((error) => {
+            return error.response.data;
+        });
+}
+
+export async function verifyCode(
+    email: string,
+    code: number,
+): Promise<IAxiosDefaultResponse<string>> {
+    return axios
+        .post(
+            `${BE_URL}/auth/verify-code`,
+            {},
+            {
+                params: {
+                    email: email,
+                    code: code,
+                },
+            },
+        )
+        .then((res) => {
+            return res.data;
+        })
+        .catch((error) => {
+            return error.response.data;
+        });
+}

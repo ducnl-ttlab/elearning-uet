@@ -68,7 +68,7 @@ import { commonModule } from '@/modules/common/store/common.store';
 import { getInstructorList } from '@/modules/common/services/common';
 import { showErrorNotificationFunction } from '@/common/helpers';
 import { getCourseList } from '../services/course';
-import { getStudentCourseList } from '../services/user-course';
+import { getInstructorCourseList, getStudentCourseList } from '../services/user-course';
 import localStorageTokenService from '@/common/tokenService';
 
 import InstructorCourseList from '../components/course-owned/InstructorCourseList.vue';
@@ -130,7 +130,7 @@ export default class UserCourseListPage extends Vue {
             commonModule.setInstructorList(response?.data?.items || []);
         } else {
             let res = response?.errors || [
-                { message: this.$t('landing.categories.errors.getCategoryListError') },
+                { message: this.$t('course.errors.getInstructorListError') },
             ];
             commonModule.setInstructorList([]);
             showErrorNotificationFunction(res[0].message);
@@ -140,15 +140,14 @@ export default class UserCourseListPage extends Vue {
 
     async getInstructorCourseList() {
         commonModule.setLoadingIndicator(true);
-        const response = await getCourseList({
+        const response = await getInstructorCourseList({
             pageSize: MAX_COURSE_GRID_ITEMS,
-            instructorIds: this.userData.id,
         });
         if (response.success) {
             userCourseModule.setInstructorCourseList(response?.data?.items || []);
         } else {
             let res = response?.errors || [
-                { message: this.$t('landing.categories.errors.getCategoryListError') },
+                { message: this.$t('course.errors.getCourseList') },
             ];
             userCourseModule.setInstructorCourseList([]);
             showErrorNotificationFunction(res[0].message);
@@ -166,7 +165,7 @@ export default class UserCourseListPage extends Vue {
             userCourseModule.setStudentCourseList(response?.data?.items || []);
         } else {
             let res = response?.errors || [
-                { message: this.$t('landing.categories.errors.getCategoryListError') },
+                { message: this.$t('course.errors.getCourseList') },
             ];
             userCourseModule.setStudentCourseList([]);
             showErrorNotificationFunction(res[0].message);
@@ -188,6 +187,13 @@ export default class UserCourseListPage extends Vue {
     async created() {
         if (!localStorageTokenService.getAccessToken()) {
             this.$router.push({ name: PageName.LOGIN_PAGE });
+        }
+        if (this.userRole === SystemRole.GUEST) {
+            showErrorNotificationFunction(this.$t('course.errors.chooseRole'));
+            setTimeout(
+                () => this.$router.push({ name: PageName.SELECT_ROLE_PAGE }),
+                2000,
+            );
         }
         await this.initUserCourseListPage();
     }

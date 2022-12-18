@@ -9,7 +9,7 @@
             </div>
             <div class="course-p-rating d-flex flex-row pt-3">
                 <div v-if="coursePreviewInformation?.avgRating">
-                    {{ $t('course.course.rating') }}
+                    {{ $t('course.course.avgRating') }}
                 </div>
                 <div>
                     <span>{{
@@ -204,7 +204,7 @@ export default class CoursePreviewTopic extends Vue {
 
     async courseCheckout() {
         commonModule.setLoadingIndicator(true);
-        const id: number = parseInt(this.$route.params.courseId as string);
+        const id: number = +this.$route.params.courseId;
         const response = await courseCheckout(id);
         if (response.success) {
             if (response.data?.url) {
@@ -226,7 +226,7 @@ export default class CoursePreviewTopic extends Vue {
         } else {
             let res = response?.errors || [
                 {
-                    message: this.$t('landing.categories.errors.getCategoryListError'),
+                    message: this.$t('course.errors.checkoutError'),
                 },
             ];
             userCourseModule.setFavoriteCourse(this.userCourseData?.favorite || false);
@@ -280,7 +280,7 @@ export default class CoursePreviewTopic extends Vue {
             this.$router.push({ name: PageName.LOGIN_PAGE });
         } else {
             commonModule.setLoadingIndicator(true);
-            const id: number = parseInt(this.$route.params.courseId as string);
+            const id: number = +this.$route.params.courseId;
             const response = await toggleCourseFavorite(id);
             if (response.success) {
                 userCourseModule.setFavoriteCourse(response?.data?.favorite || false);
@@ -294,11 +294,7 @@ export default class CoursePreviewTopic extends Vue {
                     );
             } else {
                 let res = response?.errors || [
-                    {
-                        message: this.$t(
-                            'landing.categories.errors.getCategoryListError',
-                        ),
-                    },
+                    { message: this.$t('course.errors.toggleFavoriteError') },
                 ];
                 userCourseModule.setFavoriteCourse(
                     this.userCourseData?.favorite || false,

@@ -2,7 +2,8 @@ export const course = {
     course: {
         price: '${price}',
         free: 'Free',
-        rating: 'Rating:\xa0',
+        avgRating: 'Average rating:\xa0',
+        selfRating: 'Your rating: \xa0',
         instructor: 'Instructor: {instructor}',
         notRated: 'Not rated',
         studentTotal: 'Attenders: {studentTotal}',
@@ -33,6 +34,7 @@ export const course = {
             pendingCourse: 'Waiting the instructor to approve your request.',
             expiredCourse: 'The course has been expired.',
         },
+        confirmDelete: 'Are you sure you want to delete this course?',
     },
 
     filters: {
@@ -59,6 +61,7 @@ export const course = {
 
     errors: {
         emptyCourseList: 'Cannot find any course.',
+        guestCourseList: 'You need to select your role first.',
         emptyTopicList: 'Cannot find any topic.',
         courseRejected: 'You have been blocked by the instructor.',
         declinedPayment: 'Payment declined. Please try again later.',
@@ -68,6 +71,7 @@ export const course = {
         getQuizListError: 'Error getting quiz list. Please try again later!',
         createNewQuizError: 'Error creating new quiz. Please try again later!',
         topic: {
+            getTopic: 'Get topic detail failed. Please try again later!',
             updateTopic: 'Update topic failed! Please try again later',
             createTopic: 'Create topic failed! Please try again later!',
             deleteTopic: 'Delete topic failed! Please try again later!',
@@ -76,6 +80,16 @@ export const course = {
         sendMessageError: 'Cannot send message. Please try again later!',
         leaveRatingError: 'Leave rating error. Please try again later!',
         chooseRole: 'Cannot access course. Please select your role first!',
+        deleteCourseError: 'Error deleting this course. Please try again later!',
+        getCoursePreviewError:
+            'Error getting course preview data. Please try again later!',
+        getCourseList: 'Error getting course list. Please try again later!',
+        courseCheckoutError: 'Error getting checkout data. Please try again later!',
+        toggleFavoriteError: 'Error changing favorite course. Please try again later!',
+        userCourseDataError: 'Error getting your course data. Please try again later!',
+        getInstructorListError: 'Error getting instructor list. Please try again later!',
+        getCategoryListError: 'Error getting category list. Please try again later!',
+        toggleCourse: 'Change course state failed. Please try again later!',
     },
     success: {
         favoriteCourse: {
@@ -99,6 +113,9 @@ export const course = {
             createQuiz: 'Create quiz successfully!',
             deleteQuiz: 'Delete quiz successfully!',
         },
+        leaveRating: 'Rate course successfully!',
+        deleteCourse: 'Delete course successfully',
+        toggleCourse: 'Change course status successfully!',
     },
     coursePopup: {
         showStudentList: 'Student List',
@@ -115,6 +132,9 @@ export const course = {
         courseDetail: 'Course Details',
         quiz: 'Quizzes',
         studentList: 'Student List',
+        deleteCourse: 'Delete Course',
+        activateCourse: 'Activate Course',
+        suspendCourse: 'Suspend Course',
     },
 
     topicSidebar: {
@@ -165,11 +185,13 @@ export const course = {
         title: 'Chat ',
         sendMessage: 'Send message...',
         defaultSelect: 'Course',
+        defaultMessage:
+            'There is no one here. Be the first person to initiate the conversation!',
     },
     comment: {
         hidden: 'This comment is marked as sensitive. Click on the eye icon to reveal',
         instructor: ' (Instructor)',
         commentBlocked:
-            'You have beeN blocked from commentting. Please contact the instructor.',
+            'You have been blocked from commentting. Please contact the instructor.',
     },
 };

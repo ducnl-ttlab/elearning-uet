@@ -3,7 +3,8 @@ export const course = {
         price: '${price}',
         free: 'Miễn phí',
         instructor: 'Giảng viên: {instructor}',
-        rating: 'Đánh giá:\xa0',
+        avgRating: 'Đánh giá trung bình:\xa0',
+        selfRating: 'Đánh giá của bạn: \xa0',
         notRated: 'Chưa có đánh giá',
         studentTotal: 'Số học viên: {studentTotal}',
         ratingList: {
@@ -33,6 +34,7 @@ export const course = {
             pendingCourse: 'Đã gửi yêu cầu tham gia khóa học',
             expiredCourse: 'Khóa học đã kết thúc.',
         },
+        confirmDelete: 'Bạn có chắc chắn muốn xóa khóa học này không?',
     },
 
     filters: {
@@ -59,6 +61,7 @@ export const course = {
 
     errors: {
         emptyCourseList: 'Không tìm thấy khóa học nào theo bộ lọc.',
+        guestCourseList: 'Bạn cần chọn vai trò trước.',
         emptyTopicList: 'Không tìm thấy chủ đề nào.',
         courseRejected: 'Bạn đã bị giảng viên chặn khỏi khóa học.',
         declinedPayment: 'Thanh toán thất bại, xin vui lòng thử lại',
@@ -80,6 +83,10 @@ export const course = {
         sendMessageError: 'Gửi tin nhắn thất bại, vui lòng thử lại sau!',
         leaveRatingError: 'Đánh giá khóa học thất bại, vui lòng thử lại sau!',
         chooseRole: 'Không thể tham gia khóa học. Vui lòng chọn vai trò của bạn trước!',
+        getCoursePreviewDataError:
+            'Không thể lấy đánh giá khóa học, vui lòng thử lại sau!',
+        deleteCourseError: 'Không thể xóa khóa học này, vui lòng thử lại sau!',
+        toggleCourse: 'Thay đổi trạng thái khóa học thất bại, vui lòng thử lại sau!',
     },
 
     success: {
@@ -103,6 +110,9 @@ export const course = {
             createQuiz: 'Tạo bài tập thành công!',
             deleteQuiz: 'Xóa bài tập thành công!',
         },
+        leaveRating: 'Đánh giá khóa học thành công!!',
+        deleteCourse: 'Xóa khóa học thành công!',
+        toggleCourse: 'Thay đổi trạng thái khóa học thành công!',
     },
 
     courseDetail: {
@@ -120,6 +130,9 @@ export const course = {
         courseDetail: 'Nội dung khóa học',
         quiz: 'Bài tập',
         studentList: 'Danh sách học viên',
+        deleteCourse: 'Xóa khóa học',
+        activateCourse: 'Kích hoạt khóa học',
+        suspendCourse: 'Tạm ngưng khóa học',
     },
 
     topicSidebar: {
@@ -170,6 +183,7 @@ export const course = {
         title: 'Trò chuyện',
         sendMessage: 'Gửi tin nhắn...',
         defaultSelect: 'Toàn khóa học',
+        defaultMessage: 'Chưa có tin nhắn nào. Hãy là người đầu tiên bắt chuyện !',
     },
 
     comment: {

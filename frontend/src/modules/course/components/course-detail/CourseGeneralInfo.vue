@@ -9,8 +9,14 @@
             </div>
             <div class="course-info-rating d-flex flex-row pt-3">
                 <div v-if="courseInfo?.avgRating">
-                    {{ $t('course.course.rating') }}
+                    <span v-if="userRole === SystemRole.STUDENT">{{
+                        $t('course.course.selfRating')
+                    }}</span>
+                    <span v-if="userRole === SystemRole.INSTRUCTOR">{{
+                        $t('course.course.avgRating')
+                    }}</span>
                 </div>
+
                 <div v-if="userRole === SystemRole.INSTRUCTOR">
                     <span>{{
                         Math.round(courseInfo?.avgRating * 100) / 100 ||
@@ -28,8 +34,8 @@
                     <div v-for="index in 5" :key="index">
                         <img
                             @click="rateCourse(index)"
-                            class="mb-1"
-                            style="color: white; cursor: pointer"
+                            class="mb-1 star"
+                            :class="{ 'star-color-white': index > courseRating }"
                             src="@/assets/landing/icons/star.svg"
                             width="16"
                             alt=""
@@ -67,11 +73,16 @@
 
 <script lang="ts">
 import { PageName, SystemRole } from '@/common/constants';
-import { showErrorNotificationFunction } from '@/common/helpers';
+import {
+    showErrorNotificationFunction,
+    showSuccessNotificationFunction,
+} from '@/common/helpers';
 import localStorageTokenService from '@/common/tokenService';
+import { commonModule } from '@/modules/common/store/common.store';
 import { userModule } from '@/modules/user/store/user.store';
 import { Options, Vue } from 'vue-class-component';
 import { rateCourse } from '../../services/course';
+import { getUserCourseData } from '../../services/user-course';
 import { courseModule } from '../../store/course.store';
 import { userCourseModule } from '../../store/user-course.store';
 
@@ -99,15 +110,31 @@ export default class CourseGeneralInfo extends Vue {
     }
 
     async rateCourse(rating: number) {
-        const id: number = parseInt(this.$route.params.courseId as string);
+        commonModule.setLoadingIndicator(true);
+        const id: number = +this.$route.params.courseId;
         const response = await rateCourse(id, rating + '');
         if (response?.success) {
-            // courseModule.setCourseRating(response?.data || {});
+            await this.getUserCourseData();
+            showSuccessNotificationFunction(this.$t('course.success.leaveRating'));
         } else {
             let res = response?.errors || [
-                { message: this.$t('landing.categories.errors.getCategoryListError') },
+                { message: this.$t('course.errors.leaveRatingError') },
             ];
-            // courseModule.setCourseRating(0);
+            showErrorNotificationFunction(res[0].message);
+        }
+        commonModule.setLoadingIndicator(false);
+    }
+
+    async getUserCourseData() {
+        const id: number = +this.$route.params.courseId;
+        const response = await getUserCourseData(id);
+        if (response?.success) {
+            userCourseModule.setUserCourseData(response?.data || {});
+        } else {
+            let res = response?.errors || [
+                { message: this.$t('course.errors.getCoursePreviewDataError') },
+            ];
+            userCourseModule.setUserCourseData({});
             showErrorNotificationFunction(res[0].message);
         }
     }
@@ -150,6 +177,15 @@ export default class CourseGeneralInfo extends Vue {
         line-height: 40px;
         cursor: pointer;
     }
+}
+
+.star {
+    cursor: pointer;
+}
+
+.star-color-white {
+    filter: invert(100%) sepia(7%) saturate(0%) hue-rotate(274deg) brightness(102%)
+        contrast(103%);
 }
 
 @media only screen and (max-width: map-get($map: $grid-breakpoints, $key: xl)) {

@@ -76,13 +76,13 @@ class CourseModule extends VuexModule {
     }
 
     @Action
-    setSelectedTopic(index: number) {
-        this.SET_SELECTED_TOPIC(index);
+    setSelectedTopic(topic: ITopicData) {
+        this.SET_SELECTED_TOPIC(topic);
     }
 
     @Mutation
-    SET_SELECTED_TOPIC(index: number) {
-        this.selectedTopic = this.topicList[index - 1];
+    SET_SELECTED_TOPIC(topic: ITopicData) {
+        this.selectedTopic = topic;
     }
 
     @Action

@@ -36,7 +36,7 @@ export default class MainCategories extends Vue {
             landingModule.setCategoryList(response?.data?.items || []);
         } else {
             let res = response?.errors || [
-                { message: this.$t('landing.categories.errors.getCategoryListError') },
+                { message: this.$t('course.errors.getCategoryListError') },
             ];
             landingModule.setCategoryList([]);
             showErrorNotificationFunction(res[0].message);

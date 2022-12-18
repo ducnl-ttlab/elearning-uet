@@ -16,7 +16,7 @@
             </div>
             <div v-else></div>
             <div class="course-grid-item-rating d-flex flex-row align-items-center">
-                <div v-if="course?.avgRating">{{ $t('course.course.rating') }}</div>
+                <div v-if="course?.avgRating">{{ $t('course.course.avgRating') }}</div>
                 <div>
                     <span>{{
                         Math.round(course?.avgRating * 100) / 100 ||
