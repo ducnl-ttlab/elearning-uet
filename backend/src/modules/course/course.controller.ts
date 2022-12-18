@@ -196,20 +196,21 @@ export class CourseController {
       throw new NotFoundException('Not found category');
     }
 
-    if (course.image) {
+    if (course.image && !!file?.filename) {
       removeImageFile(course.image, 'course');
     }
 
     let image;
-    image = (!!file?.filename && file?.filename) || undefined;
+    image = (!!file?.filename && file?.filename) || course.image;
 
     let newCourse: Partial<Course> = {
       ...data,
       categoryId: isExistCategory.id,
       isPublished: (data.isPublished as any) === 'true' ?? data?.isPublished,
-      image: image,
+      image,
       ...coursePeriod(data.startCourseTime, data.endCourseTime),
     };
+
     let result = await this.courseService.updateCourse(course.id, newCourse);
 
     return res.status(HttpStatus.CREATED).json(new SuccessResponse({ result }));
