@@ -50,6 +50,7 @@ import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { User } from 'src/common/decorator/custom.decorator';
 import { Auth } from 'src/common/decorator/auth.decorator';
 import { RoleDto } from './dto/role.dto';
+import { RedisCacheService } from '../cache/redis-cache.service';
 
 @ApiTags('Authentication')
 @Controller('auth')
@@ -59,6 +60,7 @@ export class AuthController {
     private readonly mailService: MailService,
     private readonly userService: UserService,
     private readonly notificationService: NotificationService,
+    private readonly redisCacheService: RedisCacheService,
   ) {}
 
   @Get('google')
@@ -220,6 +222,7 @@ export class AuthController {
     @Body('role') role: Role,
   ) {
 
+    this.redisCacheService.deleteByKey(`user${user.id}`),
     await this.userService.updateUser(user.id, {
       role,
     });
