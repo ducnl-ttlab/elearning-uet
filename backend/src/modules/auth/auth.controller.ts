@@ -39,6 +39,7 @@ import {
   LoginBodyValidation,
   SelectRoleValidation,
   TokenValidation,
+  validation,
   VerifyCodeValidation,
 } from './joi.request.pipe';
 import { JWTAuthGuard } from './guard/jwt-auth.guard';
@@ -82,10 +83,7 @@ export class AuthController {
       return res
         .status(HttpStatus.CONFLICT)
         .json(
-          new ErrorResponse(
-            HttpStatus.CONFLICT,
-            'This email is already exist',
-          ),
+          new ErrorResponse(HttpStatus.CONFLICT, 'This email is already exist'),
         );
     }
 
@@ -123,7 +121,10 @@ export class AuthController {
   }
 
   @Post('change-password')
-  @UsePipes(TokenValidation)
+  @UsePipes(
+    TokenValidation,
+    ...validation({ key: 'passwordChangeSchema', type: 'body' }),
+  )
   @UseGuards(JWTAuthGuard)
   async changePassword(
     @Req() req: IUserReq<IVerifyUserJwt>,

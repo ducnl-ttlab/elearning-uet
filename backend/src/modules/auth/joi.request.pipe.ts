@@ -10,6 +10,30 @@ const tokenSchema = Joi.object().keys({
   param: Joi.string().min(10),
 });
 
+import {
+  IValidationKeyType,
+  ValidationPipe,
+} from 'src/common/pipe/joi.request.pipe';
+
+const passwordChangeSchema = Joi.object().keys({
+  password: Joi.string().min(8).required(),
+});
+
+const validationSchemas = {
+  tokenSchema,
+  passwordChangeSchema,
+};
+
+type authValidationKey = keyof typeof validationSchemas;
+
+export function validation(
+  ...validations: IValidationKeyType<authValidationKey>[]
+) {
+  return validations.map(
+    (v) => new ValidationPipe(validationSchemas[v.key], v.type),
+  );
+}
+
 const loginBodySchema = Joi.object().keys({
   email: Joi.string().required().min(1).email(),
   password: Joi.string().required().min(8),
