@@ -74,6 +74,7 @@ export const course = {
         getQuizListError: 'Có lỗi khi lấy danh sách quiz, vui lòng thử lại sau!',
         studentGetTopicError: 'Chưa có chủ đề',
         createNewQuizError: 'Có lỗi khi tạo mới quiz, xin vui lòng thử lại sau',
+        deleteQuizError: 'Có lỗi khi xoá quiz, xin vui lòng thử lại sau!',
         emptyQuizList: 'Chưa có quiz, vui lòng tạo mới',
         topic: {
             updateTopic: 'Sửa topic thất bại, vui lòng thử lại sau',
@@ -176,6 +177,8 @@ export const course = {
         field: {
             addQuestion: 'Câu hỏi mới',
             addAnswer: 'Câu trả lời mới',
+            addQuestionPlaceholder: 'Nhập tên câu hỏi',
+            question: 'Câu'
         },
     },
 

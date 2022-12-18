@@ -8,7 +8,7 @@ import forEach from 'lodash/forEach';
 import { getGlobalComponents } from './common/loadGlobalComponents';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './assets/styles/global.scss';
-
+import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 const app = createApp(App)
     .use(store)
     .use(router)
@@ -22,6 +22,10 @@ const app = createApp(App)
 forEach(getGlobalComponents(), (component, name) => {
     app.component(name, component as Component);
 });
+
+for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+  app.component(key, component)
+}
 
 router.isReady().then(() => {
     app.mount('#app');
