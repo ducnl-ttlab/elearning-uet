@@ -10,6 +10,7 @@ import { MailModule } from 'src/modules/mail/mail.module';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from 'src/common/constant';
 import { NotificationModule } from '../notification/notification.module';
+import { RedisCacheModule } from '../cache/redis-cache.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { NotificationModule } from '../notification/notification.module';
     forwardRef(() => UserModule),
     PassportModule.register({ defaultStrategy: 'jwt' }),
     NotificationModule,
+    RedisCacheModule,
     JwtModule.register({
       secret: jwtConstants.secret,
       signOptions: {
