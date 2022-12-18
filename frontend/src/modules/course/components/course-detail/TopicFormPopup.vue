@@ -1,8 +1,10 @@
 <template>
     <el-dialog
         :width="'70%'"
+        z-index="600"
         v-model="isShowTopicFormPopup"
         @close="closeTopicFormPopup"
+        :modal="false"
         :title="
             isCreate
                 ? $t('course.topic.action.createTitle')
@@ -43,7 +45,7 @@
                 />
                 <video id="video-preview" controls class="pt-2" v-if="video != ''" />
             </div>
-            <div class="form-right" style="flex: 1 1 0">
+            <div @focus.stop class="form-right" style="flex: 1 1 0">
                 <label class="fw-bold text-start mb-2 d-flex align-items-center">
                     {{ $t('course.topic.form.content') }}
                 </label>
@@ -54,8 +56,8 @@
                 />
             </div>
         </div>
-        <div class="action-area d-flex flex-row w-100 justify-content-end gap-3">
-            <div class="button delete" @click="handleDeleteTopic">
+        <div class="action-area d-flex flex-row w-100 justify-content-end gap-3 pt-4">
+            <div v-if="!isCreate" class="button delete" @click="handleDeleteTopic">
                 {{ $t('course.topic.form.delete') }}
             </div>
             <div class="button save" @click="handleSubmitTopic">
@@ -92,10 +94,15 @@ export default class TopicFormPopup extends Vue {
     video: '';
     get toolbarInit() {
         return {
-            menubar: false,
-            plugins: 'lists link image emoticons code',
+            plugins:
+                'anchor autolink charmap codesample emoticons image link lists media searchreplace table wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker permanentpen powerpaste advtable advcode editimage tableofcontents footnotes mergetags autocorrect typography inlinecss',
             toolbar:
-                'undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help | code',
+                'insertfile undo redo | fontselect fontsizeselect | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | forecolor backcolor',
+            toolbar_mode: 'sliding',
+            height: 420,
+            resize: false,
+            fontsize_formats:
+                '8pt 9pt 10pt 12pt 13pt 14pt 15pt 16pt 17pt 18pt 20pt 24pt 36pt 48pt',
         };
     }
 

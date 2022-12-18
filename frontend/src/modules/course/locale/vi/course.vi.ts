@@ -177,6 +177,7 @@ export const course = {
             addQuestion: 'Câu hỏi mới',
             addAnswer: 'Câu trả lời mới',
         },
+        leaderboard: 'Đại lộ danh vọng',
     },
 
     chat: {

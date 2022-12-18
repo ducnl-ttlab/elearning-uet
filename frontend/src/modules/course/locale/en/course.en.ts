@@ -179,6 +179,7 @@ export const course = {
             addQuestion: 'Question title',
             addAnswer: 'Answer title',
         },
+        leaderboard: 'Leaderboard',
     },
 
     chat: {

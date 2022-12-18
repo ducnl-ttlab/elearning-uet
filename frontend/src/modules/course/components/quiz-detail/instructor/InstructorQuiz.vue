@@ -29,7 +29,7 @@
                 @click="toggleEditQuiz"
             />
             <img
-                v-if="!isShowInput"
+                v-if="!isEditingQuiz"
                 src="@/assets/course/icons/cancel.svg"
                 width="16"
                 alt=""

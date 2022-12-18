@@ -1,5 +1,5 @@
 <template>
-    <div class="pb-4 course-p-topic-wrapper">
+    <div class="pb-4 course-p-topic-wrapper w-100">
         <div class="course-p-title">{{ $t('course.preview.content') }}</div>
         <div class="course-p-topic d-flex flex-column">
             <div
@@ -51,13 +51,14 @@ export default class CoursePreviewTopic extends Vue {
 </script>
 <style lang="scss" scoped>
 .course-p-title {
-    padding: 30px 9px 6px;
+    padding: 0 6px;
     font-size: 27px;
     font-weight: 600;
 }
 
 .course-p-topic {
     padding-top: 30px;
+    flex-grow: 1;
     &-wrapper {
         padding: 0 4vw;
     }

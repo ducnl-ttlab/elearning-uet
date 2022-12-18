@@ -28,7 +28,7 @@
                 @click="toggleEditQuestion"
             />
             <img
-                v-if="!isShowInput"
+                v-if="!isEditingQuestion"
                 src="@/assets/course/icons/cancel.svg"
                 width="16"
                 alt=""
@@ -69,7 +69,7 @@ export default class InstructorQuestion extends Vue {
     isEditingQuestion = false;
 
     newAnswer = {
-        content: this.$t('course.quiz.field.addAnswer') as string,
+        content: 'Thêm câu hỏi' as string,
         isCorrect: false,
     };
 

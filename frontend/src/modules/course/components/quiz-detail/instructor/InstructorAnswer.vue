@@ -49,7 +49,6 @@ export default class InstructorAnswer extends Vue {
         this.isEditingAnswer = !this.isEditingAnswer;
     }
     handleDeleteAnswer() {
-        console.log(this.index);
         let newQuizList = courseModule.quizList.map((item) => {
             let { questionList } = item;
             questionList = questionList?.map((questionItem) => {

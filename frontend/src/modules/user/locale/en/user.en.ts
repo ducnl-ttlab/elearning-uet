@@ -3,6 +3,8 @@ export const user = {
         getUserDataError: 'Error getting personal information. Please try again later!',
         updateUserDataError:
             'Error updating personal information. Please try again later!',
+        invalidImage: 'Please choose correct image format',
+        emptyUsername: 'Please enter your username',
     },
     success: {
         updateUserDataSuccess: 'Save user profile successfully!',

@@ -4,6 +4,7 @@ export const user = {
         updateUserDataError:
             'Có lỗi khi cập nhật thông tin cá nhân. Xin vui lòng thử lại sau!',
         invalidImage: 'Vui lòng chọn đúng định dạng',
+        emptyUsername: 'Vui lòng nhập biệt danh',
     },
     success: {
         updateUserDataSuccess: 'Lưu thông tin thành công!',

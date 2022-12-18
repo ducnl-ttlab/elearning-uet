@@ -86,88 +86,87 @@ export default class InstructorQuizDetail extends Vue {
         return courseModule.topicId;
     }
 
-    get quizList(): Array<IQuizDetail> {
-        // return [
-        //     {
-        //         id: 1,
-        //         topicId: 1,
-        //         name: 'Duc mup 1',
-        //         shown: false,
-        //         startTime: '2022/12/16 00:00:00',
-        //         duration: '25',
-        //         questionList: [],
-        //     },
-        //     {
-        //         id: 2,
-        //         topicId: 1,
-        //         name: 'Duc mup 2',
-        //         shown: false,
-        //         startTime: '2022/12/15 00:00:00',
-        //         duration: '25',
-        //         questionList: [],
-        //     },
-        //     {
-        //         id: 3,
-        //         topicId: 1,
-        //         name: 'abc react native',
-        //         shown: false,
-        //         startTime: '2011/12/11 23:21:00',
-        //         duration: '45',
-        //         questionList: [
-        //             {
-        //                 id: 1,
-        //                 quizId: 3,
-        //                 name: 'safdsa',
-        //                 mark: 10,
-        //                 answerList: [
-        //                     {
-        //                         id: 1,
-        //                         content: 'sadfdsaf',
-        //                         isCorrect: true,
-        //                     },
-        //                     {
-        //                         id: 3,
-        //                         content: 'sadfdsaf',
-        //                         isCorrect: false,
-        //                     },
-        //                 ],
-        //             },
-        //             {
-        //                 id: 2,
-        //                 quizId: 3,
-        //                 name: 'hieu mup',
-        //                 mark: 160,
-        //                 answerList: [
-        //                     {
-        //                         id: 2,
-        //                         content: 'sadfdsaf',
-        //                         isCorrect: true,
-        //                     },
-        //                 ],
-        //             },
-        //         ],
-        //     },
-        //     {
-        //         id: 4,
-        //         topicId: 1,
-        //         name: 'Duc mup 123',
-        //         shown: false,
-        //         startTime: '2022/12/16 00:00:00',
-        //         duration: '20',
-        //         questionList: [],
-        //     },
-        //     {
-        //         id: 4,
-        //         topicId: 1,
-        //         name: 'Duc mup 123',
-        //         shown: false,
-        //         startTime: '2022/12/16 00:00:00',
-        //         duration: '20',
-        //         questionList: [],
-        //     },
-        // ];
-        return courseModule.quizList;
-    }
+    quizList: Array<IQuizDetail> = [
+        {
+            id: 1,
+            topicId: 1,
+            name: 'Duc mup 1',
+            shown: false,
+            startTime: '2022/12/16 00:00:00',
+            duration: '25',
+            questionList: [],
+        },
+        {
+            id: 2,
+            topicId: 1,
+            name: 'Duc mup 2',
+            shown: false,
+            startTime: '2022/12/15 00:00:00',
+            duration: '25',
+            questionList: [],
+        },
+        {
+            id: 3,
+            topicId: 1,
+            name: 'abc react native',
+            shown: false,
+            startTime: '2011/12/11 23:21:00',
+            duration: '45',
+            questionList: [
+                {
+                    id: 1,
+                    quizId: 3,
+                    name: 'safdsa',
+                    mark: 10,
+                    answerList: [
+                        {
+                            id: 1,
+                            content: 'sadfdsaf',
+                            isCorrect: true,
+                        },
+                        {
+                            id: 3,
+                            content: 'sadfdsaf',
+                            isCorrect: false,
+                        },
+                    ],
+                },
+                {
+                    id: 2,
+                    quizId: 3,
+                    name: 'hieu mup',
+                    mark: 160,
+                    answerList: [
+                        {
+                            id: 2,
+                            content: 'sadfdsaf',
+                            isCorrect: true,
+                        },
+                    ],
+                },
+            ],
+        },
+        {
+            id: 4,
+            topicId: 1,
+            name: 'Duc mup 123',
+            shown: false,
+            startTime: '2022/12/16 00:00:00',
+            duration: '20',
+            questionList: [],
+        },
+        {
+            id: 4,
+            topicId: 1,
+            name: 'Duc mup 123',
+            shown: false,
+            startTime: '2022/12/16 00:00:00',
+            duration: '20',
+            questionList: [],
+        },
+    ];
+
+    // return courseModule.quizList;
 
     get isAddingQuiz() {
         return courseModule.isAddingQuiz;
