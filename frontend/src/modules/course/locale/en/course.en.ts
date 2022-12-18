@@ -182,6 +182,7 @@ export const course = {
             addQuestionPlaceholder: 'Please enter a question name',
             question: 'Question'
         },
+        leaderboard: 'Leaderboard',
     },
 
     chat: {

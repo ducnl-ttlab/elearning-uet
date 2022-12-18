@@ -1,9 +1,13 @@
 <template>
     <div class="d-flex flex-row gap-4 mb-3 quiz-title" v-if="isShowTitle">
         <div v-if="!isEditingQuiz" class="d-flex flex-row gap-4 align-items-center">
-            <div class="quiz-name text-ellipsis">{{ quiz.name ? quiz?.name :
-                    $t('course.quiz.field.addQuestionPlaceholder')
-            }}</div>
+            <div class="quiz-name text-ellipsis">
+                {{
+                    quiz.name
+                        ? quiz?.name
+                        : $t('course.quiz.field.addQuestionPlaceholder')
+                }}
+            </div>
             <div class="quiz-duration">
                 {{ $t('course.quiz.form.duration', { time: quiz.duration }) }}
             </div>
@@ -17,26 +21,50 @@
             </div>
         </div>
         <div v-else class="d-flex flex-row gap-4 align-items-center">
-            <el-input :placeholder="$t('course.quiz.form.title')" v-model.trim="quiz.name" @change="toggleEditQuiz"
-                autocomplete="off" />
-            <el-input :placeholder="$t('course.quiz.form.title')" v-model.number="quiz.duration"
-                @change="toggleEditQuiz" autocomplete="off" />
+            <el-input
+                :placeholder="$t('course.quiz.form.title')"
+                v-model.trim="quiz.name"
+                @change="toggleEditQuiz"
+                autocomplete="off"
+            />
+            <el-input
+                :placeholder="$t('course.quiz.form.title')"
+                v-model.number="quiz.duration"
+                @change="toggleEditQuiz"
+                autocomplete="off"
+            />
         </div>
         <div class="d-flex flex-row gap-3">
-            <img src="@/assets/course/icons/edit.svg" width="16" alt="" style="cursor: pointer"
-                @click="toggleEditQuiz" />
-            <img src="@/assets/course/icons/cancel.svg" width="16" alt="" style="cursor: pointer"
-                @click="handleDeleteQuiz" />
+            <img
+                src="@/assets/course/icons/edit.svg"
+                width="16"
+                alt=""
+                style="cursor: pointer"
+                @click="toggleEditQuiz"
+            />
+            <img
+                src="@/assets/course/icons/cancel.svg"
+                width="16"
+                alt=""
+                style="cursor: pointer"
+                @click="handleDeleteQuiz"
+            />
         </div>
     </div>
     <div class="question-wrapper d-flex flex-column gap-3">
         <div v-for="(question, index) in quiz.questionList" :key="index">
-            <InstructorQuestion :question="question" :index="index" @delete-question="handleDeleteQuestion"
-                @delete-answer="handleDeleteAnswer" />
+            <InstructorQuestion
+                :question="question"
+                :index="index"
+                @delete-question="handleDeleteQuestion"
+                @delete-answer="handleDeleteAnswer"
+            />
         </div>
         <div class="add-button d-flex flex-row gap-2">
             <img src="@/assets/course/icons/plus.svg" width="18" alt="" />
-            <div @click="handleAddQuestion" style="cursor: pointer">{{ $t('course.quiz.form.addQuestion') }}</div>
+            <div @click="handleAddQuestion" style="cursor: pointer">
+                {{ $t('course.quiz.form.addQuestion') }}
+            </div>
         </div>
     </div>
 </template>
@@ -44,7 +72,11 @@
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
 
-import { IAnswerDetail, IQuestionDetail, IQuizDetail } from '../../../constants/course.interfaces';
+import {
+    IAnswerDetail,
+    IQuestionDetail,
+    IQuizDetail,
+} from '../../../constants/course.interfaces';
 import { Prop } from 'vue-property-decorator';
 import InstructorQuestion from './InstructorQuestion.vue';
 import { courseModule } from '@/modules/course/store/course.store';
@@ -71,22 +103,25 @@ export default class InstructorQuiz extends Vue {
             name: '',
             mark: 0,
             quizId: this.quiz.id,
-            answerList: [
-            ],
-        })
+            answerList: [],
+        });
     }
 
     handleDeleteQuestion(question: IQuestionDetail, index: number) {
-        this.quiz.questionList?.splice(index, 1)
-        this.$emit('delete-question', question, index)
+        this.quiz.questionList?.splice(index, 1);
+        this.$emit('delete-question', question, index);
     }
 
-    handleDeleteAnswer(answer: IAnswerDetail, answerIndex: number, questionIndex: number) {
-        this.$emit('delete-answer', answer, answerIndex, questionIndex)
+    handleDeleteAnswer(
+        answer: IAnswerDetail,
+        answerIndex: number,
+        questionIndex: number,
+    ) {
+        this.$emit('delete-answer', answer, answerIndex, questionIndex);
     }
 
     handleDeleteQuiz() {
-        this.$emit('delete-quiz', this.quiz)
+        this.$emit('delete-quiz', this.quiz);
     }
 }
 </script>

@@ -180,6 +180,7 @@ export const course = {
             addQuestionPlaceholder: 'Nhập tên câu hỏi',
             question: 'Câu'
         },
+        leaderboard: 'Đại lộ danh vọng',
     },
 
     chat: {

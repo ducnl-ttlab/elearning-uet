@@ -189,9 +189,10 @@ export async function createTopic(
 export async function updateTopic(
     params: FormData,
     courseId: number,
+    topicId: number,
 ): Promise<IAxiosDefaultResponse<ITopicData>> {
     return axios
-        .put(`${BE_URL}/topic/${courseId}`, params, {
+        .put(`${BE_URL}/topic/${courseId}/${topicId}`, params, {
             headers: {
                 Authorization: 'Bearer ' + localStorageTokenService.getAccessToken(),
                 'Content-Type': 'multipart/form-data',
@@ -205,9 +206,12 @@ export async function updateTopic(
         });
 }
 
-export async function deleteTopic(courseId: number): Promise<IAxiosDefaultResponse<any>> {
+export async function deleteTopic(
+    courseId: number,
+    topicId: number,
+): Promise<IAxiosDefaultResponse<any>> {
     return axios
-        .delete(`${BE_URL}/topic/${courseId}`, {
+        .delete(`${BE_URL}/topic/${courseId}/${topicId}`, {
             headers: {
                 Authorization: 'Bearer ' + localStorageTokenService.getAccessToken(),
             },

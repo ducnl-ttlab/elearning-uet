@@ -16,7 +16,7 @@
                 >
                     <span>{{ defaultAvatarName }}</span>
                 </div>
-                <span class="name">{{ userName || 'Anonymous' }}</span>
+                <span class="name text-ellipsis">{{ userName || 'Anonymous' }}</span>
             </div>
             <template #dropdown>
                 <el-dropdown-menu>
@@ -230,6 +230,13 @@ export default class HeaderMenuAccount extends Vue {
     text-align: center;
     font-weight: 400;
     font-size: 22px;
+}
+
+.text-ellipsis {
+    max-width: 180px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 @media only screen and (max-width: map-get($map: $grid-breakpoints, $key: lg)) {

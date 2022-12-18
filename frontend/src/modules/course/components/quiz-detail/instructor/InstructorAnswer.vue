@@ -4,13 +4,29 @@
         <div v-if="!isEditingAnswer">
             {{ answer.content ? answer.content : 'Add your answer' }}
         </div>
-        <el-input :placeholder="$t('course.quiz.form.title')" v-model="answer.content" @change="toggleEditAnswer"
-            autocomplete="off" v-else />
+        <el-input
+            :placeholder="$t('course.quiz.form.title')"
+            v-model="answer.content"
+            @change="toggleEditAnswer"
+            autocomplete="off"
+            v-else
+        />
         <div class="d-flex flex-row gap-2">
-            <img src="@/assets/course/icons/edit.svg" width="16" alt="" style="cursor: pointer"
-                @click="toggleEditAnswer" />
-            <img v-if="!isEditingAnswer" src="@/assets/course/icons/cancel.svg" width="16" alt=""
-                style="cursor: pointer" @click="handleDeleteAnswer" />
+            <img
+                src="@/assets/course/icons/edit.svg"
+                width="16"
+                alt=""
+                style="cursor: pointer"
+                @click="toggleEditAnswer"
+            />
+            <img
+                v-if="!isEditingAnswer"
+                src="@/assets/course/icons/cancel.svg"
+                width="16"
+                alt=""
+                style="cursor: pointer"
+                @click="handleDeleteAnswer"
+            />
         </div>
     </div>
 </template>
@@ -30,7 +46,7 @@ export default class InstructorAnswer extends Vue {
     }
 
     handleDeleteAnswer() {
-        this.$emit('delete-answer', this.answer, this.index)
+        this.$emit('delete-answer', this.answer, this.index);
     }
 }
 </script>

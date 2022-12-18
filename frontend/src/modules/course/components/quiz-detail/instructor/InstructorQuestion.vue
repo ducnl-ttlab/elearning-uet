@@ -2,26 +2,57 @@
     <div class="question-card d-flex flex-row gap-3 pb-2">
         <div v-if="!isEditingQuestion" class="d-flex flex-row gap-4">
             <span>{{ `${$t('course.quiz.field.question')} ${index + 1}:` }}</span>
-            <span>{{ question?.name ? question?.name : $t('course.quiz.field.addQuestionPlaceholder') }}</span>
+            <span>{{
+                question?.name
+                    ? question?.name
+                    : $t('course.quiz.field.addQuestionPlaceholder')
+            }}</span>
             <span>{{ $t('course.quiz.form.mark', { mark: question?.mark }) }}</span>
         </div>
 
         <div v-else class="question-card d-flex flex-row gap-4 pb-2">
-            <el-input :placeholder="$t('course.quiz.form.title')" v-model="question.name"
-                @change="toggleEditQuestion" autocomplete="off" />
-            <el-input :placeholder="$t('course.quiz.form.title')" v-model.number="question.mark"
-                @change="toggleEditQuestion" autocomplete="off" />
+            <el-input
+                :placeholder="$t('course.quiz.form.title')"
+                v-model="question.name"
+                @change="toggleEditQuestion"
+                autocomplete="off"
+            />
+            <el-input
+                :placeholder="$t('course.quiz.form.title')"
+                v-model.number="question.mark"
+                @change="toggleEditQuestion"
+                autocomplete="off"
+            />
         </div>
         <div class="d-flex flex-row gap-2" style="padding-left: 10px">
-            <img src="@/assets/course/icons/edit.svg" width="16" alt="" style="cursor: pointer"
-                @click="toggleEditQuestion" />
-            <img src="@/assets/course/icons/cancel.svg" width="16" alt="" style="cursor: pointer" v-if="!isEditingQuestion"
-                @click="handleDeleteQuestion" />
+            <img
+                src="@/assets/course/icons/edit.svg"
+                width="16"
+                alt=""
+                style="cursor: pointer"
+                @click="toggleEditQuestion"
+            />
+            <img
+                src="@/assets/course/icons/cancel.svg"
+                width="16"
+                alt=""
+                style="cursor: pointer"
+                v-if="!isEditingQuestion"
+                @click="handleDeleteQuestion"
+            />
         </div>
     </div>
     <div class="answer-wrapper px-3">
-        <div class="answer-card d-flex flex-row gap-3" v-for="(answer, index) in question?.answerList" :key="index">
-            <InstructorAnswer :answer="answer" :index="index" @delete-answer="handleDeteleAnswer" />
+        <div
+            class="answer-card d-flex flex-row gap-3"
+            v-for="(answer, index) in question?.answerList"
+            :key="index"
+        >
+            <InstructorAnswer
+                :answer="answer"
+                :index="index"
+                @delete-answer="handleDeteleAnswer"
+            />
         </div>
         <div class="add-button d-flex flex-row gap-2 py-2">
             <img src="@/assets/course/icons/plus.svg" width="18" alt="" />
@@ -46,13 +77,12 @@ export default class InstructorQuestion extends Vue {
     @Prop({ default: 0 }) readonly index!: number;
     isEditingQuestion = false;
 
-
     handleAddAnswer() {
         this.question.answerList?.push({
             questionId: this.question.id,
             content: '',
             isCorrect: false,
-        })
+        });
     }
 
     toggleEditQuestion() {
@@ -60,12 +90,12 @@ export default class InstructorQuestion extends Vue {
     }
 
     handleDeteleAnswer(answer: IAnswerDetail, index: number) {
-        this.question.answerList?.splice(index, 1)
-        this.$emit('delete-answer', answer, index, this.index)
+        this.question.answerList?.splice(index, 1);
+        this.$emit('delete-answer', answer, index, this.index);
     }
 
     handleDeleteQuestion() {
-        this.$emit('delete-question', this.question, this.index)
+        this.$emit('delete-question', this.question, this.index);
     }
 }
 </script>

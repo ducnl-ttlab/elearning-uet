@@ -1,7 +1,7 @@
 <template>
     <div class="topic-detail-wrapper d-flex flex-column w-100 gap-3">
         <div
-            class="title-wrapper d-flex flex-row align-items-center justify-content-between"
+            class="title-wrapper d-flex flex-sm-row flex-column align-items-center justify-content-between"
         >
             <div class="topic-detail-title">{{ selectedTopic?.name }}</div>
             <div

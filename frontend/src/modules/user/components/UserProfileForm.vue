@@ -45,7 +45,6 @@
                 class="input"
                 :label="$t('user.profile.form.phone')"
                 :placeholder="$t('user.profile.placeholder.phone')"
-                :error="credentialError"
                 v-model:value="userForm.phone"
                 autocomplete="off"
             />
@@ -53,7 +52,6 @@
                 class="input"
                 :label="$t('user.profile.form.address')"
                 :placeholder="$t('user.profile.placeholder.address')"
-                :error="credentialError"
                 v-model:value="userForm.address"
                 autocomplete="off"
             />
@@ -128,9 +126,12 @@ export default class UserProfileForm extends Vue {
         return getFirstLetterOfName(this.userData?.username || '').trim();
     }
 
-    async created() {
-        await this.getUserData();
-        this.userForm = this.userData;
+    checkEmptyUsername() {
+        if (this.userData.username == '') {
+            this.credentialError = this.$t('user.errors.emptyUsername');
+        } else {
+            this.credentialError = '';
+        }
     }
 
     previewImagePath(file: File) {
@@ -184,23 +185,38 @@ export default class UserProfileForm extends Vue {
             userData.currentPassword = this.userForm.currentPassword;
             formData.append('currentPassword', userData.currentPassword || '');
         }
-
         if (this.userForm.file) {
             formData.append('file', this.thumbnail || '');
         }
-        const response = await updateUserData(formData);
-        if (response.success) {
-            await this.getUserData();
-            showSuccessNotificationFunction(
-                this.$t('user.success.updateUserDataSuccess'),
-            );
+        if (this.credentialError === '') {
+            const response = await updateUserData(formData);
+            if (response.success) {
+                await this.getUserData();
+                showSuccessNotificationFunction(
+                    this.$t('user.success.updateUserDataSuccess'),
+                );
+            } else {
+                let res = response?.errors || [
+                    { message: this.$t('user.errors.updateUserDataError') },
+                ];
+                showErrorNotificationFunction(res[0].message);
+            }
         } else {
-            let res = response?.errors || [
-                { message: this.$t('user.errors.updateUserDataError') },
-            ];
-            showErrorNotificationFunction(res[0].message);
+            showErrorNotificationFunction(this.$t('user.errors.emptyUsername'));
         }
         commonModule.setLoadingIndicator(false);
+    }
+
+    async created() {
+        await this.getUserData();
+        this.userForm = this.userData;
+        this.$watch(
+            'userData',
+            () => {
+                this.checkEmptyUsername();
+            },
+            { immediate: true, deep: true },
+        );
     }
 }
 </script>

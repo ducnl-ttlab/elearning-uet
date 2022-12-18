@@ -1,7 +1,10 @@
 <template>
     <div class="d-flex flex-column w-100">
         <CoursePreviewInformation @reload-course-status="getUserCourseData" />
-        <CoursePreviewTopic />
+        <div class="d-flex flex-row body">
+            <CoursePreviewTopic />
+            <Leaderboard />
+        </div>
     </div>
 </template>
 
@@ -15,9 +18,10 @@ import { userCourseModule } from '../../store/user-course.store';
 import { getUserCourseData } from '../../services/user-course';
 import CoursePreviewInformation from './CoursePreviewInformation.vue';
 import CoursePreviewTopic from './CoursePreviewTopic.vue';
+import Leaderboard from './Leaderboard.vue';
 
 @Options({
-    components: { CoursePreviewInformation, CoursePreviewTopic },
+    components: { CoursePreviewInformation, CoursePreviewTopic, Leaderboard },
 })
 export default class CourseRegistration extends Vue {
     async initCourseRegistration() {
@@ -59,4 +63,9 @@ export default class CourseRegistration extends Vue {
     }
 }
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.body {
+    gap: 3vw;
+    padding-top: 40px;
+}
+</style>
