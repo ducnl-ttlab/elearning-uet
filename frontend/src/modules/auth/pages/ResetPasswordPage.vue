@@ -33,7 +33,7 @@ export default class RESET_PASSWORD_PAGE extends Vue {
         commonModule.setLoadingIndicator(true);
         const response = await verifyCode(email, code);
         if (response?.success) {
-            this.token = response.data as string;
+            this.token = response.data?.accessToken as string;
         } else {
             showErrorNotificationFunction(
                 this.$t('auth.forgotPassword.errors.verifyCodeError'),

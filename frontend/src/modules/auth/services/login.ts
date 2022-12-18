@@ -68,7 +68,7 @@ export async function forgotPassword(
 export async function verifyCode(
     email: string,
     code: number,
-): Promise<IAxiosDefaultResponse<string>> {
+): Promise<IAxiosDefaultResponse<{ accessToken: string }>> {
     return axios
         .post(
             `${BE_URL}/auth/verify-code`,
