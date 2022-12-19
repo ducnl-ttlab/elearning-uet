@@ -14,7 +14,7 @@ export class User1667010084382 implements MigrationInterface {
         phone: '012345678',
         verified: true,
         address: 'Khu 2 Hoàng Cương, Thanh Ba, Phú Thọ',
-        role: Role.instructor,
+        role: Role.guest,
       },
       {
         id: '123456abe',
@@ -44,7 +44,7 @@ export class User1667010084382 implements MigrationInterface {
         password: '12345678',
         address: 'Khu 2 Hoàng Cương, Thanh Ba, Phú Thọ',
         verified: true,
-        role: Role.instructor,
+        role: Role.pending,
       },
       {
         id: '123456xsabxf',
@@ -94,7 +94,7 @@ export class User1667010084382 implements MigrationInterface {
         password: '12345678',
         address: 'Khu 2 Hoàng Cương, Thanh Ba, Phú Thọ',
         verified: true,
-        role: Role.instructor,
+        role: Role.pending,
       },
       {
         id: '19020206',
@@ -104,7 +104,7 @@ export class User1667010084382 implements MigrationInterface {
         password: '12345678',
         address: 'Khu 2 Hoàng Cương, Thanh Ba, Phú Thọ',
         verified: true,
-        role: Role.student,
+        role: Role.guest,
       },
       {
         id: '19020152',

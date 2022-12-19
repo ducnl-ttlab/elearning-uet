@@ -39,7 +39,10 @@ export default class SelectRole extends Vue {
         if (response?.success) {
             showSuccessNotificationFunction(
                 this.$t('auth.role.successMessage', {
-                    role: this.$t(`auth.role.${this.role}`),
+                    role:
+                        this.role !== 'instructor'
+                            ? this.$t(`auth.role.${this.role}`)
+                            : this.$t(`auth.role.pending`),
                 }),
             );
             commonModule.setLoadingIndicator(false);

@@ -28,11 +28,12 @@ export async function selectRole(
     role: string,
     token: string,
 ): Promise<IAxiosDefaultResponse<Record<string, never>>> {
+    const realRole = role === 'instructor' ? 'pending' : role;
     return axios
         .put(
             `${BE_URL}/auth/select-role`,
             {
-                role: role,
+                role: realRole,
             },
             {
                 headers: {

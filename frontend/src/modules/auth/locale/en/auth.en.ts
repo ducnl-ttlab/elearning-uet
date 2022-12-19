@@ -137,5 +137,6 @@ export const auth = {
                 'Embrace yourself with knowledge and social academic activities, anywhere, anytime.',
         },
         successMessage: 'You have registered as a {role}',
+        pending: 'pending',
     },
 };

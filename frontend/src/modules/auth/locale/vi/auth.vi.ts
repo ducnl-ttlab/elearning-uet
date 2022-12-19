@@ -147,5 +147,6 @@ export const auth = {
                 'Đắm chìm vào những bài học giá trị trong bất kỳ lĩnh vực nào, ở bất cứ đâu.',
         },
         successMessage: 'Bạn đã đăng ký trở thành {role}',
+        pending: 'Vui lòng liên hệ admin để được chấp nhận',
     },
 };
