@@ -8,6 +8,7 @@
                 :placeholder="$t('auth.register.credential.placeholder')"
                 :error="emailError"
                 v-model:value="credential"
+                @keyup.enter="handleLogin"
                 autocomplete="off"
             />
             <BaseInputPassword
@@ -16,7 +17,7 @@
                 :placeholder="$t('auth.login.password.label')"
                 :error="passwordError"
                 v-model:value="password"
-                @on-enter="handleLogin"
+                @keyup.enter="handleLogin"
                 autocomplete="off"
             />
         </div>
@@ -82,8 +83,8 @@ export default class LoginForm extends Vue {
     }
 
     checkPasswordFormat() {
-        if (this.password === '') {
-            this.passwordError = this.$t('auth.login.password.emptyError');
+        if (this.password.length < 8) {
+            this.passwordError = this.$t('auth.login.password.error');
         } else {
             this.passwordError = '';
         }

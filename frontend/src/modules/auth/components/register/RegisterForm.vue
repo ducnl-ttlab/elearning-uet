@@ -7,7 +7,7 @@
             :label="$t('auth.register.credential.label')"
             :placeholder="$t('auth.register.credential.placeholder')"
             :error="credentialError"
-            @on-enter="onSubmitCredential"
+            @keyup.enter="onSubmitCredential"
             v-model:value="credential"
         />
         <el-button

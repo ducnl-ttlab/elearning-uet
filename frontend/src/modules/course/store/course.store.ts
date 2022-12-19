@@ -1,19 +1,17 @@
 import { Module, VuexModule, Action, Mutation, getModule } from 'vuex-module-decorators';
 import store from '@/plugins/vuex/index';
 import {
+    IAnswerDetail,
     ICourseData,
     ICoursePreviewData,
     IMessageDetail,
     IQuizDetail,
+    IStudentRankData,
     ITopicData,
 } from '../constants/course.interfaces';
-import {
-    CourseArea,
-    CourseListDisplayMode,
-    SidebarMode,
-} from '../constants/course.constants';
+import { CourseListDisplayMode } from '../constants/course.constants';
 
-@Module({ dynamic: true, namespaced: true, store, name: 'course' })
+@Module({ dynamic: true, namespaced: true, store, name: 'Course' })
 class CourseModule extends VuexModule {
     courseList: Array<ICourseData> = [];
     courseListDisplayMode = CourseListDisplayMode.GRID;
@@ -34,6 +32,8 @@ class CourseModule extends VuexModule {
     topicFormPopupMode = '';
     unreadMessageCount = 0;
     courseRating = 1;
+    quizAnswerList: Array<IAnswerDetail> = [];
+    studentRankingList: Array<IStudentRankData> = [];
 
     @Action
     setCourseList(courseList: Array<ICourseData>) {
@@ -243,6 +243,26 @@ class CourseModule extends VuexModule {
     @Mutation
     SET_COURSE_RATING(rating: number) {
         this.courseRating = rating;
+    }
+
+    @Action({ rawError: true })
+    setQuizAnswerList(answerList: Array<IAnswerDetail>) {
+        this.SET_QUIZ_ANSWER_LIST(answerList);
+    }
+
+    @Mutation
+    SET_QUIZ_ANSWER_LIST(answerList: Array<IAnswerDetail>) {
+        this.quizAnswerList = answerList;
+    }
+
+    @Action
+    setStudentRankingList(studentRankingList: Array<IStudentRankData>) {
+        this.SET_STUDENT_RANKING_LIST(studentRankingList);
+    }
+
+    @Mutation
+    SET_STUDENT_RANKING_LIST(studentRankingList: Array<IStudentRankData>) {
+        this.studentRankingList = studentRankingList;
     }
 }
 export const courseModule = getModule(CourseModule);

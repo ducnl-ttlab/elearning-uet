@@ -12,7 +12,7 @@
 import { showErrorNotificationFunction } from '@/common/helpers';
 import { commonModule } from '@/modules/common/store/common.store';
 import { Options, Vue } from 'vue-class-component';
-import { getCoursePreviewData } from '../../services/course';
+import { getCoursePreviewData, getStudentRank } from '../../services/course';
 import { courseModule } from '../../store/course.store';
 import { userCourseModule } from '../../store/user-course.store';
 import { getUserCourseData } from '../../services/user-course';
@@ -28,7 +28,6 @@ export default class CourseRegistration extends Vue {
         commonModule.setLoadingIndicator(true);
         const id: number = +this.$route.params.courseId;
         const response = await getCoursePreviewData(id);
-        console.log(response);
         if (response.success) {
             courseModule.setCoursePreviewData(response?.data || {});
         } else {
@@ -57,9 +56,27 @@ export default class CourseRegistration extends Vue {
         commonModule.setLoadingIndicator(false);
     }
 
+    async initLeaderboard() {
+        const courseId = +this.$route.params.courseId;
+        commonModule.setLoadingIndicator(true);
+        const response = await getStudentRank(courseId);
+        if (response.success) {
+            console.log(response.data);
+            courseModule.setStudentRankingList(response.data || []);
+        } else {
+            let res = response?.errors || [
+                { message: this.$t('course.errors.getLeaderboardError') },
+            ];
+            courseModule.setStudentRankingList([]);
+            showErrorNotificationFunction(res[0].message);
+        }
+        commonModule.setLoadingIndicator(false);
+    }
+
     async created() {
         await this.initCourseRegistration();
         await this.getUserCourseData();
+        await this.initLeaderboard();
     }
 }
 </script>

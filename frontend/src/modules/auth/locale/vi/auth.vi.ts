@@ -76,7 +76,7 @@ export const auth = {
         password: {
             label: 'Mật khẩu',
             placeholder: 'Nhập mật khẩu',
-            error: 'Vui lòng đáp ứng các quy tắc mật khẩu',
+            error: 'Mật khẩu cần chứa ít nhất 8 ký tự',
             emptyError: 'Mật khẩu không được để rỗng',
         },
         inputOtp: {

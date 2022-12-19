@@ -93,7 +93,9 @@ export const course = {
         toggleCourse: 'Change course state failed. Please try again later!',
         quiz: {
             updateTopic: 'Update quiz failed. Please try again later!',
+            submitQuizError: 'Submit quiz failed. Please try again later!',
         },
+        getLeaderboardError: 'Error getting leaderboard data. Please try again later!',
     },
     success: {
         favoriteCourse: {
@@ -116,6 +118,7 @@ export const course = {
             updateQuiz: 'Update quiz successfully!',
             createQuiz: 'Create quiz successfully!',
             deleteQuiz: 'Delete quiz successfully!',
+            submitQuiz: 'Submit quiz successfully!',
         },
         leaveRating: 'Rate course successfully!',
         deleteCourse: 'Delete course successfully',
@@ -186,6 +189,8 @@ export const course = {
             question: 'Question',
         },
         leaderboard: 'Leaderboard',
+        submitQuiz: 'Submit Answers',
+        doneQuiz: 'You have already completed this quiz.',
     },
 
     chat: {

@@ -137,6 +137,7 @@ export interface IQuizDetail {
     topicId?: number;
     startTime?: string;
     duration?: string;
+    score?: number;
     questionList?: Array<IQuestionDetail>;
 }
 
@@ -155,6 +156,7 @@ export interface IAnswerDetail {
     content: string;
     isCorrect: boolean;
     isShowInput?: boolean;
+    isAnswer?: string;
 }
 
 export interface ICreateQuizParams {
@@ -176,4 +178,10 @@ export interface IMessageDetail {
     email: string;
     role: SystemRole;
     avatar: string;
+}
+
+export interface IStudentRankData {
+    id: string;
+    username: string;
+    totalMark: string;
 }

@@ -14,6 +14,7 @@ import {
     IQuestionDetail,
     IQuiz,
     IQuizDetail,
+    IStudentRankData,
     ITopicData,
 } from '../constants/course.interfaces';
 
@@ -438,6 +439,48 @@ export async function rateCourse(
                 },
             },
         )
+        .then((res) => {
+            return res.data;
+        })
+        .catch((error) => {
+            return error.response.data;
+        });
+}
+
+export async function submitQuiz(
+    courseId: number,
+    quizId: number,
+    answer: Array<number>,
+): Promise<IAxiosListDefaultResponse<Record<string, never>>> {
+    return axios
+        .post(
+            `${BE_URL}/user-answer/${courseId}/${quizId}`,
+
+            answer,
+
+            {
+                headers: {
+                    Authorization: 'Bearer ' + localStorageTokenService.getAccessToken(),
+                },
+            },
+        )
+        .then((res) => {
+            return res.data;
+        })
+        .catch((error) => {
+            return error.response.data;
+        });
+}
+
+export async function getStudentRank(
+    courseId: number,
+): Promise<IAxiosDefaultResponse<Array<IStudentRankData>>> {
+    return axios
+        .get(`${BE_URL}/quiz/rank/${courseId}`, {
+            headers: {
+                Authorization: 'Bearer ' + localStorageTokenService.getAccessToken(),
+            },
+        })
         .then((res) => {
             return res.data;
         })

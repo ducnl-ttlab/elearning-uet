@@ -87,7 +87,6 @@ import {
     showErrorNotificationFunction,
     showSuccessNotificationFunction,
 } from '@/common/helpers';
-import { toRaw } from 'vue';
 @Options({
     components: { InstructorQuiz },
 })
@@ -101,13 +100,6 @@ export default class InstructorQuizDetail extends Vue {
         topicId: this.topicId,
         questionList: [],
     };
-
-    get userRole() {
-        return userModule.userData.role;
-    }
-    get selectedTopic() {
-        return courseModule.selectedTopic;
-    }
 
     get topicId() {
         return courseModule.topicId;

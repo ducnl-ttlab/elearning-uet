@@ -14,13 +14,11 @@
             <el-input
                 :placeholder="$t('course.quiz.form.title')"
                 v-model="question.name"
-                @change="toggleEditQuestion"
                 autocomplete="off"
             />
             <el-input
                 :placeholder="$t('course.quiz.form.title')"
                 v-model.number="question.mark"
-                @change="toggleEditQuestion"
                 autocomplete="off"
             />
         </div>
