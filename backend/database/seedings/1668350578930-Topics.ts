@@ -6,8 +6,7 @@ export class Topics1668350578930 implements MigrationInterface {
     const items = [
       {
         id: 1,
-        video:
-          'https://streaming-cms-tpo-te-vnno-zn-14.epicdn.me/384dcb300d131834e2189387a2e0c50d/638c34b0/2022_12_03/crop_video_files_online_cavani_punches_var_twitter_search_twittermp4_2496.mp4',
+        video: '',
         courseId: 1,
         name: 'React reactive',
         description: 'Làm chủ react native',
@@ -16,8 +15,7 @@ export class Topics1668350578930 implements MigrationInterface {
       },
       {
         id: 2,
-        video:
-          'https://streaming-cms-tpo-te-vnno-zn-14.epicdn.me/384dcb300d131834e2189387a2e0c50d/638c34b0/2022_12_03/crop_video_files_online_cavani_punches_var_twitter_search_twittermp4_2496.mp4',
+        video: '',
         courseId: 1,
         name: 'Computer Vision',
         description: 'Tiếp cận Computer Vision',
@@ -26,8 +24,7 @@ export class Topics1668350578930 implements MigrationInterface {
       },
       {
         id: 3,
-        video:
-          'https://streaming-cms-tpo-te-vnno-zn-14.epicdn.me/384dcb300d131834e2189387a2e0c50d/638c34b0/2022_12_03/crop_video_files_online_cavani_punches_var_twitter_search_twittermp4_2496.mp4',
+        video: '',
         courseId: 1,
         name: 'Natural Language Processing',
         description: 'Tiếp cận Natural Language Processing',
@@ -36,8 +33,7 @@ export class Topics1668350578930 implements MigrationInterface {
       },
       {
         id: 4,
-        video:
-          'https://streaming-cms-tpo-te-vnno-zn-14.epicdn.me/384dcb300d131834e2189387a2e0c50d/638c34b0/2022_12_03/crop_video_files_online_cavani_punches_var_twitter_search_twittermp4_2496.mp4',
+        video: '',
         courseId: 1,
         name: 'Neural Network',
         description: 'Làm chủ Neural Network',
@@ -46,8 +42,7 @@ export class Topics1668350578930 implements MigrationInterface {
       },
       {
         id: 5,
-        video:
-          'https://streaming-cms-tpo-te-vnno-zn-14.epicdn.me/384dcb300d131834e2189387a2e0c50d/638c34b0/2022_12_03/crop_video_files_online_cavani_punches_var_twitter_search_twittermp4_2496.mp4',
+        video: '',
         courseId: 1,
         name: 'Yolo Detect Objection',
         description: 'Nắm vững bản chất của Yolo',
