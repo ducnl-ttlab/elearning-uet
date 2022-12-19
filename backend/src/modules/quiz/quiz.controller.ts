@@ -17,7 +17,11 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Request, Response } from 'express';
-import { Instructor, Student } from 'src/common/decorator/custom.decorator';
+import {
+  Instructor,
+  Student,
+  User,
+} from 'src/common/decorator/custom.decorator';
 import {
   CourseAuth,
   InstructorCourseAuth,
@@ -40,6 +44,7 @@ import { UserQuiz } from '../user-quiz/entity/user-quiz.entity';
 import { UserQuizService } from '../user-quiz/service/user-quiz.service';
 import { Answer } from './entity/answer.entity';
 import { Question } from './entity/question.entity';
+import { IUserJwt } from 'src/common/interfaces';
 
 @ApiTags('Topic')
 @Controller('quiz')
@@ -65,6 +70,7 @@ export class QuizController {
   @UsePipes(...validation({ key: 'topicIdParamSchema', type: 'param' }))
   @CourseAuth()
   async getShortTopics(
+    @User() user: IUserJwt,
     @Res() response: Response,
     @Param() param: IQuizParam,
     @Req() req: Request,
