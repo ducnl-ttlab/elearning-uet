@@ -56,7 +56,13 @@
             />
         </div>
         <div class="add-button d-flex flex-row gap-2 py-2">
-            <img src="@/assets/course/icons/plus.svg" width="18" alt="" />
+            <img
+                @click="handleAddAnswer()"
+                src="@/assets/course/icons/plus.svg"
+                style="cursor: pointer"
+                width="18"
+                alt=""
+            />
             <div @click="handleAddAnswer()" style="cursor: pointer">
                 {{ $t('course.quiz.form.addAnswer') }}
             </div>

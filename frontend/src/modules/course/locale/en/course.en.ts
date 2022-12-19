@@ -2,7 +2,7 @@ export const course = {
     course: {
         price: '${price}',
         free: 'Free',
-        avgRating: 'Average rating:\xa0',
+        avgRating: 'Rating:\xa0',
         selfRating: 'Your rating: \xa0',
         instructor: 'Instructor: {instructor}',
         notRated: 'Not rated',

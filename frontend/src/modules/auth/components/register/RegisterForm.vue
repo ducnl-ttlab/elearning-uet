@@ -28,7 +28,7 @@ import {
 import { Options, Vue } from 'vue-class-component';
 import { register } from '../../services/register';
 import { commonModule } from '@/modules/common/store/common.store';
-import { PageName } from '@/common/constants';
+import { PageName, Regex } from '@/common/constants';
 
 @Options({
     components: {},
@@ -36,6 +36,15 @@ import { PageName } from '@/common/constants';
 export default class RegisterForm extends Vue {
     credential = '';
     credentialError = '';
+    Regex = Regex;
+
+    checkCredentialFormat() {
+        if (this.credential.trim().match(this.Regex.EMAIL)) {
+            this.credentialError = '';
+        } else {
+            this.credentialError = this.$t('auth.login.credential.invalidFormat');
+        }
+    }
 
     async onSubmitCredential() {
         commonModule.setLoadingIndicator(true);
@@ -53,6 +62,16 @@ export default class RegisterForm extends Vue {
             );
         }
         commonModule.setLoadingIndicator(false);
+    }
+
+    created() {
+        this.$watch(
+            'credential',
+            () => {
+                this.checkCredentialFormat();
+            },
+            { immediate: true },
+        );
     }
 }
 </script>

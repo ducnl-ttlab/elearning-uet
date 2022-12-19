@@ -70,4 +70,10 @@ export default class InputPassword extends Vue {
 .mark-required {
     color: red;
 }
+
+.validation-error {
+    font-size: 12px;
+    color: $color-red-01;
+    margin: 5px 0;
+}
 </style>

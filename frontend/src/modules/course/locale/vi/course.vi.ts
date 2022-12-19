@@ -3,7 +3,7 @@ export const course = {
         price: '${price}',
         free: 'Miễn phí',
         instructor: 'Giảng viên: {instructor}',
-        avgRating: 'Đánh giá trung bình:\xa0',
+        avgRating: 'Đánh giá:\xa0',
         selfRating: 'Đánh giá của bạn: \xa0',
         notRated: 'Chưa có đánh giá',
         studentTotal: 'Số học viên: {studentTotal}',
