@@ -127,7 +127,7 @@ export class CourseService {
 
       categoryId && queryArr.push(`c.categoryId = ${categoryId}`);
       text && queryArr.push(`c.name like '%${text}%'`);
-      rating && queryArr.push(`uc.avgRating > ${rating}`);
+      rating && queryArr.push(`uc.avgRating > ${+rating - 0.01}`);
       instructorIds && queryArr.push(`c.instructorId in (?)`);
       isPublished && queryArr.push(`c.isPublished = ${isPublished ? 1 : 0}`);
 
