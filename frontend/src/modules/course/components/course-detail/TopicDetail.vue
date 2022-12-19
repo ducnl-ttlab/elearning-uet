@@ -14,7 +14,10 @@
         </div>
         <div class="topic-detail-description">{{ selectedTopic?.description }}</div>
         <div class="topic-show-video pb-4" v-if="selectedTopic?.video">
-            <span @click="showTopicVideo" v-if="!isShowTopicVideo">
+            <span
+                @click="showTopicVideo"
+                v-if="!isShowTopicVideo && !!selectedTopic?.video"
+            >
                 {{ $t('course.topic.showVideo') }}
             </span>
             <span @click="hideTopicVideo" v-else>{{ $t('course.topic.hideVideo') }}</span>
@@ -24,15 +27,17 @@
             class="topic-video d-flex justify-content-center mx-auto"
             style="width: 50vw"
         >
-            <video
-                class="video-js vjs-fluid vjs-default-skin"
+            <video-player
+                :src="selectedTopic?.video"
                 controls
-                preload="auto"
-                data-setup="{}"
-            >
-                <source :src="selectedTopic?.video" type="application/x-mpegURL" />
-            </video>
+                :loop="true"
+                :volume="0.6"
+                playsinline
+                :height="320"
+                :techOrder="['html5', 'flvjs']"
+            />
         </div>
+
         <div class="topic-detail-content" v-html="selectedTopic?.content"></div>
         <BaseNoResult
             v-if="selectedTopic && !selectedTopic.id"
