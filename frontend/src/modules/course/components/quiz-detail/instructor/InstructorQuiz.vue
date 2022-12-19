@@ -190,6 +190,12 @@ export default class InstructorQuiz extends Vue {
         font-size: 22px;
         font-weight: 600;
         max-width: 70%;
+        text-align: start;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     &-duration {
