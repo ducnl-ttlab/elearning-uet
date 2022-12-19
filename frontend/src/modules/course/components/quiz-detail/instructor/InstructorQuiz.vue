@@ -1,5 +1,9 @@
 <template>
-    <div class="d-flex flex-row gap-4 mb-3 quiz-title" v-if="isShowTitle">
+    <div
+        class="d-flex flex-row gap-4 mb-3 quiz-title w-100"
+        style="position: relative"
+        v-if="isShowTitle"
+    >
         <div v-if="!isEditingQuiz" class="d-flex flex-row gap-4 align-items-center">
             <div class="quiz-name text-ellipsis">
                 {{
@@ -54,12 +58,22 @@
                 @click="handleDeleteQuiz"
             />
         </div>
+        <div class="down-arrow" @click="toggleDetail">
+            <img
+                v-if="!isShowDetail"
+                width="16"
+                src="@/assets/course/icons/down-arrow.png"
+                alt=""
+            />
+            <img v-else width="16" src="@/assets/course/icons/up-arrow.png" alt="" />
+        </div>
     </div>
-    <div class="question-wrapper d-flex flex-column gap-3">
+    <div v-if="isShowDetail" class="question-wrapper d-flex flex-column gap-3">
         <div v-for="(question, index) in quiz.questionList" :key="index">
             <InstructorQuestion
                 :question="question"
                 :index="index"
+                :isShowDetail="isShowDetail"
                 @delete-question="handleDeleteQuestion"
                 @delete-answer="handleDeleteAnswer"
                 @edit-question="handleEditQuestion"
@@ -67,8 +81,14 @@
             />
         </div>
         <div class="add-button d-flex flex-row gap-2">
-            <img src="@/assets/course/icons/plus.svg" width="18" alt="" />
-            <div @click="handleAddQuestion" style="cursor: pointer">
+            <img
+                style="cursor: pointer"
+                @click="handleAddQuestion"
+                src="@/assets/course/icons/plus.svg"
+                width="18"
+                alt=""
+            />
+            <div style="cursor: pointer" @click="handleAddQuestion">
                 {{ $t('course.quiz.form.addQuestion') }}
             </div>
         </div>
@@ -98,6 +118,7 @@ export default class InstructorQuiz extends Vue {
 
     isShown = true;
     isEditingQuiz = false;
+    isShowDetail = false;
 
     get topicId() {
         return courseModule.topicId;
@@ -148,6 +169,10 @@ export default class InstructorQuiz extends Vue {
     handleEditAnswer(answer: IAnswer, questionId: number) {
         this.$emit('edit-answer', answer, questionId);
     }
+
+    toggleDetail() {
+        this.isShowDetail = !this.isShowDetail;
+    }
 }
 </script>
 
@@ -177,5 +202,11 @@ export default class InstructorQuiz extends Vue {
     &-wrapper {
         padding-left: 24px;
     }
+}
+
+.down-arrow {
+    cursor: pointer;
+    position: absolute;
+    right: 20px;
 }
 </style>

@@ -38,6 +38,7 @@
                 :label="$t('user.profile.form.username')"
                 :placeholder="$t('user.profile.placeholder.username')"
                 :error="credentialError"
+                @keyup.enter="handleUpdateUser"
                 v-model:value="userForm.username"
                 autocomplete="off"
             />
@@ -46,6 +47,7 @@
                 :label="$t('user.profile.form.phone')"
                 :placeholder="$t('user.profile.placeholder.phone')"
                 v-model:value="userForm.phone"
+                @keyup.enter="handleUpdateUser"
                 autocomplete="off"
             />
             <BaseInputText
@@ -53,6 +55,7 @@
                 :label="$t('user.profile.form.address')"
                 :placeholder="$t('user.profile.placeholder.address')"
                 v-model:value="userForm.address"
+                @keyup.enter="handleUpdateUser"
                 autocomplete="off"
             />
             <div class="d-flex flex-column flex-md-row w-100 gap-2">
@@ -61,6 +64,7 @@
                     :label="$t('user.profile.form.password')"
                     :placeholder="$t('user.profile.placeholder.password')"
                     v-model:value="userForm.password"
+                    @keyup.enter="handleUpdateUser"
                 />
                 <BaseInputPassword
                     v-if="userForm.password"
@@ -68,6 +72,7 @@
                     :label="$t('user.profile.form.currentPassword')"
                     :placeholder="$t('user.profile.placeholder.currentPassword')"
                     v-model:value="userForm.currentPassword"
+                    @keyup.enter="handleUpdateUser"
                 />
             </div>
         </div>
@@ -102,6 +107,7 @@ export default class UserProfileForm extends Vue {
     isChangingAvatar = false;
     userForm = {} as IUpdateUserData;
     credentialError = '';
+    passwordError = '';
     thumbnail: File | null = null;
     get userData(): IUserData {
         return userModule.userData;
@@ -131,6 +137,14 @@ export default class UserProfileForm extends Vue {
             this.credentialError = this.$t('user.errors.emptyUsername');
         } else {
             this.credentialError = '';
+        }
+    }
+
+    checkPasswordFormat() {
+        if (this.userForm.password && this.userForm.password?.length < 8) {
+            this.passwordError = this.$t('auth.login.password.error');
+        } else {
+            this.passwordError = '';
         }
     }
 

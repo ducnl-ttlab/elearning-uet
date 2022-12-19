@@ -6,16 +6,18 @@
                 class="input"
                 :label="$t('auth.register.credential.label')"
                 :placeholder="$t('auth.register.credential.placeholder')"
-                :error="credentialError"
+                :error="emailError"
                 v-model:value="credential"
+                @keyup.enter="handleLogin"
                 autocomplete="off"
             />
             <BaseInputPassword
                 class="input input-password"
                 :label="$t('auth.login.password.label')"
                 :placeholder="$t('auth.login.password.label')"
+                :error="passwordError"
                 v-model:value="password"
-                @on-enter="handleLogin"
+                @keyup.enter="handleLogin"
                 autocomplete="off"
             />
         </div>
@@ -46,7 +48,7 @@ import { Options, Vue } from 'vue-class-component';
 import { login } from '../../services/login';
 import { commonModule } from '@/modules/common/store/common.store';
 import { loginModule } from '../../store/login.store';
-import { PageName, SystemRole } from '@/common/constants';
+import { PageName, Regex, SystemRole } from '@/common/constants';
 import { userModule } from '@/modules/user/store/user.store';
 import socketInstance from '@/plugins/socket';
 
@@ -55,8 +57,10 @@ import socketInstance from '@/plugins/socket';
 })
 export default class LoginForm extends Vue {
     credential = '';
-    credentialError = '';
     password = '';
+    emailError = '';
+    passwordError = '';
+    Regex = Regex;
 
     get userData() {
         return userModule.userData;
@@ -70,35 +74,72 @@ export default class LoginForm extends Vue {
         this.$router.push({ name: PageName.FORGOT_PASSWORD_PAGE });
     }
 
+    checkCredentialFormat() {
+        if (this.credential.trim().match(this.Regex.EMAIL)) {
+            this.emailError = '';
+        } else {
+            this.emailError = this.$t('auth.login.credential.invalidFormat');
+        }
+    }
+
+    checkPasswordFormat() {
+        if (this.password.length < 8) {
+            this.passwordError = this.$t('auth.login.password.error');
+        } else {
+            this.passwordError = '';
+        }
+    }
+
     async handleLogin() {
         commonModule.setLoadingIndicator(true);
         const params = {
             email: this.credential,
             password: this.password,
         };
-        const response = await login(params);
-        if (response?.success) {
-            showSuccessNotificationFunction(response.message || 'Success');
-            userModule.setUserData(response?.data?.user || {});
-            loginModule.setAccessToken(response?.data?.accessToken || '');
-            socketInstance.setAccessToken(response?.data?.accessToken || '');
-            loginModule.setLoginState(true);
-            setLoginUser(response?.data || { accessToken: '', user: {} });
+        if (this.emailError === '' && this.passwordError === '') {
+            const response = await login(params);
+            if (response?.success) {
+                showSuccessNotificationFunction(response.message || 'Success');
+                userModule.setUserData(response?.data?.user || {});
+                loginModule.setAccessToken(response?.data?.accessToken || '');
+                socketInstance.setAccessToken(response?.data?.accessToken || '');
+                loginModule.setLoginState(true);
+                setLoginUser(response?.data || { accessToken: '', user: {} });
 
-            if (this.userData.role === SystemRole.GUEST) {
-                this.$router.push({
-                    name: PageName.SELECT_ROLE_PAGE,
-                });
-            } else if (this.userData.role === SystemRole.PENDING) {
-                this.$router.push({ name: PageName.PENDING_APPROVE_PAGE });
+                if (this.userData.role === SystemRole.GUEST) {
+                    this.$router.push({
+                        name: PageName.SELECT_ROLE_PAGE,
+                    });
+                } else if (this.userData.role === SystemRole.PENDING) {
+                    this.$router.push({ name: PageName.PENDING_APPROVE_PAGE });
+                } else {
+                    this.$router.push({ name: PageName.LANDING_PAGE });
+                }
             } else {
-                this.$router.push({ name: PageName.LANDING_PAGE });
+                let res = response?.errors || [
+                    { message: this.$t('auth.login.loginError') },
+                ];
+                showErrorNotificationFunction(res[0].message);
             }
-        } else {
-            let res = response?.errors || [{ message: this.$t('auth.login.loginError') }];
-            showErrorNotificationFunction(res[0].message);
         }
         commonModule.setLoadingIndicator(false);
+    }
+
+    created() {
+        this.$watch(
+            'credential',
+            () => {
+                this.checkCredentialFormat();
+            },
+            { immediate: true },
+        );
+        this.$watch(
+            'password',
+            () => {
+                this.checkPasswordFormat();
+            },
+            { immediate: true },
+        );
     }
 }
 </script>

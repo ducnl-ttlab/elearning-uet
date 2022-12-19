@@ -5,14 +5,14 @@
             :label="$t('auth.setPassword.initPassword')"
             :placeholder="$t('auth.setPassword.placeholder')"
             v-model:value="password"
-            @on-enter="handleSubmitPassword"
+            @keyup.enter="handleSubmitPassword"
         />
         <BaseInputPassword
             class="input"
             :label="$t('auth.setPassword.confirmPassword')"
             :placeholder="$t('auth.setPassword.placeholder')"
             v-model:value="confirmPassword"
-            @on-enter="handleSubmitPassword"
+            @keyup.enter="handleSubmitPassword"
         />
     </div>
     <el-button type="primary" class="continue-button" @click="handleSubmitPassword">

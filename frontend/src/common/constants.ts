@@ -65,7 +65,7 @@ export const Regex = {
     OTP: /^[0-9]{6}$/, // TODO: correct it later
     //Must contains a number and an alphabet, more than 6 characters long, can also contain special characters
     PASSWORD:
-        /(?!^[0-9]*$)(?!^[a-zA-Z!@#$%^&*()_+=<>?]*$)^([a-zA-Z!@#$%^&*()_+=<>?0-9]{6,})$/,
+        /(?!^[0-9]*$)(?!^[a-zA-Z!@#$%^&*()_+=<>?]*$)^([a-zA-Z!@#$%^&*()_+=<>?0-9]{8,})$/,
 };
 
 export enum DateFormat {

@@ -3,7 +3,7 @@ export const course = {
         price: '${price}',
         free: 'Miễn phí',
         instructor: 'Giảng viên: {instructor}',
-        avgRating: 'Đánh giá trung bình:\xa0',
+        avgRating: 'Đánh giá:\xa0',
         selfRating: 'Đánh giá của bạn: \xa0',
         notRated: 'Chưa có đánh giá',
         studentTotal: 'Số học viên: {studentTotal}',
@@ -81,6 +81,8 @@ export const course = {
             createTopic: 'Thêm topic thất bại, vui lòng thử lại sau!',
             deleteTopic: 'Xóa topic thất bại, vui lòng thử lại sau!',
         },
+        getCoursePreviewError:
+            'Có lỗi khi lấy dự liệu khóa học. Xin vui lòng thử lại sau!',
         sendMessageError: 'Gửi tin nhắn thất bại, vui lòng thử lại sau!',
         leaveRatingError: 'Đánh giá khóa học thất bại, vui lòng thử lại sau!',
         chooseRole: 'Không thể tham gia khóa học. Vui lòng chọn vai trò của bạn trước!',
@@ -90,7 +92,10 @@ export const course = {
         toggleCourse: 'Thay đổi trạng thái khóa học thất bại, vui lòng thử lại sau!',
         quiz: {
             updateTopic: 'Thay đổi trạng thái bài tập thất bại, vui lòng thử lại sau!',
+            submitQuiz: 'Nộp bài thất bại, xin vui lòng thử lại sau!',
         },
+        getLeaderboardError:
+            'Lấy dữ liệu bảng xếp hạng thất bại. Xin vui lòng thử lại sau!',
     },
 
     success: {
@@ -113,6 +118,7 @@ export const course = {
             updateQuiz: 'Sửa bài tập thành công!',
             createQuiz: 'Tạo bài tập thành công!',
             deleteQuiz: 'Xóa bài tập thành công!',
+            submitQuiz: 'Nộp bài tập thành công!',
         },
         leaveRating: 'Đánh giá khóa học thành công!!',
         deleteCourse: 'Xóa khóa học thành công!',
@@ -184,6 +190,9 @@ export const course = {
             question: 'Câu',
         },
         leaderboard: 'Đại lộ danh vọng',
+        submitQuiz: 'Nộp bài',
+        doneQuiz: 'Bạn đã làm quiz này rồi',
+        quizScore: 'Điểm của bạn:\xa0{score}',
     },
 
     chat: {
