@@ -27,6 +27,12 @@
                     <Unlock color="green" />
                 </el-icon>
             </div>
+            <div
+                class="d-flex align-items-center justify-content-center"
+                v-if="quiz.isEdit"
+            >
+                <el-icon><View color="gray" /></el-icon>
+            </div>
         </div>
         <div v-else class="d-flex flex-row gap-4 align-items-center">
             <el-input
@@ -68,19 +74,20 @@
             <img v-else width="16" src="@/assets/course/icons/up-arrow.png" alt="" />
         </div>
     </div>
-    <div v-if="isShowDetail" class="question-wrapper d-flex flex-column gap-3">
+    <div v-if="!isShowDetail" class="question-wrapper d-flex flex-column gap-3">
         <div v-for="(question, index) in quiz.questionList" :key="index">
             <InstructorQuestion
                 :question="question"
                 :index="index"
                 :isShowDetail="isShowDetail"
+                :isEdit="quiz.isEdit"
                 @delete-question="handleDeleteQuestion"
                 @delete-answer="handleDeleteAnswer"
                 @edit-question="handleEditQuestion"
                 @edit-answer="handleEditAnswer"
             />
         </div>
-        <div class="add-button d-flex flex-row gap-2">
+        <div class="add-button d-flex flex-row gap-2" v-if="!quiz.isEdit">
             <img
                 style="cursor: pointer"
                 @click="handleAddQuestion"
@@ -147,15 +154,11 @@ export default class InstructorQuiz extends Vue {
 
     handleDeleteQuestion(question: IQuestionDetail, index: number) {
         this.quiz.questionList?.splice(index, 1);
-        this.$emit('delete-question', question, index);
+        this.$emit('delete-question', question, this.quiz.id);
     }
 
-    handleDeleteAnswer(
-        answer: IAnswerDetail,
-        answerIndex: number,
-        questionIndex: number,
-    ) {
-        this.$emit('delete-answer', answer, answerIndex, questionIndex);
+    handleDeleteAnswer(answer: IAnswerDetail) {
+        this.$emit('delete-answer', answer, this.quiz.id);
     }
 
     handleDeleteQuiz() {
@@ -167,7 +170,7 @@ export default class InstructorQuiz extends Vue {
     }
 
     handleEditAnswer(answer: IAnswer, questionId: number) {
-        this.$emit('edit-answer', answer, questionId);
+        this.$emit('edit-answer', answer, questionId, this.quiz.id);
     }
 
     toggleDetail() {

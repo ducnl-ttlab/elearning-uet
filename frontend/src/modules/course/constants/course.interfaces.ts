@@ -134,6 +134,7 @@ export interface IQuizDetail {
     id?: number;
     name?: string;
     shown?: boolean;
+    isEdit?: boolean;
     topicId?: number;
     startTime?: string;
     duration?: string;

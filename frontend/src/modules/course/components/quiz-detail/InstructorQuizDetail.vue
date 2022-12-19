@@ -16,30 +16,7 @@
                     autocomplete="off"
                 />
             </div>
-
-            <div class="field-wrapper">
-                <div class="label">{{ $t('course.quiz.form.startTime') }}:</div>
-                <el-date-picker
-                    v-model="newQuizForm.startTime"
-                    type="datetime"
-                    size="large"
-                    :placeholder="$t('course.quiz.form.startTime')"
-                />
-            </div>
-
-            <div class="field-wrapper">
-                <div class="label">{{ $t('course.quiz.form.quizDuration') }}:</div>
-                <el-slider
-                    style="padding-left: 18px"
-                    v-model="newQuizForm.duration"
-                    :step="5"
-                    :min="5"
-                    :max="60"
-                    show-stops
-                />
-            </div>
-
-            <InstructorQuiz :quiz="newQuizForm" />
+            <InstructorQuiz :quiz="newQuizForm" :isShowDetail="true" />
 
             <div class="action-buttons d-flex flex-row gap-2">
                 <div @click="handleSaveAddQuiz" class="button save-add-quiz">
@@ -55,6 +32,7 @@
             <InstructorQuiz
                 :quiz="quiz"
                 isShowTitle="true"
+                :isEdit="quiz.isEdit"
                 @delete-answer="handleDeleteAnswer"
                 @delete-question="handleDeleteQuestion"
                 @delete-quiz="handleDeleteQuiz"
@@ -69,7 +47,6 @@
 
 <script lang="ts">
 import { SystemRole } from '@/common/constants';
-import { userModule } from '@/modules/user/store/user.store';
 import { Options, Vue } from 'vue-class-component';
 import {
     IAnswer,
@@ -96,6 +73,7 @@ export default class InstructorQuizDetail extends Vue {
     newQuizForm = {
         name: '',
         startTime: '',
+        isEdit: false,
         duration: 0,
         topicId: this.topicId,
         questionList: [],
@@ -117,6 +95,7 @@ export default class InstructorQuizDetail extends Vue {
         this.newQuizForm = {
             name: '',
             startTime: '',
+            isEdit: false,
             duration: 0,
             topicId: this.topicId,
             questionList: [],
@@ -169,11 +148,11 @@ export default class InstructorQuizDetail extends Vue {
         courseModule.setAddingQuiz(false);
     }
 
-    async handleDeleteAnswer(answer: IAnswerDetail) {
+    async handleDeleteAnswer(answer: IAnswerDetail, quizId: number) {
         if (answer?.id) {
             let response = await deleteQuiz(
                 +this.$route.params.courseId,
-                this.topicId,
+                quizId,
                 answer.id,
                 'answer',
             );
@@ -189,11 +168,11 @@ export default class InstructorQuizDetail extends Vue {
             }
         }
     }
-    async handleDeleteQuestion(question: IQuestionDetail) {
+    async handleDeleteQuestion(question: IQuestionDetail, quizId: number) {
         if (question?.id) {
             let response = await deleteQuiz(
                 +this.$route.params.courseId,
-                this.topicId,
+                quizId,
                 question.id,
                 'question',
             );
@@ -210,7 +189,7 @@ export default class InstructorQuizDetail extends Vue {
         }
     }
 
-    async handleDeleteQuiz(quiz: IQuizDetail) {
+    async handleDeleteQuiz(quiz: IQuizDetail, quizId: number) {
         if (quiz?.id) {
             let quizes = this.quizList;
             let quizIndex = this.quizList.findIndex((item) => item.id === quiz.id);
@@ -219,7 +198,7 @@ export default class InstructorQuizDetail extends Vue {
 
             let response = await deleteQuiz(
                 +this.$route.params.courseId,
-                this.topicId,
+                quizId,
                 quiz.id,
                 'quiz',
             );
@@ -238,11 +217,17 @@ export default class InstructorQuizDetail extends Vue {
 
     async handleToggleQuiz(quiz: IQuizDetail) {
         if (quiz?.id) {
-            let response = await editQuiz(+this.$route.params.courseId, quiz.id, 'quiz', {
-                quiz: {
-                    shown: quiz.shown,
+            let response = await editQuiz(
+                +this.$route.params.courseId,
+                quiz.id,
+                quiz.id,
+                'quiz',
+                {
+                    quiz: {
+                        shown: quiz.shown,
+                    },
                 },
-            });
+            );
             if (response?.success) {
                 showSuccessNotificationFunction(
                     this.$t('course.success.quiz.updateQuiz'),
@@ -254,16 +239,25 @@ export default class InstructorQuizDetail extends Vue {
                 showErrorNotificationFunction(res[0].message);
             }
         }
+        this.getQuizList();
     }
 
     async handleEditQuiz(quiz: IQuizDetail) {
         if (quiz?.id) {
-            let response = await editQuiz(+this.$route.params.courseId, quiz.id, 'quiz', {
-                quiz: {
-                    name: quiz.name,
-                    duration: quiz.duration,
+            console.log('coursexzxzczx', +this.$route.params.courseId);
+
+            let response = await editQuiz(
+                +this.$route.params.courseId,
+                quiz.id,
+                quiz.id,
+                'quiz',
+                {
+                    quiz: {
+                        name: quiz.name,
+                        duration: quiz.duration,
+                    },
                 },
-            });
+            );
             if (response?.success) {
                 showSuccessNotificationFunction(
                     this.$t('course.success.quiz.updateQuiz'),
@@ -277,11 +271,12 @@ export default class InstructorQuizDetail extends Vue {
         }
     }
 
-    async handleEditAnswer(answer: IAnswer, questionId: number) {
+    async handleEditAnswer(answer: IAnswer, questionId: number, quizId: number) {
         if (answer?.id) {
             let response = await editQuiz(
                 +this.$route.params.courseId,
                 answer.id,
+                quizId,
                 'answer',
                 {
                     answer: {
@@ -304,6 +299,7 @@ export default class InstructorQuizDetail extends Vue {
             let response = await editQuiz(
                 +this.$route.params.courseId,
                 questionId,
+                quizId,
                 'addAnswer',
                 {
                     answer: {
@@ -331,6 +327,7 @@ export default class InstructorQuizDetail extends Vue {
             let response = await editQuiz(
                 +this.$route.params.courseId,
                 question.id,
+                quizId,
                 'question',
                 {
                     question: {
@@ -352,6 +349,7 @@ export default class InstructorQuizDetail extends Vue {
         } else if (quizId) {
             let response = await editQuiz(
                 +this.$route.params.courseId,
+                quizId,
                 quizId,
                 'addQuestion',
                 {

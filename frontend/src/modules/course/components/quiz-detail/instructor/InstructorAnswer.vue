@@ -11,7 +11,7 @@
             autocomplete="off"
             v-else
         />
-        <div class="d-flex flex-row gap-2">
+        <div class="d-flex flex-row gap-2" v-if="!isEdit">
             <img
                 src="@/assets/course/icons/edit.svg"
                 width="16"
@@ -39,6 +39,8 @@ import { Prop } from 'vue-property-decorator';
 export default class InstructorAnswer extends Vue {
     @Prop({ default: {} }) readonly answer!: IAnswerDetail;
     @Prop({ default: 0 }) readonly index!: number;
+    @Prop({ default: false }) readonly isEdit!: false;
+
     isEditingAnswer = false;
 
     toggleEditAnswer() {

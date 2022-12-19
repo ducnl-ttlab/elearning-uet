@@ -202,29 +202,40 @@ export class QuizController {
     );
   }
 
-  @Delete(':courseId/:topicId')
+  @Delete(':courseId/:quizId')
   @InstructorCourseAuth()
   @UsePipes(
     ...validation(
-      { key: 'topicIdParamSchema', type: 'param' },
+      { key: 'updateQuizParamSchema', type: 'param' },
       { key: 'editQuizQuerySchema', type: 'query' },
     ),
   )
   async deleteQuiz(
     @Res() res: Response,
     @Instructor() instructor: Course,
-    @Param() param: IQuizParam,
+    @Param() param: IEditQuizParam,
     @Query() query: IQueryEditDto,
   ) {
     const { sourceId, type } = query;
+    let { quizId } = param;
+    let quizExist = await this.quizService.existQuiz(+quizId);
+    if (!quizExist) {
+      throw new NotFoundException('not found quiz');
+    }
     let result: any;
 
     switch (type) {
       case 'answer': {
+        if (quizExist.isEdit) {
+          throw new NotFoundException('can not delete answer');
+        }
         result = await this.quizService.deleteAnswer(sourceId);
         break;
       }
       case 'question': {
+        if (quizExist.isEdit) {
+          throw new NotFoundException('can not delete question');
+        }
         result = await this.quizService.deleteQuestion(sourceId);
         break;
       }

@@ -22,7 +22,7 @@
                 autocomplete="off"
             />
         </div>
-        <div class="d-flex flex-row gap-2" style="padding-left: 10px">
+        <div class="d-flex flex-row gap-2" style="padding-left: 10px" v-if="!isEdit">
             <img
                 src="@/assets/course/icons/edit.svg"
                 width="16"
@@ -51,9 +51,10 @@
                 :index="index"
                 @delete-answer="handleDeteleAnswer"
                 @edit-answer="handleEditAnswer"
+                :isEdit="isEdit"
             />
         </div>
-        <div class="add-button d-flex flex-row gap-2 py-2">
+        <div class="add-button d-flex flex-row gap-2 py-2" v-if="!isEdit">
             <img
                 @click="handleAddAnswer()"
                 src="@/assets/course/icons/plus.svg"
@@ -84,6 +85,8 @@ import InstructorAnswer from './InstructorAnswer.vue';
 export default class InstructorQuestion extends Vue {
     @Prop({ default: {} }) readonly question!: IQuestionDetail;
     @Prop({ default: 0 }) readonly index!: number;
+    @Prop({ default: false }) readonly isEdit!: false;
+
     isEditingQuestion = false;
 
     handleAddAnswer() {

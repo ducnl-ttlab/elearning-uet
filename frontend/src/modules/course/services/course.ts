@@ -286,13 +286,13 @@ export async function createQuiz(
 
 export async function deleteQuiz(
     courseId: number,
-    topicId: number,
+    quizId: number,
     sourceId: number,
     type: 'question' | 'quiz' | 'answer',
 ): Promise<IAxiosDefaultResponse<IQuizDetail>> {
     return axios
         .delete(
-            `${BE_URL}/quiz/${courseId}/${topicId}?type=${type}&sourceId=${sourceId}`,
+            `${BE_URL}/quiz/${courseId}/${quizId}?type=${type}&sourceId=${sourceId}`,
             {
                 headers: {
                     Authorization: 'Bearer ' + localStorageTokenService.getAccessToken(),
@@ -309,13 +309,14 @@ export async function deleteQuiz(
 export async function editQuiz(
     courseId: number,
     sourceId: number,
+    quizId: number,
     type: 'question' | 'quiz' | 'answer' | 'addQuestion' | 'addAnswer',
     data: { question?: IQuestion; answer?: IAnswer; quiz?: IQuiz },
 ): Promise<IAxiosDefaultResponse<IQuizDetail>> {
     const { question, answer, quiz } = data;
     return axios
         .put(
-            `${BE_URL}/quiz/${courseId}?type=${type}&sourceId=${sourceId}`,
+            `${BE_URL}/quiz/${courseId}/${quizId}?type=${type}&sourceId=${sourceId}`,
             {
                 answer,
                 question,
