@@ -1,6 +1,6 @@
 import http from "./httpService";
 
-const apiEndpoint = "http://localhost:5001";
+const apiEndpoint = "http://localhost:5000";
 const prefix = "/admin";
 const adminEndpoint = apiEndpoint + prefix;
 
