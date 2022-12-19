@@ -39,6 +39,11 @@ export interface IQuizParam {
   courseId: string;
 }
 
+export interface IEditQuizParam {
+  quizId: string;
+  courseId: string;
+}
+
 export interface BulkQuizResponseDto extends Quiz {
   questionList?: IQuestion[];
 }

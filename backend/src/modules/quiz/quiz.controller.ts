@@ -14,6 +14,8 @@ import {
   Put,
   Query,
   Delete,
+  NotFoundException,
+  BadRequestException,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Request, Response } from 'express';
@@ -31,6 +33,7 @@ import {
   BulkQuizInsertDto,
   CreateQuizDto,
   IEditQuizDto,
+  IEditQuizParam,
   IQueryEditDto,
   IQuizParam,
   IUpdateQuizDto,
@@ -45,6 +48,7 @@ import { UserQuizService } from '../user-quiz/service/user-quiz.service';
 import { Answer } from './entity/answer.entity';
 import { Question } from './entity/question.entity';
 import { IUserJwt } from 'src/common/interfaces';
+import { Quiz } from './entity/quiz.entity';
 
 @ApiTags('Topic')
 @Controller('quiz')
@@ -123,7 +127,7 @@ export class QuizController {
     return res.status(HttpStatus.OK).json(new SuccessResponse(quiz));
   }
 
-  @Put(':courseId')
+  @Put(':courseId/:quizId')
   @InstructorCourseAuth()
   @UsePipes(
     ...validation(
@@ -134,21 +138,47 @@ export class QuizController {
   async updateQuiz(
     @Res() res: Response,
     @Instructor() instructor: Course,
-    @Param() param: IQuizParam,
+    @Param() param: IEditQuizParam,
     @Body() body: IUpdateQuizDto,
     @Query() query: IQueryEditDto,
   ) {
     const { sourceId, type } = query;
     let { answer, question, quiz } = body;
 
+    let { quizId } = param;
+
+    let quizExist = await this.quizService.existQuiz(+quizId);
+    if (!quizExist) {
+      throw new NotFoundException('not found quiz');
+    }
+
     let result: any;
 
     if (type === 'answer' && !!answer) {
+      if (quizExist.isEdit) {
+        throw new BadRequestException('can not editing');
+      }
+
       result = await this.quizService.updateAnswerOnly(sourceId, answer);
     } else if (type === 'question' && !!question) {
+      if (quizExist.isEdit) {
+        throw new BadRequestException('can not editing');
+      }
+
       result = await this.quizService.updateQuestionOnly(sourceId, question);
     } else if (type === 'quiz' && !!quiz) {
-      result = await this.quizService.updateQuizOnly(sourceId, quiz);
+      let isEdit = false;
+      if (quiz.shown && !quizExist.isEdit) {
+        isEdit = true;
+      } else if (quizExist.isEdit) {
+        isEdit = true;
+      }
+      let newQuiz: Partial<Quiz> = {
+        ...quiz,
+        isEdit,
+      };
+
+      result = await this.quizService.updateQuizOnly(+quizId, newQuiz);
     } else if (type === 'addAnswer' && !!answer) {
       let newAnswer: Partial<Answer> = {
         questionId: sourceId,
@@ -164,16 +194,6 @@ export class QuizController {
       };
       result = await this.quizService.saveQuestion(newQuestion);
     }
-
-    // let result: any;
-    // if (quiz) {
-    //   await this.quizService.updateQuiz(quiz);
-    //   await this;
-    // } else if (question) {
-    //   result = await this.quizService.updateQuestion(question);
-    // } else if (answer) {
-    //   result = await this.quizService.updateAnswer(answer);
-    // }
 
     return res.status(HttpStatus.OK).json(
       new SuccessResponse({

@@ -26,6 +26,10 @@ export class Quiz {
   @Column({ nullable: true })
   shown: boolean;
 
+  @ApiProperty({ example: false })
+  @Column({ nullable: true })
+  isEdit: boolean;
+
   @CreateDateColumn({
     type: 'timestamp',
     precision: 3,

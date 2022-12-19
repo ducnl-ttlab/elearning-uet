@@ -35,6 +35,11 @@ export class Quizes1669434922646 implements MigrationInterface {
             default: 0,
           },
           {
+            name: 'isEdit',
+            type: 'tinyint',
+            default: 0,
+          },
+          {
             name: 'startTime',
             type: 'timestamp',
             isNullable: true,

@@ -17,6 +17,9 @@ const updateQuizParamSchema = Joi.object().keys({
   courseId: Joi.string()
     .pattern(/^[0-9]+$/)
     .message('courseId should be a number'),
+  quizId: Joi.string()
+    .pattern(/^[0-9]+$/)
+    .message('courseId should be a number'),
 });
 
 const createQuizSchema = Joi.object().keys({
