@@ -1,6 +1,6 @@
 <template>
     <div class="d-flex flex-row align-items-center gap-3">
-        <el-checkbox v-model="answer.isCorrect" size="large" />
+        <el-checkbox @change="toggleCheckbox" v-model="answer.isCorrect" size="large" />
         <div v-if="!isEditingAnswer">
             {{ answer.content ? answer.content : 'Add your answer' }}
         </div>
@@ -46,6 +46,10 @@ export default class InstructorAnswer extends Vue {
         if (!this.isEditingAnswer) {
             this.$emit('edit-answer', this.answer);
         }
+    }
+
+    toggleCheckbox() {
+        this.$emit('edit-answer', this.answer);
     }
 
     handleDeleteAnswer() {
