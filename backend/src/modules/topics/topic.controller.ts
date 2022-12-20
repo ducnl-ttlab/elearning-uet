@@ -202,7 +202,7 @@ export class TopicController {
     if (!existTopic) {
       throw new BadRequestException('not found topic');
     }
-    removeImageFile(existTopic.video, 'video');
+    // removeImageFile(existTopic.video, 'video');
     let newTopic: Partial<Topic> = {
       courseId: course.id,
       name,
@@ -229,9 +229,9 @@ export class TopicController {
 
     let existTopic = await this.topicService.existTopic(+topicId);
     const { video } = existTopic || {};
-    if (video) {
-      removeImageFile(video, 'video');
-    }
+    // if (video) {
+    //   removeImageFile(video, 'video');
+    // }
     let deleteTopic = await this.topicService.delete(+topicId);
 
     return res.status(HttpStatus.OK).json(new SuccessResponse(deleteTopic));
