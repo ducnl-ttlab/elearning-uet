@@ -50,7 +50,7 @@ import { Question } from './entity/question.entity';
 import { IUserJwt } from 'src/common/interfaces';
 import { Quiz } from './entity/quiz.entity';
 
-@ApiTags('Topic')
+@ApiTags('Quiz')
 @Controller('quiz')
 export class QuizController {
   constructor(
