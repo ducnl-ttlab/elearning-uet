@@ -208,10 +208,11 @@ export class TopicController {
       name,
       description,
       content,
-      video: file?.filename,
     };
-
-    file?.filename && (await generateChunkFiles());
+    if (file?.filename) {
+      newTopic.video = file?.filename;
+      await generateChunkFiles();
+    }
 
     let topic = await this.topicService.update(+topicId, newTopic);
 
