@@ -9,6 +9,7 @@
   + Back-end: NestJS, MySQL, Redis, SocketIO, HLS(HTTP Live-streaming)
   + Front-end: VueJS, Bootstrap+SASS, Element-UI, SocketIO, TinyMCE(Rich-text editor)
   + AI: Neural Network
+  + Admin: ReactJS
   
 # Yêu cầu cài đặt
   * npm, node (v16+), python 3.9 hoặc các phiên bản tương thích 
